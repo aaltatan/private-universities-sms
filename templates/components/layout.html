@@ -1,0 +1,112 @@
+{% load i18n breadcrumbs %}
+<!--  -->
+{% get_current_language as LANGUAGE_CODE %}
+<!--  -->
+{% get_breadcrumbs as breadcrumbs %}
+
+<!DOCTYPE html>
+<html
+  lang="en"
+  :class="{'dark': dark}"
+  class="scroll"
+  x-data="{ 
+    dark: $persist(true).as('dark'),
+    toggleDark() {
+      this.dark = !this.dark;
+    },
+  }"
+>
+  <head>
+    <c-head />
+  </head>
+  <body
+    dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}"
+    class="dark:bg-black bg-neutral-50/25 dark:text-white"
+    hx-history="false"
+    hx-headers='{ "X-CSRFToken": "{{ csrf_token }}" }'
+    :class="{
+      'lg:me-64': overlaySidebarOpened,
+    }"
+    @keyup.alt.equal="sidebarSearchFocus"
+    x-data="{
+      init() {
+        document.title = '{{ page_title }}' || '{{ project_name }}';
+      },
+      /* --------------------------------------- */
+      /* --------------- sidebar --------------- */
+      /* --------------------------------------- */
+      sidebarOpened: false,
+      sidebarFixed: $persist(true).as('sidebar-fixed'),
+      toggleSidebarFixed() {
+        this.sidebarFixed = !this.sidebarFixed;
+      },
+      toggleSidebar() {
+        this.sidebarOpened = !this.sidebarOpened;
+      },
+      showSidebar() {
+        this.sidebarOpened = true;
+      },
+      hideSidebar() {
+        this.sidebarOpened = false;
+      },
+      sidebarSearchFocus() {
+        searchInput = document.getElementById('sidebar-search');
+        this.showSidebar();
+        searchInput?.focus();
+        searchInput?.select();
+      },
+      /* --------------------------------------- */
+      /* ----------- overlay sidebar ----------- */
+      /* --------------------------------------- */
+      overlaySidebarOpened: false,
+      openOverlaySidebar() {
+        this.overlaySidebarOpened = true;
+      },
+      closeOverlaySidebar(e) {
+        this.overlaySidebarOpened = false;
+      },
+      toggleOverlaySidebar() {
+        this.overlaySidebarOpened = !this.overlaySidebarOpened;
+      },
+      /* --------------------------------------- */
+      /* ---------------- modal ---------------- */
+      /* --------------------------------------- */
+      modalStatus: false,
+      showModal() {
+        this.modalStatus = !this.modalStatus;
+        $refs?.modal?.remove();
+      },
+      hideModal() {
+        this.modalStatus = false;
+      },
+      /* --------------------------------------- */
+      /* -------------- full width ------------- */
+      /* --------------------------------------- */
+      fullWidthContainer: $persist(false).as('full-width-container'),
+      toggleFullWidthContainer() {
+        this.fullWidthContainer = !this.fullWidthContainer;
+      },
+    }"
+  >
+    <c-layout.modal.container />
+    <c-layout.messages />
+    <span class="hidden" id="no-content"></span>
+
+    <c-layout.sidebar.sidebar>
+      <c-layout.header />
+      <div class="mt-2 text-center sm:hidden">
+        <c-layout.breadcrumbs :breadcrumbs="breadcrumbs" />
+      </div>
+      <main
+        :class="{
+          'container mx-auto': !sidebarFixed && fullWidthContainer,
+          'px-2': !fullWidthContainer || sidebarFixed,
+          'lg:px-2': overlaySidebarOpened,
+        }"
+        class="py-2 max-md:px-2"
+      >
+        {{ slot }}
+      </main>
+    </c-layout.sidebar.sidebar>
+  </body>
+</html>

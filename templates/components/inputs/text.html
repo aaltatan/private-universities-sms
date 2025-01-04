@@ -1,0 +1,71 @@
+{% load widget_tweaks i18n %}
+
+<c-vars
+  :show_icon="False"
+  :show_label="True"
+  :show_help="True"
+  base_theme="text-input"
+  icon="plus"
+  icon_size="20"
+  mask=""
+  kind="text"
+  placeholder=""
+  autofocus="false"
+/>
+
+<div
+  class="text-neutral-600 dark:text-neutral-300 [&:has(input[aria-invalid='true'])_label]:text-red-500 [&:has(input[required])_label_>_span]:block"
+>
+  {% if show_label %}
+  <label for="{{ field.id_for_label }}" class="flex w-fit items-center gap-1 pl-0.5 text-sm">
+    {{ field.label }}:
+    <span
+      class="text-[red] hidden"
+      title="{% translate 'required field'|title %}"
+      aria-label="required field"
+    >
+      *
+    </span>
+  </label>
+  {% endif %}
+  <!--  -->
+  {% if show_help %}
+  <small class="pl-0.5 text-neutral-500 mb-1 block first-letter:capitalize">
+    {{ field.help_text }}
+  </small>
+  {% endif %}
+  <!--  -->
+  {% if show_icon %}
+  <div class="relative">
+    <span class="absolute start-2 top-1/2 -translate-y-1/2"
+      >
+      {% heroicon_outline icon size=icon_size class="text-neutral-500" %}
+    </span>
+    {% if "cols" in field.field.widget.attrs %}
+      {% render_field field autocomplete="true" autofocus=autofocus class=base_theme style="padding-inline-start: 2rem" placeholder=placeholder x-mask=mask x-autosize="" rows="1" %}
+    {% else %}
+      {% render_field field autocomplete="true" autofocus=autofocus class=base_theme style="padding-inline-start: 2rem" placeholder=placeholder x-mask=mask type=kind %}
+    {% endif %}
+  </div>
+  {% else %}
+  <!--  -->
+    {% if "cols" in field.field.widget.attrs %}
+      {% render_field field autocomplete="true" autofocus=autofocus class=base_theme placeholder=placeholder x-mask=mask x-autosize="" rows="1" %}
+    {% else %}
+      {% render_field field autocomplete="true" autofocus=autofocus class=base_theme placeholder=placeholder x-mask=mask type=kind %}
+    {% endif %}
+  {% endif %}
+  <!--  -->
+  {% if field.errors %}
+  <div class="pl-0.5 text-red-500 my-1 text-sm">
+    <ul>
+      {% for error in field.errors %}
+      <li class="flex items-center gap-1 ps-1">
+        <span>{% heroicon_outline "x-mark" size="16" %}</span>
+        <span>{{ error }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>

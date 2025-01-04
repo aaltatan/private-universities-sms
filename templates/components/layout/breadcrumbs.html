@@ -1,0 +1,26 @@
+<c-vars
+  theme="text-sm text-neutral-500 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-300 capitalize tracking-tight"
+/>
+
+<ul class="flex items-center justify-center gap-1 select-none">
+  {% if breadcrumbs %}
+  <li class="flex items-center gap-1">
+    <a href="/" class="{{ theme }}"> {% heroicon_outline "home" size="16" %} </a>
+    {% heroicon_outline "chevron-right" size="16" class="rtl:-rotate-180" %}
+  </li>
+  {% endif %}
+  <!--  -->
+  {% for breadcrumb in breadcrumbs %}
+  <li class="flex items-center gap-1">
+    {% if not forloop.last %}
+    <a href="{{ breadcrumb.href }}{% querystring %}" class="{{ theme }}"> {{ breadcrumb.text }} </a>
+    {% heroicon_outline "chevron-right" size="16" class="rtl:-rotate-180 block" %}
+    <!--  -->
+    {% else %}
+    <span class="{{ theme }} !text-black dark:!text-white"> 
+      {{ breadcrumb.text }}
+    </span>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>

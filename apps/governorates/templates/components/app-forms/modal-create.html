@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<c-forms.modal-create
+  form_title="{% translate 'add new governorate'|title %}"
+  request_headers='{"modal": true, "redirect-to": "{{ index_url }}", "querystring": "{% querystring %}"
+  }'
+  url="{{ create_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-inputs.text :field="form.name" />
+  <c-inputs.text :field="form.description" />
+</c-forms.modal-create>

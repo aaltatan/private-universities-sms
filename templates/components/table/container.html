@@ -1,0 +1,47 @@
+{% load i18n %}
+
+<div
+  id="{{ id }}"
+  class="relative hx-swap:opacity-80"
+  x-data="{ 
+  checkAll: false,
+  selectedItems: 0,
+  init() {
+    hideModal();
+  },
+  handleCheckAll() {
+    const checkboxes = document.querySelectorAll(
+      'input[type=checkbox][id^=row-check-][checked]'
+    );
+    this.selectedItems = checkboxes.length;
+  },
+  handleCheck(target) {
+    const checkbox = target;
+    if (checkbox.checked) {
+      this.selectedItems++;
+    } else {
+      this.selectedItems--;
+    }
+  },
+}"
+>
+  <div class="flex items-center justify-between flex-col gap-2 sm:gap-1 sm:flex-row mb-2">
+    {{ header }}
+  </div>
+
+  <div
+    class="relative overflow-auto w-full h-[55vh] sm:h-[70vh] overflow-x-auto rounded-md border border-neutral-200 dark:border-neutral-800 scroll overflow-y-scroll"
+  >
+    <div
+      id="table-spinner"
+      class="hx-request:opacity-100 opacity-0 absolute inset-0 hx-request:z-50 -z-50 flex items-center justify-center dark:bg-black/50 bg-white/50 p-4 pb-8 sm:items-center lg:p-8 duration-150"
+    >
+      {% heroicon_outline "arrow-path" class="animate-spin" %}
+    </div>
+
+    {{ slot }}
+    
+  </div>
+
+  <c-table.pagination />
+</div>

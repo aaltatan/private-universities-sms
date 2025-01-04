@@ -1,0 +1,97 @@
+{% load i18n %}
+
+<div
+  class="flex items-center justify-between text-sm text-neutral-600 dark:text-neutral-300 my-2"
+  hx-include="[aria-included=true]"
+  hx-push-url="true"
+  hx-target="#{{ table_id }}"
+  hx-indicator="#table-spinner"
+>
+  
+  <div class="flex items-center gap-2">
+
+    <span class="first-letter:capitalize hidden md:block">{% translate 'show rows per page'|title %}</span>
+
+    <c-table.filter-form prevent="True" trigger="change">
+      <div class="relative flex items-center w-full max-w-xs gap-1 text-neutral-600 dark:text-neutral-300">
+        <select
+          class="w-full rounded-md border p-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75 dark:border-neutral-700 dark:bg-black dark:focus-visible:outline-white"
+          name="per_page"
+          id="per-page"
+          title="{% translate 'per page'|title %}"
+        >
+          {% for option in CONTENT_SETTINGS.PER_PAGE_ARRAY %}
+              <option
+                value="{{ option }}"
+                {% if request.GET.per_page is not None %}
+                  {% if option == request.GET.per_page %}
+                    selected
+                  {% endif %}
+                {% else %}
+                  {% if option == CONTENT_SETTINGS.PER_PAGE|stringformat:'s' %}
+                    selected
+                  {% endif %}
+                {% endif %}
+              >{{ option }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </c-table.filter-form>
+  </div>
+
+  <div>
+    <span>{{ page.start_index }}</span>
+    <span>-</span>
+    <span>{{ page.end_index }}</span>
+    <span>{% translate 'of' %}</span>
+    <span>{{ page.paginator.count }}</span>
+  </div>
+
+  <div class="flex items-center gap-0.5" dir="ltr">
+    <c-button
+      rounded="full"
+      size="16"
+      padding="xs"
+      theme="outline"
+      icon="chevron-double-left"
+      hx-get="?page=1"
+      title="{% translate 'first page'|title %}"
+      aria-label="first page"
+      aria-disabled="{% if page.has_previous %}false{% else %}true{% endif %}"
+    />
+    <c-button
+      rounded="full"
+      size="16"
+      padding="xs"
+      theme="outline"
+      icon="chevron-left"
+      hx-get="?page={% if page.has_previous %}{{ page.previous_page_number }}{% endif %}"
+      title="{% translate 'previous page'|title %}"
+      aria-label="previous page"
+      aria-disabled="{% if page.has_previous %}false{% else %}true{% endif %}"
+    />
+    <span class="px-1 block">{{ page.number }} / {{ page.paginator.num_pages }}</span>
+    <c-button
+      rounded="full"
+      size="16"
+      padding="xs"
+      theme="outline"
+      icon="chevron-right"
+      hx-get="?page={% if page.has_next %}{{ page.next_page_number }}{% endif %}"
+      title="{% translate 'next page'|title %}"
+      aria-label="next page"
+      aria-disabled="{% if page.has_next %}false{% else %}true{% endif %}"
+    />
+    <c-button
+      rounded="full"
+      size="16"
+      padding="xs"
+      theme="outline"
+      icon="chevron-double-right"
+      hx-get="?page={{ page.paginator.num_pages }}"
+      title="{% translate 'last page'|title %}"
+      aria-label="last page"
+      aria-disabled="{% if page.has_next %}false{% else %}true{% endif %}"
+    />
+  </div>
+</div>

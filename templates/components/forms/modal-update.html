@@ -1,0 +1,45 @@
+{% load i18n %}
+
+<c-vars form_title="update" buttons_padding="md" />
+
+<c-layout.modal.container>
+  <form
+    hx-post="{{ url }}"
+    hx-target="#no-content"
+    hx-swap="innerHTML"
+    hx-headers='{{ request_headers }}'
+    hx-indicator="find span[role=spinner]"
+    hx-disabled-elt="#update-button"
+    id="{{ form_id }}"
+  >
+    <c-layout.modal.body :close_padding="buttons_padding">
+      <c-slot name="header"> {{ form_title }} </c-slot>
+      <c-slot name="body">
+        {% if form.non_field_errors %}
+        <div class="my-6">
+          {% for error in form.non_field_errors %}
+          <c-alert>{{ error }}</c-alert>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <!--  -->
+        <div class="space-y-2">{{ slot }}</div>
+      </c-slot>
+      <c-slot name="footer">
+        <c-button
+          theme="primary"
+          type="submit"
+          name="update"
+          spinner="True"
+          icon="arrow-path"
+          id="update-button"
+          :padding="buttons_padding"
+          value="{% translate 'update' %}"
+          title="{% translate 'update'|title %}"
+        >
+          {% translate 'update'|title %}
+        </c-button>
+      </c-slot>
+    </c-layout.modal.body>
+  </form>
+</c-layout.modal.container>

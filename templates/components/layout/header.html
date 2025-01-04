@@ -1,0 +1,115 @@
+{% load i18n %} 
+<!--  -->
+{% get_current_language as LANGUAGE_CODE %}
+
+<c-vars icons_size="24" />
+
+<header class="dark:bg-neutral-950 bg-white border-b dark:border-neutral-800 sticky top-0 z-30 p-2">
+  <nav
+    class="flex items-center justify-between gap-1"
+    :class="{
+      'container mx-auto': !sidebarFixed && fullWidthContainer
+    }"
+  >
+    <div class="hidden sm:block">
+      <c-layout.breadcrumbs :breadcrumbs="breadcrumbs" />
+    </div>
+
+    <ul class="ms-auto flex items-center justify-center gap-1">
+      <li :class="{'md:hidden': sidebarFixed}">
+        <c-button @click="toggleSidebar" role="button" aria-label="toggle aside">
+          <c-slot name="icon_slot">
+            <span x-show="sidebarOpened" title="{% translate 'close sidebar'|title %}">
+              {% heroicon_outline "x-mark" size=icons_size %}
+            </span>
+            <span x-show="!sidebarOpened" title="{% translate 'open sidebar'|title %}">
+              {% heroicon_outline "bars-3" size=icons_size %}
+            </span>
+          </c-slot>
+        </c-button>
+      </li>
+      <li>
+        <c-button @click="toggleDark" role="button" aria-label="toggle dark mode">
+          <c-slot name="icon_slot">
+            <span x-show="dark" title="{% translate 'light mode'|title %}">
+              {% heroicon_outline "sun" size=icons_size %}
+            </span>
+            <span x-show="!dark" title="{% translate 'dark mode'|title %}">
+              {% heroicon_outline "moon" size=icons_size %}
+            </span>
+          </c-slot>
+        </c-button>
+      </li>
+      <li x-show="!sidebarFixed" class="hidden sm:block">
+        <c-button @click="toggleFullWidthContainer" role="button" aria-label="toggle full width">
+          <c-slot name="icon_slot">
+            <span x-show="fullWidthContainer" title="{% translate 'full width'|title %}">
+              {% heroicon_outline "arrows-pointing-out" size=icons_size %}
+            </span>
+            <span x-show="!fullWidthContainer" title="{% translate 'contained'|title %}">
+              {% heroicon_outline "arrows-pointing-in" size=icons_size %}
+            </span>
+          </c-slot>
+        </c-button>
+      </li>
+      <li class="hidden md:block">
+        <c-button @click="toggleSidebarFixed" role="button" aria-label="toggle sidebar fixed">
+          <c-slot name="icon_slot">
+            <span x-show="sidebarFixed" title="{% translate 'hide sidebar'|title %}">
+              {% heroicon_outline "window" size=icons_size %}
+            </span>
+            <span
+              x-show="!sidebarFixed"
+              class="-rotate-90"
+              title="{% translate 'freeze sidebar'|title %}"
+            >
+              {% heroicon_outline "window" size=icons_size %}
+            </span>
+          </c-slot>
+        </c-button>
+      </li>
+      <li>
+        <form action="{% url 'set_language' %}" class="w-full" method="post">
+          {% csrf_token %}
+          <input name="next" type="hidden" value="{{ redirect_to }}" />
+          <input
+            type="hidden"
+            name="language"
+            value="{% if LANGUAGE_CODE == 'ar' %}en{% else %}ar{% endif %}"
+          />
+          <c-button
+            title="{% if LANGUAGE_CODE == 'ar' %}{% translate 'english'|title %}{% else %}{% translate 'arabic'|title %}{% endif %}"
+            icon="language"
+            type="submit"
+            size="{{ icons_size }}"
+          />
+        </form>
+      </li>
+      <li>
+        <c-layout.context-menu.menu
+          button_rounded="md"
+          :button_size="icons_size"
+          button_theme="default"
+          button_icon="user-circle"
+          button_title="{% translate 'user menu'|title %}"
+        >
+          <c-layout.context-menu.section>
+            <c-layout.context-menu.item icon="wrench-screwdriver">
+              <a href="/admin" class="block w-full" target="_blank">
+                {% translate 'admin'|title %}
+              </a>
+            </c-layout.context-menu.item>
+            <c-layout.context-menu.item icon="adjustments-horizontal">
+              <a href="/silk" class="block w-full" target="_blank"> Silk </a>
+            </c-layout.context-menu.item>
+          </c-layout.context-menu.section>
+          <c-layout.context-menu.section>
+            <c-layout.context-menu.item color="danger" icon="arrow-left-start-on-rectangle">
+              <a href="#">{% translate 'logout'|title %}</a>
+            </c-layout.context-menu.item>
+          </c-layout.context-menu.section>
+        </c-layout.context-menu.menu>
+      </li>
+    </ul>
+  </nav>
+</header>

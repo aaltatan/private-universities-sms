@@ -1,0 +1,97 @@
+{% load heroicons %}
+
+<c-vars
+  :theme_variants="{
+    'default': 'dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-800 dark:border-neutral-800 hover:bg-neutral-200 border-neutral-200',
+    'primary': 'bg-neutral-950 text-white hover:bg-neutral-800 border-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 border-none',
+    'danger': 'bg-red-600 hover:bg-red-700 hover:border-red-700 text-white border-red-600',
+    'outline': 'border-none bg-transparent text-neutral-900 hover:bg-neutral-200 dark:text-neutral-300 dark:hover:bg-neutral-800'
+  }"
+  :corners="{
+    'sm': 'rounded-sm',
+    'md': 'rounded-md',
+    'lg': 'rounded-lg',
+    'full': 'rounded-full',
+  }"
+  :paddings="{
+    'xs': 'p-0.5',
+    'sm': 'p-1',
+    'md': 'p-2',
+    'lg': 'p-3',
+  }"
+  :widths="{
+    'auto': 'w-auto',
+    'full': 'w-full',
+  }"
+  base_theme="border text-sm font-medium duration-75 flex items-center justify-center gap-1 aria-disabled:opacity-50 aria-disabled:pointer-events-none aria-expanded:ring-2 dark:ring-white ring-black cursor-pointer capitalize disabled:opacity-50 disabled:cursor-not-allowed"
+  width="auto"
+  kind="button"
+  theme="default"
+  icon="plus"
+  size="24"
+  padding="md"
+  rounded="md"
+  :badge="False"
+  :spinner="False"
+  :hide_icon="False"
+/>
+
+{% if kind == "button" %}
+  <button
+    {% if badge %}
+    x-data="{
+      showLabel: false,
+      init() {
+        let query = new URLSearchParams(location.search);
+        let fields = $el.dataset?.fields?.split(',');
+        this.showLabel = fields?.some(field => query.get(field));
+      },
+    }"
+    {% endif %}
+    class="relative {{ widths|get_item:width }} {{ paddings|get_item:padding }} {{ base_theme }} {{ theme_variants|get_item:theme }} {{ corners|get_item:rounded }}"
+    {{ attrs }}
+  >
+    {% if badge %}
+    <span
+      :class="{'hidden': !showLabel}"
+      class="absolute top-0 start-0 -translate-y-1/2 -translate-x-1/2 rounded-full size-2 bg-black dark:bg-white"
+    ></span>
+    {% endif %}
+
+    {% if icon_slot %} 
+      {{ icon_slot }} 
+    {% else %}
+      {% if not hide_icon %}
+      <span>{% heroicon_outline icon size=size %}</span>
+      {% endif %}
+    {% endif %} 
+
+    {{ slot }}
+
+    {% if spinner %}
+    <span class="animate-spin hidden hx-request:block" role="spinner">
+      {% heroicon_outline "arrow-path" size=size %}
+    </span>
+    {% endif %}
+
+  </button>
+{% elif kind == "a" %}
+
+  <a
+    {{ attrs }}
+    class="{{ widths|get_item:width }} {{ paddings|get_item:padding }} {{ base_theme }} {{ theme_variants|get_item:theme }} {{ corners|get_item:rounded }}"
+  >
+    {% if icon_slot %} {{ icon_slot }} {% else %}
+    <span>{% heroicon_outline icon size=size %}</span>
+    {% endif %} 
+    {{ slot }}
+  </a>
+
+{% elif kind == "input" %}
+
+  <input
+    {{ attrs }}
+    class="{{ widths|get_item:width }} {{ paddings|get_item:padding }} {{ base_theme }} {{ theme_variants|get_item:theme }} {{ corners|get_item:rounded }}"
+  />
+
+{% endif %}

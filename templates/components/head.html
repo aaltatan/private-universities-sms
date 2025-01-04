@@ -1,0 +1,36 @@
+{% load static %}
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- htmx config -->
+<meta
+  name="htmx-config"
+  content='{
+    "globalViewTransitions": true,
+    "refreshOnHistoryMiss": true,
+    "defaultSwapStyle": "outerHTML"
+}'
+/>
+
+<style>
+  [x-cloak] {
+    display: none;
+  }
+</style>
+
+<!-- css files -->
+<link rel="stylesheet" href="{% static 'css/dist/styles.css' %}" />
+
+<!-- alpine plugins -->
+<script src="{% static 'js/plugins/persist.min.js' %}" defer></script>
+<script src="{% static 'js/plugins/collapse.min.js' %}" defer></script>
+<script src="{% static 'js/plugins/focus.min.js' %}" defer></script>
+<script src="{% static 'js/plugins/sort.min.js' %}" defer></script>
+<script src="{% static 'js/plugins/mask.min.js' %}" defer></script>
+<script src="{% static 'js/plugins/autosize.min.js' %}" defer></script>
+
+<script src="{% static 'js/alpine.min.js' %}" defer></script>
+<script src="{% static 'js/htmx.min.js' %}" defer></script>
+
+<title>{{ project_name }}</title>

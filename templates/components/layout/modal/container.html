@@ -1,0 +1,28 @@
+<div
+  x-cloak
+  x-show="modalStatus"
+  x-transition.opacity.duration.200ms
+  x-trap.inert.noscroll="modalStatus"
+  @keydown.esc.window="hideModal"
+  @click.self="hideModal"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 p-4 pb-8 backdrop-blur-md lg:p-8"
+  role="dialog"
+  aria-modal="true"
+  id="modal-container"
+>
+  <span id="modal-spinner" class="animate-spin hidden hx-request:block">
+    {% heroicon_outline "arrow-path" size="32" %}
+  </span>
+
+  <!-- Modal Dialog -->
+  <div
+    x-cloak
+    x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-ref="modal"
+    class="flex w-[min(400px,100%)] max-w-xl flex-col gap-4 overflow-hidden rounded-lg border border-neutral-300 dark:border-neutral-700 dark:text-neutral-300 bg-white dark:bg-neutral-950"
+  >
+    {{ slot }}
+  </div>
+</div>

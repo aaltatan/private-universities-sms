@@ -1,0 +1,12 @@
+<c-vars value="delete" action_name="delete" />
+
+<input
+  hx-include="#{{ form_table_id }}"
+  hx-vals='{"kind": "modal", "name": "{{ action_name }}"}'
+  @click="showModal"
+  value="{{ value }}"
+  title="{{ value }}"
+  type="button"
+  class="capitalize block w-full cursor-pointer text-start"
+  {{ attrs }}
+/>

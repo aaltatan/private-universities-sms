@@ -1,0 +1,21 @@
+<c-vars
+  icon="plus"
+  :show_icon="True"
+  :text_colors="{
+    'default': 'text-neutral-700 hover:text-neutral-900 focus-visible:text-neutral-900 dark:text-neutral-300 dark:hover:text-white',
+    'danger': 'text-red-600 font-semibold',
+  }"
+  color="default"
+/>
+
+<li
+  class="flex items-center gap-2 cursor-pointer bg-white my-0.5 mx-1 rounded-sm px-2 py-1.5 text-sm hover:bg-neutral-900/5 dark:bg-black dark:hover:bg-neutral-50/5 duration-100 {{ text_colors|get_item:color }} {{ class }}"
+  role="menuitem"
+  tabindex="0"
+>
+  {% if not show_icon %}
+  <span>{% heroicon_outline icon size=20 %}</span>
+  {% endif %}
+  <!--  -->
+  {{ slot }}
+</li>

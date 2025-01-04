@@ -1,0 +1,22 @@
+<c-table.td fixed="True">
+  <div class="flex items-center gap-2">
+    <label
+      for="row-check-{{ obj.pk }}"
+      class="flex items-center justify-center cursor-pointer text-neutral-600 dark:text-neutral-300"
+    >
+      <div class="relative flex items-center">
+        <input
+          id="row-check-{{ obj.pk }}"
+          name="action-check"
+          type="checkbox"
+          value="{{ obj.pk }}"
+          @click="handleCheck($el)"
+          class="checkbox-input peer before:content['']"
+          :checked="checkAll"
+        />
+        {% heroicon_outline "check" class="checkbox-icon" %}
+      </div>
+    </label>
+    <span>{{ idx }}</span>
+  </div>
+</c-table.td>

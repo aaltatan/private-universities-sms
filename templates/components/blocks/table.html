@@ -1,0 +1,92 @@
+{% load i18n %}
+
+<c-table.container :id="id">
+
+  <c-slot name="header">
+    <div class="min-w-64 max-sm:w-full">{{ search }}</div>
+    <div class="flex items-center flex-wrap gap-1">
+      <!-- actions menu -->
+      {% if actions %}
+      <c-table.actions-container>
+        <c-layout.context-menu.menu
+          button_rounded="md"
+          button_theme="default"
+          button_icon="bolt"
+        >
+          <c-slot name="button_text">
+            <span>{% translate 'actions'|title %}</span>
+            <span x-text="`(${selectedItems})`"></span>
+          </c-slot>
+          <!-- actions slot -->
+          {{ actions }}
+          <!------------------>
+        </c-layout.context-menu.menu>
+      </c-table.actions-container>
+      {% endif %}
+
+      <!-- buttons_bar slot -->
+      {{ buttons_bar }}
+      <!------------------>
+
+      <!-- export menu -->
+      {% if can_export %}
+      <c-layout.context-menu.menu
+        button_rounded="md"
+        button_theme="default"
+        button_icon="arrow-down-tray"
+        button_title="{% translate 'export'|title %}"
+      >
+        <c-layout.context-menu.section>
+          <c-layout.context-menu.item icon="table-cells">
+            <a
+              hx-get="{{ index_url }}?export=true&extension=xlsx"
+              hx-include="[aria-included=true]"
+              aria-label="export table as xlsx"
+              class="block w-full"
+            >
+              {% translate 'excel file'|title %}
+            </a>
+          </c-layout.context-menu.item>
+          <c-layout.context-menu.item icon="document-text">
+            <a
+              hx-get="{{ index_url }}?export=true&extension=csv"
+              hx-include="[aria-included=true]"
+              aria-label="export table as csv"
+              class="block w-full"
+            >
+              CSV
+            </a>
+          </c-layout.context-menu.item>
+          <c-layout.context-menu.item icon="document">
+            <a
+              hx-get="{{ index_url }}?export=true&extension=json"
+              hx-include="[aria-included=true]"
+              aria-label="export table as json"
+              class="block w-full"
+            >
+              JSON
+            </a>
+          </c-layout.context-menu.item>
+        </c-layout.context-menu.section>
+      </c-layout.context-menu.menu>
+      {% endif %}
+
+      <!-- reset button -->
+      <c-button
+        icon="arrow-path"
+        size="20"
+        hx-get="{{ index_url }}"
+        hx-target="#{{ table_id }}"
+        hx-push-url="true"
+        hx-indicator="#table-spinner"
+        title="{% translate 'reset'|title %}"
+      />
+
+    </div>
+  </c-slot>
+
+  {{ slot }}
+
+  {{ filters }}
+
+</c-table.container>

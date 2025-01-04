@@ -1,0 +1,27 @@
+<div
+  x-data="{ alertIsVisible: true }"
+  x-show="alertIsVisible"
+  class="relative w-full overflow-hidden rounded-md border border-red-500 bg-white text-neutral-600 dark:bg-neutral-950 dark:text-neutral-300"
+  role="alert"
+  x-transition:leave="transition ease-in duration-150"
+  x-transition:leave-start="opacity-100 scale-100"
+  x-transition:leave-end="opacity-0 scale-90"
+>
+  <div class="flex w-full items-center gap-2 bg-red-500/10 p-2">
+    <div class="bg-red-500/15 text-red-500 rounded-full p-1" aria-hidden="true">
+      {% heroicon_outline "x-mark" size="24" %}
+    </div>
+    <div class="ms-2">
+      <p class="text-xs font-medium sm:text-sm">{{ slot }}</p>
+    </div>
+    <div class="ms-auto">
+      <c-button
+        @click.prevent="alertIsVisible = false"
+        icon="x-mark"
+        size="20"
+        rounded="full"
+        theme="outline"
+      />
+    </div>
+  </div>
+</div>

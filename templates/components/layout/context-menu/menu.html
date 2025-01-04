@@ -1,0 +1,83 @@
+{% load strings %}
+
+<c-vars
+  :axis_x="{
+    'end-0': 'ltr:right-0 rtl:left-0',
+    'start-0': 'ltr:left-0 rtl:right-0',
+    'end-full': 'ltr:right-full rtl:left-full',
+    'start-full': 'ltr:left-full rtl:right-full',
+  }"
+  :axis_y="{
+    'top-0': 'top-0',
+    'bottom-0': 'bottom-0',
+    'top-full': 'top-[calc(100%+0.5rem)]',
+    'bottom-full': 'bottom-[calc(100%+0.5rem)]',
+  }"
+  x="end-0"
+  y="top-full"
+  button_icon="ellipsis-vertical"
+  button_theme="outline"
+  button_rounded="full"
+  button_padding="md"
+  button_size="20"
+  button_title="title"
+/>
+
+<div
+  x-data="{ 
+    isOpen: false, 
+    openedWithKeyboard: false,
+    handleClose() {
+      this.isOpen = false;
+      this.openedWithKeyboard = false;
+    },
+    toggleOpen() {
+      this.isOpen = !this.isOpen;
+    },
+    open() {
+      this.isOpen = true;
+    },
+    openWithKeyboard() {
+      this.openedWithKeyboard = true;
+    },
+  }"
+  @keydown.esc.prevent="handleClose"
+  class="relative"
+>
+  <!-- Toggle Button -->
+  <c-button
+    type="button"
+    :icon="button_icon"
+    :theme="button_theme"
+    :rounded="button_rounded"
+    :padding="button_padding"
+    :size="button_size"
+    aria-label="context menu"
+    title="{{ button_title }}"
+    @click="toggleOpen"
+    @contextmenu.prevent="open"
+    @keydown.space.prevent="openWithKeyboard"
+    @keydown.enter.prevent="openWithKeyboard"
+    @keydown.down.prevent="openWithKeyboard"
+    ::aria-expanded="isOpen || openedWithKeyboard"
+    aria-haspopup="true"
+  >
+    {% if button_text %} {{ button_text }} {% endif %}
+  </c-button>
+  <!-- Dropdown Menu -->
+  <div
+    x-cloak
+    x-show="isOpen || openedWithKeyboard"
+    x-transition:enter="transition-opacity duration-75 ease-in-out"
+    x-transition:enter-start="{% if y|startswith:'bottom' %}translate-y-2{% else %}-translate-y-2{% endif %} opacity-70"
+    x-transition:enter-end="translate-y-0 opacity-100"
+    x-trap="openedWithKeyboard"
+    @click.outside="handleClose"
+    @keydown.down.prevent="$focus.wrap().next()"
+    @keydown.up.prevent="$focus.wrap().previous()"
+    class="absolute z-30 flex w-full min-w-40 flex-col divide-y divide-neutral-200 overflow-hidden rounded-md border border-neutral-200 bg-white dark:divide-neutral-800 dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none {{ axis_x|get_item:x }} {{ axis_y|get_item:y }}"
+    role="menu"
+  >
+    {{ slot }}
+  </div>
+</div>

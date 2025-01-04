@@ -1,0 +1,36 @@
+{% load i18n %}
+
+<c-layout.context-menu.menu
+  button_rounded="md"
+  button_theme="default"
+  button_icon="chevron-up-down"
+  button_title="{% translate 'order by'|title %}"
+>
+  <c-layout.context-menu.section>
+    {% for _, group_choices, _ in widget.optgroups %}
+    <!--  -->
+    {% for option in group_choices %}
+    <c-layout.context-menu.item 
+      icon="check" 
+      class="[&:has(input:checked)]:bg-neutral-900/5 [&:has(input:checked)]:dark:bg-neutral-50/5"
+    >
+        <input
+          id="order-by-checkbox-{{ option.label }}"
+          name="{{ widget.name }}"
+          class="hidden peer"
+          type="radio"
+          {% if option.selected%}checked{% endif%}
+          value="{{ option.value|stringformat:'s' }}"
+        />
+        <label
+          class="cursor-pointer block w-full"
+          for="order-by-checkbox-{{ option.label }}"
+        >
+          {{ option.label }}
+        </label>
+    </c-layout.context-menu.item>
+    {% endfor %}
+    <!--  -->
+    {% endfor %}
+  </c-layout.context-menu.section>
+</c-layout.context-menu.menu>

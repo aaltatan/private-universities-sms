@@ -1,0 +1,25 @@
+{% load i18n heroicons %}
+
+<c-vars close_padding="md" />
+
+<!-- Dialog Header -->
+<div
+  class="flex items-center justify-between border-b border-neutral-300 p-2 dark:border-neutral-700"
+>
+  <h3 class="font-semibold tracking-wide text-neutral-900 dark:text-white">{{ header }}</h3>
+  <c-button
+    @click.prevent="hideModal"
+    aria-label="close modal"
+    icon="x-mark"
+    rounded="full"
+    theme="outline"
+  />
+</div>
+<!-- Dialog Body -->
+<div class="px-4 py-2 max-h-[50vh] overflow-y-auto scroll">{{ body }}</div>
+<!-- Dialog Footer -->
+<div
+  class="flex flex-col-reverse items-center justify-end gap-1 border-t border-neutral-300 p-2 dark:border-neutral-700 sm:flex-row sm:items-center"
+>
+  {{ footer }}
+</div>

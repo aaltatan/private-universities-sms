@@ -1,0 +1,78 @@
+{% load i18n heroicons active_link %}
+
+<div
+  x-data="{
+    search: $persist('').as('sidebar-search'),
+    searchHandler() {
+      let hrefs = [...document.querySelectorAll(`a[id^='sidebar-link-']`)];
+      hrefs.forEach(href => {
+        let obj = {
+          href: href.href, 
+          text: href.innerText?.toLowerCase(),
+        };
+        href.ariaHidden = !obj.text.includes(this.search) && !obj.href.includes(this.search);
+      });
+    },
+  }"
+  @keydown.esc.window="hideSidebar"
+  :class="{
+    'md:flex-row': sidebarFixed
+  }"
+  class="relative flex w-full flex-col"
+>
+  <div
+    x-cloak
+    x-show="sidebarOpened"
+    class="fixed inset-0 z-40 bg-neutral-950/10 backdrop-blur-sm"
+    :class="{
+      'md:hidden': sidebarFixed
+    }"
+    aria-hidden="true"
+    @click="hideSidebar"
+    x-transition.opacity
+  ></div>
+
+  <nav
+    x-cloak
+    class="fixed z-40 flex h-svh w-60 shrink-0 flex-col border-e border-neutral-200 p-4 transition-transform duration-300 dark:border-neutral-800 dark:bg-black bg-white"
+    :class="{
+      'ltr:translate-x-0': sidebarOpened,
+      'rtl:translate-x-60 ltr:-translate-x-60': !sidebarOpened,
+      'start-0 md:!translate-x-0 md:w-64 md:relative': sidebarFixed,
+    }"
+    aria-label="sidebar navigation"
+  >
+    <h1 class="tracking-tight text-xl font-medium text-center">
+      <a href="/" class="block w-full">{{ project_name }}</a>
+    </h1>
+
+    <input
+      type="search"
+      class="text-input my-2"
+      name="search"
+      aria-label="Search"
+      x-model="search"
+      id="sidebar-search"
+      @keydown.debounce.300ms="searchHandler"
+      @search="searchHandler"
+      x-init="searchHandler"
+      placeholder="Alt ="
+    />
+
+    <div class="flex flex-col gap-2 overflow-y-auto pb-6">
+      {% for link in sidebar_links %}
+      <a
+        href="{{ link.href }}"
+        aria-hidden="false"
+        id="sidebar-link-{{ forloop.counter }}"
+        class="{% active_link link.href %} aria-hidden:hidden flex items-center rounded-md gap-2 px-2 py-1.5 text-sm text-neutral-600 underline-offset-2 focus-visible:underline focus:outline-none dark:text-neutral-300 [&.active]:dark:text-white [&.active]:text-black [&.active]:font-semibold [&.active]:bg-neutral-100 [&.active]:dark:bg-neutral-950 hover:!bg-neutral-200 hover:dark:!bg-neutral-900"
+      >
+        {% heroicon_outline link.icon %}
+        <span>{{ link.text }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </nav>
+
+  <div class="h-svh w-full overflow-y-auto">{{ slot }}</div>
+</div>

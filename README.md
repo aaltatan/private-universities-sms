@@ -1,0 +1,1 @@
+Salaries management system for private universities

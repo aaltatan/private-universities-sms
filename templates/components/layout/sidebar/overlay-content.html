@@ -1,0 +1,31 @@
+<nav
+  x-cloak
+  x-show="overlaySidebarOpened"
+  x-trap="overlaySidebarOpened"
+  class="fixed end-0 top-0 z-[45] flex h-svh w-64 shrink-0 flex-col border-s border-neutral-200 bg-white p-2 transition-transform duration-300 dark:border-neutral-800 dark:bg-black"
+  aria-label="shopping cart"
+  x-transition:enter="transition duration-100 ease-out"
+  x-transition:enter-end="translate-x-0"
+  x-transition:enter-start="ltr:translate-x-80 rtl:-translate-x-80"
+  x-transition:leave="transition ease-in duration-100"
+  x-transition:leave-end="ltr:translate-x-80 rtl:-translate-x-80"
+  x-transition:leave-start="translate-x-0"
+>
+  <!-- sidebar header -->
+  <div class="flex items-center justify-between">
+    <h3 class="text-lg font-medium text-neutral-900 dark:text-white">{{ header }}</h3>
+    <c-button
+      @click.prevent="closeOverlaySidebar"
+      icon="x-mark"
+      theme="outline"
+      rounded="full"
+      size="24"
+    />
+  </div>
+
+  <!-- sidebar body -->
+  <div class="flex flex-col gap-2 overflow-y-auto py-4 px-2">{{ body }}</div>
+
+  <!-- sidebar footer -->
+  <div class="mt-auto flex items-center justify-between p-2">{{ footer }}</div>
+</nav>

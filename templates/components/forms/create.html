@@ -1,0 +1,64 @@
+{% load i18n %}
+
+<c-vars
+  form_title="add new"
+  :widths="{
+    'sm': 'max-w-sm',
+    'md': 'max-w-md',
+    'lg': 'max-w-lg',
+    'xl': 'max-w-xl',
+  }"
+  width="md"
+/>
+
+<form
+  hx-post="{{ url }}"
+  id="{{ form_id }}"
+  class="{{ widths|get_item:width }} mx-auto"
+  hx-disabled-elt="#save-button, #save-and-add-another-button"
+>
+  <h1 class="text-2xl my-4 first-letter:capitalize">{{ form_title }}</h1>
+  {% if form.non_field_errors %}
+  <div class="my-6">
+    {% for error in form.non_field_errors %}
+    <c-alert>{{ error }}</c-alert>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="space-y-2">{{ slot }}</div>
+  <div class="flex items-center flex-col sm:flex-row gap-1 justify-end mt-2">
+    <c-button
+      kind="input"
+      theme="primary"
+      width="full"
+      type="submit"
+      name="save"
+      id="save-button"
+      value="{% translate 'save' %}"
+      title="{% translate 'save'|title %}"
+    />
+    <c-button
+      kind="input"
+      theme="primary"
+      width="full"
+      type="submit"
+      name="save_and_add_another"
+      id="save-and-add-another-button"
+      value="{% translate 'save and add another'|title %}"
+      title="{% translate 'save and add another'|title %}"
+    />
+    <c-button
+      kind="a"
+      width="full"
+      theme="outline"
+      hx-get="{{ create_url }}"
+      hx-target="#{{ form_id }}"
+      hx-confirm="{% translate 'changes you made may not be saved?' %}"
+      size="20"
+      icon="arrow-path"
+      title="{% translate 'reset'|title %}"
+    >
+      {% translate 'reset'|title %}
+    </c-button>
+  </div>
+</form>

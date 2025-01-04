@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<c-forms.create
+  form_title="{% translate 'add new governorate' %}"
+  url="{{ create_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-inputs.text :field="form.name" />
+  <c-inputs.text :field="form.description" />
+</c-forms.create>

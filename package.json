@@ -1,0 +1,25 @@
+{
+  "name": "private-universities-sms",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx tailwindcss -i ./static/css/src/input.css -o ./static/css/dist/styles.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "salaries",
+    "django",
+    "tailwindcss",
+    "htmx",
+    "alpinejs"
+  ],
+  "author": "Abdullah Altatan",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "tailwindcss": "^3.4.16"
+  },
+  "devDependencies": {
+    "tailwind-scrollbar": "^3.1.0"
+  }
+}
