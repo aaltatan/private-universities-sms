@@ -36,7 +36,7 @@ class DeleteMixin(DeleteMixinAbstract):
                 request,
                 _("you can't delete this object because you are not using htmx."),
             )
-            return Http404()
+            raise Http404()
 
         model = self.get_model_class()
         self.obj = get_object_or_404(model, slug=slug)
@@ -55,6 +55,13 @@ class DeleteMixin(DeleteMixinAbstract):
         """
         Handles the POST request.
         """
+        if not request.htmx:
+            messages.error(
+                request,
+                _("you can't delete this object because you are not using htmx."),
+            )
+            raise Http404()
+
         model = self.get_model_class()
         self.obj = get_object_or_404(model, slug=slug)
 

@@ -9,9 +9,7 @@
       </c-slot>
       <c-slot name="body">
         <p class="text-neutral-600 dark:text-neutral-300 first-letter:capitalize">
-          {% translate 'are you sure you want to delete' %}
-          <span>{{ obj }}</span>
-          {% translate '?' %}
+          {% translate 'are you sure you want to delete' %} {{ obj }} {% translate '?' %}
         </p>
       </c-slot>
       <c-slot name="footer">
