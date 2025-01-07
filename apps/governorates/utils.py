@@ -1,0 +1,10 @@
+from django.db.models import QuerySet
+from apps.core.utils import Deleter
+
+
+class GovernorateDeleter(Deleter):
+    def is_obj_deletable(self) -> bool:
+        return False
+
+    def is_qs_deletable(self, qs: QuerySet) -> bool:
+        return False

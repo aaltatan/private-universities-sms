@@ -2,42 +2,45 @@ from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     PermissionRequiredMixin,
 )
-from django.db.models import QuerySet
 from django.views import View
 from django.views.generic.list import MultipleObjectMixin
+from rest_framework import filters as rest_filters
+from rest_framework import viewsets
 
-from apps.core.mixins import (
-    BulkDeleteMixin,
-    CreateMixin,
-    DeleteMixin,
-    ListMixin,
-    UpdateMixin,
-)
-from apps.core.utils import Action, Deleter, Perm
+from apps.core import filter_backends, mixins
+from apps.core.utils import Action, Perm
 
-from . import filters, forms, models, resources, constants
+from . import constants, filters, forms, models, resources, serializers, utils
 
 
-class GovernorateDeleter(Deleter):
-    def is_obj_deletable(self) -> bool:
-        return True
-
-    def is_qs_deletable(self, qs: QuerySet) -> bool:
-        return True
+class GovernorateViewSet(
+    mixins.DestroyMixin,
+    mixins.BulkDeleteAPIMixin,
+    viewsets.ModelViewSet,
+):
+    queryset = models.Governorate.objects.all()
+    serializer_class = serializers.GovernorateSerializer
+    filter_backends = [
+        filter_backends.DjangoQLSearchFilter,
+        rest_filters.OrderingFilter,
+    ]
+    ordering_fields = constants.ORDERING_FIELDS
+    search_fields = constants.SEARCH_FIELDS
+    deleter = utils.GovernorateDeleter
 
 
 class ListView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
-    BulkDeleteMixin,
-    ListMixin,
+    mixins.BulkDeleteMixin,
+    mixins.ListMixin,
     MultipleObjectMixin,
     View,
 ):
     permission_required: str = Perm("governorates").string
     filter_class = filters.GovernorateFilter
     resource_class = resources.GovernorateResource
-    deleter = GovernorateDeleter
+    deleter = utils.GovernorateDeleter
     search_fields = constants.SEARCH_FIELDS
 
     def get_actions(self) -> dict[str, Action]:
@@ -54,7 +57,7 @@ class ListView(
 class CreateView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
-    CreateMixin,
+    mixins.CreateMixin,
     View,
 ):
     permission_required: str = Perm("governorates", "add").string
@@ -64,7 +67,7 @@ class CreateView(
 class UpdateView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
-    UpdateMixin,
+    mixins.UpdateMixin,
     View,
 ):
     permission_required: str = Perm("governorates", "change").string
@@ -74,9 +77,9 @@ class UpdateView(
 class DeleteView(
     LoginRequiredMixin,
     PermissionRequiredMixin,
-    DeleteMixin,
+    mixins.DeleteMixin,
     View,
 ):
     permission_required: str = Perm("governorates", "delete").string
     model = models.Governorate
-    deleter = GovernorateDeleter
+    deleter = utils.GovernorateDeleter
