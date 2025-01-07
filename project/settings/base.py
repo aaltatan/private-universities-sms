@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     "import_export",
     "widget_tweaks",
     "content_settings",
+    "rest_framework",
+    "rest_framework_simplejwt",
     # local apps
     "apps.core",
     "apps.governorates",
@@ -64,7 +66,6 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.auth.middleware.LoginRequiredMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -127,6 +128,7 @@ if "test" in sys.argv:
         "django.contrib.auth.hashers.MD5PasswordHasher",
     ]
     import logging
+
     logging.disable()
 
 # Password validation
@@ -187,3 +189,18 @@ LOGOUT_REDIRECT_URL = "/accounts/login/"
 # Django Cotton settings
 COTTON_DIR = "components"
 COTTON_SNAKE_CASED_NAMES = False
+
+# Django Rest Framework settings
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.DjangoModelPermissions",
+    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ),
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
+    "SEARCH_PARAM": "q",
+}

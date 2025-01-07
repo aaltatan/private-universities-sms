@@ -56,7 +56,7 @@ class Deleter(ABC):
     def __init__(
         self,
         obj,
-        request: HttpRequest,
+        request: HttpRequest | None = None,
         send_success_messages: bool = True,
         send_error_messages: bool = True,
     ) -> None:
@@ -64,6 +64,13 @@ class Deleter(ABC):
         self.request = request
         self.send_success_messages = send_success_messages
         self.send_error_messages = send_error_messages
+
+        if self.request is None and (
+            self.send_success_messages or self.send_error_messages
+        ):
+            raise AttributeError(
+                "you must provide a request object.",
+            )
 
     @abstractmethod
     def is_obj_deletable(self) -> bool:
@@ -116,15 +123,16 @@ class Deleter(ABC):
                 )
 
     def __success_scenario(self) -> None:
-        if self.send_success_messages:
-            if isinstance(self.obj, QuerySet):
-                deleted_objects = self.obj.all().delete()
+        if isinstance(self.obj, QuerySet):
+            deleted_objects = self.obj.all().delete()
+            if self.send_success_messages:
                 messages.success(
                     self.request,
                     self.get_qs_success_message(deleted_objects),
                 )
-            else:
-                self.obj.delete()
+        else:
+            self.obj.delete()
+            if self.send_success_messages:
                 messages.success(
                     self.request,
                     self.get_obj_success_message(self.obj),
