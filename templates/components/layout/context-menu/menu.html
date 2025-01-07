@@ -75,7 +75,7 @@
     @click.outside="handleClose"
     @keydown.down.prevent="$focus.wrap().next()"
     @keydown.up.prevent="$focus.wrap().previous()"
-    class="absolute z-30 flex w-full min-w-40 flex-col divide-y divide-neutral-200 overflow-hidden rounded-md border border-neutral-200 bg-white dark:divide-neutral-800 dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none {{ axis_x|get_item:x }} {{ axis_y|get_item:y }}"
+    class="absolute z-30 flex w-full min-w-40 flex-col divide-y divide-neutral-300 overflow-hidden rounded-md border border-neutral-300 bg-white dark:divide-neutral-800 dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none {{ axis_x|get_item:x }} {{ axis_y|get_item:y }}"
     role="menu"
   >
     {{ slot }}

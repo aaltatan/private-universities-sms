@@ -21,7 +21,7 @@
   </head>
   <body
     dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}"
-    class="dark:bg-black bg-neutral-50/25 dark:text-white"
+    class="dark:bg-black bg-white text-neutral-900 dark:text-neutral-100"
     hx-history="false"
     hx-headers='{ "X-CSRFToken": "{{ csrf_token }}" }'
     :class="{
