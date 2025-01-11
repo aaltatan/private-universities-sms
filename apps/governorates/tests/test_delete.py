@@ -21,12 +21,10 @@ class GovernorateCreateTest(TestCase):
     def setUpTestData(cls):
         user_with_view_perm_only = User.objects.create_user(
             username="user",
-            email="user@example.com",
             password="user",
         )
         User.objects.create_superuser(
             username="admin",
-            email="admin@example.com",
             password="admin",
         )
         view_perm = Permission.objects.get(

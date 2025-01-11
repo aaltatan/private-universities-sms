@@ -1,9 +1,26 @@
 from django.test import SimpleTestCase
 
-from ..utils import Perm
+from ..utils import Perm, increase_slug_by_one
 
 
 class TestPerm(SimpleTestCase):
+
+    def test_increase_slug_by_one(self):
+        slugs = [
+            ('text', 'text1'),
+            ('text-2', 'text-3'),
+            ('text0', 'text1'),
+            ('', ''),
+            ('dAFSFAeqwd', 'dafsfaeqwd1'),
+            ('2', '3'),
+            ('a', 'a1')
+        ]
+        for slug, expected_slug in slugs:
+            self.assertEqual(
+                increase_slug_by_one(slug),
+                expected_slug,
+            )
+
     def test_perm_dataclass(self):
         perm = Perm("governorates")
         self.assertEqual(

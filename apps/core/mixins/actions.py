@@ -2,6 +2,7 @@ import json
 
 from django.db.models import QuerySet
 from django.http import HttpResponse
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import status
 from rest_framework.decorators import action
@@ -10,18 +11,6 @@ from rest_framework.response import Response
 
 from ..utils import Deleter
 
-
-class BulkDeleteMixinBase:
-    def raise_errors(self, message: str) -> HttpResponse:
-        if getattr(self, "deleter", None) is None:
-            raise AttributeError(
-                "you must define a deleter class for the ListView.",
-            )
-
-        if not issubclass(self.deleter, Deleter):
-            raise TypeError(
-                "the deleter class must be a subclass of Deleter.",
-            )
 
 class BulkDeleteMixin:
     def bulk_delete(self, qs: QuerySet, **kwargs) -> HttpResponse:
@@ -74,7 +63,13 @@ class BulkDeleteAPIMixin:
             )
 
         ids = request.data.get("ids", [])
-        qs = self.queryset.filter(pk__in=ids)
+        qs: QuerySet = self.queryset.filter(pk__in=ids)
+
+        if not qs.exists():
+            return Response(
+                {"details": _("no objects found")},
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
         deleter = self.deleter(
             qs,

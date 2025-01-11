@@ -14,6 +14,7 @@ class DjangoQLSearchFilter(filters.SearchFilter):
     """
     a SearchFilter that uses DjangoQL to search the queryset.
     """
+
     def filter_queryset(
         self,
         request: HttpRequest,
@@ -32,6 +33,10 @@ class DjangoQLSearchFilter(filters.SearchFilter):
             DjangoQLParserError,
             DjangoQLLexerError,
         ):
-            queryset = super().filter_queryset(request, queryset, view)
+            queryset = super().filter_queryset(
+                request,
+                queryset,
+                view,
+            )
 
         return queryset

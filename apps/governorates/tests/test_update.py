@@ -20,12 +20,10 @@ class GovernorateUpdateTest(TestCase):
     def setUpTestData(cls):
         user_with_view_perm_only = User.objects.create_user(
             username="user",
-            email="user@example.com",
             password="user",
         )
         User.objects.create_superuser(
             username="admin",
-            email="admin@example.com",
             password="admin",
         )
         view_perm = Permission.objects.get(
@@ -157,12 +155,19 @@ class GovernorateUpdateTest(TestCase):
         )
 
         name_input = form.css_first("input[name='name']")
-        description_input = form.css_first("textarea[name='description']")
+        description_input = form.css_first(
+            "textarea[name='description']",
+        )
 
         self.assertEqual(name_input.attributes["value"], obj.name)
-        self.assertEqual(description_input.text(strip=True), obj.description)
+        self.assertEqual(
+            description_input.text(strip=True),
+            obj.description,
+        )
 
-        required_star = form.css_first("span[aria-label='required field']")
+        required_star = form.css_first(
+            "span[aria-label='required field']",
+        )
 
         self.assertIsNotNone(required_star)
 

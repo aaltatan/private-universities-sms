@@ -17,7 +17,7 @@ class DestroyMixin:
             )
 
         instance = self.get_object()
-        
+
         deleter: type[Deleter] = self.deleter(
             instance,
             send_error_messages=False,
@@ -29,8 +29,6 @@ class DestroyMixin:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
         return Response(
-            {
-                "details": deleter.get_obj_error_message(instance),
-                "status": status.HTTP_400_BAD_REQUEST,
-            }
+            {"details": deleter.get_obj_error_message(instance)},
+            status=status.HTTP_400_BAD_REQUEST,
         )

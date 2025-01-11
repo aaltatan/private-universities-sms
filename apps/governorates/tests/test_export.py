@@ -34,6 +34,9 @@ class TestGovernorateFilter(TestCase):
             description="meta",
         )
 
+        cls.index_url = reverse("governorates:index")
+        cls.file_name = "Governorates"
+
     def setUp(self):
         self.client.login(username="admin", password="admin")
         self.headers = {
@@ -41,7 +44,7 @@ class TestGovernorateFilter(TestCase):
         }
 
     def test_export_response_xlsx(self):
-        url = reverse("governorates:index") + "?export=true&extension=xlsx"
+        url = self.index_url + "?export=true&extension=xlsx"
 
         response = self.client.get(url, headers=self.headers)
 
@@ -58,7 +61,7 @@ class TestGovernorateFilter(TestCase):
         )
 
         str_now = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        filename = f"Governorates-{str_now}.xlsx"
+        filename = f"{self.file_name}-{str_now}.xlsx"
 
         self.assertEqual(
             response.headers["Content-Disposition"],
@@ -66,7 +69,7 @@ class TestGovernorateFilter(TestCase):
         )
 
     def test_export_response_csv(self):
-        url = reverse("governorates:index") + "?export=true&extension=csv"
+        url = self.index_url + "?export=true&extension=csv"
 
         response = self.client.get(url, headers=self.headers)
 
@@ -83,7 +86,7 @@ class TestGovernorateFilter(TestCase):
         )
 
         str_now = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        filename = f"Governorates-{str_now}.csv"
+        filename = f"{self.file_name}-{str_now}.csv"
 
         self.assertEqual(
             response.headers["Content-Disposition"],
@@ -91,7 +94,7 @@ class TestGovernorateFilter(TestCase):
         )
 
     def test_export_response_json(self):
-        url = reverse("governorates:index") + "?export=true&extension=json"
+        url = self.index_url + "?export=true&extension=json"
 
         response = self.client.get(url, headers=self.headers)
 
@@ -108,7 +111,7 @@ class TestGovernorateFilter(TestCase):
         )
 
         str_now = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        filename = f"Governorates-{str_now}.json"
+        filename = f"{self.file_name}-{str_now}.json"
 
         self.assertEqual(
             response.headers["Content-Disposition"],

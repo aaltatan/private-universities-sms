@@ -14,6 +14,8 @@ from .. import models
 
 
 class TestGovernorateActions(TestCase):
+    model = models.Governorate
+
     @classmethod
     def setUpTestData(cls):
         User.objects.create_user(
@@ -23,15 +25,14 @@ class TestGovernorateActions(TestCase):
 
         user_with_view_perm_only = User.objects.create_user(
             username="user_with_view_perm_only",
-            email="user_with_view_perm_only@example.com",
             password="user_with_view_perm_only",
         )
 
         user_with_delete_perms = User.objects.create_user(
             username="user_with_delete_perms",
-            email="user_with_delete_perms@example.com",
             password="user_with_delete_perms",
         )
+
         view_perm = Permission.objects.get(
             content_type__app_label="governorates",
             codename="view_governorate",
@@ -40,18 +41,18 @@ class TestGovernorateActions(TestCase):
             content_type__app_label="governorates",
             codename="delete_governorate",
         )
+
         user_with_delete_perms.user_permissions.add(
             view_perm,
             delete_perm,
         )
         user_with_view_perm_only.user_permissions.add(view_perm)
 
-        object_list = [
-            models.Governorate(name=f"City {idx}") 
-            for idx in range(1, 301)
-        ]
+        object_list = [cls.model(name=f"City {idx}") for idx in range(1, 301)]
 
-        models.Governorate.objects.bulk_create(object_list)
+        cls.model.objects.bulk_create(object_list)
+
+        cls.index_url = reverse("governorates:index")
 
     def test_bulk_delete_modal_response(self):
         self.client.login(
@@ -59,21 +60,21 @@ class TestGovernorateActions(TestCase):
             password="user_with_delete_perms",
         )
 
-        url: str = reverse("governorates:index")
-
         data: dict = {
             "action-check": list(range(1, 51)),
             "kind": "modal",
             "name": "delete",
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(self.index_url, data)
         parser = HTMLParser(response.content)
 
         self.assertEqual(response.status_code, 200)
 
         modal_body = (
-            parser.css_first("#modal-container > div > form > div:nth-child(2) p")
+            parser.css_first(
+                "#modal-container > div > form > div:nth-child(2) p",
+            )
             .text(strip=True)
             .replace("\n", "")
             .strip()
@@ -92,18 +93,20 @@ class TestGovernorateActions(TestCase):
             password="user_without_perms",
         )
 
-        url: str = reverse("governorates:index")
-
         data: dict = {
             "action-check": list(range(1, 51)),
             "kind": "action",
             "name": "delete",
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(self.index_url, data)
         self.assertEqual(response.status_code, 403)
 
-        response = self.client.post(url, data, follow=True)
+        response = self.client.post(
+            self.index_url,
+            data,
+            follow=True,
+        )
         self.assertEqual(response.status_code, 403)
 
     def test_bulk_delete_with_permissions(self):
@@ -112,15 +115,13 @@ class TestGovernorateActions(TestCase):
             password="user_with_delete_perms",
         )
 
-        url: str = reverse("governorates:index")
-
         data: dict = {
             "action-check": list(range(1, 51)),
             "kind": "action",
             "name": "delete",
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(self.index_url, data)
         self.assertEqual(response.status_code, 204)
         self.assertIsNotNone(response.headers.get("Hx-Location"))
 
@@ -128,7 +129,7 @@ class TestGovernorateActions(TestCase):
             response.headers.get("Hx-Location"),
         )
 
-        self.assertEqual(hx_location["path"], url)
+        self.assertEqual(hx_location["path"], self.index_url)
 
         messages_list = list(
             messages.get_messages(request=response.wsgi_request),
@@ -140,7 +141,7 @@ class TestGovernorateActions(TestCase):
             "all (50) selected objects have been deleted successfully",
         )
 
-        qs = models.Governorate.objects.all()
+        qs = self.model.objects.all()
         self.assertEqual(qs.count(), 250)
 
     def test_bulk_action_not_found(self):
@@ -149,18 +150,20 @@ class TestGovernorateActions(TestCase):
             password="user_with_delete_perms",
         )
 
-        url: str = reverse("governorates:index")
-
         data: dict = {
             "action-check": list(range(1, 51)),
             "kind": "action",
             "name": "bulk_delete",  # name not in actions
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(self.index_url, data)
         self.assertEqual(response.status_code, 500)
 
-        response = self.client.post(url, data, follow=True)
+        response = self.client.post(
+            self.index_url,
+            data,
+            follow=True,
+        )
         self.assertEqual(response.status_code, 500)
 
     def test_bulk_delete_with_permissions_only_for_view(self):
@@ -169,13 +172,11 @@ class TestGovernorateActions(TestCase):
             password="user_with_view_perm_only",
         )
 
-        url: str = reverse("governorates:index")
-
         data: dict = {
             "action-check": list(range(1, 51)),
             "kind": "action",
             "name": "delete",
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(self.index_url, data)
         self.assertEqual(response.status_code, 403)

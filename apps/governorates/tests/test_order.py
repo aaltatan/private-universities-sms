@@ -13,7 +13,6 @@ class TestGovernorateFilter(TestCase):
     def setUpTestData(cls):
         User.objects.create_superuser(
             username="admin",
-            email="admin@example.com",
             password="admin",
         )
 
