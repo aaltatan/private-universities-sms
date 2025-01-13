@@ -15,9 +15,12 @@ def main():
     dotenv_filepath = BASE_DIR / ".env"
     load_dotenv(dotenv_filepath)
 
-    settings_module: Literal['development', 'deployment'] = (
+    settings_module: Literal['development', 'deployment', 'testing'] = (
         os.getenv("DEBUG") if os.getenv("DEBUG") == "1" else "development"
     )
+
+    if 'test' in sys.argv:
+        settings_module = "testing"
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", f"project.settings.{settings_module}")
     try:

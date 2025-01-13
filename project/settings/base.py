@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
-import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -118,18 +117,6 @@ DATABASES = {
     }
 }
 
-# Use in-memory SQLite for testing
-if "test" in sys.argv:
-    DATABASES["default"] = {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ":memory:",
-    }
-    PASSWORD_HASHERS = [
-        "django.contrib.auth.hashers.MD5PasswordHasher",
-    ]
-    import logging
-
-    logging.disable()
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
