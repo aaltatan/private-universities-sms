@@ -1,23 +1,30 @@
-from django.test import TestCase
+import pytest
 from django.urls import reverse
+from django.test import Client
 
 from ..models import User
 
 
-class IndexViewTestCase(TestCase):
-    
-    @classmethod
-    def setUpTestData(cls):
-        User.objects.create_user(username="test", password="test")
-    
-    def test_index_without_authentication_view(self):
-        response = self.client.get(reverse("core:index"))
-        self.assertEqual(response.status_code, 302)
-    
-    def test_index_authentication_view(self):
-        self.client.login(username="test", password="test")
-        response = self.client.get(reverse("core:index"))
+@pytest.fixture(autouse=True)
+def create_users() -> None:
+    User.objects.create_user(username="test", password="test")
 
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "apps/core/index.html")
-    
+
+@pytest.fixture()
+def client() -> Client:
+    return Client()
+
+
+@pytest.mark.django_db
+def test_index_without_authentication_view(client: Client):
+    response = client.get(reverse("core:index"))
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_index_authentication_view(client: Client):
+    client.login(username="test", password="test")
+    response = client.get(reverse("core:index"))
+
+    assert response.status_code == 200
+    assert "apps/core/index.html" in [t.name for t in response.templates]

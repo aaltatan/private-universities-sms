@@ -1,14 +1,50 @@
 import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Any, Callable, Sequence
+from datetime import datetime
+from typing import Any, Callable, Literal, Sequence
 
-from django.db.models import QuerySet
-from django.http import HttpResponse, HttpRequest
-from django.utils.translation import gettext as _
 from django.contrib import messages
+from django.db.models import QuerySet
+from django.http import HttpRequest, HttpResponse
+from django.test import Client
+from django.utils.translation import gettext as _
 
 from .constants import PERMISSION
+
+
+def assert_export(
+    super_client: Client,
+    urls: dict[str, str],
+    headers_modal_GET: dict[str, str],
+    filename: str,
+    extension: Literal["xlsx", "csv", "json"],
+) -> None:
+    url = urls["index"] + f"?export=true&extension={extension}"
+
+    content_types = {
+        "xlsx": "application/vnd.ms-excel",
+        "csv": "text/csv",
+        "json": "application/json",
+    }
+
+    response = super_client.get(url, headers=headers_modal_GET)
+
+    assert response.status_code == 200
+    assert "HX-Redirect" in response.headers
+
+    url += "&redirected=true"
+    response = super_client.get(url, headers=headers_modal_GET)
+
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == content_types[extension]
+
+    str_now = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    filename = f"{filename}-{str_now}.{extension}"
+
+    assert (
+        response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
+    )
 
 
 def increase_slug_by_one(slug: str) -> str:
@@ -17,7 +53,7 @@ def increase_slug_by_one(slug: str) -> str:
     """
     if not slug:
         return slug
-    
+
     slug = slug.lower()
     pattern = re.compile(r"([^0-9]*)(\d+)$")
     match_obj = pattern.match(slug)
@@ -25,9 +61,9 @@ def increase_slug_by_one(slug: str) -> str:
     if match_obj:
         number = int(match_obj.groups()[-1]) + 1
         string = match_obj.groups()[0]
-        increased_slug = f'{string}{number}'
+        increased_slug = f"{string}{number}"
     else:
-        increased_slug = f'{slug}1'
+        increased_slug = f"{slug}1"
 
     return increased_slug
 

@@ -1,149 +1,34 @@
-from datetime import datetime
+import pytest
+from django.test import Client
 
-from django.test import TestCase
-from django.urls import reverse
-
-from apps.core.models import User
-
-from .. import models
+from apps.core.utils import assert_export
 
 
-class TestGovernorateFilter(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        User.objects.create_superuser(
-            username="admin",
-            email="admin@example.com",
-            password="admin",
-        )
+@pytest.mark.django_db
+def test_export_response_xlsx(
+    super_client: Client,
+    urls: dict[str, str],
+    headers_modal_GET: dict[str, str],
+    filename: str,
+) -> None:
+    assert_export(super_client, urls, headers_modal_GET, filename, "xlsx")
 
-        models.Governorate.objects.create(
-            name="Hamah",
-            description="google",
-        )
-        models.Governorate.objects.create(
-            name="Halab",
-            description="go language",
-        )
-        models.Governorate.objects.create(
-            name="Homs",
-            description="meta",
-        )
-        models.Governorate.objects.create(
-            name="Damascus",
-            description="meta",
-        )
 
-        cls.index_url = reverse("governorates:index")
-        cls.file_name = "Governorates"
+@pytest.mark.django_db
+def test_export_response_csv(
+    super_client: Client,
+    urls: dict[str, str],
+    headers_modal_GET: dict[str, str],
+    filename: str,
+) -> None:
+    assert_export(super_client, urls, headers_modal_GET, filename, "csv")
 
-    def setUp(self):
-        self.client.login(username="admin", password="admin")
-        self.headers = {
-            "HX-Request": "true",
-        }
 
-    def test_export_response_xlsx(self):
-        url = self.index_url + "?export=true&extension=xlsx"
-
-        response = self.client.get(url, headers=self.headers)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.has_header("HX-Redirect"))
-
-        url += "&redirected=true"
-
-        response = self.client.get(url, headers=self.headers)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.headers["Content-Type"],
-            "application/vnd.ms-excel",
-        )
-
-        str_now = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        filename = f"{self.file_name}-{str_now}.xlsx"
-
-        self.assertEqual(
-            response.headers["Content-Disposition"],
-            f'attachment; filename="{filename}"',
-        )
-
-    def test_export_response_csv(self):
-        url = self.index_url + "?export=true&extension=csv"
-
-        response = self.client.get(url, headers=self.headers)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.has_header("HX-Redirect"))
-
-        url += "&redirected=true"
-
-        response = self.client.get(url, headers=self.headers)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.headers["Content-Type"],
-            "text/csv",
-        )
-
-        str_now = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        filename = f"{self.file_name}-{str_now}.csv"
-
-        self.assertEqual(
-            response.headers["Content-Disposition"],
-            f'attachment; filename="{filename}"',
-        )
-
-    def test_export_response_json(self):
-        url = self.index_url + "?export=true&extension=json"
-
-        response = self.client.get(url, headers=self.headers)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.has_header("HX-Redirect"))
-
-        url += "&redirected=true"
-
-        response = self.client.get(url, headers=self.headers)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.headers["Content-Type"],
-            "application/json",
-        )
-
-        str_now = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        filename = f"{self.file_name}-{str_now}.json"
-
-        self.assertEqual(
-            response.headers["Content-Disposition"],
-            f'attachment; filename="{filename}"',
-        )
-
-        self.assertEqual(
-            response.json(),
-            [
-                {
-                    "id": "1",
-                    "Name": "Hamah",
-                    "Description": "google",
-                    "Slug": "hamah",
-                },
-                {
-                    "id": "2",
-                    "Name": "Halab",
-                    "Description": "go language",
-                    "Slug": "halab",
-                },
-                {
-                    "id": "3",
-                    "Name": "Homs",
-                    "Description": "meta",
-                    "Slug": "homs",
-                },
-                {
-                    "id": "4",
-                    "Name": "Damascus",
-                    "Description": "meta",
-                    "Slug": "damascus",
-                },
-            ],
-        )
+@pytest.mark.django_db
+def test_export_response_json(
+    super_client: Client,
+    urls: dict[str, str],
+    headers_modal_GET: dict[str, str],
+    filename: str,
+):
+    assert_export(super_client, urls, headers_modal_GET, filename, "json")

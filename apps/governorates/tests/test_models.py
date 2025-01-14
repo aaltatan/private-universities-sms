@@ -3,11 +3,11 @@ import pytest
 from django.forms import ValidationError
 from django.db.utils import IntegrityError
 
-from apps.core.models import AbstractUniqueNameModel
+from apps.core.models import AbstractUniqueNameModel as Model
 
 
 @pytest.mark.django_db
-def test_name_field(model: type[AbstractUniqueNameModel]):
+def test_name_field(model: type[Model]):
     object = model.objects.filter(name__contains="حماه").first()
     assert object.name == "محافظة حماه"
     assert object.slug == "محافظة-حماه"
@@ -26,25 +26,25 @@ def test_name_field(model: type[AbstractUniqueNameModel]):
 
 
 @pytest.mark.django_db
-def test_length_of_the_queryset(model: type[AbstractUniqueNameModel]):
+def test_length_of_the_queryset(model: type[Model]):
     assert model.objects.count() == 4
 
 
 @pytest.mark.django_db
-def test_unique_name(model: type[AbstractUniqueNameModel]):
+def test_unique_name(model: type[Model]):
     with pytest.raises(IntegrityError):
         model.objects.create(name="محافظة حماه", description="حماه")
 
 
 @pytest.mark.django_db
-def test_less_than_four_characters(model: type[AbstractUniqueNameModel]):
+def test_less_than_four_characters(model: type[Model]):
     with pytest.raises(ValidationError):
         obj = model.objects.create(name="ddd", description="حماه")
         obj.full_clean()
 
 
 @pytest.mark.django_db
-def test_slug_signal(model: type[AbstractUniqueNameModel]):
+def test_slug_signal(model: type[Model]):
     names = [
         "abcdefghijklmnopqrstuvwxyz",
         "Abcdefghijklmnopqrstuvwxyz",
