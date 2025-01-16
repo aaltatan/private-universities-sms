@@ -93,6 +93,7 @@
           button_icon="user-circle"
           button_title="{% translate 'user menu'|title %}"
         >
+          {% if user.is_superuser %}
           <c-layout.context-menu.section>
             <c-layout.context-menu.item icon="wrench-screwdriver">
               <a href="/admin" class="block w-full" target="_blank">
@@ -108,6 +109,7 @@
               <a href="/silk" class="block w-full" target="_blank"> Silk </a>
             </c-layout.context-menu.item>
           </c-layout.context-menu.section>
+          {% endif %}
           <c-layout.context-menu.section>
             <c-layout.context-menu.item color="danger" icon="arrow-left-start-on-rectangle">
               <a href="#">{% translate 'logout'|title %}</a>

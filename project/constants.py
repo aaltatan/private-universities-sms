@@ -6,7 +6,7 @@ from django.utils.translation import gettext as _
 
 
 def constants(request: HttpRequest) -> dict[str, Any]:
-    return {
+    data = {
         "project_name": "Salaries Management System",
         "sidebar_links": [
             {
@@ -18,6 +18,13 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                 "href": reverse("governorates:index"),
                 "text": _("governorates").title(),
                 "icon": "home-modern",
+                "perm": "governorates.view_governorate",
             },
         ],
     }
+    data["sidebar_links"] = [
+        link
+        for link in data["sidebar_links"]
+        if link.get("perm") is None or request.user.has_perm(link["perm"])
+    ]
+    return data

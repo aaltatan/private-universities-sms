@@ -6,6 +6,59 @@ from apps.core.tests.utils import parse_buttons
 
 
 @pytest.mark.django_db
+def test_index_has_checkboxes_admin(
+    super_client: Client,
+    urls: dict[str, str],
+    templates: dict[str, str],
+):
+    response = super_client.get(urls["index"])
+    parser = HTMLParser(response.content)
+    checkboxes = parser.css("input[id^='row-check-']")
+
+    assert len(checkboxes) == 10
+    assert response.status_code == 200
+    assert templates["index"] in [t.name for t in response.templates]
+
+
+@pytest.mark.django_db
+def test_index_has_checkboxes_with_view_delete_perms(
+    client: Client,
+    urls: dict[str, str],
+    templates: dict[str, str],
+):
+    client.login(
+        username="user_with_view_delete_perm",
+        password="user_with_view_delete_perm",
+    )
+    response = client.get(urls["index"])
+    parser = HTMLParser(response.content)
+    checkboxes = parser.css("input[id^='row-check-']")
+
+    assert response.status_code == 200
+    assert len(checkboxes) == 10
+    assert templates["index"] in [t.name for t in response.templates]
+
+
+@pytest.mark.django_db
+def test_index_has_checkboxes_with_no_permission(
+    client: Client,
+    urls: dict[str, str],
+    templates: dict[str, str],
+):
+    client.login(
+        username="user_with_view_perm_only",
+        password="user_with_view_perm_only",
+    )
+    response = client.get(urls["index"])
+    parser = HTMLParser(response.content)
+    checkboxes = parser.css("input[id^='row-check-']")
+
+    assert len(checkboxes) == 0
+    assert response.status_code == 200
+    assert templates["index"] in [t.name for t in response.templates]
+
+
+@pytest.mark.django_db
 def test_view_index_file(
     super_client: Client,
     urls: dict[str, str],
