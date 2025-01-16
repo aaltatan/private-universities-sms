@@ -1,182 +1,125 @@
 import re
 import json
 
-from django.test import TestCase
-from django.urls import reverse
-from django.contrib.auth.models import Permission
+import pytest
+from django.test import Client
 from django.contrib import messages
-
 from selectolax.parser import HTMLParser
 
-from apps.core.models import User
-
-from .. import models
+from apps.core.models import AbstractUniqueNameModel as Model
 
 
-class TestGovernorateActions(TestCase):
-    model = models.Governorate
-
-    @classmethod
-    def setUpTestData(cls):
-        User.objects.create_user(
-            username="user_without_perms",
-            password="user_without_perms",
+@pytest.mark.django_db
+def test_bulk_delete_modal_response(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    data: dict = {
+        "action-check": list(range(1, 51)),
+        "kind": "modal",
+        "name": "delete",
+    }
+    response = super_client.post(urls["index"], data)
+    parser = HTMLParser(response.content)
+    modal_body = (
+        parser.css_first(
+            "#modal-container > div > form > div:nth-child(2) p",
         )
+        .text(strip=True)
+        .replace("\n", "")
+        .strip()
+    )
+    modal_body = re.compile(r"\s{2,}").sub(" ", modal_body)
 
-        user_with_view_perm_only = User.objects.create_user(
-            username="user_with_view_perm_only",
-            password="user_with_view_perm_only",
-        )
+    assert response.status_code == 200
+    assert modal_body == "are you sure you want to delete all 50 selected objects ?"
 
-        user_with_delete_perms = User.objects.create_user(
-            username="user_with_delete_perms",
-            password="user_with_delete_perms",
-        )
 
-        view_perm = Permission.objects.get(
-            content_type__app_label="governorates",
-            codename="view_governorate",
-        )
-        delete_perm = Permission.objects.get(
-            content_type__app_label="governorates",
-            codename="delete_governorate",
-        )
+@pytest.mark.django_db
+def test_bulk_delete_without_permissions(
+    client: Client,
+    urls: dict[str, str],
+):
+    client.login(
+        username="user_with_view_perm_only",
+        password="user_with_view_perm_only",
+    )
 
-        user_with_delete_perms.user_permissions.add(
-            view_perm,
-            delete_perm,
-        )
-        user_with_view_perm_only.user_permissions.add(view_perm)
+    data: dict = {
+        "action-check": list(range(1, 51)),
+        "kind": "action",
+        "name": "delete",
+    }
 
-        object_list = [cls.model(name=f"City {idx}") for idx in range(1, 301)]
+    response = client.post(urls["index"], data, follow=True)
+    assert response.status_code == 403
 
-        cls.model.objects.bulk_create(object_list)
 
-        cls.index_url = reverse("governorates:index")
+@pytest.mark.django_db
+def test_bulk_delete_with_permissions(
+    super_client: Client,
+    urls: dict[str, str],
+    model: type[Model],
+):
+    data: dict = {
+        "action-check": list(range(1, 51)),
+        "kind": "action",
+        "name": "delete",
+    }
 
-    def test_bulk_delete_modal_response(self):
-        self.client.login(
-            username="user_with_delete_perms",
-            password="user_with_delete_perms",
-        )
+    response = super_client.post(urls["index"], data)
+    hx_location = json.loads(
+        response.headers.get("Hx-Location"),
+    )
+    messages_list = list(
+        messages.get_messages(request=response.wsgi_request),
+    )
 
-        data: dict = {
-            "action-check": list(range(1, 51)),
-            "kind": "modal",
-            "name": "delete",
-        }
+    assert response.status_code == 204
+    assert response.headers.get("Hx-Location") is not None
+    assert hx_location["path"] == urls["index"]
+    assert messages_list[0].level == messages.SUCCESS
+    assert (
+        messages_list[0].message
+        == "all (50) selected objects have been deleted successfully"
+    )
+    assert model.objects.count() == 254
 
-        response = self.client.post(self.index_url, data)
-        parser = HTMLParser(response.content)
 
-        self.assertEqual(response.status_code, 200)
+@pytest.mark.django_db
+def test_bulk_action_not_found(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    data: dict = {
+        "action-check": list(range(1, 51)),
+        "kind": "action",
+        "name": "bulk_delete",  # name not in actions
+    }
 
-        modal_body = (
-            parser.css_first(
-                "#modal-container > div > form > div:nth-child(2) p",
-            )
-            .text(strip=True)
-            .replace("\n", "")
-            .strip()
-        )
+    response = super_client.post(urls["index"], data)
+    assert response.status_code == 500
 
-        modal_body = re.compile(r"\s{2,}").sub(" ", modal_body)
+    response = super_client.post(urls["index"], data, follow=True)
+    assert response.status_code == 500
 
-        self.assertEqual(
-            modal_body,
-            "are you sure you want to delete all 50 selected objects ?",
-        )
 
-    def test_bulk_delete_without_permissions(self):
-        self.client.login(
-            username="user_without_perms",
-            password="user_without_perms",
-        )
+@pytest.mark.django_db
+def test_bulk_delete_with_permissions_only_for_view(
+    client: Client,
+    urls: dict[str, str],
+):
+    client.login(
+        username="user_with_view_perm_only",
+        password="user_with_view_perm_only",
+    )
 
-        data: dict = {
-            "action-check": list(range(1, 51)),
-            "kind": "action",
-            "name": "delete",
-        }
+    data: dict = {
+        "action-check": list(range(1, 51)),
+        "kind": "action",
+        "name": "delete",
+    }
 
-        response = self.client.post(self.index_url, data)
-        self.assertEqual(response.status_code, 403)
+    response = client.post(urls["index"], data)
 
-        response = self.client.post(
-            self.index_url,
-            data,
-            follow=True,
-        )
-        self.assertEqual(response.status_code, 403)
-
-    def test_bulk_delete_with_permissions(self):
-        self.client.login(
-            username="user_with_delete_perms",
-            password="user_with_delete_perms",
-        )
-
-        data: dict = {
-            "action-check": list(range(1, 51)),
-            "kind": "action",
-            "name": "delete",
-        }
-
-        response = self.client.post(self.index_url, data)
-        self.assertEqual(response.status_code, 204)
-        self.assertIsNotNone(response.headers.get("Hx-Location"))
-
-        hx_location = json.loads(
-            response.headers.get("Hx-Location"),
-        )
-
-        self.assertEqual(hx_location["path"], self.index_url)
-
-        messages_list = list(
-            messages.get_messages(request=response.wsgi_request),
-        )
-
-        self.assertEqual(messages_list[0].level, messages.SUCCESS)
-        self.assertEqual(
-            messages_list[0].message,
-            "all (50) selected objects have been deleted successfully",
-        )
-
-        qs = self.model.objects.all()
-        self.assertEqual(qs.count(), 250)
-
-    def test_bulk_action_not_found(self):
-        self.client.login(
-            username="user_with_delete_perms",
-            password="user_with_delete_perms",
-        )
-
-        data: dict = {
-            "action-check": list(range(1, 51)),
-            "kind": "action",
-            "name": "bulk_delete",  # name not in actions
-        }
-
-        response = self.client.post(self.index_url, data)
-        self.assertEqual(response.status_code, 500)
-
-        response = self.client.post(
-            self.index_url,
-            data,
-            follow=True,
-        )
-        self.assertEqual(response.status_code, 500)
-
-    def test_bulk_delete_with_permissions_only_for_view(self):
-        self.client.login(
-            username="user_with_view_perm_only",
-            password="user_with_view_perm_only",
-        )
-
-        data: dict = {
-            "action-check": list(range(1, 51)),
-            "kind": "action",
-            "name": "delete",
-        }
-
-        response = self.client.post(self.index_url, data)
-        self.assertEqual(response.status_code, 403)
+    assert response.status_code == 403

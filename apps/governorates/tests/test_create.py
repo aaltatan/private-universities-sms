@@ -95,7 +95,7 @@ def test_create_new_object_with_save_btn(
     assert response.headers.get("Hx-Trigger") == "messages"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == success_message
-    assert model.objects.count() == 5
+    assert model.objects.count() == 305
 
 
 @pytest.mark.django_db
@@ -121,11 +121,11 @@ def test_create_new_object_with_save_and_add_another_btn(
     assert response.status_code == 201
     assert response.headers.get("Hx-Trigger") == "messages"
     assert templates["create_form"] in [t.name for t in response.templates]
-    assert last_obj.pk == 5
+    assert last_obj.pk == 305
     assert last_obj.name == data["name"]
     assert last_obj.description == data["description"]
     assert last_obj.slug == slugify(data["name"], allow_unicode=True)
-    assert qs.count() == 5
+    assert qs.count() == 305
 
 
 @pytest.mark.django_db
@@ -152,7 +152,7 @@ def test_create_simulating_create_without_redirect_from_modal(
 
     assert response.status_code == 201
     assert templates["create_modal_form"] not in [t.name for t in response.templates]
-    assert model.objects.count() == 5
+    assert model.objects.count() == 305
     assert response.headers.get("Hx-Redirect") is None
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == success_message
@@ -188,7 +188,7 @@ def test_create_simulating_create_with_redirect_from_modal(
     success_message = f"{clean_data_sample['name']} has been created successfully"
 
     assert response.status_code == 201
-    assert model.objects.count() == 5
+    assert model.objects.count() == 305
     assert location_path == urls["index"] + "per_page=10&order_by=-Name"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == success_message
@@ -206,7 +206,7 @@ def test_create_simulating_create_with_redirect_from_modal(
     location_path = location.get("path")
 
     assert response.status_code == 201
-    assert model.objects.count() == 6
+    assert model.objects.count() == 306
     assert location_path == urls["index"]
 
 
@@ -234,7 +234,7 @@ def test_create_new_object_with_dirty_or_duplicated_data(
         assert templates["create_form"] in [t.name for t in response.templates]
         assert response.status_code == 200
         assert form_hx_post == urls["create"]
-        assert model.objects.count() == 4
+        assert model.objects.count() == 304
 
 
 @pytest.mark.django_db
@@ -264,4 +264,4 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
         assert templates["create_form"] in [t.name for t in response.templates]
         assert response.status_code == 200
         assert form_hx_post == urls["create"]
-        assert model.objects.count() == 4
+        assert model.objects.count() == 304

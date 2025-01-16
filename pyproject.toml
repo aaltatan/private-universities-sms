@@ -30,6 +30,7 @@ dev = [
     "pytest-django>=4.9.0",
     "pytest>=8.3.4",
     "selectolax>=0.3.27",
+    "pytest-cov>=6.0.0",
 ]
 
 [tool.pytest.ini_options]

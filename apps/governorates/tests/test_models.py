@@ -27,7 +27,7 @@ def test_name_field(model: type[Model]):
 
 @pytest.mark.django_db
 def test_length_of_the_queryset(model: type[Model]):
-    assert model.objects.count() == 4
+    assert model.objects.count() == 304
 
 
 @pytest.mark.django_db

@@ -1,318 +1,287 @@
-from django.test import TestCase, Client
-from rest_framework.test import APIClient
+import pytest
+from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.test import APIClient
 
-from apps.core.models import User
-
-from ..models import Governorate
+from apps.core.models import AbstractUniqueNameModel as Model
 
 
-class GovernorateTest(TestCase):
-    model = Governorate
+@pytest.mark.django_db
+def test_read_objects(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+):
+    response: Response = api_client.get(
+        path=urls["api"],
+        headers=admin_headers,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["count"] == 304
+    assert len(response.json()["results"]) == 10
 
-    @classmethod
-    def setUpTestData(cls):
-        client = Client()
 
-        cls.api_client = APIClient()
+@pytest.mark.django_db
+def test_filter_objects_using_q(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+):
+    response: Response = api_client.get(
+        path=f"{urls['api']}?q=City+40",
+        headers=admin_headers,
+        format="json",
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["count"] == 6  # 40, 140, 240, description 40, 140, 240
 
-        cls.base_url = "/api/governorates/"
 
-        User.objects.create_superuser(
-            username="admin",
-            password="admin",
+@pytest.mark.django_db
+def test_filter_objects_using_djangoql(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+):
+    response: Response = api_client.get(
+        path=f"{urls['api']}?q=id<4",
+        headers=admin_headers,
+        format="json",
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert {
+        "id": 1,
+        "name": "محافظة حماه",
+        "description": "goo",
+        "slug": "محافظة-حماه",
+    } in response.json()["results"]
+
+    assert response.json()["count"] == 3
+
+
+@pytest.mark.django_db
+def test_filter_objects_using_djangoql_endswith(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+):
+    response: Response = api_client.get(
+        path=f'{urls['api']}?q=name endswith "3"',
+        headers=admin_headers,
+        format="json",
+    )
+    ids = [i for i in range(1, 301) if str(i).endswith("3")]
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["count"] == len(ids)
+
+
+@pytest.mark.django_db
+def test_delete_object(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+    model_name: str,
+):
+    for idx in range(1, 11):
+        response: Response = api_client.delete(
+            path=f"{urls['api']}{idx}/",
+            headers=admin_headers,
         )
-        response = client.post(
-            "/api/token/", {"username": "admin", "password": "admin"}
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+
+    assert model.objects.count() == 294
+
+    response: Response = api_client.get(
+        path=f"{urls['api']}312312",
+        headers=admin_headers,
+        follow=True,
+    )
+    assert response.json() == {"detail": f"No {model_name} matches the given query."}
+    assert response.status_code == 404
+    assert model.objects.count() == 294
+
+
+@pytest.mark.django_db
+def test_bulk_delete_objects(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+):
+    response: Response = api_client.post(
+        path=f"{urls['api']}bulk-delete/",
+        data={"ids": [1, 2, 3, 4, 500, 501]},
+        headers=admin_headers,
+    )
+
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    assert model.objects.count() == 300
+
+    response: Response = api_client.post(
+        path=f"{urls['api']}bulk-delete/",
+        data={"ids": [500, 501]},
+        headers=admin_headers,
+    )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert model.objects.count() == 300
+
+
+@pytest.mark.django_db
+def test_read_objects_without_permissions(
+    api_client: APIClient,
+    urls: dict[str, str],
+    user_headers: dict[str, str],
+):
+    response: Response = api_client.get(
+        path=urls["api"],
+        headers=user_headers,
+    )
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+def test_read_object(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+):
+    response: Response = api_client.get(
+        path=f"{urls['api']}{model.objects.get(id=1).pk}/",
+        headers=admin_headers,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["name"] == "محافظة حماه"
+
+
+@pytest.mark.django_db
+def test_read_object_without_permissions(
+    api_client: APIClient,
+    urls: dict[str, str],
+    user_headers: dict[str, str],
+):
+    response: Response = api_client.get(
+        path=f"{urls['api']}1/",
+        headers=user_headers,
+    )
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+def test_read_object_with_invalid_id(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+):
+    response: Response = api_client.get(
+        path=f"{urls['api']}4123/",
+        headers=admin_headers,
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_update_object(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+):
+    response: Response = api_client.put(
+        path=f"{urls['api']}1/",
+        data={
+            "name": "Hamah",
+            "description": "some description",
+        },
+        headers=admin_headers,
+        follow=True,
+    )
+    first = model.objects.get(id=1)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["name"] == "Hamah"
+    assert response.json()["description"] == "some description"
+    assert first.name == "Hamah"
+    assert first.description == "some description"
+
+
+@pytest.mark.django_db
+def test_update_object_with_dirty_data(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    dirty_data: list[dict],
+):
+    for data in dirty_data:
+        response: Response = api_client.put(
+            path=f"{urls['api']}3/",
+            data=data["data"],
+            headers=admin_headers,
         )
-        admin_token = response.json()["access"]
-        cls.admin_headers = {
-            "Authorization": f"Bearer {admin_token}",
-        }
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.json()["name"] == data["api_error"]
 
-        User.objects.create_user(
-            username="user",
-            password="user",
+
+@pytest.mark.django_db
+def test_create_objects(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+):
+    for idx in range(500, 550):
+        response = api_client.post(
+            path=urls["api"],
+            data={"name": f"City {idx}"},
+            headers=admin_headers,
         )
-        response = client.post(
-            "/api/token/",
-            {"username": "user", "password": "user"},
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.json()["name"] == f"City {idx}"
+
+    response: Response = api_client.get(
+        path=urls["api"],
+        headers=admin_headers,
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["count"] == 354
+    assert model.objects.count() == 354
+
+
+@pytest.mark.django_db
+def test_create_object_without_permissions(
+    api_client: APIClient,
+    urls: dict[str, str],
+    user_headers: dict[str, str],
+):
+    response = api_client.post(
+        path=urls["api"],
+        data={"name": "City"},
+        headers=user_headers,
+    )
+    assert response.status_code == 403
+
+    response: Response = api_client.post(
+        path=urls["api"],
+        data={"name": "City"},
+    )
+    assert response.status_code == 401
+
+
+@pytest.mark.django_db
+def test_create_object_with_dirty_data(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    dirty_data: list[dict],
+):
+    for data in dirty_data:
+        response: Response = api_client.post(
+            path=urls["api"],
+            data=data["data"],
+            headers=admin_headers,
         )
-        user_token = response.json()["access"]
-        cls.user_headers = {
-            "Authorization": f"Bearer {user_token}",
-        }
-
-        cls.model_name = Governorate._meta.model_name.title()
-
-        cls.dirty_data = [
-            {
-                "data": {"name": "Ci"},
-                "error": ["Ensure this field has at least 4 characters."],
-                "status_code": 400,
-            },
-            {
-                "data": {"name": ""},
-                "error": ["This field may not be blank."],
-                "status_code": 400,
-            },
-            {
-                "data": {"name": "a" * 265},
-                "error": ["Ensure this field has no more than 255 characters."],
-                "status_code": 400,
-            },
-            {
-                "data": {"name": "City 1"},
-                "error": ["governorate with this name already exists."],
-                "status_code": 400,
-            },
-        ]
-
-        for idx in range(1, 41):
-            cls.model.objects.create(
-                name=f"City {idx}",
-            )
-
-    def test_read_objects(self):
-        response: Response = self.api_client.get(
-            path=f"{self.base_url}",
-            headers=self.admin_headers,
-            format="json",
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["count"], 40)
-        self.assertEqual(len(response.json()["results"]), 10)
-
-    def test_filter_objects_using_q(self):
-        response: Response = self.api_client.get(
-            path=f"{self.base_url}?q=City+4",
-            headers=self.admin_headers,
-            format="json",
-        )
-        self.assertEqual(response.status_code, 200)
-        for idx in (4, 14, 24, 34, 40):
-            self.assertIn(
-                {
-                    "id": idx,
-                    "name": f"City {idx}",
-                    "description": "",
-                    "slug": f"city-{idx}",
-                },
-                response.json()["results"],
-            )
-        self.assertEqual(response.json()["count"], 5)
-
-    def test_filter_objects_using_djangoql(self):
-        response: Response = self.api_client.get(
-            path=f"{self.base_url}?q=id<4",
-            headers=self.admin_headers,
-            format="json",
-        )
-        self.assertEqual(response.status_code, 200)
-        for idx in range(1, 4):
-            self.assertIn(
-                {
-                    "id": idx,
-                    "name": f"City {idx}",
-                    "description": "",
-                    "slug": f"city-{idx}",
-                },
-                response.json()["results"],
-            )
-        self.assertEqual(response.json()["count"], 3)
-
-    def test_filter_objects_using_djangoql_endswith(self):
-        response: Response = self.api_client.get(
-            path=f'{self.base_url}?q=name endswith "3"',
-            headers=self.admin_headers,
-            format="json",
-        )
-        self.assertEqual(response.status_code, 200)
-        for idx in (3, 13, 23, 33):
-            self.assertIn(
-                {
-                    "id": idx,
-                    "name": f"City {idx}",
-                    "description": "",
-                    "slug": f"city-{idx}",
-                },
-                response.json()["results"],
-            )
-        self.assertEqual(response.json()["count"], 4)
-
-    def test_delete_object(self):
-        for idx in range(1, 11):
-            response: Response = self.api_client.delete(
-                path=f"{self.base_url}{idx}/",
-                headers=self.admin_headers,
-                format="json",
-            )
-            self.assertEqual(response.status_code, 204)
-
-        count = self.model.objects.count()
-        self.assertEqual(count, 30)
-
-        response: Response = self.api_client.get(
-            path=f"{self.base_url}312312",
-            headers=self.admin_headers,
-            format="json",
-            follow=True,
-        )
-        self.assertEqual(
-            response.json(),
-            {"detail": f"No {self.model_name} matches the given query."},
-        )
-        self.assertEqual(response.status_code, 404)
-
-        count = self.model.objects.count()
-        self.assertEqual(count, 30)
-
-    def test_bulk_delete_objects(self):
-        response: Response = self.api_client.post(
-            path=f"{self.base_url}bulk-delete/",
-            data={"ids": [1, 2, 3, 4, 500, 501]},
-            headers=self.admin_headers,
-            format="json",
-        )
-
-        self.assertEqual(response.status_code, 204)
-
-        count = self.model.objects.count()
-        self.assertEqual(count, 36)
-
-        response: Response = self.api_client.post(
-            path=f"{self.base_url}bulk-delete/",
-            data={"ids": [500, 501]},
-            headers=self.admin_headers,
-            format="json",
-        )
-
-        self.assertEqual(response.status_code, 404)
-
-        count = self.model.objects.count()
-        self.assertEqual(count, 36)
-
-    def test_read_objects_without_permissions(self):
-        response: Response = self.api_client.get(
-            path=f"{self.base_url}",
-            headers=self.user_headers,
-            format="json",
-        )
-        self.assertEqual(response.status_code, 403)
-
-    def test_read_object(self):
-        response: Response = self.api_client.get(
-            path=f"{self.base_url}{self.model.objects.first().pk}/",
-            headers=self.admin_headers,
-            format="json",
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["name"], "City 1")
-
-    def test_read_object_without_permissions(self):
-        response: Response = self.api_client.get(
-            path=f"{self.base_url}1/",
-            headers=self.user_headers,
-            format="json",
-        )
-        self.assertEqual(response.status_code, 403)
-
-    def test_read_object_with_invalid_id(self):
-        response: Response = self.api_client.get(
-            path=f"{self.base_url}4123/",
-            headers=self.admin_headers,
-            format="json",
-        )
-        self.assertEqual(response.status_code, 404)
-
-    def test_update_object(self):
-        response: Response = self.api_client.put(
-            path=f"{self.base_url}1/",
-            data={
-                "name": "Hamah",
-                "description": "some description",
-            },
-            headers=self.admin_headers,
-            format="json",
-            follow=True,
-        )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["name"], "Hamah")
-        self.assertEqual(
-            response.json()["description"],
-            "some description",
-        )
-
-        first = self.model.objects.get(id=1)
-        self.assertEqual(first.name, "Hamah")
-        self.assertEqual(first.description, "some description")
-
-    def test_update_object_with_dirty_data(self):
-
-        for data in self.dirty_data:
-            response: Response = self.api_client.put(
-                path=f"{self.base_url}3/",
-                data=data['data'],
-                headers=self.admin_headers,
-                format='json',
-            )
-            self.assertEqual(
-                response.status_code,
-                data["status_code"],
-            )
-            self.assertEqual(response.json()["name"], data["error"])
-
-    def test_create_objects(self):
-        for idx in range(41, 51):
-            response = self.api_client.post(
-                path=self.base_url,
-                data={"name": f"City {idx}"},
-                headers=self.admin_headers,
-                format="json",
-            )
-            self.assertEqual(response.status_code, 201)
-            self.assertEqual(response.json()["name"], f"City {idx}")
-
-        response: Response = self.api_client.get(
-            path=f"{self.base_url}",
-            headers=self.admin_headers,
-            format="json",
-        )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["count"], 50)
-
-        qs = self.model.objects.all()
-        self.assertEqual(qs.count(), 50)
-
-    def test_create_object_without_permissions(self):
-        response = self.api_client.post(
-            path=self.base_url,
-            data={"name": "City"},
-            headers=self.user_headers,
-            format="json",
-        )
-        self.assertEqual(response.status_code, 403)
-
-        response: Response = self.api_client.post(
-            path=self.base_url,
-            data={"name": "City"},
-            format="json",
-        )
-        self.assertEqual(response.status_code, 401)
-
-    def test_create_object_with_dirty_data(self):
-
-        for data in self.dirty_data:
-            response: Response = self.api_client.post(
-                path=self.base_url,
-                data=data["data"],
-                headers=self.admin_headers,
-                format="json",
-            )
-            self.assertEqual(
-                response.status_code,
-                data["status_code"],
-            )
-            self.assertEqual(response.json()["name"], data["error"])
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.json()["name"] == data["api_error"]

@@ -1,239 +1,171 @@
-from django.test import TestCase
-from django.urls import reverse
-
+import pytest
+from django.test import Client
 from selectolax.parser import HTMLParser
 
-from apps.core.models import User
 
-from .. import models
+@pytest.mark.django_db
+def test_view_filter_order_by_id_page_one(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?order_by=id"
+
+    response = super_client.get(url)
+
+    assert response.status_code == 200
+    assert response.context["page"].object_list[0].id == 1
+    assert response.context["page"].object_list[1].id == 2
+    assert response.context["page"].object_list[-1].id == 10
+    assert response.context["page"].object_list[0].name == "محافظة حماه"
+    assert response.context["page"].object_list[1].name == "محافظة حمص"
+    assert response.context["page"].object_list[-1].name == "City 6"
 
 
-class TestGovernorateFilter(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        User.objects.create_superuser(
-            username="admin",
-            password="admin",
-        )
+@pytest.mark.django_db
+def test_view_filter_order_by_id_page_twenty_one(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?page=21&order_by=id"
 
-        for idx in range(1, 301):
-            description_order: str = str(abs(idx - 301)).rjust(3, "0")
-            models.Governorate.objects.create(
-                name=f"City {idx}", description=description_order
-            )
+    response = super_client.get(url)
 
-    def setUp(self):
-        self.client.login(username="admin", password="admin")
-        self.index_url: str = reverse("governorates:index")
-        self.object_name: str = "City"
+    assert response.status_code == 200
+    assert response.context["page"].object_list[0].id == 201
+    assert response.context["page"].object_list[1].id == 202
+    assert response.context["page"].object_list[-1].id == 210
+    assert response.context["page"].object_list[0].name == "City 197"
+    assert response.context["page"].object_list[1].name == "City 198"
+    assert response.context["page"].object_list[-1].name == "City 206"
 
-    def test_view_filter_order_by_id_page_one(self):
-        url: str = self.index_url + "?order_by=id"
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+@pytest.mark.django_db
+def test_view_filter_order_by_name_page_one(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?order_by=name"
 
-        self.assertEqual(response.context["page"].object_list[0].id, 1)
-        self.assertEqual(response.context["page"].object_list[1].id, 2)
-        self.assertEqual(response.context["page"].object_list[-1].id, 10)
+    response = super_client.get(url)
 
-        self.assertEqual(
-            response.context["page"].object_list[0].name,
-            f"{self.object_name} 1",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[1].name,
-            f"{self.object_name} 2",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[-1].name,
-            f"{self.object_name} 10",
-        )
+    assert response.status_code == 200
+    assert response.context["page"].object_list[0].id == 1
+    assert response.context["page"].object_list[1].id == 2
+    assert response.context["page"].object_list[-1].id == 10
+    assert response.context["page"].object_list[0].name == "محافظة حماه"
+    assert response.context["page"].object_list[1].name == "محافظة حمص"
+    assert response.context["page"].object_list[-1].name == "City 6"
 
-    def test_view_filter_order_by_id_page_twenty_one(self):
-        url: str = self.index_url + "?page=21&order_by=id"
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+@pytest.mark.django_db
+def test_view_filter_order_by_name_page_twenty_one(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?page=21&order_by=name"
 
-        self.assertEqual(
-            response.context["page"].object_list[0].id,
-            201,
-        )
-        self.assertEqual(
-            response.context["page"].object_list[1].id,
-            202,
-        )
-        self.assertEqual(
-            response.context["page"].object_list[-1].id,
-            210,
-        )
+    response = super_client.get(url)
+    assert response.status_code == 200
+    assert response.context["page"].object_list[0].id == 201
+    assert response.context["page"].object_list[1].id == 202
+    assert response.context["page"].object_list[-1].id == 210
+    assert response.context["page"].object_list[0].name == "City 197"
+    assert response.context["page"].object_list[1].name == "City 198"
+    assert response.context["page"].object_list[-1].name == "City 206"
 
-        self.assertEqual(
-            response.context["page"].object_list[0].name,
-            f"{self.object_name} 201",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[1].name,
-            f"{self.object_name} 202",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[-1].name,
-            f"{self.object_name} 210",
-        )
 
-    def test_view_filter_order_by_name_page_one(self):
-        url: str = self.index_url + "?order_by=name"
+@pytest.mark.django_db
+def test_view_filter_order_by_description_page_one(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?order_by=Description"
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+    response = super_client.get(url)
 
-        self.assertEqual(
-            response.context["page"].object_list[0].name,
-            f"{self.object_name} 1",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[1].name,
-            f"{self.object_name} 2",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[-1].name,
-            f"{self.object_name} 10",
-        )
+    assert response.context["page"].object_list[0].description == "001"
+    assert response.context["page"].object_list[1].description == "002"
+    assert response.context["page"].object_list[-1].description == "010"
+    assert response.context["page"].object_list[0].name == "City 300"
+    assert response.context["page"].object_list[1].name == "City 299"
+    assert response.context["page"].object_list[-1].name == "City 291"
 
-        self.assertEqual(
-            response.context["page"].object_list[0].id,
-            1,
-        )
-        self.assertEqual(
-            response.context["page"].object_list[1].id,
-            2,
-        )
-        self.assertEqual(
-            response.context["page"].object_list[-1].id,
-            10,
-        )
 
-    def test_view_filter_order_by_name_page_twenty_one(self):
-        url: str = self.index_url + "?page=21&order_by=name"
+@pytest.mark.django_db
+def test_view_pagination(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?page=2"
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+    response = super_client.get(url)
+    parser = HTMLParser(response.content)
+    rows = parser.css("table tr:not(:first-child)")
 
-        self.assertEqual(
-            response.context["page"].object_list[0].name,
-            f"{self.object_name} 201",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[1].name,
-            f"{self.object_name} 202",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[-1].name,
-            f"{self.object_name} 210",
-        )
+    assert response.status_code == 200
+    assert response.context["page"].number == 2
+    assert len(rows) == 10
 
-        self.assertEqual(
-            response.context["page"].object_list[0].id,
-            201,
-        )
-        self.assertEqual(
-            response.context["page"].object_list[1].id,
-            202,
-        )
-        self.assertEqual(
-            response.context["page"].object_list[-1].id,
-            210,
-        )
 
-    def test_view_filter_order_by_description_page_one(self):
-        url: str = self.index_url + "?order_by=Description"
+@pytest.mark.django_db
+def test_pagination_with_invalid_page_number(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?page=dasd"
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+    response = super_client.get(url)
+    parser = HTMLParser(response.content)
+    rows = parser.css("table tr:not(:first-child)")
 
-        self.assertEqual(
-            response.context["page"].object_list[0].description,
-            "001",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[1].description,
-            "002",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[-1].description,
-            "010",
-        )
+    assert response.status_code == 200
+    assert response.context["page"].number == 1
+    assert len(rows) == 10
 
-        self.assertEqual(
-            response.context["page"].object_list[0].name,
-            f"{self.object_name} 300",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[1].name,
-            f"{self.object_name} 299",
-        )
-        self.assertEqual(
-            response.context["page"].object_list[-1].name,
-            f"{self.object_name} 291",
-        )
 
-    def test_view_pagination(self):
-        url: str = self.index_url + "?page=2"
+@pytest.mark.django_db
+def test_pagination_with_per_page(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?page=1&per_page=50"
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["page"].number, 2)
+    response = super_client.get(url)
+    parser = HTMLParser(response.content)
+    rows = parser.css("table tr:not(:first-child)")
 
-        parser = HTMLParser(response.content)
-        rows = parser.css("table tr:not(:first-child)")
+    assert response.status_code == 200
+    assert response.context["page"].number == 1
+    assert len(rows) == 50
 
-        self.assertEqual(len(rows), 10)
 
-    def test_pagination_with_invalid_page_number(self):
-        url: str = self.index_url + "?page=dasd"
+@pytest.mark.django_db
+def test_pagination_with_per_page_all_and_invalid_page_number(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?page=dasd&per_page=all"
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["page"].number, 1)
+    response = super_client.get(url)
+    parser = HTMLParser(response.content)
+    rows = parser.css("table tr:not(:first-child)")
 
-        parser = HTMLParser(response.content)
-        rows = parser.css("table tr:not(:first-child)")
+    assert response.status_code == 200
+    assert response.context["page"].number == 1
+    assert len(rows) == 304
 
-        self.assertEqual(len(rows), 10)
 
-    def test_pagination_with_per_page(self):
-        url: str = self.index_url + "?page=1&per_page=50"
+@pytest.mark.django_db
+def test_pagination_with_per_page_and_page_number_over_the_pages_count(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?page=12&per_page=100"
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["page"].number, 1)
+    response = super_client.get(url)
+    parser = HTMLParser(response.content)
+    rows = parser.css("table tr:not(:first-child)")
 
-        parser = HTMLParser(response.content)
-        rows = parser.css("table tr:not(:first-child)")
-
-        self.assertEqual(len(rows), 50)
-
-    def test_pagination_with_per_page_all_and_invalid_page_number(self):
-        url: str = self.index_url + "?page=dasd&per_page=all"
-
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["page"].number, 1)
-
-        parser = HTMLParser(response.content)
-        rows = parser.css("table tr:not(:first-child)")
-
-        self.assertEqual(len(rows), 300)
-
-    def test_pagination_with_per_page_and_page_number_over_the_pages_count(self):
-        url: str = self.index_url + "?page=12&per_page=100"
-
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["page"].number, 3)
-
-        parser = HTMLParser(response.content)
-        rows = parser.css("table tr:not(:first-child)")
-
-        self.assertEqual(len(rows), 100)
+    assert response.status_code == 200
+    assert response.context["page"].number == 4
+    assert len(rows) == 4

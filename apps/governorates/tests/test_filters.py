@@ -1,147 +1,146 @@
-from django.test import TestCase
-from django.urls import reverse
-
-from apps.core.models import User
-
-from .. import models
+import pytest
+from django.test import Client
 
 
-class TestGovernorateFilter(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        User.objects.create_superuser(
-            username="admin",
-            password="admin",
-        )
+@pytest.mark.django_db
+def test_view_filter_simple_keyword_search(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?q=حم"
+    response = super_client.get(url)
 
-        models.Governorate.objects.create(
-            name="Hamah",
-            description="google",
-        )
-        models.Governorate.objects.create(
-            name="Halab",
-            description="go language",
-        )
-        models.Governorate.objects.create(
-            name="Homs",
-            description="meta",
-        )
-        models.Governorate.objects.create(
-            name="Damascus",
-            description="meta",
-        )
+    assert response.status_code == 200
+    assert "حماه" in response.content.decode()
+    assert "حمص" in response.content.decode()
+    assert "ادلب" not in response.content.decode()
+    assert "المنيا" not in response.content.decode()
+    assert response.context["page"].paginator.count == 2
 
-        cls.index_url = reverse("governorates:index")
 
-    def setUp(self):
-        self.client.login(username="admin", password="admin")
+@pytest.mark.django_db
+def test_view_filter_for_all_objects_contains_meta_letters(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?q=meta"
+    response = super_client.get(url)
 
-    def test_view_filter_simple_keyword_search(self):
-        url: str = self.index_url + "?q=goo"
+    assert response.status_code == 200
+    assert "حماه" not in response.content.decode()
+    assert "حمص" in response.content.decode()
+    assert "ادلب" in response.content.decode()
+    assert "المنيا" not in response.content.decode()
+    assert response.context["page"].paginator.count == 2
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Hamah")
-        self.assertNotContains(response, "Halab")
-        self.assertNotContains(response, "Homs")
-        self.assertNotContains(response, "Damascus")
-        self.assertEqual(response.context["page"].paginator.count, 1)
 
-    def test_view_filter_for_all_objects_contains_ha_letters(self):
-        url: str = self.index_url + "?q=Ha"
+@pytest.mark.django_db
+def test_view_filter_with_reversed_keywords(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?q=mena+language"
+    response = super_client.get(url)
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Hamah")
-        self.assertContains(response, "Halab")
-        self.assertNotContains(response, "Homs")
-        self.assertNotContains(response, "Damascus")
-        self.assertEqual(response.context["page"].paginator.count, 2)
+    assert response.status_code == 200
+    assert "ادلب" not in response.content.decode()
+    assert "حماه" not in response.content.decode()
+    assert "حمص" not in response.content.decode()
+    assert "المنيا" in response.content.decode()
+    assert response.context["page"].paginator.count == 1
 
-    def test_view_filter_for_all_objects_contains_meta_letters(self):
-        url: str = self.index_url + "?q=meta"
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "Hamah")
-        self.assertNotContains(response, "Halab")
-        self.assertContains(response, "Homs")
-        self.assertContains(response, "Damascus")
-        self.assertEqual(response.context["page"].paginator.count, 2)
+@pytest.mark.django_db
+def test_view_filter_all_objects_which_id_more_than_2(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?q=id > 2"
+    response = super_client.get(url)
 
-    def test_view_filter_with_reversed_keywords(self):
-        url: str = self.index_url + "?q=language+halab"
+    assert response.status_code == 200
+    assert "حماه" not in response.content.decode()
+    assert "حمص" not in response.content.decode()
+    assert "ادلب" in response.content.decode()
+    assert "المنيا" in response.content.decode()
+    assert response.context["page"].paginator.count == 302
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Halab")
-        self.assertNotContains(response, "Hamah")
-        self.assertNotContains(response, "Homs")
-        self.assertNotContains(response, "Damascus")
-        self.assertEqual(response.context["page"].paginator.count, 1)
 
-    def test_view_filter_all_objects_which_id_more_than_2(self):
-        url: str = self.index_url + "?q=id > 2"
+@pytest.mark.django_db
+def test_view_filter_objects_which_id_more_than_2(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + '?q=id > 2 and name ~ "ل"'
+    response = super_client.get(url)
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "Hamah")
-        self.assertNotContains(response, "Halab")
-        self.assertContains(response, "Homs")
-        self.assertContains(response, "Damascus")
-        self.assertEqual(response.context["page"].paginator.count, 2)
+    assert response.status_code == 200
+    assert "حماه" not in response.content.decode()
+    assert "حمص" not in response.content.decode()
+    assert "ادلب" in response.content.decode()
+    assert "المنيا" in response.content.decode()
+    assert response.context["page"].paginator.count == 2
 
-    def test_view_filter_all_objects_which_id_more_than_2_and_ends_with_us(self):
-        url: str = self.index_url + '?q=id > 2 and name endswith "us"'
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "Hamah")
-        self.assertNotContains(response, "Halab")
-        self.assertNotContains(response, "Homs")
-        self.assertContains(response, "Damascus")
-        self.assertEqual(response.context["page"].paginator.count, 1)
+@pytest.mark.django_db
+def test_view_filter_all_objects_which_id_in_one_or_three(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?q=id in (1, 3)"
+    response = super_client.get(url)
 
-    def test_view_filter_all_objects_which_id_in_one_or_three(self):
-        url: str = self.index_url + "?q=id in (1, 3)"
+    assert response.status_code == 200
+    assert "حماه" in response.content.decode()
+    assert "حمص" not in response.content.decode()
+    assert "ادلب" in response.content.decode()
+    assert "المنيا" not in response.content.decode()
+    assert response.context["page"].paginator.count == 2
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Hamah")
-        self.assertNotContains(response, "Halab")
-        self.assertContains(response, "Homs")
-        self.assertNotContains(response, "Damascus")
-        self.assertEqual(response.context["page"].paginator.count, 2)
 
-    def test_view_filter_using_parts_of_words(self):
-        url: str = self.index_url + "?q=langu hala"
+@pytest.mark.django_db
+def test_view_filter_using_parts_of_words(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?q=منيا محافظ"
+    response = super_client.get(url)
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Halab")
-        self.assertNotContains(response, "Hamah")
-        self.assertNotContains(response, "Homs")
-        self.assertNotContains(response, "Damascus")
-        self.assertEqual(response.context["page"].paginator.count, 1)
+    assert response.status_code == 200
+    assert "حماه" not in response.content.decode()
+    assert "حمص" not in response.content.decode()
+    assert "ادلب" not in response.content.decode()
+    assert "المنيا" in response.content.decode()
+    assert response.context["page"].paginator.count == 1
 
-    def test_view_filter_with_name(self):
-        url: str = self.index_url + "?name=Hamah"
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Hamah")
-        self.assertNotContains(response, "Halab")
-        self.assertNotContains(response, "Homs")
-        self.assertNotContains(response, "Damascus")
-        self.assertEqual(response.context["page"].paginator.count, 1)
+@pytest.mark.django_db
+def test_view_filter_with_name(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?name=حماه"
+    response = super_client.get(url)
 
-    def test_view_filter_with_description(self):
-        url: str = self.index_url + "?description=go language"
+    assert response.status_code == 200
+    assert "حماه" in response.content.decode()
+    assert "ادلب" not in response.content.decode()
+    assert "حمص" not in response.content.decode()
+    assert "المنيا" not in response.content.decode()
+    assert response.context["page"].paginator.count == 1
 
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "Hamah")
-        self.assertContains(response, "Halab")
-        self.assertNotContains(response, "Homs")
-        self.assertNotContains(response, "Damascus")
-        self.assertEqual(response.context["page"].paginator.count, 1)
+
+@pytest.mark.django_db
+def test_view_filter_with_description(
+    super_client: Client,
+    urls: dict[str, str],
+):
+    url: str = urls["index"] + "?description=meta"
+    response = super_client.get(url)
+
+    assert response.status_code == 200
+    assert "حماه" not in response.content.decode()
+    assert "حمص" in response.content.decode()
+    assert "ادلب" in response.content.decode()
+    assert "المنيا" not in response.content.decode()
+    assert response.context["page"].paginator.count == 2

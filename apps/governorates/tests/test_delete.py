@@ -103,4 +103,4 @@ def test_delete_object(
     assert location_path == urls["index"]
     assert response.headers.get("Hx-Trigger") == "messages"
     assert messages_list[0].level == messages.SUCCESS
-    assert model.objects.count() == 3
+    assert model.objects.count() == 303
