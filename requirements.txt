@@ -26,4 +26,5 @@ pyjwt==2.10.1
 python-decouple==3.8
 sqlparse==0.5.3
 tablib==3.7.0
+typing-extensions==4.12.2
 tzdata==2024.2
