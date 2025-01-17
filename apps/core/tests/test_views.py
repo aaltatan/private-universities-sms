@@ -3,22 +3,6 @@ from django.urls import reverse
 from django.test import Client
 from selectolax.parser import HTMLParser
 
-from ..models import User
-
-
-@pytest.fixture(autouse=True)
-def create_users() -> None:
-    User.objects.create_user(username="test", password="test")
-    User.objects.create_superuser(
-        username="admin",
-        password="admin",
-    )
-
-
-@pytest.fixture()
-def client() -> Client:
-    return Client()
-
 
 @pytest.mark.django_db
 def test_index_without_authentication_view(client: Client):
@@ -28,7 +12,10 @@ def test_index_without_authentication_view(client: Client):
 
 @pytest.mark.django_db
 def test_index_authentication_view(client: Client):
-    client.login(username="test", password="test")
+    client.login(
+        username="user_with_no_perm",
+        password="user_with_no_perm",
+    )
     response = client.get(reverse("core:index"))
 
     assert response.status_code == 200
@@ -37,7 +24,10 @@ def test_index_authentication_view(client: Client):
 
 @pytest.mark.django_db
 def test_index_authentication_view_with_no_perm(client: Client):
-    client.login(username="test", password="test")
+    client.login(
+        username="user_with_no_perm",
+        password="user_with_no_perm",
+    )
     response = client.get(reverse("core:index"))
     parser = HTMLParser(response.content)
 

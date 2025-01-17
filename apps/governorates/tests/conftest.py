@@ -1,9 +1,7 @@
 import pytest
 from django.contrib.auth.models import Permission
 from django.db.models import Model
-from django.test import Client
 from django.urls import reverse
-from rest_framework.test import APIClient
 
 from apps.core.models import User
 
@@ -35,52 +33,6 @@ def model() -> type[Model]:
 
 
 @pytest.fixture
-def admin_headers() -> dict[str, str]:
-    client = Client()
-    response = client.post(
-        "/api/token/",
-        {"username": "admin", "password": "admin"},
-    )
-    admin_token = response.json()["access"]
-    return {
-        "Authorization": f"Bearer {admin_token}",
-    }
-
-
-@pytest.fixture
-def user_headers() -> dict[str, str]:
-    client = Client()
-    response = client.post(
-        "/api/token/",
-        {
-            "username": "user_with_no_perm",
-            "password": "user_with_no_perm",
-        },
-    )
-    user_token = response.json()["access"]
-    return {
-        "Authorization": f"Bearer {user_token}",
-    }
-
-
-@pytest.fixture
-def api_client() -> APIClient:
-    return APIClient()
-
-
-@pytest.fixture
-def client() -> Client:
-    return Client()
-
-
-@pytest.fixture
-def super_client() -> Client:
-    client = Client()
-    client.login(username="admin", password="admin")
-    return client
-
-
-@pytest.fixture
 def urls() -> dict[str, str]:
     return {
         "api": f"/api/{APP_LABEL}/",
@@ -104,14 +56,6 @@ def templates() -> dict[str, str]:
 
 
 @pytest.fixture
-def headers_modal_GET() -> dict[str, str]:
-    return {
-        "modal": "true",
-        "Hx-Request": "true",
-    }
-
-
-@pytest.fixture
 def clean_data_sample() -> dict[str, str]:
     return {
         "name": "محافظة دمشق",
@@ -120,26 +64,23 @@ def clean_data_sample() -> dict[str, str]:
 
 
 @pytest.fixture(scope="session", autouse=True)
-def objects(django_db_setup, django_db_blocker):
-    del django_db_setup
-    with django_db_blocker.unblock():
-        governorates = [
-            {"name": "محافظة حماه", "description": "goo"},
-            {"name": "محافظة حمص", "description": "meta"},
-            {"name": "محافظة ادلب", "description": "meta"},
-            {"name": "محافظة المنيا", "description": "language mena"},
-        ]
+def objects():
+    governorates = [
+        {"name": "محافظة حماه", "description": "goo"},
+        {"name": "محافظة حمص", "description": "meta"},
+        {"name": "محافظة ادلب", "description": "meta"},
+        {"name": "محافظة المنيا", "description": "language mena"},
+    ]
 
-        for governorate in governorates:
-            Governorate.objects.create(**governorate)
+    for governorate in governorates:
+        Governorate.objects.create(**governorate)
 
-        for idx in range(1, 301):
-            description_order = str(abs(idx - 301)).rjust(3, "0")
-            Governorate.objects.create(
-                name=f"City {idx}",
-                description=description_order,
-            )
-        yield
+    for idx in range(1, 301):
+        description_order = str(abs(idx - 301)).rjust(3, "0")
+        Governorate.objects.create(
+            name=f"City {idx}",
+            description=description_order,
+        )
 
 
 @pytest.fixture
@@ -182,15 +123,6 @@ def dirty_data() -> list[dict]:
 
 @pytest.fixture(autouse=True)
 def create_users() -> None:
-    User.objects.create_superuser(
-        username="admin",
-        password="admin",
-    )
-
-    User.objects.create_user(
-        username="user_with_no_perm",
-        password="user_with_no_perm",
-    )
     user_with_view_perm_only = User.objects.create_user(
         username="user_with_view_perm_only",
         password="user_with_view_perm_only",
