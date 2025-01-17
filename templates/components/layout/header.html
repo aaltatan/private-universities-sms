@@ -1,10 +1,12 @@
-{% load i18n %} 
+{% load i18n %}
 <!--  -->
 {% get_current_language as LANGUAGE_CODE %}
 
 <c-vars icons_size="24" />
 
-<header class="dark:bg-black bg-white border-b dark:border-neutral-800 border-neutral-300 sticky top-0 z-30 p-2">
+<header
+  class="dark:bg-black bg-white border-b dark:border-neutral-800 border-neutral-300 sticky top-0 z-30 p-2"
+>
   <nav
     class="flex items-center justify-between gap-1"
     :class="{
@@ -101,13 +103,13 @@
               </a>
             </c-layout.context-menu.item>
             <c-layout.context-menu.item icon="wrench-screwdriver">
-              <a href="/api" class="block w-full" target="_blank">
-                Api Documentation
-              </a>
+              <a href="/api" class="block w-full" target="_blank"> Api Documentation </a>
             </c-layout.context-menu.item>
+            {% if debug %}
             <c-layout.context-menu.item icon="adjustments-horizontal">
               <a href="/silk" class="block w-full" target="_blank"> Silk </a>
             </c-layout.context-menu.item>
+            {% endif %}
           </c-layout.context-menu.section>
           {% endif %}
           <c-layout.context-menu.section>

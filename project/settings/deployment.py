@@ -1,5 +1,5 @@
 from .base import *
 
-DEBUG = False
+ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(';')
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(';')
+STATIC_ROOT = BASE_DIR / "staticfiles"

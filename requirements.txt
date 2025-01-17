@@ -23,7 +23,7 @@ openpyxl==3.1.5
 ply==3.11
 pycparser==2.22
 pyjwt==2.10.1
-python-dotenv==1.0.1
+python-decouple==3.8
 sqlparse==0.5.3
 tablib==3.7.0
 tzdata==2024.2
