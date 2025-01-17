@@ -5,11 +5,11 @@ from django.urls import reverse
 
 from apps.core.models import User
 
-from ..models import Governorate
+from ..models import City
 
 
-APP_LABEL = "governorates"
-MODEL_NAME = "Governorate"
+APP_LABEL = "cities"
+MODEL_NAME = "City"
 
 
 @pytest.fixture
@@ -29,7 +29,7 @@ def app_label() -> str:
 
 @pytest.fixture
 def model() -> type[Model]:
-    return Governorate
+    return City
 
 
 @pytest.fixture
@@ -59,25 +59,26 @@ def templates() -> dict[str, str]:
 def clean_data_sample() -> dict[str, str]:
     return {
         "name": "محافظة دمشق",
+        "governorate": 1,
         "description": "دمشق",
     }
 
 
 @pytest.fixture(scope="session", autouse=True)
 def objects():
-    governorates = [
+    cities = [
         {"name": "محافظة حماه", "description": "goo"},
         {"name": "محافظة حمص", "description": "meta"},
         {"name": "محافظة ادلب", "description": "meta"},
         {"name": "محافظة المنيا", "description": "language mena"},
     ]
 
-    for governorate in governorates:
-        Governorate.objects.create(**governorate)
+    for city in cities:
+        City.objects.create(**city)
 
     for idx in range(1, 301):
         description_order = str(abs(idx - 301)).rjust(3, "0")
-        Governorate.objects.create(
+        City.objects.create(
             name=f"City {idx}",
             description=description_order,
         )
@@ -115,8 +116,8 @@ def dirty_data() -> list[dict]:
                 "name": "محافظة حماه",
                 "description": "google",
             },
-            "error": "Governorate with this Name already exists.",
-            "api_error": ["governorate with this name already exists."],
+            "error": "City with this Name already exists.",
+            "api_error": ["city with this name already exists."],
         },
     ]
 
@@ -127,14 +128,14 @@ def create_users() -> None:
         username="user_with_view_perm_only",
         password="user_with_view_perm_only",
     )
-    view_perm = Permission.objects.get(codename="view_governorate")
+    view_perm = Permission.objects.get(codename="view_city")
     user_with_view_perm_only.user_permissions.add(view_perm)
 
     perms = ["add", "change", "delete", "export"]
 
     for p in perms:
         perm = Permission.objects.get(
-            codename=f"{p}_governorate",
+            codename=f"{p}_city",
         )
         user = User.objects.create_user(
             username=f"user_with_view_{p}_perm",

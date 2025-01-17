@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     # local apps
     "apps.core",
     "apps.governorates",
+    "apps.cities",
 ]
 
 MIDDLEWARE = [

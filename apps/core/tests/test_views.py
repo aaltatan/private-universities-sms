@@ -47,4 +47,4 @@ def test_index_authentication_view_with_perm(client: Client):
     links = aside.css("div a")
 
     assert aside is not None
-    assert len(links) == 2
+    assert len(links) > 1

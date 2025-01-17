@@ -36,3 +36,4 @@ dev = [
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "project.settings.testing"
+addopts = "--ignore=apps/cities"

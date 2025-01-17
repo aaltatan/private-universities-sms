@@ -166,10 +166,12 @@ class ListMixin(AbstractListView):
         Returns the table template name.
         Notes: you can use the table_template_name attribute to override the default table template name.
         """
+        app_label = self.get_app_label()
+        
         if getattr(self, "table_template_name", None):
             return self.table_template_name
 
-        return "components/table.html"
+        return f"components/{app_label}.html"
 
     def annotate_search_field(self, qs: QuerySet) -> QuerySet:
         """

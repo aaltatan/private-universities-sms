@@ -154,20 +154,24 @@ class CreateMixin(AbstractCreateMixin):
         Returns the form modal template name.
         Notes: you can use the *form_modal_template_name* attribute to override the default form modal template name.
         """
+        app_label = self.get_app_label()
+
         if getattr(self, "form_modal_template_name", None):
             return self.form_modal_template_name
 
-        return "components/app-forms/modal-create.html"
+        return f"components/{app_label}/modal-create.html"
 
     def get_form_template_name(self) -> str:
         """
         Returns the form template name.
         Notes: you can use the *form_template_name* attribute to override the default form template name.
         """
+        app_label = self.get_app_label()
+        
         if getattr(self, "form_template_name", None):
             return self.form_template_name
 
-        return "components/app-forms/create.html"
+        return f"components/{app_label}/create.html"
 
     def get_app_label(self) -> str:
         """
