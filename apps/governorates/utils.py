@@ -1,4 +1,5 @@
 from django.db.models import QuerySet
+
 from apps.core.utils import Deleter
 
 

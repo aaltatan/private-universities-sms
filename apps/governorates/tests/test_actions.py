@@ -81,7 +81,7 @@ def test_bulk_delete_with_permissions(
     assert messages_list[0].level == messages.SUCCESS
     assert (
         messages_list[0].message
-        == "all (50) selected objects have been deleted successfully"
+        == "all selected 50 objects have been deleted successfully."
     )
     assert model.objects.count() == 254
 

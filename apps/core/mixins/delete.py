@@ -21,13 +21,7 @@ class DeleteMixinAbstract(ABC):
 
 
 class DeleteMixin(DeleteMixinAbstract):
-    def get(
-        self,
-        request: HttpRequest,
-        slug: str,
-        *args,
-        **kwargs,
-    ) -> HttpResponse:
+    def get(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
         """
         Handles GET requests and returns a rendered template.
         """
@@ -45,13 +39,7 @@ class DeleteMixin(DeleteMixinAbstract):
 
         return render(request, modal_template_name, context)
 
-    def post(
-        self,
-        request: HttpRequest,
-        slug: str,
-        *args,
-        **kwargs,
-    ) -> HttpResponse:
+    def post(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
         """
         Handles the POST request.
         """
@@ -65,11 +53,13 @@ class DeleteMixin(DeleteMixinAbstract):
         model = self.get_model_class()
         self.obj = get_object_or_404(model, slug=slug)
 
-        is_deletable = self.deleter(self.obj, request).delete()
+        deleter = self.deleter(self.obj)
 
-        if is_deletable:
+        if deleter.is_deletable:
+            deleter.delete()
             response = HttpResponse(status=204)
             querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
+            messages.success(request, deleter.get_message(self.obj))
             response["Hx-Location"] = json.dumps(
                 {
                     "path": self.get_app_urls()["index_url"] + querystring,
@@ -80,6 +70,7 @@ class DeleteMixin(DeleteMixinAbstract):
             response = HttpResponse(status=200)
             response["Hx-Retarget"] = "#no-content"
             response["HX-Reswap"] = "innerHTML"
+            messages.error(request, deleter.get_message(self.obj))
 
         response["HX-Trigger"] = "messages"
 
