@@ -118,7 +118,7 @@ def test_filter_objects_using_djangoql_endswith(
     admin_headers: dict[str, str],
 ):
     response: Response = api_client.get(
-        path=f'{urls['api']}?q=name endswith "3"',
+        path=f'{urls["api"]}?q=name endswith "3"',
         headers=admin_headers,
         format="json",
     )
