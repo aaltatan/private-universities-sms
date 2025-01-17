@@ -16,7 +16,7 @@ def main():
     load_dotenv(dotenv_filepath)
 
     settings_module: Literal['development', 'deployment', 'testing'] = (
-        os.getenv("DEBUG") if os.getenv("DEBUG") == "1" else "development"
+        "deployment" if os.getenv("DEBUG") == "1" else "development"
     )
 
     if 'test' in sys.argv:

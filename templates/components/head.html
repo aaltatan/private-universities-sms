@@ -20,7 +20,11 @@
 </style>
 
 <!-- css files -->
+{% if debug %}
+<link rel="stylesheet" href="{% static 'css/dist/dev.css' %}" />
+{% else %}
 <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}" />
+{% endif %}
 
 <!-- alpine plugins -->
 <script src="{% static 'js/plugins/persist.min.js' %}" defer></script>

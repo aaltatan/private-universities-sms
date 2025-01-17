@@ -31,6 +31,7 @@ dev = [
     "pytest>=8.3.4",
     "selectolax>=0.3.27",
     "pytest-cov>=6.0.0",
+    "nox>=2024.10.9",
 ]
 
 [tool.pytest.ini_options]
