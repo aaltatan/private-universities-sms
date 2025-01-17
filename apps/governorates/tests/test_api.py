@@ -7,6 +7,59 @@ from apps.core.models import AbstractUniqueNameModel as Model
 
 
 @pytest.mark.django_db
+def test_pagination(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+):
+    response = api_client.get(
+        path=urls["api"],
+        headers=admin_headers,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["count"] == 304
+    assert len(response.json()["results"]) == 10
+    assert response.json()["next"].endswith(urls["api"] + "?page=2") is True
+    assert response.json()["previous"] is None
+
+    response = api_client.get(
+        path=urls["api"] + "?page=2",
+        headers=admin_headers,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["count"] == 304
+    assert len(response.json()["results"]) == 10
+    assert response.json()["next"].endswith(urls["api"] + "?page=3") is True
+    assert response.json()["previous"].endswith(urls["api"]) is True
+
+    response = api_client.get(
+        path=urls["api"] + "?page=31",
+        headers=admin_headers,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["count"] == 304
+    assert len(response.json()["results"]) == 4
+    assert response.json()["next"] is None
+    assert response.json()["previous"].endswith(urls["api"] + "?page=30") is True
+
+    for idx in range(3, 31):
+        response = api_client.get(
+            path=urls["api"] + f"?page={idx}",
+            headers=admin_headers,
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()["count"] == 304
+        assert len(response.json()["results"]) == 10
+        assert (
+            response.json()["next"].endswith(urls["api"] + f"?page={idx + 1}") is True
+        )
+        assert (
+            response.json()["previous"].endswith(urls["api"] + f"?page={idx - 1}")
+            is True
+        )
+
+
+@pytest.mark.django_db
 def test_read_objects(
     api_client: APIClient,
     urls: dict[str, str],
