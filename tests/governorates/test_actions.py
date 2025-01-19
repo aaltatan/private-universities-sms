@@ -2,6 +2,7 @@ import re
 import json
 
 import pytest
+import pytest_mock
 from django.test import Client
 from django.contrib import messages
 from selectolax.parser import HTMLParser
@@ -84,6 +85,42 @@ def test_bulk_delete_with_permissions(
         == "all selected 50 objects have been deleted successfully."
     )
     assert model.objects.count() == 254
+
+
+@pytest.mark.django_db
+def test_bulk_delete_with_permissions_with_undeletable_objects(
+    admin_client: Client,
+    urls: dict[str, str],
+    model: type[Model],
+    mocker: pytest_mock.MockerFixture,
+):
+    data: dict = {
+        "action-check": list(range(1, 51)),
+        "kind": "action",
+        "name": "delete",
+    }
+
+    mocker.patch(
+        "apps.governorates.utils.GovernorateDeleter.is_qs_deletable",
+        return_value=False,
+    )
+
+    response = admin_client.post(urls["index"], data)
+    messages_list = list(
+        messages.get_messages(request=response.wsgi_request),
+    )
+
+    assert response.status_code == 200
+    assert response.headers.get("Hx-Location") is None
+    assert response.headers.get("Hx-Retarget") == "#no-content"
+    assert response.headers.get("HX-Reswap") == "innerHTML"
+    assert response.headers.get("HX-Trigger") == "messages"
+    assert messages_list[0].level == messages.ERROR
+    assert (
+        messages_list[0].message
+        == "selected 50 objects cannot be deleted."
+    )
+    assert model.objects.count() == 304
 
 
 @pytest.mark.django_db

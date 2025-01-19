@@ -17,7 +17,7 @@ class DeleteMixinAbstract(ABC):
     def model(self) -> type[Model]: ...
 
     @abstractmethod
-    def deleter(self) -> type[Deleter]: ...
+    def deleter(self, obj: Any) -> type[Deleter]: ...
 
 
 class DeleteMixin(DeleteMixinAbstract):
@@ -55,7 +55,7 @@ class DeleteMixin(DeleteMixinAbstract):
 
         deleter = self.deleter(self.obj)
 
-        if deleter.is_deletable:
+        if deleter.is_deletable():
             deleter.delete()
             response = HttpResponse(status=204)
             querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"

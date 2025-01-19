@@ -88,8 +88,6 @@ class BulkDeleteAPIMixin:
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(
-                {
-                    "details": deleter.get_message(count),
-                    "status": status.HTTP_400_BAD_REQUEST,
-                }
+                {"details": deleter.get_message(count)},
+                status=status.HTTP_400_BAD_REQUEST,
             )

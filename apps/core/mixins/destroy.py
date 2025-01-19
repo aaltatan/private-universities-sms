@@ -20,7 +20,7 @@ class DestroyMixin:
 
         deleter: type[Deleter] = self.deleter(instance)
 
-        if deleter.is_deletable:
+        if deleter.is_deletable():
             deleter.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:

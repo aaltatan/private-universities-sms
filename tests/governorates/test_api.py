@@ -1,4 +1,5 @@
 import pytest
+import pytest_mock
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient
@@ -156,6 +157,40 @@ def test_delete_object(
 
 
 @pytest.mark.django_db
+def test_delete_object_undeletable(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+    model_name: str,
+    mocker: pytest_mock.MockerFixture,
+):
+    mocker.patch(
+        "apps.governorates.utils.GovernorateDeleter.is_obj_deletable",
+        return_value=False,
+    )
+
+    for idx in range(1, 11):
+        response: Response = api_client.delete(
+            path=f"{urls['api']}{idx}/",
+            headers=admin_headers,
+        )
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.json()["details"].endswith("cannot be deleted.")
+
+    assert model.objects.count() == 304
+
+    response: Response = api_client.get(
+        path=f"{urls['api']}312312",
+        headers=admin_headers,
+        follow=True,
+    )
+    assert response.json() == {"detail": f"No {model_name} matches the given query."}
+    assert response.status_code == 404
+    assert model.objects.count() == 304
+
+
+@pytest.mark.django_db
 def test_bulk_delete_objects(
     api_client: APIClient,
     urls: dict[str, str],
@@ -179,6 +214,39 @@ def test_bulk_delete_objects(
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
     assert model.objects.count() == 300
+
+
+@pytest.mark.django_db
+def test_bulk_delete_objects_undeletable(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+    mocker: pytest_mock.MockerFixture,
+):
+    mocker.patch(
+        "apps.governorates.utils.GovernorateDeleter.is_qs_deletable",
+        return_value=False,
+    )
+
+    response: Response = api_client.post(
+        path=f"{urls['api']}bulk-delete/",
+        data={"ids": [1, 2, 3, 4, 500, 501]},
+        headers=admin_headers,
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.json()["details"] == "selected 4 objects cannot be deleted."
+    assert model.objects.count() == 304
+
+    response: Response = api_client.post(
+        path=f"{urls['api']}bulk-delete/",
+        data={"ids": [500, 501]},
+        headers=admin_headers,
+    )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert model.objects.count() == 304
 
 
 @pytest.mark.django_db

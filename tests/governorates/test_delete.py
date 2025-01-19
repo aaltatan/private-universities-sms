@@ -2,6 +2,7 @@ import json
 import re
 
 import pytest
+import pytest_mock
 from django.contrib import messages
 from django.test import Client
 from selectolax.parser import HTMLParser
@@ -103,4 +104,42 @@ def test_delete_object(
     assert location_path == urls["index"]
     assert response.headers.get("Hx-Trigger") == "messages"
     assert messages_list[0].level == messages.SUCCESS
+    assert (
+        messages_list[0].message
+        == f"{obj.name} has been deleted successfully."
+    )
     assert model.objects.count() == 303
+
+
+@pytest.mark.django_db
+def test_delete_object_undeletable(
+    model: type[Model],
+    admin_client: Client,
+    headers_modal_GET: dict[str, str],
+    mocker: pytest_mock.MockerFixture,
+) -> None:
+    mocker.patch(
+        "apps.governorates.utils.GovernorateDeleter.is_obj_deletable",
+        return_value=False,
+    )
+
+    obj = model.objects.first()
+    response = admin_client.post(
+        obj.get_delete_url(),
+        headers=headers_modal_GET,
+    )
+    messages_list = list(
+        messages.get_messages(response.wsgi_request),
+    )
+
+    assert response.status_code == 200
+    assert response.headers.get("Hx-Location") is None
+    assert response.headers.get("Hx-Retarget") == "#no-content"
+    assert response.headers.get("HX-Reswap") == "innerHTML"
+    assert response.headers.get("Hx-Trigger") == "messages"
+    assert messages_list[0].level == messages.ERROR
+    assert (
+        messages_list[0].message
+        == f"{obj.name} cannot be deleted."
+    )
+    assert model.objects.count() == 304
