@@ -13,3 +13,7 @@ def build(session: nox.Session) -> None:
         "--output-file",
         "requirements.txt",
     )
+    session.run("rm", "htmlcov", "-rf")
+    session.run("rm", ".coverage")
+    session.run("rm", "-rf", "__pycache__")
+    session.run("rm", "-rf", ".pytest_cache")
