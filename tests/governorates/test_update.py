@@ -7,6 +7,7 @@ from django.test import Client
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
+from tests.utils import is_template_used
 
 
 @pytest.mark.django_db
@@ -97,7 +98,7 @@ def test_update_page(
     )
 
     assert response.status_code == 200
-    assert templates["update"] in [t.name for t in response.templates]
+    assert is_template_used(templates["update"], response)
     assert h1 == f"update {obj.name}"
     assert form.attributes["hx-post"] == obj.get_update_url()
     assert form.attributes["id"] == f"{app_label}-form"
@@ -135,7 +136,7 @@ def test_update_with_dirty_data(
     for data in dirty_data:
         response = admin_client.post(url, data["data"])
         assert data["error"] in response.content.decode()
-        assert templates["update_form"] in [t.name for t in response.templates]
+        assert is_template_used(templates["update_form"], response)
         assert response.status_code == 200
 
     assert model.objects.count() == 304
@@ -165,7 +166,7 @@ def test_update_with_modal_with_dirty_data(
             headers=headers,
         )
         assert data["error"] in response.content.decode()
-        assert templates["update_modal_form"] in [t.name for t in response.templates]
+        assert is_template_used(templates["update_modal_form"], response)
         assert response.status_code == 200
 
     assert model.objects.count() == 304
@@ -224,7 +225,7 @@ def test_update_with_redirect_from_modal(
     form_hx_post = form.attributes.get("hx-post")
 
     assert response.status_code == 200
-    assert templates["update_modal_form"] in [t.name for t in response.templates]
+    assert is_template_used(templates["update_modal_form"], response)
     assert form_hx_post == url
 
     response = admin_client.post(
@@ -272,7 +273,7 @@ def test_update_without_redirect_from_modal(
     form_hx_post = form.attributes.get("hx-post")
 
     assert response.status_code == 200
-    assert templates["update_modal_form"] in [t.name for t in response.templates]
+    assert is_template_used(templates["update_modal_form"], response)
     assert form_hx_post == url
 
     response = admin_client.post(

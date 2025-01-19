@@ -3,6 +3,7 @@ import pytest_mock
 from django.test import Client
 
 from apps.core.models import AbstractUniqueNameModel as Model
+from tests.utils import is_template_used
 
 
 @pytest.mark.django_db
@@ -12,13 +13,13 @@ def test_list_view_with_model_is_defined(
     templates: dict[str, str],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
-    model: type[Model] 
+    model: type[Model],
 ):
     mocker.patch(f"apps.{app_label}.views.ListView.model", new=model)
     response = admin_client.get(urls["index"])
 
     assert response.status_code == 200
-    assert templates["index"] in [t.name for t in response.templates]
+    assert is_template_used(templates["index"], response)
 
 
 def test_list_view_with_template_name_is_defined(
@@ -37,7 +38,7 @@ def test_list_view_with_template_name_is_defined(
     response = admin_client.get(urls["index"])
 
     assert response.status_code == 200
-    assert templates["index"] in [t.name for t in response.templates]
+    assert is_template_used(templates["index"], response)
 
 
 def test_list_view_with_table_template_name_is_defined(
@@ -59,4 +60,4 @@ def test_list_view_with_table_template_name_is_defined(
     )
 
     assert response.status_code == 200
-    assert templates["table"] in [t.name for t in response.templates]
+    assert is_template_used(templates["table"], response)

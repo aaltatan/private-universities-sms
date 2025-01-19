@@ -8,6 +8,7 @@ from django.test import Client
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
+from tests.utils import is_template_used
 
 
 @pytest.mark.django_db
@@ -95,7 +96,7 @@ def test_get_delete_modal_with_using_htmx(
 
     assert modal_body == f"are you sure you want to delete {obj.name} ?"
     assert response.status_code == 200
-    assert templates["delete_modal"] in [t.name for t in response.templates]
+    assert is_template_used(templates["delete_modal"], response)
 
 
 @pytest.mark.django_db

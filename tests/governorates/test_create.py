@@ -1,14 +1,14 @@
 import json
 
 import pytest
-from django.utils.text import slugify
-from django.contrib.messages import get_messages
 from django.contrib import messages
+from django.contrib.messages import get_messages
 from django.test import Client
+from django.utils.text import slugify
+from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-
-from selectolax.parser import HTMLParser
+from tests.utils import is_template_used
 
 
 @pytest.mark.django_db
@@ -27,7 +27,7 @@ def test_add_new_btn_appearance_if_user_has_no_add_perm(
     btn = parser.css_first("[aria-label='create new object']")
 
     assert response.status_code == 200
-    assert templates["index"] in [t.name for t in response.templates]
+    assert is_template_used(templates["index"], response)
     assert btn is None
 
 
@@ -54,7 +54,7 @@ def test_add_new_btn_appearance_if_user_has_add_perm(
     btn = parser.css_first("[aria-label='create new object']")
 
     assert response.status_code == 200
-    assert templates["index"] in [t.name for t in response.templates]
+    assert is_template_used(templates["index"], response)
     assert btn is not None
 
 
@@ -67,7 +67,7 @@ def test_send_request_to_create_page_with_permission(
     response = admin_client.get(urls["create"])
 
     assert response.status_code == 200
-    assert templates["create"] in [t.name for t in response.templates]
+    assert is_template_used(templates["create"], response)
 
 
 @pytest.mark.django_db
@@ -81,7 +81,7 @@ def test_create_new_object_with_save_btn(
     response = admin_client.get(urls["create"])
 
     assert response.status_code == 200
-    assert templates["create"] in [t.name for t in response.templates]
+    assert is_template_used(templates["create"], response)
 
     clean_data_sample["save"] = "true"
     response = admin_client.post(urls["create"], clean_data_sample)
@@ -109,7 +109,7 @@ def test_create_new_object_with_save_and_add_another_btn(
     response = admin_client.get(urls["create"])
 
     assert response.status_code == 200
-    assert templates["create"] in [t.name for t in response.templates]
+    assert is_template_used(templates["create"], response)
 
     data = clean_data_sample.copy()
     data["save_and_add_another"] = "true"
@@ -120,7 +120,7 @@ def test_create_new_object_with_save_and_add_another_btn(
 
     assert response.status_code == 201
     assert response.headers.get("Hx-Trigger") == "messages"
-    assert templates["create_form"] in [t.name for t in response.templates]
+    assert is_template_used(templates["create_form"], response)
     assert last_obj.pk == 305
     assert last_obj.name == data["name"]
     assert last_obj.description == data["description"]
@@ -140,7 +140,7 @@ def test_create_simulating_create_without_redirect_from_modal(
     response = admin_client.get(urls["create"], headers=headers_modal_GET)
 
     assert response.status_code == 200
-    assert templates["create_modal_form"] in [t.name for t in response.templates]
+    assert is_template_used(templates["create_modal_form"], response)
 
     response = admin_client.post(
         urls["create"],
@@ -151,7 +151,7 @@ def test_create_simulating_create_without_redirect_from_modal(
     success_message = f"{clean_data_sample['name']} has been created successfully"
 
     assert response.status_code == 201
-    assert templates["create_modal_form"] not in [t.name for t in response.templates]
+    assert is_template_used(templates["create_modal_form"], response, used=False)
     assert model.objects.count() == 305
     assert response.headers.get("Hx-Redirect") is None
     assert messages_list[0].level == messages.SUCCESS
@@ -171,7 +171,7 @@ def test_create_simulating_create_with_redirect_from_modal(
     response = admin_client.get(url, headers=headers_modal_GET)
 
     assert response.status_code == 200
-    assert templates["create_modal_form"] in [t.name for t in response.templates]
+    assert is_template_used(templates["create_modal_form"], response)
 
     headers = {
         "modal": True,
@@ -221,7 +221,7 @@ def test_create_new_object_with_dirty_or_duplicated_data(
     response = admin_client.get(urls["create"])
 
     assert response.status_code == 200
-    assert templates["create"] in [t.name for t in response.templates]
+    assert is_template_used(templates["create"], response)
 
     for item in dirty_data:
         response = admin_client.post(urls["create"], item["data"])
@@ -231,7 +231,7 @@ def test_create_new_object_with_dirty_or_duplicated_data(
         ).attributes.get("hx-post")
 
         assert item["error"] in response.content.decode()
-        assert templates["create_form"] in [t.name for t in response.templates]
+        assert is_template_used(templates["create_form"], response)
         assert response.status_code == 200
         assert form_hx_post == urls["create"]
         assert model.objects.count() == 304
@@ -251,7 +251,7 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
     response = admin_client.get(url, headers=headers)
 
     assert response.status_code == 200
-    assert templates["create_modal_form"] in [t.name for t in response.templates]
+    assert is_template_used(templates["create_modal_form"], response)
 
     for item in dirty_data:
         response = admin_client.post(
@@ -265,7 +265,7 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
         ).attributes.get("hx-post")
 
         assert item["error"] in response.content.decode()
-        assert templates["create_modal_form"] in [t.name for t in response.templates]
+        assert is_template_used(templates["create_modal_form"], response)
         assert response.status_code == 200
         assert form_hx_post == urls["create"]
         assert model.objects.count() == 304

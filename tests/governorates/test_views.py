@@ -2,7 +2,7 @@ import pytest
 from django.test import Client
 from selectolax.parser import HTMLParser
 
-from tests.utils import parse_buttons
+from tests.utils import is_template_used, parse_buttons
 
 
 @pytest.mark.django_db
@@ -17,7 +17,7 @@ def test_index_GET_with_htmx(
     response = admin_client.get(urls["index"], headers=headers)
 
     assert response.status_code == 200
-    assert templates["table"] in [t.name for t in response.templates]
+    assert is_template_used(templates["table"], response)
 
 
 @pytest.mark.django_db
@@ -32,7 +32,7 @@ def test_index_has_checkboxes_admin(
 
     assert len(checkboxes) == 10
     assert response.status_code == 200
-    assert templates["index"] in [t.name for t in response.templates]
+    assert is_template_used(templates["index"], response)
 
 
 @pytest.mark.django_db
@@ -51,7 +51,7 @@ def test_index_has_checkboxes_with_view_delete_perms(
 
     assert response.status_code == 200
     assert len(checkboxes) == 10
-    assert templates["index"] in [t.name for t in response.templates]
+    assert is_template_used(templates["index"], response)
 
 
 @pytest.mark.django_db
@@ -70,7 +70,7 @@ def test_index_has_checkboxes_with_no_permission(
 
     assert len(checkboxes) == 0
     assert response.status_code == 200
-    assert templates["index"] in [t.name for t in response.templates]
+    assert is_template_used(templates["index"], response)
 
 
 @pytest.mark.django_db
@@ -82,7 +82,7 @@ def test_view_index_file(
     response = admin_client.get(urls["index"])
 
     assert response.status_code == 200
-    assert templates["index"] in [t.name for t in response.templates]
+    assert is_template_used(templates["index"], response)
 
 
 @pytest.mark.django_db

@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Literal
 
 from django.test import Client
+from django.http import HttpResponse
 from selectolax.parser import HTMLParser
 
 from apps.core.models import User
@@ -36,6 +37,17 @@ def parse_buttons(parser: HTMLParser) -> dict[str, bool]:
         "edit_btn_exists": edit_btn is not None,
         "export_btn_exists": export_btn is not None,
     }
+
+
+def is_template_used(
+    template_name: str,
+    response: HttpResponse,
+    used: bool = True,
+) -> bool:
+    if used:
+        return template_name in [t.name for t in response.templates]
+    else:
+        return template_name not in [t.name for t in response.templates]
 
 
 def assert_export(
