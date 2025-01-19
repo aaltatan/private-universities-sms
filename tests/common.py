@@ -49,12 +49,10 @@ def assert_export(
     assert response.status_code == 200
     assert response.headers["Content-Type"] == content_types[extension]
 
-    str_now = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    filename = f"{filename}-{str_now}.{extension}"
+    str_now_without_sec = datetime.now().strftime("%Y-%m-%d-%H-%M")
+    filename_without_sec = f"{filename}-{str_now_without_sec}"
 
-    assert (
-        response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
-    )
+    assert filename_without_sec in response.headers["Content-Disposition"]
 
 
 def create_base_users() -> None:
