@@ -171,7 +171,7 @@ class ListMixin(AbstractListView):
         if getattr(self, "table_template_name", None):
             return self.table_template_name
 
-        return f"components/{app_label}.html"
+        return f"components/{app_label}/table.html"
 
     def annotate_search_field(self, qs: QuerySet) -> QuerySet:
         """
