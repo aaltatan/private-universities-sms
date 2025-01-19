@@ -2,16 +2,16 @@ import pytest
 from django.test import Client
 from selectolax.parser import HTMLParser
 
-from apps.core.tests.utils import parse_buttons
+from tests.core.utils import parse_buttons
 
 
 @pytest.mark.django_db
 def test_index_has_checkboxes_admin(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
     templates: dict[str, str],
 ):
-    response = super_client.get(urls["index"])
+    response = admin_client.get(urls["index"])
     parser = HTMLParser(response.content)
     checkboxes = parser.css("input[id^='row-check-']")
 
@@ -60,11 +60,11 @@ def test_index_has_checkboxes_with_no_permission(
 
 @pytest.mark.django_db
 def test_view_index_file(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
     templates: dict[str, str],
 ):
-    response = super_client.get(urls["index"])
+    response = admin_client.get(urls["index"])
 
     assert response.status_code == 200
     assert templates["index"] in [t.name for t in response.templates]
@@ -72,9 +72,9 @@ def test_view_index_file(
 
 @pytest.mark.django_db
 def test_view_has_all_html_elements_which_need_permissions(
-    super_client: Client, urls: dict[str, str]
+    admin_client: Client, urls: dict[str, str]
 ):
-    response = super_client.get(urls["index"])
+    response = admin_client.get(urls["index"])
     parser = HTMLParser(response.content)
 
     add_new_btn = parser.css_first(
@@ -98,10 +98,10 @@ def test_view_has_all_html_elements_which_need_permissions(
 
 @pytest.mark.django_db
 def test_view_contains_objects(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
-    response = super_client.get(urls["index"])
+    response = admin_client.get(urls["index"])
 
     assert "City 1" in response.content.decode()
     assert "City 2" in response.content.decode()

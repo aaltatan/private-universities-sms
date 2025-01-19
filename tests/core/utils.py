@@ -22,7 +22,7 @@ def parse_buttons(parser: HTMLParser) -> dict[str, bool]:
 
 
 def assert_export(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
     headers_modal_GET: dict[str, str],
     filename: str,
@@ -36,13 +36,13 @@ def assert_export(
         "json": "application/json",
     }
 
-    response = super_client.get(url, headers=headers_modal_GET)
+    response = admin_client.get(url, headers=headers_modal_GET)
 
     assert response.status_code == 200
     assert "HX-Redirect" in response.headers
 
     url += "&redirected=true"
-    response = super_client.get(url, headers=headers_modal_GET)
+    response = admin_client.get(url, headers=headers_modal_GET)
 
     assert response.status_code == 200
     assert response.headers["Content-Type"] == content_types[extension]

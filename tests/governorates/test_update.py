@@ -11,11 +11,11 @@ from apps.core.models import AbstractUniqueNameModel as Model
 
 @pytest.mark.django_db
 def test_index_page_has_update_links_for_authorized_user(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
     model: type[Model],
 ) -> None:
-    response = super_client.get(urls["index"])
+    response = admin_client.get(urls["index"])
     parser = HTMLParser(response.content)
     tds_name = parser.css("td[data-header='name'] a")
     edit_context_menu_btns = parser.css(
@@ -77,13 +77,13 @@ def test_index_page_has_no_update_links_for_unauthorized_user(
 
 @pytest.mark.django_db
 def test_update_page(
-    super_client: Client,
+    admin_client: Client,
     model: type[Model],
     templates: dict[str, str],
     app_label: str,
 ):
     obj = model.objects.first()
-    response = super_client.get(obj.get_update_url())
+    response = admin_client.get(obj.get_update_url())
     parser = HTMLParser(response.content)
 
     h1 = parser.css_first("form h1").text(strip=True)
@@ -108,13 +108,13 @@ def test_update_page(
 
 @pytest.mark.django_db
 def test_update_form_has_previous_page_querystring(
-    super_client: Client, model: type[Model]
+    admin_client: Client, model: type[Model]
 ):
     obj = model.objects.first()
 
     url = obj.get_update_url() + "?page=1&per_page=10&order_by=-Id"
 
-    response = super_client.get(url)
+    response = admin_client.get(url)
     parser = HTMLParser(response.content)
     form = parser.css_first("main form")
 
@@ -124,7 +124,7 @@ def test_update_form_has_previous_page_querystring(
 
 @pytest.mark.django_db
 def test_update_with_dirty_data(
-    super_client: Client,
+    admin_client: Client,
     model: type[Model],
     dirty_data: list[dict],
     templates: dict[str, str],
@@ -133,7 +133,7 @@ def test_update_with_dirty_data(
     url = obj.get_update_url()
 
     for data in dirty_data:
-        response = super_client.post(url, data["data"])
+        response = admin_client.post(url, data["data"])
         assert data["error"] in response.content.decode()
         assert templates["update_form"] in [t.name for t in response.templates]
         assert response.status_code == 200
@@ -143,7 +143,7 @@ def test_update_with_dirty_data(
 
 @pytest.mark.django_db
 def test_update_with_modal_with_dirty_data(
-    super_client: Client,
+    admin_client: Client,
     model: type[Model],
     dirty_data: list[dict],
     urls: dict[str, str],
@@ -159,7 +159,7 @@ def test_update_with_modal_with_dirty_data(
     }
 
     for data in dirty_data:
-        response = super_client.post(
+        response = admin_client.post(
             url,
             data["data"],
             headers=headers,
@@ -173,7 +173,7 @@ def test_update_with_modal_with_dirty_data(
 
 @pytest.mark.django_db
 def test_update_form_with_clean_data(
-    super_client: Client,
+    admin_client: Client,
     model: type[Model],
     urls: dict[str, str],
     clean_data_sample: dict[str, str],
@@ -182,7 +182,7 @@ def test_update_form_with_clean_data(
     obj = model.objects.get(id=1)
     url = obj.get_update_url() + querystring
 
-    response = super_client.post(url, clean_data_sample)
+    response = admin_client.post(url, clean_data_sample)
     messages_list = list(
         get_messages(request=response.wsgi_request),
     )
@@ -202,7 +202,7 @@ def test_update_form_with_clean_data(
 
 @pytest.mark.django_db
 def test_update_with_redirect_from_modal(
-    super_client: Client,
+    admin_client: Client,
     model: type[Model],
     urls: dict[str, str],
     templates: dict[str, str],
@@ -218,7 +218,7 @@ def test_update_with_redirect_from_modal(
         "querystring": "per_page=10&order_by=-Id",
     }
 
-    response = super_client.get(url, headers=headers)
+    response = admin_client.get(url, headers=headers)
     parser = HTMLParser(response.content)
     form = parser.css_first("form")
     form_hx_post = form.attributes.get("hx-post")
@@ -227,7 +227,7 @@ def test_update_with_redirect_from_modal(
     assert templates["update_modal_form"] in [t.name for t in response.templates]
     assert form_hx_post == url
 
-    response = super_client.post(
+    response = admin_client.post(
         url,
         clean_data_sample,
         headers=headers,
@@ -256,7 +256,7 @@ def test_update_with_redirect_from_modal(
 
 @pytest.mark.django_db
 def test_update_without_redirect_from_modal(
-    super_client: Client,
+    admin_client: Client,
     model: type[Model],
     templates: dict[str, str],
     clean_data_sample: dict[str, str],
@@ -265,7 +265,7 @@ def test_update_without_redirect_from_modal(
     obj = model.objects.get(id=4)
     url = obj.get_update_url() + "?per_page=10&order_by=-Id"
 
-    response = super_client.get(url, headers=headers_modal_GET)
+    response = admin_client.get(url, headers=headers_modal_GET)
     parser = HTMLParser(response.content)
 
     form = parser.css_first("form")
@@ -275,7 +275,7 @@ def test_update_without_redirect_from_modal(
     assert templates["update_modal_form"] in [t.name for t in response.templates]
     assert form_hx_post == url
 
-    response = super_client.post(
+    response = admin_client.post(
         url,
         clean_data_sample,
         headers=headers_modal_GET,

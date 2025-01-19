@@ -51,10 +51,6 @@ urlpatterns = [
         "governorates/",
         include("apps.governorates.urls"),
     ),
-    path(
-        "cities/",
-        include("apps.cities.urls"),
-    ),
 ]
 
 if settings.DEBUG:

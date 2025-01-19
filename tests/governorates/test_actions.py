@@ -11,7 +11,7 @@ from apps.core.models import AbstractUniqueNameModel as Model
 
 @pytest.mark.django_db
 def test_bulk_delete_modal_response(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     data: dict = {
@@ -19,7 +19,7 @@ def test_bulk_delete_modal_response(
         "kind": "modal",
         "name": "delete",
     }
-    response = super_client.post(urls["index"], data)
+    response = admin_client.post(urls["index"], data)
     parser = HTMLParser(response.content)
     modal_body = (
         parser.css_first(
@@ -57,7 +57,7 @@ def test_bulk_delete_without_permissions(
 
 @pytest.mark.django_db
 def test_bulk_delete_with_permissions(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
     model: type[Model],
 ):
@@ -67,7 +67,7 @@ def test_bulk_delete_with_permissions(
         "name": "delete",
     }
 
-    response = super_client.post(urls["index"], data)
+    response = admin_client.post(urls["index"], data)
     hx_location = json.loads(
         response.headers.get("Hx-Location"),
     )
@@ -88,7 +88,7 @@ def test_bulk_delete_with_permissions(
 
 @pytest.mark.django_db
 def test_bulk_action_not_found(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     data: dict = {
@@ -97,10 +97,10 @@ def test_bulk_action_not_found(
         "name": "bulk_delete",  # name not in actions
     }
 
-    response = super_client.post(urls["index"], data)
+    response = admin_client.post(urls["index"], data)
     assert response.status_code == 500
 
-    response = super_client.post(urls["index"], data, follow=True)
+    response = admin_client.post(urls["index"], data, follow=True)
     assert response.status_code == 500
 
 

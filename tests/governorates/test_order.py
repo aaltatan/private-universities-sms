@@ -5,12 +5,12 @@ from selectolax.parser import HTMLParser
 
 @pytest.mark.django_db
 def test_view_filter_order_by_id_page_one(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     url: str = urls["index"] + "?order_by=id"
 
-    response = super_client.get(url)
+    response = admin_client.get(url)
 
     assert response.status_code == 200
     assert response.context["page"].object_list[0].id == 1
@@ -23,12 +23,12 @@ def test_view_filter_order_by_id_page_one(
 
 @pytest.mark.django_db
 def test_view_filter_order_by_id_page_twenty_one(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     url: str = urls["index"] + "?page=21&order_by=id"
 
-    response = super_client.get(url)
+    response = admin_client.get(url)
 
     assert response.status_code == 200
     assert response.context["page"].object_list[0].id == 201
@@ -41,12 +41,12 @@ def test_view_filter_order_by_id_page_twenty_one(
 
 @pytest.mark.django_db
 def test_view_filter_order_by_name_page_one(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     url: str = urls["index"] + "?order_by=name"
 
-    response = super_client.get(url)
+    response = admin_client.get(url)
 
     assert response.status_code == 200
     assert response.context["page"].object_list[0].id == 1
@@ -59,12 +59,12 @@ def test_view_filter_order_by_name_page_one(
 
 @pytest.mark.django_db
 def test_view_filter_order_by_name_page_twenty_one(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     url: str = urls["index"] + "?page=21&order_by=name"
 
-    response = super_client.get(url)
+    response = admin_client.get(url)
     assert response.status_code == 200
     assert response.context["page"].object_list[0].id == 201
     assert response.context["page"].object_list[1].id == 202
@@ -76,12 +76,12 @@ def test_view_filter_order_by_name_page_twenty_one(
 
 @pytest.mark.django_db
 def test_view_filter_order_by_description_page_one(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     url: str = urls["index"] + "?order_by=Description"
 
-    response = super_client.get(url)
+    response = admin_client.get(url)
 
     assert response.context["page"].object_list[0].description == "001"
     assert response.context["page"].object_list[1].description == "002"
@@ -93,12 +93,12 @@ def test_view_filter_order_by_description_page_one(
 
 @pytest.mark.django_db
 def test_view_pagination(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     url: str = urls["index"] + "?page=2"
 
-    response = super_client.get(url)
+    response = admin_client.get(url)
     parser = HTMLParser(response.content)
     rows = parser.css("table tr:not(:first-child)")
 
@@ -109,12 +109,12 @@ def test_view_pagination(
 
 @pytest.mark.django_db
 def test_pagination_with_invalid_page_number(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     url: str = urls["index"] + "?page=dasd"
 
-    response = super_client.get(url)
+    response = admin_client.get(url)
     parser = HTMLParser(response.content)
     rows = parser.css("table tr:not(:first-child)")
 
@@ -125,12 +125,12 @@ def test_pagination_with_invalid_page_number(
 
 @pytest.mark.django_db
 def test_pagination_with_per_page(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     url: str = urls["index"] + "?page=1&per_page=50"
 
-    response = super_client.get(url)
+    response = admin_client.get(url)
     parser = HTMLParser(response.content)
     rows = parser.css("table tr:not(:first-child)")
 
@@ -141,12 +141,12 @@ def test_pagination_with_per_page(
 
 @pytest.mark.django_db
 def test_pagination_with_per_page_all_and_invalid_page_number(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     url: str = urls["index"] + "?page=dasd&per_page=all"
 
-    response = super_client.get(url)
+    response = admin_client.get(url)
     parser = HTMLParser(response.content)
     rows = parser.css("table tr:not(:first-child)")
 
@@ -157,12 +157,12 @@ def test_pagination_with_per_page_all_and_invalid_page_number(
 
 @pytest.mark.django_db
 def test_pagination_with_per_page_and_page_number_over_the_pages_count(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ):
     url: str = urls["index"] + "?page=12&per_page=100"
 
-    response = super_client.get(url)
+    response = admin_client.get(url)
     parser = HTMLParser(response.content)
     rows = parser.css("table tr:not(:first-child)")
 

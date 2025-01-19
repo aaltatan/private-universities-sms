@@ -4,8 +4,7 @@ from django.db.models import Model
 from django.urls import reverse
 
 from apps.core.models import User
-
-from ..models import Governorate
+from apps.governorates.models import Governorate
 
 
 APP_LABEL = "governorates"

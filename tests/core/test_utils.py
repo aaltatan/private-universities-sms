@@ -1,4 +1,4 @@
-from ..utils import Perm, increase_slug_by_one
+from apps.core.utils import Perm, increase_slug_by_one
 
 
 def test_increase_slug_by_one():

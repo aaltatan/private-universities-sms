@@ -11,10 +11,10 @@ from apps.core.models import AbstractUniqueNameModel as Model
 
 @pytest.mark.django_db
 def test_delete_btn_appearance_if_user_has_delete_perm(
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
 ) -> None:
-    response = super_client.get(urls["index"])
+    response = admin_client.get(urls["index"])
     parser = HTMLParser(response.content)
     btn = parser.css_first("a[aria-label='delete object']")
 
@@ -47,23 +47,23 @@ def test_delete_btn_appearance_if_user_has_no_delete_perm(
 
 @pytest.mark.django_db
 def test_get_delete_modal_without_using_htmx(
-    model: type[Model], super_client: Client
+    model: type[Model], admin_client: Client
 ) -> None:
     obj = model.objects.first()
-    response = super_client.get(obj.get_delete_url())
+    response = admin_client.get(obj.get_delete_url())
     assert response.status_code == 404
 
 
 @pytest.mark.django_db
 def test_get_delete_modal_with_using_htmx(
     model: type[Model],
-    super_client: Client,
+    admin_client: Client,
     templates: dict[str, str],
     headers_modal_GET: dict[str, str],
 ) -> None:
     obj = model.objects.first()
 
-    response = super_client.get(
+    response = admin_client.get(
         obj.get_delete_url(),
         headers=headers_modal_GET,
     )
@@ -82,12 +82,12 @@ def test_get_delete_modal_with_using_htmx(
 @pytest.mark.django_db
 def test_delete_object(
     model: type[Model],
-    super_client: Client,
+    admin_client: Client,
     urls: dict[str, str],
     headers_modal_GET: dict[str, str],
 ) -> None:
     obj = model.objects.first()
-    response = super_client.post(
+    response = admin_client.post(
         obj.get_delete_url(),
         headers=headers_modal_GET,
     )
