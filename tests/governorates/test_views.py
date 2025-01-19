@@ -2,7 +2,7 @@ import pytest
 from django.test import Client
 from selectolax.parser import HTMLParser
 
-from tests.core.utils import parse_buttons
+from tests.common import parse_buttons
 
 
 @pytest.mark.django_db

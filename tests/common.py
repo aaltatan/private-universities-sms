@@ -4,6 +4,8 @@ from typing import Literal
 from django.test import Client
 from selectolax.parser import HTMLParser
 
+from apps.core.models import User
+
 
 def parse_buttons(parser: HTMLParser) -> dict[str, bool]:
     add_btn = parser.css_first("[aria-label='create new object']")
@@ -53,3 +55,34 @@ def assert_export(
     assert (
         response.headers["Content-Disposition"] == f'attachment; filename="{filename}"'
     )
+
+
+def create_base_users() -> None:
+    exists = User.objects.filter(
+        username__in=["user_with_no_perm", "admin"],
+    ).exists()
+    if not exists:
+        User.objects.create_user(
+            username="user_with_no_perm",
+            password="user_with_no_perm",
+        )
+        User.objects.create_superuser(
+            username="admin",
+            password="admin",
+        )
+
+
+def get_token_headers(client: Client, admin: bool = False) -> dict[str, str]:
+    user = "admin" if admin else "user_with_no_perm"
+    response = client.post("/api/token/", {"username": user, "password": user})
+    token = response.json()["access"]
+    return {
+        "Authorization": f"Bearer {token}",
+    }
+
+
+def get_modal_GET_headers() -> dict[str, str]:
+    return {
+        "modal": "true",
+        "Hx-Request": "true",
+    }

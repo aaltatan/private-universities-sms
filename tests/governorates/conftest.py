@@ -1,14 +1,41 @@
 import pytest
 from django.contrib.auth.models import Permission
 from django.db.models import Model
+from django.test import Client
 from django.urls import reverse
+from rest_framework.test import APIClient
 
 from apps.core.models import User
 from apps.governorates.models import Governorate
+from tests.common import (
+    create_base_users,
+    get_token_headers,
+    get_modal_GET_headers,
+)
 
 
 APP_LABEL = "governorates"
 MODEL_NAME = "Governorate"
+
+
+@pytest.fixture
+def api_client() -> APIClient:
+    return APIClient()
+
+
+@pytest.fixture
+def admin_headers(client: Client) -> dict[str, str]:
+    return get_token_headers(client, admin=True)
+
+
+@pytest.fixture
+def user_headers(client: Client) -> dict[str, str]:
+    return get_token_headers(client)
+
+
+@pytest.fixture
+def headers_modal_GET() -> dict[str, str]:
+    return get_modal_GET_headers()
 
 
 @pytest.fixture
@@ -62,24 +89,25 @@ def clean_data_sample() -> dict[str, str]:
     }
 
 
-@pytest.fixture(scope="session", autouse=True)
-def objects():
-    governorates = [
-        {"name": "محافظة حماه", "description": "goo"},
-        {"name": "محافظة حمص", "description": "meta"},
-        {"name": "محافظة ادلب", "description": "meta"},
-        {"name": "محافظة المنيا", "description": "language mena"},
-    ]
+@pytest.fixture(scope="package", autouse=True)
+def objects(django_db_setup, django_db_blocker) -> None:
+    with django_db_blocker.unblock():
+        governorates = [
+            {"name": "محافظة حماه", "description": "goo"},
+            {"name": "محافظة حمص", "description": "meta"},
+            {"name": "محافظة ادلب", "description": "meta"},
+            {"name": "محافظة المنيا", "description": "language mena"},
+        ]
 
-    for governorate in governorates:
-        Governorate.objects.create(**governorate)
+        for governorate in governorates:
+            Governorate.objects.create(**governorate)
 
-    for idx in range(1, 301):
-        description_order = str(abs(idx - 301)).rjust(3, "0")
-        Governorate.objects.create(
-            name=f"City {idx}",
-            description=description_order,
-        )
+        for idx in range(1, 301):
+            description_order = str(abs(idx - 301)).rjust(3, "0")
+            Governorate.objects.create(
+                name=f"City {idx}",
+                description=description_order,
+            )
 
 
 @pytest.fixture
@@ -120,23 +148,25 @@ def dirty_data() -> list[dict]:
     ]
 
 
-@pytest.fixture(autouse=True)
-def create_users() -> None:
-    user_with_view_perm_only = User.objects.create_user(
-        username="user_with_view_perm_only",
-        password="user_with_view_perm_only",
-    )
-    view_perm = Permission.objects.get(codename="view_governorate")
-    user_with_view_perm_only.user_permissions.add(view_perm)
-
-    perms = ["add", "change", "delete", "export"]
-
-    for p in perms:
-        perm = Permission.objects.get(
-            codename=f"{p}_governorate",
+@pytest.fixture(autouse=True, scope="package")
+def create_users(django_db_setup, django_db_blocker) -> None:
+    with django_db_blocker.unblock():
+        create_base_users()
+        user_with_view_perm_only = User.objects.create_user(
+            username="user_with_view_perm_only",
+            password="user_with_view_perm_only",
         )
-        user = User.objects.create_user(
-            username=f"user_with_view_{p}_perm",
-            password=f"user_with_view_{p}_perm",
-        )
-        user.user_permissions.add(view_perm, perm)
+        view_perm = Permission.objects.get(codename="view_governorate")
+        user_with_view_perm_only.user_permissions.add(view_perm)
+
+        perms = ["add", "change", "delete", "export"]
+
+        for p in perms:
+            perm = Permission.objects.get(
+                codename=f"{p}_governorate",
+            )
+            user = User.objects.create_user(
+                username=f"user_with_view_{p}_perm",
+                password=f"user_with_view_{p}_perm",
+            )
+            user.user_permissions.add(view_perm, perm)
