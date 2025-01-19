@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from ..utils import Deleter
+from ..utils import BaseDeleter
 
 
 class DeleteMixinAbstract(ABC):
@@ -17,10 +17,21 @@ class DeleteMixinAbstract(ABC):
     def model(self) -> type[Model]: ...
 
     @abstractmethod
-    def deleter(self, obj: Any) -> type[Deleter]: ...
+    def deleter(self, obj: Any) -> type[BaseDeleter]: ...
 
 
 class DeleteMixin(DeleteMixinAbstract):
+    def __init__(self):
+        if getattr(self, "deleter", None) is None:
+            raise AttributeError(
+                "you must define a deleter class for the ListView.",
+            )
+
+        if not issubclass(self.deleter, BaseDeleter):
+            raise TypeError(
+                "the deleter class must be a subclass of Deleter.",
+            )
+
     def get(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
         """
         Handles GET requests and returns a rendered template.

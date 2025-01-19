@@ -93,6 +93,7 @@ def test_bulk_delete_with_permissions_with_undeletable_objects(
     urls: dict[str, str],
     model: type[Model],
     mocker: pytest_mock.MockerFixture,
+    app_label: str,
 ):
     data: dict = {
         "action-check": list(range(1, 51)),
@@ -101,7 +102,7 @@ def test_bulk_delete_with_permissions_with_undeletable_objects(
     }
 
     mocker.patch(
-        "apps.governorates.utils.GovernorateDeleter.is_qs_deletable",
+        f"apps.{app_label}.utils.Deleter.is_qs_deletable",
         return_value=False,
     )
 
@@ -116,10 +117,7 @@ def test_bulk_delete_with_permissions_with_undeletable_objects(
     assert response.headers.get("HX-Reswap") == "innerHTML"
     assert response.headers.get("HX-Trigger") == "messages"
     assert messages_list[0].level == messages.ERROR
-    assert (
-        messages_list[0].message
-        == "selected 50 objects cannot be deleted."
-    )
+    assert messages_list[0].message == "selected 50 objects cannot be deleted."
     assert model.objects.count() == 304
 
 
@@ -160,3 +158,39 @@ def test_bulk_delete_with_permissions_only_for_view(
     response = client.post(urls["index"], data)
 
     assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_bulk_delete_when_no_deleter_class_is_defined(
+    admin_client: Client,
+    urls: dict[str, str],
+    mocker: pytest_mock.MockerFixture,
+    app_label: str,
+):
+    mocker.patch(f"apps.{app_label}.views.ListView.deleter", new=None)
+    data: dict = {
+        "action-check": list(range(1, 51)),
+        "kind": "action",
+        "name": "delete",
+    }
+    with pytest.raises(AttributeError):
+        admin_client.post(urls["index"], data)
+
+
+@pytest.mark.django_db
+def test_bulk_delete_when_deleter_class_is_not_subclass_of_Deleter(
+    admin_client: Client,
+    urls: dict[str, str],
+    mocker: pytest_mock.MockerFixture,
+    app_label: str,
+):
+    class Deleter: ...
+
+    mocker.patch(f"apps.{app_label}.views.ListView.deleter", new=Deleter)
+    data: dict = {
+        "action-check": list(range(1, 51)),
+        "kind": "action",
+        "name": "delete",
+    }
+    with pytest.raises(TypeError):
+        admin_client.post(urls["index"], data)

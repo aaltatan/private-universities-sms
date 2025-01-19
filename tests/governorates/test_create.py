@@ -254,14 +254,18 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
     assert templates["create_modal_form"] in [t.name for t in response.templates]
 
     for item in dirty_data:
-        response = admin_client.post(urls["create"], item["data"])
+        response = admin_client.post(
+            urls["create"],
+            item["data"],
+            headers=headers_modal_GET,
+        )
         parser = HTMLParser(response.content)
         form_hx_post = parser.css_first(
             "form[hx-post]",
         ).attributes.get("hx-post")
 
         assert item["error"] in response.content.decode()
-        assert templates["create_form"] in [t.name for t in response.templates]
+        assert templates["create_modal_form"] in [t.name for t in response.templates]
         assert response.status_code == 200
         assert form_hx_post == urls["create"]
         assert model.objects.count() == 304

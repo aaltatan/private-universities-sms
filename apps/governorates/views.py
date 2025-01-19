@@ -13,7 +13,7 @@ from apps.core.utils import Action, Perm
 from . import constants, filters, forms, models, resources, serializers, utils
 
 
-class GovernorateViewSet(
+class APIViewSet(
     mixins.DestroyMixin,
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
@@ -26,7 +26,7 @@ class GovernorateViewSet(
     ]
     ordering_fields = constants.ORDERING_FIELDS
     search_fields = constants.SEARCH_FIELDS
-    deleter = utils.GovernorateDeleter
+    deleter = utils.Deleter
 
 
 class ListView(
@@ -40,7 +40,7 @@ class ListView(
     permission_required: str = Perm("governorates").string
     filter_class = filters.GovernorateFilter
     resource_class = resources.GovernorateResource
-    deleter = utils.GovernorateDeleter
+    deleter = utils.Deleter
     search_fields = constants.SEARCH_FIELDS
 
     def get_actions(self) -> dict[str, Action]:
@@ -82,4 +82,4 @@ class DeleteView(
 ):
     permission_required: str = Perm("governorates", "delete").string
     model = models.Governorate
-    deleter = utils.GovernorateDeleter
+    deleter = utils.Deleter

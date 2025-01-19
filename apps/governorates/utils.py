@@ -1,9 +1,9 @@
 from django.db.models import QuerySet
 
-from apps.core.utils import Deleter
+from apps.core.utils import BaseDeleter
 
 
-class GovernorateDeleter(Deleter):
+class Deleter(BaseDeleter):
     def is_obj_deletable(self) -> bool:
         return True
 

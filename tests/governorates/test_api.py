@@ -157,6 +157,56 @@ def test_delete_object(
 
 
 @pytest.mark.django_db
+def test_delete_and_bulk_delete_object_when_deleter_class_is_None(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    mocker: pytest_mock.MockerFixture,
+    app_label: str,
+):
+    mocker.patch(f"apps.{app_label}.views.APIViewSet.deleter", new=None)
+    
+    with pytest.raises(AttributeError):
+        api_client.delete(
+            path=f"{urls['api']}1/",
+            headers=admin_headers,
+        )
+
+    with pytest.raises(AttributeError):
+        api_client.post(
+            path=f"{urls['api']}bulk-delete/",
+            data={"ids": [1, 2, 3, 4, 500, 501]},
+            headers=admin_headers,
+        )
+
+
+@pytest.mark.django_db
+def test_delete_and_bulk_delete_object_when_deleter_class_is_not_a_subclass_of_Deleter(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    mocker: pytest_mock.MockerFixture,
+    app_label: str,
+):
+    class Deleter: ...
+
+    mocker.patch(f"apps.{app_label}.views.APIViewSet.deleter", new=Deleter)
+
+    with pytest.raises(TypeError):
+        api_client.delete(
+            path=f"{urls['api']}1/",
+            headers=admin_headers,
+        )
+
+    with pytest.raises(TypeError):
+        api_client.post(
+            path=f"{urls['api']}bulk-delete/",
+            data={"ids": [1, 2, 3, 4, 500, 501]},
+            headers=admin_headers,
+        )
+
+
+@pytest.mark.django_db
 def test_delete_object_undeletable(
     api_client: APIClient,
     urls: dict[str, str],
@@ -164,9 +214,10 @@ def test_delete_object_undeletable(
     model: type[Model],
     model_name: str,
     mocker: pytest_mock.MockerFixture,
+    app_label: str,
 ):
     mocker.patch(
-        "apps.governorates.utils.GovernorateDeleter.is_obj_deletable",
+        f"apps.{app_label}.utils.Deleter.is_obj_deletable",
         return_value=False,
     )
 
@@ -223,9 +274,10 @@ def test_bulk_delete_objects_undeletable(
     admin_headers: dict[str, str],
     model: type[Model],
     mocker: pytest_mock.MockerFixture,
+    app_label: str,
 ):
     mocker.patch(
-        "apps.governorates.utils.GovernorateDeleter.is_qs_deletable",
+        f"apps.{app_label}.utils.Deleter.is_qs_deletable",
         return_value=False,
     )
 

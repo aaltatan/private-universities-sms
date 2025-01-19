@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 
-from apps.core.utils import Deleter
+from apps.core.utils import BaseDeleter
 
 
 class DestroyMixin:
@@ -11,14 +11,14 @@ class DestroyMixin:
                 "you must define a deleter class for the ListView.",
             )
 
-        if not issubclass(self.deleter, Deleter):
+        if not issubclass(self.deleter, BaseDeleter):
             raise TypeError(
                 "the deleter class must be a subclass of Deleter.",
             )
 
         instance = self.get_object()
 
-        deleter: type[Deleter] = self.deleter(instance)
+        deleter: type[BaseDeleter] = self.deleter(instance)
 
         if deleter.is_deletable():
             deleter.delete()

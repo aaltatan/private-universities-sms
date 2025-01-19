@@ -5,7 +5,7 @@ from django.db.models import QuerySet
 from django.utils.translation import gettext as _
 
 
-class Deleter(ABC):
+class BaseDeleter(ABC):
     obj_success_message: str = _(
         "{} has been deleted successfully.",
     )

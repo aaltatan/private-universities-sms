@@ -10,7 +10,7 @@ from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from ..utils import Deleter
+from ..utils import BaseDeleter
 
 
 class BulkDeleteMixin:
@@ -20,7 +20,7 @@ class BulkDeleteMixin:
                 "you must define a deleter class for the ListView.",
             )
 
-        if not issubclass(self.deleter, Deleter):
+        if not issubclass(self.deleter, BaseDeleter):
             raise TypeError(
                 "the deleter class must be a subclass of Deleter.",
             )
@@ -66,7 +66,7 @@ class BulkDeleteAPIMixin:
                 "you must define a deleter class for the ListView.",
             )
 
-        if not issubclass(self.deleter, Deleter):
+        if not issubclass(self.deleter, BaseDeleter):
             raise TypeError(
                 "the deleter class must be a subclass of Deleter.",
             )

@@ -6,6 +6,21 @@ from tests.utils import parse_buttons
 
 
 @pytest.mark.django_db
+def test_index_GET_with_htmx(
+    admin_client: Client,
+    urls: dict[str, str],
+    templates: dict[str, str],
+):
+    headers = {
+        "HX-Request": "true",
+    }
+    response = admin_client.get(urls["index"], headers=headers)
+
+    assert response.status_code == 200
+    assert templates["table"] in [t.name for t in response.templates]
+
+
+@pytest.mark.django_db
 def test_index_has_checkboxes_admin(
     admin_client: Client,
     urls: dict[str, str],

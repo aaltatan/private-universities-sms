@@ -24,10 +24,28 @@ def test_delete_btn_appearance_if_user_has_delete_perm(
 
 
 @pytest.mark.django_db
+def test_delete_object_if_headers_has_no_hx_request(
+    admin_client: Client, model: type[Model]
+) -> None:
+    obj = model.objects.first()
+    response = admin_client.post(
+        obj.get_delete_url(),
+    )
+    messages_list = list(
+        messages.get_messages(response.wsgi_request),
+    )
+
+    assert response.status_code == 404
+    assert messages_list[0].level == messages.ERROR
+    assert (
+        messages_list[0].message
+        == "you can't delete this object because you are not using htmx."
+    )
+
+
+@pytest.mark.django_db
 def test_delete_btn_appearance_if_user_has_no_delete_perm(
-    client: Client,
-    urls: dict[str, str],
-    model: type[Model],
+    client: Client, urls: dict[str, str], model: type[Model]
 ) -> None:
     client.login(
         username="user_with_view_perm_only",
@@ -104,10 +122,7 @@ def test_delete_object(
     assert location_path == urls["index"]
     assert response.headers.get("Hx-Trigger") == "messages"
     assert messages_list[0].level == messages.SUCCESS
-    assert (
-        messages_list[0].message
-        == f"{obj.name} has been deleted successfully."
-    )
+    assert messages_list[0].message == f"{obj.name} has been deleted successfully."
     assert model.objects.count() == 303
 
 
@@ -117,9 +132,10 @@ def test_delete_object_undeletable(
     admin_client: Client,
     headers_modal_GET: dict[str, str],
     mocker: pytest_mock.MockerFixture,
+    app_label: str,
 ) -> None:
     mocker.patch(
-        "apps.governorates.utils.GovernorateDeleter.is_obj_deletable",
+        f"apps.{app_label}.utils.Deleter.is_obj_deletable",
         return_value=False,
     )
 
@@ -138,8 +154,41 @@ def test_delete_object_undeletable(
     assert response.headers.get("HX-Reswap") == "innerHTML"
     assert response.headers.get("Hx-Trigger") == "messages"
     assert messages_list[0].level == messages.ERROR
-    assert (
-        messages_list[0].message
-        == f"{obj.name} cannot be deleted."
-    )
+    assert messages_list[0].message == f"{obj.name} cannot be deleted."
     assert model.objects.count() == 304
+
+
+@pytest.mark.django_db
+def test_delete_when_no_deleter_class_is_defined(
+    admin_client: Client,
+    model: type[Model],
+    headers_modal_GET: dict[str, str],
+    mocker: pytest_mock.MockerFixture,
+    app_label: str,
+):
+    mocker.patch(f"apps.{app_label}.views.DeleteView.deleter", new=None)
+    obj = model.objects.first()
+    with pytest.raises(AttributeError):
+        admin_client.post(
+            obj.get_delete_url(),
+            headers=headers_modal_GET,
+        )
+
+
+@pytest.mark.django_db
+def test_delete_when_deleter_class_is_not_subclass_of_Deleter(
+    admin_client: Client,
+    model: type[Model],
+    headers_modal_GET: dict[str, str],
+    mocker: pytest_mock.MockerFixture,
+    app_label: str,
+):
+    class Deleter: ...
+
+    mocker.patch(f"apps.{app_label}.views.DeleteView.deleter", new=Deleter)
+    obj = model.objects.first()
+    with pytest.raises(TypeError):
+        admin_client.post(
+            obj.get_delete_url(),
+            headers=headers_modal_GET,
+        )

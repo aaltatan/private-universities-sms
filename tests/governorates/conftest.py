@@ -47,6 +47,7 @@ def templates() -> dict[str, str]:
         "index": f"apps/{APP_LABEL}/index.html",
         "create": f"apps/{APP_LABEL}/create.html",
         "update": f"apps/{APP_LABEL}/update.html",
+        "table": f"components/{APP_LABEL}/table.html",
         "create_form": f"components/{APP_LABEL}/create.html",
         "update_form": f"components/{APP_LABEL}/update.html",
         "create_modal_form": f"components/{APP_LABEL}/modal-create.html",
