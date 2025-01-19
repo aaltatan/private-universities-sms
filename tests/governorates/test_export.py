@@ -1,7 +1,7 @@
 import pytest
 from django.test import Client
 
-from tests.common import assert_export
+from tests.utils import assert_export
 
 
 @pytest.mark.django_db

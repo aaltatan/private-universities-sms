@@ -1,41 +1,15 @@
 import pytest
 from django.contrib.auth.models import Permission
 from django.db.models import Model
-from django.test import Client
 from django.urls import reverse
-from rest_framework.test import APIClient
 
 from apps.core.models import User
 from apps.governorates.models import Governorate
-from tests.common import (
-    create_base_users,
-    get_token_headers,
-    get_modal_GET_headers,
-)
+from tests.utils import create_base_users
 
 
 APP_LABEL = "governorates"
 MODEL_NAME = "Governorate"
-
-
-@pytest.fixture
-def api_client() -> APIClient:
-    return APIClient()
-
-
-@pytest.fixture
-def admin_headers(client: Client) -> dict[str, str]:
-    return get_token_headers(client, admin=True)
-
-
-@pytest.fixture
-def user_headers(client: Client) -> dict[str, str]:
-    return get_token_headers(client)
-
-
-@pytest.fixture
-def headers_modal_GET() -> dict[str, str]:
-    return get_modal_GET_headers()
 
 
 @pytest.fixture

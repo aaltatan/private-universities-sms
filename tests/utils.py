@@ -7,6 +7,21 @@ from selectolax.parser import HTMLParser
 from apps.core.models import User
 
 
+def get_token_headers(
+    client: Client,
+    admin: bool = False,
+) -> dict[str, str]:
+    user = "admin" if admin else "user_with_no_perm"
+    response = client.post(
+        "/api/token/",
+        {"username": user, "password": user},
+    )
+    token = response.json()["access"]
+    return {
+        "Authorization": f"Bearer {token}",
+    }
+
+
 def parse_buttons(parser: HTMLParser) -> dict[str, bool]:
     add_btn = parser.css_first("[aria-label='create new object']")
     delete_btn = parser.css_first("a[aria-label='delete object']")
@@ -68,19 +83,3 @@ def create_base_users() -> None:
             username="admin",
             password="admin",
         )
-
-
-def get_token_headers(client: Client, admin: bool = False) -> dict[str, str]:
-    user = "admin" if admin else "user_with_no_perm"
-    response = client.post("/api/token/", {"username": user, "password": user})
-    token = response.json()["access"]
-    return {
-        "Authorization": f"Bearer {token}",
-    }
-
-
-def get_modal_GET_headers() -> dict[str, str]:
-    return {
-        "modal": "true",
-        "Hx-Request": "true",
-    }

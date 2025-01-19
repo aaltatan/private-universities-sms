@@ -9,6 +9,8 @@ staticfiles/
 
 dev.css
 
+.vscode/
+
 # Virtual environments
 .venv/
 venv/
