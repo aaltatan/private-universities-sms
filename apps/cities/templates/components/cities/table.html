@@ -1,0 +1,182 @@
+{% load i18n widget_tweaks %}
+
+<c-blocks.table id="{{ table_id }}" :index_url="{{ index_url }}" :table_id="{{ table_id }}">
+  <c-slot name="search">
+    <c-table.filter-form trigger="search" class="w-full" prevent="True">
+      <c-inputs.text
+        :field="filter.form.q"
+        :show_label="False"
+        show_icon="True"
+        icon="magnifying-glass"
+        kind="search"
+        placeholder="{% translate 'search'|title %}"
+      />
+    </c-table.filter-form>
+  </c-slot>
+
+  <c-slot name="buttons_bar">
+    {% if can_create %}
+    <c-button
+      size="20"
+      hx-get="{{ create_url }}{% querystring %}"
+      hx-target="#modal-container"
+      hx-indicator="#modal-spinner"
+      hx-headers='{"modal": true}'
+      @click="showModal"
+      theme="primary"
+      title="{% translate 'add new'|title %}"
+      aria-label="create new object"
+    />
+    {% endif %}
+
+    <c-table.filter-form trigger="change"> {{ filter.form.order_by }} </c-table.filter-form>
+
+    <c-button
+      icon="adjustments-horizontal"
+      size="20"
+      @click="openOverlaySidebar"
+      data-fields="name,description"
+      badge="True"
+      title="{% translate 'filters'|title %}"
+    />
+  </c-slot>
+
+  {% if can_delete %}
+  <c-slot name="actions">
+    <c-layout.context-menu.section>
+      <c-layout.context-menu.item color="danger" icon="trash">
+        <c-table.action-button
+          action_name="delete"
+          value="{% translate 'delete' %}"
+          hx-post="{{ index_url }}{% querystring %}"
+          hx-target="#modal-container"
+          hx-indicator="#modal-spinner"
+          aria-label="delete all objects"
+        />
+      </c-layout.context-menu.item>
+    </c-layout.context-menu.section>
+  </c-slot>
+  {% endif %}
+
+  <form hx-post="{{ index_url }}" id="{{ form_table_id }}">
+    <c-table.table>
+      <c-table.tr header="True">
+        {% if can_delete %}
+        <c-table.th>
+          <c-table.check-all />
+        </c-table.th>
+        {% endif %}
+        <c-table.th>{% translate 'name' %}</c-table.th>
+        <c-table.th>{% translate 'governorate' %}</c-table.th>
+        <c-table.th>{% translate 'description' %}</c-table.th>
+        <c-table.th>{% translate 'options' %}</c-table.th>
+      </c-table.tr>
+      {% for obj in page %}
+      <c-table.tr>
+        {% if can_delete %}
+        <c-table.td-check :obj="obj" idx="{{ forloop.counter }}" />
+        {% endif %}
+        <c-table.td data-header="{% translate 'name' %}">
+          {% if can_update %}
+          <a
+            hx-get="{{ obj.get_update_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            hx-headers='{"modal": true}'
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="edit object"
+          >
+            {{ obj.name }}
+          </a>
+          {% else %}
+          <!--  -->
+          {{ obj.name }}
+          <!--  -->
+          {% endif %}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'governorate' %}"> {{ obj.governorate }} </c-table.td>
+        <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
+        <c-table.td fixed="True">
+          {% if can_update or can_delete %}
+          <c-layout.context-menu.menu
+            button_padding="sm"
+            x="end-full"
+            y="{% if forloop.first %}top-0{% else %}bottom-0{% endif %}"
+          >
+            {% if can_update %}
+            <c-layout.context-menu.section>
+              <c-layout.context-menu.item icon="pencil">
+                <a
+                  href="{{ obj.get_update_url }}{% querystring %}"
+                  class="capitalize block w-full"
+                  aria-label="edit object"
+                >
+                  {% translate 'edit' %}
+                </a>
+              </c-layout.context-menu.item>
+            </c-layout.context-menu.section>
+            {% endif %}
+            <!--  -->
+            {% if can_delete %}
+            <c-layout.context-menu.section>
+              <c-layout.context-menu.item color="danger" icon="trash">
+                <a
+                  hx-get="{{ obj.get_delete_url }}{% querystring %}"
+                  hx-target="#modal-container"
+                  hx-indicator="#modal-spinner"
+                  @click="showModal"
+                  class="capitalize block w-full"
+                  aria-label="delete object"
+                >
+                  {% translate 'delete' %}
+                </a>
+              </c-layout.context-menu.item>
+            </c-layout.context-menu.section>
+            {% endif %}
+          </c-layout.context-menu.menu>
+          {% endif %}
+        </c-table.td>
+      </c-table.tr>
+      {% empty %}
+      <c-table.empty-tr />
+      {% endfor %}
+    </c-table.table>
+  </form>
+
+  <c-slot name="filters">
+    <c-layout.sidebar.overlay-sidebar>
+      <c-table.filter-form trigger="submit" class="w-full">
+        <c-layout.sidebar.overlay-content>
+          <c-slot name="header"> {% translate 'filters'|title %} </c-slot>
+          <c-slot name="body">
+            <c-inputs.text :field="filter.form.name" />
+            <c-inputs.text :field="filter.form.governorate" />
+            <c-inputs.text :field="filter.form.description" />
+          </c-slot>
+          <c-slot name="footer">
+            <c-button
+              icon="adjustments-horizontal"
+              theme="primary"
+              size="20"
+              title="{% translate 'filters'|title %}"
+            >
+              {% translate 'apply'|title %}
+            </c-button>
+            <c-button
+              icon="arrow-path"
+              size="20"
+              kind="a"
+              hx-get="{{ index_url }}"
+              hx-include="#no-content"
+              hx-target="#{{ table_id }}"
+              title="{% translate 'reset'|title %}"
+            >
+              {% translate 'reset'|title %}
+            </c-button>
+          </c-slot>
+        </c-layout.sidebar.overlay-content>
+      </c-table.filter-form>
+    </c-layout.sidebar.overlay-sidebar>
+  </c-slot>
+</c-blocks.table>

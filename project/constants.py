@@ -20,6 +20,12 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                 "icon": "home-modern",
                 "perm": "governorates.view_governorate",
             },
+            {
+                "href": reverse("cities:index"),
+                "text": _("cities").title(),
+                "icon": "home-modern",
+                "perm": "cities.view_city",
+            },
         ],
     }
     data["sidebar_links"] = [

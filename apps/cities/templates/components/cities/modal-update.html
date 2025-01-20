@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<c-forms.modal-update
+  form_title="{% translate 'update'|title %}{{ form.instance }}"
+  request_headers='{"modal": true, "redirect-to": "{{ index_url }}", "querystring": "{% querystring %}"
+  }'
+  url="{{ update_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-inputs.text :field="form.name" />
+  <c-inputs.text :field="form.governorate" />
+  <c-inputs.text :field="form.description" />
+</c-forms.modal-update>

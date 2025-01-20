@@ -14,7 +14,7 @@
 />
 
 <div
-  class="text-neutral-600 dark:text-neutral-300 [&:has(input[aria-invalid='true'])_label]:text-red-500 [&:has(input[required])_label_>_span]:block"
+  class="text-neutral-600 dark:text-neutral-300 [&:has(input[aria-invalid='true'])_label]:text-red-500 [&:has(*[required])_label_>_span]:block"
 >
   {% if show_label %}
   <label for="{{ field.id_for_label }}" class="flex w-fit items-center gap-1 pl-0.5 text-sm">
