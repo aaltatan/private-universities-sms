@@ -10,7 +10,7 @@ from django.utils.translation import gettext as _
 from django.db.models import Model
 from django.forms import ModelForm
 
-from .utils import ModalParser
+from .utils import RequestParser
 
 
 class AbstractUpdateMixin(ABC):
@@ -30,12 +30,12 @@ class UpdateMixin(AbstractUpdateMixin):
         """
         model = self.get_model_class()
         self.obj = get_object_or_404(model, slug=slug)
-        headers_parser = ModalParser(request.headers)
+        request_parser = RequestParser(request)
 
         template_name = self.get_template_name()
 
         if request.htmx:
-            if headers_parser.is_modal_request:
+            if request_parser.is_modal_request:
                 template_name = self.get_form_modal_template_name()
             else:
                 template_name = self.get_form_template_name()
@@ -52,26 +52,26 @@ class UpdateMixin(AbstractUpdateMixin):
 
         form = self.form_class(request.POST, instance=self.obj)
 
-        headers_parser = ModalParser(request.headers)
+        request_parser = RequestParser(request)
 
         if form.is_valid():
             return self.get_form_valid_response(
                 request=request,
                 form=form,
-                headers_parser=headers_parser,
+                request_parser=request_parser,
             )
 
         return self.get_form_invalid_response(
             request=request,
             form=form,
-            headers_parser=headers_parser,
+            request_parser=request_parser,
         )
 
     def get_form_valid_response(
         self,
         request: HttpRequest,
         form: type[ModelForm],
-        headers_parser: ModalParser,
+        request_parser: RequestParser,
     ) -> HttpResponse:
         """
         Returns the form valid response.
@@ -89,13 +89,13 @@ class UpdateMixin(AbstractUpdateMixin):
 
         response = HttpResponse(status=200)
 
-        if not headers_parser.is_modal_request:
+        if not request_parser.is_modal_request:
             response["Hx-Redirect"] = url + querystring
-        if headers_parser.redirect:
+        if request_parser.redirect:
             target = f'#{self.get_html_ids()["table_id"]}'
             response["Hx-Location"] = json.dumps(
                 {
-                    "path": headers_parser.url,
+                    "path": request_parser.url,
                     "target": target,
                 },
             )
@@ -108,7 +108,7 @@ class UpdateMixin(AbstractUpdateMixin):
         self,
         request: HttpRequest,
         form: type[ModelForm],
-        headers_parser: ModalParser,
+        request_parser: RequestParser,
     ) -> HttpResponse:
         """
         Returns the form invalid response.
@@ -117,7 +117,7 @@ class UpdateMixin(AbstractUpdateMixin):
         context = self.get_context_data()
         context["form"] = form
 
-        if headers_parser.is_modal_request:
+        if request_parser.is_modal_request:
             template_name = self.get_form_modal_template_name()
             context["create_url"] = request.path
             response = render(request, template_name, context)

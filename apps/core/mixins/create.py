@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from .utils import ModalParser
+from .utils import RequestParser
 
 
 class AbstractCreateMixin(ABC):
@@ -29,10 +29,10 @@ class CreateMixin(AbstractCreateMixin):
         Handles GET requests and returns a rendered template.
         """
         template_name = self.get_template_name()
-        headers_parser = ModalParser(request.headers)
+        request_parser = RequestParser(request)
 
         if request.htmx:
-            if headers_parser.is_modal_request:
+            if request_parser.is_modal_request:
                 template_name = self.get_form_modal_template_name()
             else:
                 template_name = self.get_form_template_name()
@@ -45,26 +45,26 @@ class CreateMixin(AbstractCreateMixin):
         Handles the POST request.
         """
         form = self.form_class(request.POST)
-        headers_parser = ModalParser(request.headers)
+        request_parser = RequestParser(request)
 
         if form.is_valid():
             return self.get_form_valid_response(
                 request=request,
                 form=form,
-                headers_parser=headers_parser,
+                request_parser=request_parser,
             )
 
         return self.get_form_invalid_response(
             request=request,
             form=form,
-            headers_parser=headers_parser,
+            request_parser=request_parser,
         )
 
     def get_form_invalid_response(
         self,
         request: HttpRequest,
         form: type[ModelForm],
-        headers_parser: ModalParser,
+        request_parser: RequestParser,
     ) -> HttpResponse:
         """
         Returns the form invalid response.
@@ -74,7 +74,7 @@ class CreateMixin(AbstractCreateMixin):
 
         template_name = self.get_form_template_name()
 
-        if headers_parser.is_modal_request:
+        if request_parser.is_modal_request:
             template_name = self.get_form_modal_template_name()
             context["create_url"] = request.path
             response = render(request, template_name, context)
@@ -88,7 +88,7 @@ class CreateMixin(AbstractCreateMixin):
         self,
         request: HttpRequest,
         form: type[ModelForm],
-        headers_parser: ModalParser,
+        request_parser: RequestParser,
     ) -> HttpResponse:
         """
         Returns the form valid response.
@@ -104,17 +104,17 @@ class CreateMixin(AbstractCreateMixin):
         url: str = reverse(f"{app_label}:index")
         querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
 
-        if headers_parser.is_modal_request:
-            url: str = headers_parser.url
+        if request_parser.is_modal_request:
+            url: str = request_parser.url
 
         if request.POST.get("save"):
-            if not headers_parser.is_modal_request:
+            if not request_parser.is_modal_request:
                 response["Hx-Redirect"] = url + querystring
-            if headers_parser.redirect:
+            if request_parser.redirect:
                 target = f'#{self.get_html_ids()["table_id"]}'
                 response["Hx-Location"] = json.dumps(
                     {
-                        "path": headers_parser.url,
+                        "path": request_parser.url,
                         "target": target,
                     },
                 )
