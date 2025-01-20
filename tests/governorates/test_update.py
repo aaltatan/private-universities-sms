@@ -108,22 +108,6 @@ def test_update_page(
 
 
 @pytest.mark.django_db
-def test_update_form_has_previous_page_querystring(
-    admin_client: Client, model: type[Model]
-):
-    obj = model.objects.first()
-
-    url = obj.get_update_url() + "?page=1&per_page=10&order_by=-Id"
-
-    response = admin_client.get(url)
-    parser = HTMLParser(response.content)
-    form = parser.css_first("main form")
-
-    assert response.status_code == 200
-    assert form.attributes["hx-post"] == url
-
-
-@pytest.mark.django_db
 def test_update_with_dirty_data(
     admin_client: Client,
     model: type[Model],
@@ -195,7 +179,6 @@ def test_update_form_with_clean_data(
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"
     assert response.headers.get("Hx-redirect") == urls["index"] + querystring
-    assert response.headers.get("Hx-redirect") == urls["index"] + querystring
     assert model.objects.count() == 304
     assert obj.name == name
     assert obj.description == description
@@ -208,33 +191,23 @@ def test_update_with_redirect_from_modal(
     urls: dict[str, str],
     templates: dict[str, str],
     clean_data_sample: dict[str, str],
+    headers_modal_GET: dict[str, str],
 ) -> None:
     obj = model.objects.get(id=1)
     url = obj.get_update_url() + "?per_page=10&order_by=-Id"
 
-    headers = {
-        "Hx-Request": "true",
-        "modal": True,
-        "redirect-to": urls["index"],
-        "querystring": "per_page=10&order_by=-Id",
-    }
-
-    response = admin_client.get(url, headers=headers)
-    parser = HTMLParser(response.content)
-    form = parser.css_first("form")
-    form_hx_post = form.attributes.get("hx-post")
+    response = admin_client.get(url, headers=headers_modal_GET)
 
     assert response.status_code == 200
     assert is_template_used(templates["update_modal_form"], response)
-    assert form_hx_post == url
 
     response = admin_client.post(
         url,
         clean_data_sample,
-        headers=headers,
+        headers=headers_modal_GET,
     )
 
-    location = json.loads(
+    location: dict = json.loads(
         response.headers.get("Hx-Location", ""),
     )
     location_path = location.get("path")
@@ -244,7 +217,7 @@ def test_update_with_redirect_from_modal(
     name = clean_data_sample["name"]
     description = clean_data_sample["description"]
 
-    assert location_path == urls["index"] + "per_page=10&order_by=-Id"
+    assert location_path == urls["index"] + "?per_page=10&order_by=-Id"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"
     assert model.objects.count() == 304
@@ -266,20 +239,22 @@ def test_update_without_redirect_from_modal(
     obj = model.objects.get(id=4)
     url = obj.get_update_url() + "?per_page=10&order_by=-Id"
 
-    response = admin_client.get(url, headers=headers_modal_GET)
-    parser = HTMLParser(response.content)
+    headers = {
+        **headers_modal_GET,
+        "dont-redirect": "true",
+    }
 
-    form = parser.css_first("form")
-    form_hx_post = form.attributes.get("hx-post")
+    response = admin_client.get(url, headers=headers)
 
     assert response.status_code == 200
     assert is_template_used(templates["update_modal_form"], response)
-    assert form_hx_post == url
+    assert "Hx-Location" not in response.headers
+    assert "Hx-Retarget" not in response.headers
 
     response = admin_client.post(
         url,
         clean_data_sample,
-        headers=headers_modal_GET,
+        headers=headers,
     )
     messages_list = list(
         get_messages(request=response.wsgi_request),
@@ -288,6 +263,9 @@ def test_update_without_redirect_from_modal(
     description = clean_data_sample["description"]
 
     assert response.headers.get("Hx-Location") is None
+    assert response.headers.get("Hx-Redirect") is None
+    assert response.headers.get("Hx-Reswap") == "innerHTML"
+    assert response.headers.get("Hx-Target") == "#no-content"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"
     assert model.objects.count() == 304

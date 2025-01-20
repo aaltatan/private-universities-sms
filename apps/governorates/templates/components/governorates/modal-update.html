@@ -2,9 +2,8 @@
 
 <c-forms.modal-update
   form_title="{% translate 'update'|title %}{{ form.instance }}"
-  request_headers='{"modal": true, "redirect-to": "{{ index_url }}", "querystring": "{% querystring %}"
-  }'
-  url="{{ update_url }}{% querystring %}"
+  request_headers='{"modal": true, "target": "{{ request_parser.target }}"}'
+  url="{{ update_url }}"
   :form_id="form_id"
   :form="form"
 >

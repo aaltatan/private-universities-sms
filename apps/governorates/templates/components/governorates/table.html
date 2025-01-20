@@ -81,7 +81,7 @@
             hx-get="{{ obj.get_update_url }}{% querystring %}"
             hx-target="#modal-container"
             hx-indicator="#modal-spinner"
-            hx-headers='{"modal": true}'
+            hx-headers='{"modal": true, "target": "#{{ table_id }}"}'
             @click="showModal"
             class="hover:underline cursor-pointer"
             aria-label="edit object"

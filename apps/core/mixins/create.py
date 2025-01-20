@@ -105,16 +105,16 @@ class CreateMixin(AbstractCreateMixin):
         querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
 
         if request_parser.is_modal_request:
-            url: str = request_parser.url
+            url: str = request_parser.next_url
 
         if request.POST.get("save"):
             if not request_parser.is_modal_request:
                 response["Hx-Redirect"] = url + querystring
-            if request_parser.redirect:
+            if request_parser.dont_redirect:
                 target = f'#{self.get_html_ids()["table_id"]}'
                 response["Hx-Location"] = json.dumps(
                     {
-                        "path": request_parser.url,
+                        "path": request_parser.next_url,
                         "target": target,
                     },
                 )

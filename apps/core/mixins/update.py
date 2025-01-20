@@ -28,19 +28,22 @@ class UpdateMixin(AbstractUpdateMixin):
         """
         Handles GET requests and returns a rendered template.
         """
-        model = self.get_model_class()
-        self.obj = get_object_or_404(model, slug=slug)
-        request_parser = RequestParser(request)
+        self.obj = get_object_or_404(self.get_model_class(), slug=slug)
 
+        request_parser = RequestParser(
+            request=request,
+            index_url=self.get_app_urls()["index_url"],
+        )
         template_name = self.get_template_name()
+        context = self.get_context_data()
 
         if request.htmx:
             if request_parser.is_modal_request:
+                context["request_parser"] = request_parser.asdict()
                 template_name = self.get_form_modal_template_name()
             else:
                 template_name = self.get_form_template_name()
 
-        context = self.get_context_data()
         return render(request, template_name, context)
 
     def post(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
@@ -52,7 +55,10 @@ class UpdateMixin(AbstractUpdateMixin):
 
         form = self.form_class(request.POST, instance=self.obj)
 
-        request_parser = RequestParser(request)
+        request_parser = RequestParser(
+            request=request,
+            index_url=self.get_app_urls()["index_url"],
+        )
 
         if form.is_valid():
             return self.get_form_valid_response(
@@ -76,32 +82,30 @@ class UpdateMixin(AbstractUpdateMixin):
         """
         Returns the form valid response.
         """
-        app_label = self.get_app_label()
         obj = form.save()
-        querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
 
         messages.success(
             request,
             _("({}) has been updated successfully").format(obj),
         )
 
-        url = reverse(f"{app_label}:index")
-
         response = HttpResponse(status=200)
 
-        if not request_parser.is_modal_request:
-            response["Hx-Redirect"] = url + querystring
-        if request_parser.redirect:
-            target = f'#{self.get_html_ids()["table_id"]}'
-            response["Hx-Location"] = json.dumps(
-                {
-                    "path": request_parser.url,
-                    "target": target,
-                },
-            )
+        if request_parser.target == "#no-content":
+            response["Hx-Reswap"] = "innerHTML"
+
+        if not request_parser.dont_redirect:
+            if request_parser.is_modal_request:
+                response["Hx-Location"] = json.dumps(
+                    {
+                        "path": request_parser.next_url,
+                        "target": request_parser.target,
+                    },
+                )
+            else:
+                response["Hx-Redirect"] = request_parser.index_url
 
         response["Hx-Trigger"] = "messages"
-
         return response
 
     def get_form_invalid_response(
@@ -119,7 +123,7 @@ class UpdateMixin(AbstractUpdateMixin):
 
         if request_parser.is_modal_request:
             template_name = self.get_form_modal_template_name()
-            context["create_url"] = request.path
+            context["update_url"] = request.path
             response = render(request, template_name, context)
             response["Hx-Retarget"] = "#modal-container"
         else:
@@ -163,7 +167,7 @@ class UpdateMixin(AbstractUpdateMixin):
         Notes: you can use the *form_modal_template_name* attribute to override the default form modal template name.
         """
         app_label = self.get_app_label()
-        
+
         if getattr(self, "form_modal_template_name", None):
             return self.form_modal_template_name
 

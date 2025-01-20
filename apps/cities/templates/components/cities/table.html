@@ -82,7 +82,7 @@
             hx-get="{{ obj.get_update_url }}{% querystring %}"
             hx-target="#modal-container"
             hx-indicator="#modal-spinner"
-            hx-headers='{"modal": true}'
+            hx-headers='{"modal": true, "target": "#{{ table_id }}"}'
             @click="showModal"
             class="hover:underline cursor-pointer"
             aria-label="edit object"
@@ -95,7 +95,25 @@
           <!--  -->
           {% endif %}
         </c-table.td>
-        <c-table.td data-header="{% translate 'governorate' %}"> {{ obj.governorate }} </c-table.td>
+        <c-table.td data-header="{% translate 'governorate' %}">
+          {% if can_update %}
+          <a
+            hx-get="{{ obj.governorate.get_update_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            hx-headers='{"modal": true, "target": "#{{ table_id }}"}'
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="edit object"
+          >
+            {{ obj.governorate }}
+          </a>
+          {% else %}
+          <!--  -->
+          {{ obj.governorate }}
+          <!--  -->
+          {% endif %}
+        </c-table.td>
         <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
         <c-table.td fixed="True">
           {% if can_update or can_delete %}
