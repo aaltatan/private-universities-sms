@@ -131,24 +131,20 @@ def test_update_with_modal_with_dirty_data(
     admin_client: Client,
     model: type[Model],
     dirty_data: list[dict],
-    urls: dict[str, str],
     templates: dict[str, str],
+    headers_modal_GET: dict[str, str],
+    app_label: str,
 ):
     obj = model.objects.first()
     url = obj.get_update_url() + "?page=1&per_page=10&order_by=-Id"
 
     headers = {
-        "modal": True,
-        "redirect-to": urls["index"],
-        "querystring": "page=1&per_page=10&order_by=-Id",
+        **headers_modal_GET,
+        "target": f"#{app_label}-table",
     }
 
     for data in dirty_data:
-        response = admin_client.post(
-            url,
-            data["data"],
-            headers=headers,
-        )
+        response = admin_client.post(url, data["data"], headers=headers)
         assert data["error"] in response.content.decode()
         assert is_template_used(templates["update_modal_form"], response)
         assert response.status_code == 200
@@ -192,32 +188,35 @@ def test_update_with_redirect_from_modal(
     templates: dict[str, str],
     clean_data_sample: dict[str, str],
     headers_modal_GET: dict[str, str],
+    app_label: str,
 ) -> None:
     obj = model.objects.get(id=1)
     url = obj.get_update_url() + "?per_page=10&order_by=-Id"
 
-    response = admin_client.get(url, headers=headers_modal_GET)
+    headers = {
+        **headers_modal_GET,
+        "target": "#modal-container",
+    }
+
+    response = admin_client.get(url, headers=headers)
 
     assert response.status_code == 200
     assert is_template_used(templates["update_modal_form"], response)
 
-    response = admin_client.post(
-        url,
-        clean_data_sample,
-        headers=headers_modal_GET,
-    )
+    headers["target"] = f"#{app_label}-table"
+    response = admin_client.post(url, clean_data_sample, headers=headers)
 
     location: dict = json.loads(
         response.headers.get("Hx-Location", ""),
     )
-    location_path = location.get("path")
     messages_list = list(
         get_messages(request=response.wsgi_request),
     )
     name = clean_data_sample["name"]
     description = clean_data_sample["description"]
 
-    assert location_path == urls["index"] + "?per_page=10&order_by=-Id"
+    assert location.get("target") == f"#{app_label}-table"
+    assert location.get("path") == urls["index"] + "?per_page=10&order_by=-Id"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"
     assert model.objects.count() == 304
@@ -226,6 +225,19 @@ def test_update_with_redirect_from_modal(
 
     assert obj.name == name
     assert obj.description == description
+
+
+@pytest.mark.django_db
+def test_update_without_using_target_in_hx_request(
+    admin_client: Client,
+    model: type[Model],
+    headers_modal_GET: dict[str, str],
+) -> None:
+    with pytest.raises(ValueError):
+        admin_client.get(
+            model.objects.first().get_update_url(),
+            headers=headers_modal_GET,
+        )
 
 
 @pytest.mark.django_db
@@ -241,6 +253,7 @@ def test_update_without_redirect_from_modal(
 
     headers = {
         **headers_modal_GET,
+        "target": "#modal-container",
         "dont-redirect": "true",
     }
 
@@ -251,21 +264,16 @@ def test_update_without_redirect_from_modal(
     assert "Hx-Location" not in response.headers
     assert "Hx-Retarget" not in response.headers
 
-    response = admin_client.post(
-        url,
-        clean_data_sample,
-        headers=headers,
-    )
-    messages_list = list(
-        get_messages(request=response.wsgi_request),
-    )
+    headers = {**headers, "target": "#no-content"}
+    response = admin_client.post(url, clean_data_sample, headers=headers)
+    messages_list = list(get_messages(request=response.wsgi_request))
     name = clean_data_sample["name"]
     description = clean_data_sample["description"]
 
     assert response.headers.get("Hx-Location") is None
     assert response.headers.get("Hx-Redirect") is None
+    assert response.headers.get("Hx-Retarget") is None
     assert response.headers.get("Hx-Reswap") == "innerHTML"
-    assert response.headers.get("Hx-Target") == "#no-content"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"
     assert model.objects.count() == 304

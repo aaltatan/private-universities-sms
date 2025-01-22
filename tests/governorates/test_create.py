@@ -90,6 +90,8 @@ def test_create_new_object_with_save_btn(
     )
     success_message = f"{clean_data_sample['name']} has been created successfully"
 
+    assert is_template_used(templates["create_form"], response, False)
+    assert is_template_used(templates["create_modal_form"], response, False)
     assert response.status_code == 201
     assert response.headers.get("Hx-Redirect") is not None
     assert response.headers.get("Hx-Trigger") == "messages"
@@ -129,37 +131,32 @@ def test_create_new_object_with_save_and_add_another_btn(
 
 
 @pytest.mark.django_db
-def test_create_simulating_create_without_redirect_from_modal(
+def test_create_from_modal_without_using_target_in_hx_request(
     admin_client: Client,
     urls: dict[str, str],
-    templates: dict[str, str],
-    clean_data_sample: dict[str, str],
-    model: type[Model],
     headers_modal_GET: dict[str, str],
 ) -> None:
-    response = admin_client.get(urls["create"], headers=headers_modal_GET)
-
-    assert response.status_code == 200
-    assert is_template_used(templates["create_modal_form"], response)
-
-    response = admin_client.post(
-        urls["create"],
-        clean_data_sample,
-        headers=headers_modal_GET,
-    )
-    messages_list = list(get_messages(request=response.wsgi_request))
-    success_message = f"{clean_data_sample['name']} has been created successfully"
-
-    assert response.status_code == 201
-    assert is_template_used(templates["create_modal_form"], response, used=False)
-    assert model.objects.count() == 305
-    assert response.headers.get("Hx-Redirect") is None
-    assert messages_list[0].level == messages.SUCCESS
-    assert messages_list[0].message == success_message
+    with pytest.raises(ValueError, match="target is required"):
+        admin_client.get(urls["create"], headers=headers_modal_GET)
 
 
 @pytest.mark.django_db
-def test_create_simulating_create_with_redirect_from_modal(
+def test_create_from_modal_without_using_save_or_save_and_add_another(
+    admin_client: Client,
+    urls: dict[str, str],
+    headers_modal_GET: dict[str, str],
+    clean_data_sample: dict[str, str],
+) -> None:
+    headers = {**headers_modal_GET, "target": "#modal-container"}
+    with pytest.raises(
+        ValueError,
+        match="save or save_and_add_another is required",
+    ):
+        admin_client.post(urls["create"], clean_data_sample, headers=headers)
+
+
+@pytest.mark.django_db
+def test_create_without_redirect_from_modal(
     admin_client: Client,
     urls: dict[str, str],
     templates: dict[str, str],
@@ -167,33 +164,74 @@ def test_create_simulating_create_with_redirect_from_modal(
     model: type[Model],
     headers_modal_GET: dict[str, str],
 ) -> None:
-    url = urls["create"] + "?per_page=10&order_by=-Name"
-    response = admin_client.get(url, headers=headers_modal_GET)
+    headers = {
+        **headers_modal_GET,
+        "target": "#modal-container",
+    }
+    response = admin_client.get(urls["create"], headers=headers)
 
     assert response.status_code == 200
     assert is_template_used(templates["create_modal_form"], response)
 
     headers = {
-        "modal": True,
-        "redirect-to": urls["index"],
-        "querystring": "per_page=10&order_by=-Name",
+        **headers,
+        "dont-redirect": "true",
+        "target": "#no-content",
     }
+    sample = {**clean_data_sample, "save": "true"}
+    response = admin_client.post(urls["create"], sample, headers=headers)
+    messages_list = list(get_messages(request=response.wsgi_request))
+    success_message = f"{clean_data_sample['name']} has been created successfully"
+
+    assert response.status_code == 201
+    assert is_template_used(templates["create_modal_form"], response, used=False)
+    assert is_template_used(templates["create_form"], response, used=False)
+    assert is_template_used(templates["create"], response, used=False)
+    assert model.objects.count() == 305
+    assert response.headers.get("Hx-Redirect") is None
+    assert response.headers.get("Hx-Location") is None
+    assert response.headers.get("Hx-Reswap") == "innerHTML"
+    assert messages_list[0].level == messages.SUCCESS
+    assert messages_list[0].message == success_message
+
+
+@pytest.mark.django_db
+def test_create_with_redirect_from_modal(
+    admin_client: Client,
+    urls: dict[str, str],
+    templates: dict[str, str],
+    clean_data_sample: dict[str, str],
+    model: type[Model],
+    headers_modal_GET: dict[str, str],
+    app_label: str,
+) -> None:
+    url = urls["create"] + "?per_page=10&order_by=-Name"
+    headers = {
+        **headers_modal_GET,
+        "target": "#modal-container",
+    }
+    response = admin_client.get(url, headers=headers)
+
+    assert response.status_code == 200
+    assert is_template_used(templates["create_modal_form"], response)
+
     data = clean_data_sample.copy()
     data["save"] = "true"
 
+    target = f"#{app_label}-table"
+    headers = {**headers, "target": target}
+
     response = admin_client.post(url, data, headers=headers)
     location: dict = json.loads(response.headers.get("Hx-Location", {}))
-    location_path = location.get("path")
     messages_list = list(get_messages(request=response.wsgi_request))
     success_message = f"{clean_data_sample['name']} has been created successfully"
 
     assert response.status_code == 201
     assert model.objects.count() == 305
-    assert location_path == urls["index"] + "per_page=10&order_by=-Name"
+    assert location.get("target") == target
+    assert location.get("path") == urls["index"] + "?per_page=10&order_by=-Name"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == success_message
-
-    headers = {"modal": True, "redirect-to": urls["index"]}
 
     data = clean_data_sample.copy()
     data["name"] = "afasfasf"
@@ -203,11 +241,11 @@ def test_create_simulating_create_with_redirect_from_modal(
     location: dict = json.loads(
         response.headers.get("Hx-Location", {}),
     )
-    location_path = location.get("path")
 
     assert response.status_code == 201
     assert model.objects.count() == 306
-    assert location_path == urls["index"]
+    assert location.get("target") == target
+    assert location.get("path") == urls["index"] + "?per_page=10&order_by=-Name"
 
 
 @pytest.mark.django_db
@@ -245,24 +283,24 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
     model: type[Model],
     dirty_data: list[dict],
     headers_modal_GET: dict[str, str],
+    app_label: str,
 ) -> None:
     url = urls["create"] + "?per_page=10&order_by=-Name"
-    headers = headers_modal_GET
+    headers = {
+        **headers_modal_GET,
+        "target": "#modal-container",
+    }
     response = admin_client.get(url, headers=headers)
 
     assert response.status_code == 200
     assert is_template_used(templates["create_modal_form"], response)
 
+    headers = {**headers, "target": f"{app_label}-table"}
+
     for item in dirty_data:
-        response = admin_client.post(
-            urls["create"],
-            item["data"],
-            headers=headers_modal_GET,
-        )
+        response = admin_client.post(urls["create"], item["data"], headers=headers)
         parser = HTMLParser(response.content)
-        form_hx_post = parser.css_first(
-            "form[hx-post]",
-        ).attributes.get("hx-post")
+        form_hx_post = parser.css_first("form[hx-post]").attributes.get("hx-post")
 
         assert item["error"] in response.content.decode()
         assert is_template_used(templates["create_modal_form"], response)

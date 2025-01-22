@@ -21,7 +21,7 @@
       hx-get="{{ create_url }}{% querystring %}"
       hx-target="#modal-container"
       hx-indicator="#modal-spinner"
-      hx-headers='{"modal": true}'
+      hx-headers='{"modal": true, "target": "#{{ table_id }}"}'
       @click="showModal"
       theme="primary"
       title="{% translate 'add new'|title %}"

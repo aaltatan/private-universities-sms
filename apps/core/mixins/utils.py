@@ -17,8 +17,12 @@ class RequestParser:
 
     def __post_init__(self, request: HttpRequest):
         self.is_modal_request = request.headers.get("modal") is not None
+
+        self.target = request.headers.get("target")
+        if not self.target and self.is_modal_request:
+            raise ValueError("target is required")
+        
         self.dont_redirect = request.headers.get("dont-redirect") is not None
-        self.target = request.headers.get("target", "#no-content")
 
         querystring = request.GET.urlencode()
         querystring = querystring and f"?{querystring}"

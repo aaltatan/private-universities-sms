@@ -28,16 +28,20 @@ class CreateMixin(AbstractCreateMixin):
         """
         Handles GET requests and returns a rendered template.
         """
+        request_parser = RequestParser(
+            request=request,
+            index_url=self.get_app_urls()["index_url"],
+        )
         template_name = self.get_template_name()
-        request_parser = RequestParser(request)
+        context = self.get_context_data()
 
         if request.htmx:
             if request_parser.is_modal_request:
+                context["request_parser"] = request_parser.asdict()
                 template_name = self.get_form_modal_template_name()
             else:
                 template_name = self.get_form_template_name()
 
-        context = self.get_context_data()
         return render(request, template_name, context)
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
@@ -45,7 +49,10 @@ class CreateMixin(AbstractCreateMixin):
         Handles the POST request.
         """
         form = self.form_class(request.POST)
-        request_parser = RequestParser(request)
+        request_parser = RequestParser(
+            request=request,
+            index_url=self.get_app_urls()["index_url"],
+        )
 
         if form.is_valid():
             return self.get_form_valid_response(
@@ -93,7 +100,6 @@ class CreateMixin(AbstractCreateMixin):
         """
         Returns the form valid response.
         """
-        app_label = self.get_app_label()
         obj = form.save()
         messages.success(
             request,
@@ -101,24 +107,22 @@ class CreateMixin(AbstractCreateMixin):
         )
 
         response = HttpResponse(status=201)
-        url: str = reverse(f"{app_label}:index")
-        querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
 
-        if request_parser.is_modal_request:
-            url: str = request_parser.next_url
+        if request_parser.target == "#no-content":
+            response["Hx-Reswap"] = "innerHTML"
 
         if request.POST.get("save"):
-            if not request_parser.is_modal_request:
-                response["Hx-Redirect"] = url + querystring
-            if request_parser.dont_redirect:
-                target = f'#{self.get_html_ids()["table_id"]}'
-                response["Hx-Location"] = json.dumps(
-                    {
-                        "path": request_parser.next_url,
-                        "target": target,
-                    },
-                )
-        else:  # handle save and add another
+            if not request_parser.dont_redirect:
+                if request_parser.is_modal_request:
+                    response["Hx-Location"] = json.dumps(
+                        {
+                            "path": request_parser.next_url,
+                            "target": request_parser.target,
+                        },
+                    )
+                else:
+                    response["Hx-Redirect"] = request_parser.index_url
+        elif request.POST.get("save_and_add_another"):
             context = self.get_context_data()
             response = render(
                 request=request,
@@ -126,6 +130,8 @@ class CreateMixin(AbstractCreateMixin):
                 context=context,
                 status=201,
             )
+        else:
+            raise ValueError("save or save_and_add_another is required")
 
         response["Hx-Trigger"] = "messages"
         return response
