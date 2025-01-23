@@ -1,14 +1,15 @@
-from dataclasses import dataclass, field, InitVar
-from typing import Callable, Sequence
+from dataclasses import InitVar, asdict, dataclass, field
+from typing import Any, Callable, Sequence
 
 from django.db.models import QuerySet
-from django.http import HttpResponse, HttpRequest, Http404
+from django.http import Http404, HttpRequest, HttpResponse
 
-from ..constants import PERMISSION
+from .constants import PERMISSION
 
 
 @dataclass
 class Perm:
+    """ A dataclass that represents a permission. """
     app_label: str
     permission: PERMISSION = "view"
     object_name: str | None = None
@@ -36,6 +37,7 @@ class Perm:
 
 @dataclass
 class Action:
+    """ A dataclass that represents an action. """
     method: Callable[[QuerySet, dict], HttpResponse]
     template: str
     kwargs: Sequence[str] = field(default_factory=list)
@@ -50,7 +52,38 @@ class Action:
 
 
 @dataclass
+class RequestParser:
+    """A dataclass that represents the required data from http request."""
+
+    request: InitVar[HttpRequest]
+    index_url: str
+    is_modal_request: bool = field(init=False)
+    next_url: str = field(init=False, default="")
+    target: str = field(init=False, default="")
+    dont_redirect: bool = field(init=False)
+
+    def __post_init__(self, request: HttpRequest):
+        self.is_modal_request = request.headers.get("modal") is not None
+
+        self.target = request.headers.get("target")
+        if not self.target and self.is_modal_request:
+            raise ValueError("target is required")
+
+        self.dont_redirect = request.headers.get("dont-redirect") is not None
+
+        querystring = request.GET.urlencode()
+        querystring = querystring and f"?{querystring}"
+        self.index_url += querystring
+
+        self.next_url = request.headers.get("referer", self.index_url)
+
+    def asdict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
 class AutocompleteRequestParser:
+    """ A dataclass that parses the request for autocomplete views. """
     request: InitVar[HttpRequest]
     app_label: str = field(init=False)
     model_name: str = field(init=False)

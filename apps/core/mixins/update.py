@@ -10,7 +10,7 @@ from django.utils.translation import gettext as _
 from django.db.models import Model
 from django.forms import ModelForm
 
-from .utils import RequestParser
+from ..schemas import RequestParser
 
 
 class AbstractUpdateMixin(ABC):

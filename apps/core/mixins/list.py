@@ -19,7 +19,7 @@ from import_export.resources import ModelResource
 from tablib import Dataset
 
 from ..constants import PERMISSION
-from ..utils import Action
+from ..schemas import Action
 
 
 class AbstractListView(ABC):

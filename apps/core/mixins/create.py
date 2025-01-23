@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from .utils import RequestParser
+from ..schemas import RequestParser
 
 
 class AbstractCreateMixin(ABC):
@@ -173,7 +173,7 @@ class CreateMixin(AbstractCreateMixin):
         Notes: you can use the *form_template_name* attribute to override the default form template name.
         """
         app_label = self.get_app_label()
-        
+
         if getattr(self, "form_template_name", None):
             return self.form_template_name
 

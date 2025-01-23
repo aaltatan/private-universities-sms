@@ -8,7 +8,7 @@ from rest_framework import filters as rest_filters
 from rest_framework import viewsets
 
 from apps.core import filter_backends, mixins
-from apps.core.utils import Action, Perm
+from apps.core.schemas import Action, Perm
 
 from . import constants, filters, forms, models, resources, serializers, utils
 
