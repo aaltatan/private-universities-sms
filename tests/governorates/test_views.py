@@ -177,7 +177,7 @@ def test_view_user_has_view_permissions_add(
     buttons = parse_buttons(parser)
 
     assert response.status_code == 200
-    assert buttons["add_btn_exists"] is True
+    assert buttons["add_btn_exists"]
     assert buttons["delete_btn_exists"] is False
     assert buttons["delete_all_btn_exists"] is False
     assert buttons["edit_btn_exists"] is False
@@ -201,7 +201,7 @@ def test_view_user_has_view_permissions_change(
     assert buttons["add_btn_exists"] is False
     assert buttons["delete_btn_exists"] is False
     assert buttons["delete_all_btn_exists"] is False
-    assert buttons["edit_btn_exists"] is True
+    assert buttons["edit_btn_exists"]
     assert buttons["export_btn_exists"] is False
 
 
@@ -220,8 +220,8 @@ def test_view_user_has_view_permissions_delete(
 
     assert response.status_code == 200
     assert buttons["add_btn_exists"] is False
-    assert buttons["delete_btn_exists"] is True
-    assert buttons["delete_all_btn_exists"] is True
+    assert buttons["delete_btn_exists"]
+    assert buttons["delete_all_btn_exists"]
     assert buttons["edit_btn_exists"] is False
     assert buttons["export_btn_exists"] is False
 
@@ -244,4 +244,4 @@ def test_view_user_has_view_permissions_export(
     assert buttons["delete_btn_exists"] is False
     assert buttons["delete_all_btn_exists"] is False
     assert buttons["edit_btn_exists"] is False
-    assert buttons["export_btn_exists"] is True
+    assert buttons["export_btn_exists"]

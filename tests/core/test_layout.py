@@ -12,5 +12,5 @@ def test_dark_mode(admin_page: Page):
     admin_page.click('button[aria-label="toggle dark mode"]')
     is_light: bool = admin_page.evaluate(expression)
 
-    assert is_dark is True
+    assert is_dark
     assert is_light is False

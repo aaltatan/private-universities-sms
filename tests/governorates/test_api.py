@@ -20,7 +20,7 @@ def test_pagination(
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["count"] == 304
     assert len(response.json()["results"]) == 10
-    assert response.json()["next"].endswith(urls["api"] + "?page=2") is True
+    assert response.json()["next"].endswith(urls["api"] + "?page=2")
     assert response.json()["previous"] is None
 
     response = api_client.get(
@@ -30,8 +30,8 @@ def test_pagination(
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["count"] == 304
     assert len(response.json()["results"]) == 10
-    assert response.json()["next"].endswith(urls["api"] + "?page=3") is True
-    assert response.json()["previous"].endswith(urls["api"]) is True
+    assert response.json()["next"].endswith(urls["api"] + "?page=3")
+    assert response.json()["previous"].endswith(urls["api"])
 
     response = api_client.get(
         path=urls["api"] + "?page=31",
@@ -41,7 +41,7 @@ def test_pagination(
     assert response.json()["count"] == 304
     assert len(response.json()["results"]) == 4
     assert response.json()["next"] is None
-    assert response.json()["previous"].endswith(urls["api"] + "?page=30") is True
+    assert response.json()["previous"].endswith(urls["api"] + "?page=30")
 
     for idx in range(3, 31):
         response = api_client.get(
@@ -51,13 +51,8 @@ def test_pagination(
         assert response.status_code == status.HTTP_200_OK
         assert response.json()["count"] == 304
         assert len(response.json()["results"]) == 10
-        assert (
-            response.json()["next"].endswith(urls["api"] + f"?page={idx + 1}") is True
-        )
-        assert (
-            response.json()["previous"].endswith(urls["api"] + f"?page={idx - 1}")
-            is True
-        )
+        assert response.json()["next"].endswith(urls["api"] + f"?page={idx + 1}")
+        assert response.json()["previous"].endswith(urls["api"] + f"?page={idx - 1}")
 
 
 @pytest.mark.django_db
@@ -165,7 +160,7 @@ def test_delete_and_bulk_delete_object_when_deleter_class_is_None(
     app_label: str,
 ):
     mocker.patch(f"apps.{app_label}.views.APIViewSet.deleter", new=None)
-    
+
     with pytest.raises(AttributeError):
         api_client.delete(
             path=f"{urls['api']}1/",
