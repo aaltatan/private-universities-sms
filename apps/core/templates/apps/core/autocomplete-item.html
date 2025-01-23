@@ -1,0 +1,7 @@
+{% load i18n %}
+
+{% for obj in object_list %}
+<li>{{ obj }}</li>
+{% empty %}
+<li>{% translate 'no results'|title %}</li>
+{% endfor %}

@@ -1,9 +1,33 @@
 from typing import Any, Generator
 
+from django.urls import reverse
 import pytest
 from playwright.sync_api import Page, sync_playwright
 
 from tests.utils import create_base_users
+from apps.governorates.models import Governorate
+
+
+@pytest.fixture
+def autocomplete_url() -> str:
+    return reverse("core:autocomplete")
+
+
+@pytest.fixture
+def autocomplete_template() -> str:
+    return "apps/core/autocomplete-item.html"
+
+
+@pytest.fixture
+def create_governorates(db) -> None:
+    governorates = [
+        {"name": "محافظة حماه", "description": "goo"},
+        {"name": "محافظة حمص", "description": "meta"},
+        {"name": "محافظة ادلب", "description": "meta"},
+        {"name": "محافظة المنيا", "description": "language mena"},
+    ]
+    for governorate in governorates:
+        Governorate.objects.create(**governorate)
 
 
 @pytest.fixture

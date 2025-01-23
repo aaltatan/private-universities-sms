@@ -6,4 +6,5 @@ app_name = "core"
 urlpatterns = [
     path("", views.index, name="index"),
     path("messages/", views.messages, name="messages"),
+    path("autocomplete/", views.autocomplete, name="autocomplete"),
 ]
