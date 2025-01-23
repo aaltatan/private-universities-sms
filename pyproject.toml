@@ -39,3 +39,4 @@ dev = [
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "project.settings.testing"
+python_files = "test_*.py tests.py *_test.py"
