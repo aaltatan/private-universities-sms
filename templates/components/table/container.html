@@ -3,27 +3,7 @@
 <div
   id="{{ id }}"
   class="relative hx-swap:opacity-80"
-  x-data="{ 
-  checkAll: false,
-  selectedItems: 0,
-  init() {
-    hideModal();
-  },
-  handleCheckAll() {
-    const checkboxes = document.querySelectorAll(
-      'input[type=checkbox][id^=row-check-][checked]'
-    );
-    this.selectedItems = checkboxes.length;
-  },
-  handleCheck(target) {
-    const checkbox = target;
-    if (checkbox.checked) {
-      this.selectedItems++;
-    } else {
-      this.selectedItems--;
-    }
-  },
-}"
+  x-data="tableCheckAll"
 >
   <div class="flex items-center justify-between flex-col gap-2 sm:gap-1 sm:flex-row mb-2">
     {{ header }}

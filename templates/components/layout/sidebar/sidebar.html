@@ -1,19 +1,7 @@
 {% load i18n heroicons active_link %}
 
 <div
-  x-data="{
-    search: $persist('').as('sidebar-search'),
-    searchHandler() {
-      let hrefs = [...document.querySelectorAll(`a[id^='sidebar-link-']`)];
-      hrefs.forEach(href => {
-        let obj = {
-          href: href.href, 
-          text: href.innerText?.toLowerCase(),
-        };
-        href.ariaHidden = !obj.text.includes(this.search) && !obj.href.includes(this.search);
-      });
-    },
-  }"
+  x-data="sidebarSearch"
   @keydown.esc.window="hideSidebar"
   :class="{
     'md:flex-row': sidebarFixed

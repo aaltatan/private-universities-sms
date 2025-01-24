@@ -1,4 +1,4 @@
-{% load i18n breadcrumbs %}
+{% load static i18n breadcrumbs %}
 <!--  -->
 {% get_current_language as LANGUAGE_CODE %}
 <!--  -->
@@ -9,12 +9,7 @@
   lang="en"
   :class="{'dark': dark}"
   class="scroll"
-  x-data="{ 
-    dark: $persist(true).as('dark'),
-    toggleDark() {
-      this.dark = !this.dark;
-    },
-  }"
+  x-data="theme"
 >
   <head>
     <c-head />
@@ -24,69 +19,9 @@
     class="dark:bg-black bg-white text-neutral-900 dark:text-neutral-100"
     hx-history="false"
     hx-headers='{ "X-CSRFToken": "{{ csrf_token }}" }'
-    :class="{
-      'lg:me-64': overlaySidebarOpened,
-    }"
+    :class="{'lg:me-64': overlaySidebarOpened}"
     @keyup.alt.equal="sidebarSearchFocus"
-    x-data="{
-      init() {
-        document.title = '{{ page_title }}' || '{{ project_name }}';
-      },
-      /* --------------------------------------- */
-      /* --------------- sidebar --------------- */
-      /* --------------------------------------- */
-      sidebarOpened: false,
-      sidebarFixed: $persist(true).as('sidebar-fixed'),
-      toggleSidebarFixed() {
-        this.sidebarFixed = !this.sidebarFixed;
-      },
-      toggleSidebar() {
-        this.sidebarOpened = !this.sidebarOpened;
-      },
-      showSidebar() {
-        this.sidebarOpened = true;
-      },
-      hideSidebar() {
-        this.sidebarOpened = false;
-      },
-      sidebarSearchFocus() {
-        searchInput = document.getElementById('sidebar-search');
-        this.showSidebar();
-        searchInput?.focus();
-        searchInput?.select();
-      },
-      /* --------------------------------------- */
-      /* ----------- overlay sidebar ----------- */
-      /* --------------------------------------- */
-      overlaySidebarOpened: false,
-      openOverlaySidebar() {
-        this.overlaySidebarOpened = true;
-      },
-      closeOverlaySidebar(e) {
-        this.overlaySidebarOpened = false;
-      },
-      toggleOverlaySidebar() {
-        this.overlaySidebarOpened = !this.overlaySidebarOpened;
-      },
-      /* --------------------------------------- */
-      /* ---------------- modal ---------------- */
-      /* --------------------------------------- */
-      modalStatus: false,
-      showModal() {
-        this.modalStatus = !this.modalStatus;
-        $refs?.modal?.remove();
-      },
-      hideModal() {
-        this.modalStatus = false;
-      },
-      /* --------------------------------------- */
-      /* -------------- full width ------------- */
-      /* --------------------------------------- */
-      fullWidthContainer: $persist(false).as('full-width-container'),
-      toggleFullWidthContainer() {
-        this.fullWidthContainer = !this.fullWidthContainer;
-      },
-    }"
+    x-data="main({ title: '{{ page_title }}' || '{{ project_name }}' })"
   >
     <c-layout.modal.container />
     <c-layout.messages />
@@ -108,5 +43,6 @@
         {{ slot }}
       </main>
     </c-layout.sidebar.sidebar>
+    <script src="{% static 'js/main.js' %}"></script>
   </body>
 </html>

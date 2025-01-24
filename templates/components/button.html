@@ -39,14 +39,7 @@
 {% if kind == "button" %}
   <button
     {% if badge %}
-    x-data="{
-      showLabel: false,
-      init() {
-        let query = new URLSearchParams(location.search);
-        let fields = $el.dataset?.fields?.split(',');
-        this.showLabel = fields?.some(field => query.get(field));
-      },
-    }"
+    x-data="badge($el)"
     {% endif %}
     class="relative {{ widths|get_item:width }} {{ paddings|get_item:padding }} {{ base_theme }} {{ theme_variants|get_item:theme }} {{ corners|get_item:rounded }}"
     {{ attrs }}

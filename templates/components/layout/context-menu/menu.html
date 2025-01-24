@@ -24,23 +24,7 @@
 />
 
 <div
-  x-data="{ 
-    isOpen: false, 
-    openedWithKeyboard: false,
-    handleClose() {
-      this.isOpen = false;
-      this.openedWithKeyboard = false;
-    },
-    toggleOpen() {
-      this.isOpen = !this.isOpen;
-    },
-    open() {
-      this.isOpen = true;
-    },
-    openWithKeyboard() {
-      this.openedWithKeyboard = true;
-    },
-  }"
+  x-data="contextMenu"
   @keydown.esc.prevent="handleClose"
   class="relative"
 >
