@@ -1,0 +1,22 @@
+<div>
+{% for _, group_choices, _ in widget.optgroups %}
+<!--  -->
+  {% for option in group_choices %}
+  <!--  -->
+    <div>
+      <label for="{{ widget.attrs.id }}_{{ option.value }}">{{ option.label }}</label>
+      <input type="checkbox"
+        name="{{ widget.name }}"
+        value="{{ option.value|stringformat:'s' }}"
+        id="{{ widget.attrs.id }}_{{ option.value }}"
+        {% for name, value in option.attrs.items %}
+          {% if value is not False %}
+          {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}
+          {% endif %}
+        {% endfor %}
+      >
+    </div>
+  {% endfor %}
+  <!--  -->
+{% endfor %}
+</div>

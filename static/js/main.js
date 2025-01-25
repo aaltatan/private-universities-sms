@@ -50,7 +50,7 @@ function main({ title }) {
     modalStatus: false,
     showModal() {
       this.modalStatus = !this.modalStatus;
-      Alpine.$refs?.modal?.remove();
+      this.$refs.modal.remove();
     },
     hideModal() {
       this.modalStatus = false;
@@ -87,9 +87,6 @@ function tableCheckAll() {
   return {
     checkAll: false,
     selectedItems: 0,
-    init() {
-      Alpine.hideModal;
-    },
     handleCheckAll() {
       const checkboxes = document.querySelectorAll("input[type=checkbox][id^=row-check-][checked]");
       this.selectedItems = checkboxes.length;
@@ -152,12 +149,16 @@ function theme() {
 
 function messages(timeout) {
   return {
+    timer: null,
     open: true,
     close() {
       this.open = false;
     },
     init() {
-      setTimeout(() => this.close(), +timeout);
+      this.timer = setTimeout(() => this.close(), +timeout);
+    },
+    destroy() {
+      clearTimeout(this.timer);
     },
   };
 }
