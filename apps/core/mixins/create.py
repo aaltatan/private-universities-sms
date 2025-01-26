@@ -13,16 +13,15 @@ from django.utils.translation import gettext as _
 from ..schemas import RequestParser
 
 
-class AbstractCreateMixin(ABC):
-    @property
-    @abstractmethod
-    def form_class(self) -> type[ModelForm]: ...
-
-
-class CreateMixin(AbstractCreateMixin):
+class CreateMixin(ABC):
     """
     A mixin that adds a create form.
     """
+
+    @property
+    @abstractmethod
+    def form_class(self) -> type[ModelForm]:
+        pass
 
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """

@@ -1,28 +1,27 @@
 import json
-from typing import Any
 from abc import ABC, abstractmethod
+from typing import Any
 
 from django.contrib import messages
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
-from django.utils.translation import gettext as _
 from django.db.models import Model
 from django.forms import ModelForm
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.utils.translation import gettext as _
 
 from ..schemas import RequestParser
 
 
-class AbstractUpdateMixin(ABC):
-    @property
-    @abstractmethod
-    def form_class(self) -> type[ModelForm]: ...
-
-
-class UpdateMixin(AbstractUpdateMixin):
+class UpdateMixin(ABC):
     """
     A mixin that adds an update form.
     """
+
+    @property
+    @abstractmethod
+    def form_class(self) -> type[ModelForm]:
+        pass
 
     def get(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
         """

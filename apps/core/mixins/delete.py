@@ -12,15 +12,12 @@ from django.utils.translation import gettext as _
 from ..utils import BaseDeleter
 
 
-class DeleteMixinAbstract(ABC):
+class DeleteMixin(ABC):
+    @property
     @abstractmethod
-    def model(self) -> type[Model]: ...
+    def model(self) -> type[Model]:
+        pass
 
-    @abstractmethod
-    def deleter(self, obj: Any) -> type[BaseDeleter]: ...
-
-
-class DeleteMixin(DeleteMixinAbstract):
     def __init__(self):
         if getattr(self, "deleter", None) is None:
             raise AttributeError(

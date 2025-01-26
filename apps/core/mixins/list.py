@@ -9,8 +9,8 @@ from django.db.models.functions import Concat
 from django.http import (
     HttpRequest,
     HttpResponse,
-    HttpResponseServerError,
     HttpResponseForbidden,
+    HttpResponseServerError,
 )
 from django.shortcuts import render
 from django.urls import reverse
@@ -22,27 +22,29 @@ from ..constants import PERMISSION
 from ..schemas import Action
 
 
-class AbstractListView(ABC):
-    @property
-    @abstractmethod
-    def filter_class(self) -> type[FilterSet]: ...
-
-    @property
-    @abstractmethod
-    def resource_class(self) -> type[ModelResource]: ...
-
-    @property
-    @abstractmethod
-    def search_fields(self) -> Sequence[str]: ...
-
-    @abstractmethod
-    def get_actions(self) -> dict[str, Action]: ...
-
-
-class ListMixin(AbstractListView):
+class ListMixin(ABC):
     """
     A mixin that adds a list view.
     """
+
+    @property
+    @abstractmethod
+    def filter_class(self) -> type[FilterSet]:
+        pass
+
+    @property
+    @abstractmethod
+    def resource_class(self) -> type[ModelResource]:
+        pass
+
+    @property
+    @abstractmethod
+    def search_fields(self) -> Sequence[str]:
+        pass
+
+    @abstractmethod
+    def get_actions(self) -> dict[str, Action]:
+        pass
 
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
@@ -167,7 +169,7 @@ class ListMixin(AbstractListView):
         Notes: you can use the table_template_name attribute to override the default table template name.
         """
         app_label = self.get_app_label()
-        
+
         if getattr(self, "table_template_name", None):
             return self.table_template_name
 
