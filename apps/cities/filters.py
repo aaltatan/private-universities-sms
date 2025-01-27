@@ -20,7 +20,7 @@ class CityFilter(
     governorate = filters.ModelMultipleChoiceFilter(
         queryset=models.Governorate.objects.all(),
         label=_("governorate").title(),
-        widget=ComboboxWidget,
+        widget=ComboboxWidget({"data-name": "governorates"}),
     )
     description = filters.CharFilter(
         lookup_expr="icontains",

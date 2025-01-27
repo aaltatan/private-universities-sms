@@ -1,110 +1,125 @@
-{% load i18n %}
+{% load i18n heroicons %}
 
 <div
-  x-data="combobox"
-  class="flex w-full max-w-xs flex-col gap-1"
-  @keydown="handleKeydownOnOptions($event)"
-  @keydown.esc.window="isOpen = false, openedWithKeyboard = false"
+  data-combo
+  x-effect="effectHandler()"
+  class="relative w-full"
+  x-data="combobox({ 
+    options: [
+      {% for group_name, group_choices, group_index in widget.optgroups %}
+        {% for option in group_choices %}
+          {
+            name: '{{ option.name }}',
+            value: '{{ option.value }}',
+            label: '{{ option.label }}',
+            selected: '{{ option.selected }}' === 'True',
+            index: '{{ option.index }}',
+            type: '{{ option.type }}',
+            wrap_label: '{{ option.wrap_label }}',
+            checked: '{{ option.attrs.checked }}' === 'True',
+            show: true,
+          },
+        {% endfor %}
+      {% endfor %}
+    ],
+    selectedText: '{% translate 'selected' %}',
+  })"
 >
-  <div class="relative">
-    <button
-      type="button"
-      class="inline-flex w-full items-center justify-between gap-2 border border-neutral-300 rounded-md bg-white px-4 py-2 text-sm font-medium tracking-wide text-neutral-600 transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:border-neutral-800 dark:bg-black dark:focus-visible:outline-white"
-      role="combobox"
-      aria-controls="makesList"
-      aria-haspopup="listbox"
-      @click="isOpen = ! isOpen"
-      @keydown.down.prevent="openedWithKeyboard = true"
-      @keydown.enter.prevent="openedWithKeyboard = true"
-      @keydown.space.prevent="openedWithKeyboard = true"
-      :aria-expanded="isOpen || openedWithKeyboard"
-    >
-      <span
-        class="text-sm font-normal"
-      ></span>
-      {% heroicon_outline "chevron-down" size="20" %}
-    </button>
+  <a
+    href="#"
+    role="button"
+    :title="textsConcat"
+    @keypress.space="sortHandler"
+    @click="sortHandler"
+    class="text-input !flex items-center justify-between"
+  >
+    <span class="capitalize text-neutral-500 whitespace-nowrap truncate" x-text="getTitle"></span>
+    {% heroicon_outline "chevron-down" size="20" %}
+  </a>
 
-    <input id="make" x-ref="hiddenTextField" hidden="" />
-    <div
-      x-show="isOpen || openedWithKeyboard"
-      id="makesList"
-      class="absolute left-0 top-11 z-10 w-full overflow-hidden rounded-md border border-neutral-300 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900"
-      role="listbox"
-      aria-label="industries list"
-      @click.outside="isOpen = false, openedWithKeyboard = false"
-      @keydown.down.prevent="$focus.wrap().next()"
-      @keydown.up.prevent="$focus.wrap().previous()"
-      x-transition
-      x-trap="openedWithKeyboard"
+  <div
+    role="menu"
+    x-show="comboboxOpen"
+    @click.outside="escapeHandler"
+    @keyup.Escape="escapeHandler"
+    x-transition:enter="transition ease-out duration-100"
+    x-transition:enter="ease-out duration-200"
+    x-transition:enter-start="-translate-y-2"
+    x-transition:enter-end="translate-y-0"
+    class="origin-top w-full bg-white custom-shadow dark:shadow-none dark:bg-black absolute top-[calc(100%_+_.5rem)] z-50 left-0 rounded-lg border border-neutral-300 dark:border-neutral-800 overflow-hidden"
+    x-cloak
+  >
+    <div 
+    x-show="options.length" 
+    x-trap="comboboxOpen" 
+    @keydown.down.prevent="$focus.wrap().next()"
+    @keydown.up.prevent="$focus.wrap().previous()"
     >
-      <!-- Search  -->
-      <div class="relative">
-        <span class="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-neutral-600/50 dark:text-neutral-300/50">
-          {% heroicon_outline "magnifying-glass" %}
-        </span>
-        <input
-          type="text"
-          class="w-full border-b border-neutral-300 bg-white py-2.5 pl-11 pr-4 text-sm text-neutral-600 focus:outline-hidden focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-75 dark:border-neutral-800 dark:bg-black dark:text-neutral-300 dark:focus-visible:border-white"
-          x-ref="searchField"
-          aria-label="Search"
-          @input="console.log($el.value)"
-          placeholder="{% translate 'search'|title %}"
-        />
-      </div>
+      <input
+        class="w-full border-none border-b border-neutral-300 bg-neutral-50 py-2.5 px-4 text-sm text-neutral-600 focus:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-75 dark:border-neutral-800 dark:bg-black dark:text-neutral-300 dark:focus-visible:border-blue-500"
+        type="search"
+        x-ref="comboBoxSearch"
+        @search="searchHandler"
+        @keyup="searchHandler"
+        x-model="keywords"
+        placeholder="{% translate 'search'|title %} ..."
+        {% for name,value in widget.attrs.items%}
+          {% if value is not False %}
+          {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}
+          {% endif %}
+        {% endfor %}
+      />
 
-      <ul class="flex max-h-44 flex-col overflow-y-auto scroll">
-        {% for _, group_choices, _ in widget.optgroups %}
-        <!--  -->
-          {% for option in group_choices %}
-          <!--  -->
+      <ul class="text-sm max-h-48 overflow-y-auto scroll p-1">
+        <li
+          class="p-2 rounded flex items-center gap-2 hover:dark:bg-neutral-900 hover:bg-neutral-200"
+        >
+          <div class="relative flex items-center">
+            <input
+            @change="checkAllHandler"
+            :id="`check-all-options-${name}`"
+            type="checkbox"
+            class="checkbox-input peer before:content['']"
+            />
+            {% heroicon_outline "check" class="checkbox-icon" %}
+          </div>
+          <label
+            :for="`check-all-options-${name}`"
+            class="w-full block first-letter:capitalize text-xs"
+            >{% translate 'select all' %}</label
+          >
+        </li>
+        <template x-for="option in options" :key="option.value">
           <li
-            class="combobox-option inline-flex justify-between gap-6 bg-white px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 focus-visible:text-neutral-900 focus-visible:outline-hidden dark:bg-black dark:text-neutral-300 dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white"
-            role="option"
-            tabindex="0"
+            class="p-2 rounded flex items-center gap-2 hover:dark:bg-neutral-900 hover:bg-neutral-200"
+            x-show="option.show"
           >
             <div class="relative flex items-center">
               <input
+                :id="option.name + '-' + option.value"
+                :checked="option.selected"
+                :value="option.value"
+                :name="option.name"
+                x-model="option.selected"
                 type="checkbox"
-                name="{{ widget.name }}"
-                value="{{ option.value|stringformat:'s' }}"
                 class="checkbox-input peer before:content['']"
-                id="{{ widget.attrs.id }}_{{ option.value }}"
-                {% for name, value in option.attrs.items %}
-                  {% if value is not False %}
-                  {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}
-                  {% endif %}
-                {% endfor %}
-              >
+              />
               {% heroicon_outline "check" class="checkbox-icon" %}
             </div>
-            <label 
-              for="{{ widget.attrs.id }}_{{ option.value }}">{{ option.label }}
-            </label>
+            <label
+              :for="option.name + '-' + option.value"
+              x-text="option.label"
+              class="w-full block first-letter:capitalize text-xs"
+            ></label>
           </li>
-          {% endfor %}
-          <!--  -->
-        {% endfor %}
+        </template>
       </ul>
     </div>
+
+    <div class="w-full p-2" x-show="!options.length">{% translate 'no options' %}</div>
   </div>
 </div>
 
 <script>
-  document.addEventListener("alpine:init", () => {
-    Alpine.data("combobox", () => ({
-      isOpen: false,
-      openedWithKeyboard: false,
-      selectedOptions: [],
-      handleKeydownOnOptions(event) {
-        if (
-          (event.keyCode >= 65 && event.keyCode <= 90) ||
-          (event.keyCode >= 48 && event.keyCode <= 57) ||
-          event.keyCode === 8
-        ) {
-          this.$refs.searchField.focus();
-        }
-      },
-    }));
-  });
+  
 </script>
