@@ -21,7 +21,7 @@
     hx-headers='{ "X-CSRFToken": "{{ csrf_token }}" }'
     :class="{'lg:me-64': overlaySidebarOpened}"
     @keyup.alt.equal="sidebarSearchFocus"
-    x-data="main({ title: '{{ page_title }}' || '{{ project_name }}' })"
+    x-data="layout({ title: '{{ page_title }}' || '{{ project_name }}' })"
   >
     <c-layout.modal.container />
     <c-layout.messages />
@@ -43,6 +43,6 @@
         {{ slot }}
       </main>
     </c-layout.sidebar.sidebar>
-    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/main.bundle.js' %}"></script>
   </body>
 </html>
