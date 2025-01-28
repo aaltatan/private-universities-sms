@@ -1,0 +1,84 @@
+<div 
+x-data="autocomplete({% url 'core:autocomplete' %})" 
+class="relative"
+@blur="closeList"
+@keydown.esc.prevent="resetKeywords"
+>
+  <div class="relative">
+    <input
+    @keypress="resetList"
+    @focus="openList"
+    @keypress.debounce.500="handleRequest"
+    x-model="keywords"
+    x-ref="input"
+    class="!ps-10 text-input"
+    type="{{ widget.type }}"
+    name="{{ widget.name }}"
+    {% if widget.value != None %}
+    value="{{ widget.value|stringformat:'s' }}"
+    {% endif %}
+    {% for name, value in widget.attrs.items %}
+    {% if value is not False %}
+    {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}
+    {% endif %}
+    {% endfor %}
+    >
+    <span class="absolute start-2 top-1/2 -translate-y-1/2 text-neutral-500">
+      {% heroicon_outline "magnifying-glass" size="20" %}
+    </span>
+  </div>
+  <ul 
+  x-show="isListOpen && keywords" 
+  x-trap="isListOpen && keywords"
+  x-transition:enter="duration-200"
+  x-transition:enter-start="-translate-y-2"
+  x-transition:enter-end="translate-y-0"
+  @keydown.down.prevent="$focus.wrap().next()"
+  @keydown.up.prevent="$focus.wrap().previous()"
+  class="absolute top-[calc(100%+0.5rem)] z-50 w-full max-h-48 overflow-auto rounded-md border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none divide-y divide-neutral-300 dark:divide-neutral-800 scroll"
+  role="list" 
+  x-ref="list"
+  ></ul>
+</div>
+
+<script>
+  document.addEventListener("alpine:init", () => {
+    Alpine.data("autocomplete", autocomplete);
+  });
+
+  function autocomplete(url) {
+    return {
+      keywords: "",
+      isListOpen: false,
+      context: {
+        target: 'ul[role="list"]',
+        swap: 'innerHTML',
+      },
+      openList() {
+        this.isListOpen = true;
+      },
+      closeList() {
+        this.isListOpen = false;
+      },
+      resetList() {
+        this.$refs.list.innerHTML = "";
+      },
+      resetKeywords() {
+        this.keywords = "";
+      },
+      getParams(input) {
+        let data = JSON.parse(input.dataset.data);
+        return new URLSearchParams({...data, term: this.keywords});
+      },
+      handleRequest() {
+        let input = this.$refs.input;
+        let q = new URLSearchParams(this.getParams(input));
+        let fullPath = `${url}?${q.toString()}`;
+        
+        if (this.keywords) {
+          htmx.default.ajax('GET', fullPath, this.context)
+        }
+      }
+    }
+  }
+</script>
