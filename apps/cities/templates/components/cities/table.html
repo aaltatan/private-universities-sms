@@ -29,13 +29,15 @@
     />
     {% endif %}
 
-    <c-table.filter-form trigger="change"> {{ filter.form.order_by }} </c-table.filter-form>
+    <c-table.filter-form trigger="order-by-change">
+      {{ filter.form.order_by }}
+    </c-table.filter-form>
 
     <c-button
       icon="adjustments-horizontal"
       size="20"
       @click="openOverlaySidebar"
-      data-fields="name,description"
+      data-fields="name,description,governorate"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -124,31 +126,29 @@
           >
             {% if can_update %}
             <c-layout.context-menu.section>
-              <c-layout.context-menu.item icon="pencil">
-                <a
-                  href="{{ obj.get_update_url }}{% querystring %}"
-                  class="capitalize block w-full"
-                  aria-label="edit object"
-                >
-                  {% translate 'edit' %}
-                </a>
+              <c-layout.context-menu.item
+                icon="pencil"
+                href="{{ obj.get_update_url }}{% querystring %}"
+                aria-label="edit object"
+              >
+                {% translate 'edit' %}
               </c-layout.context-menu.item>
             </c-layout.context-menu.section>
             {% endif %}
             <!--  -->
             {% if can_delete %}
             <c-layout.context-menu.section>
-              <c-layout.context-menu.item color="danger" icon="trash">
-                <a
-                  hx-get="{{ obj.get_delete_url }}{% querystring %}"
-                  hx-target="#modal-container"
-                  hx-indicator="#modal-spinner"
-                  @click="showModal"
-                  class="capitalize block w-full"
-                  aria-label="delete object"
-                >
-                  {% translate 'delete' %}
-                </a>
+              <c-layout.context-menu.item
+                color="danger"
+                icon="trash"
+                href="#"
+                hx-get="{{ obj.get_delete_url }}{% querystring %}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="delete object"
+              >
+                {% translate 'delete' %}
               </c-layout.context-menu.item>
             </c-layout.context-menu.section>
             {% endif %}

@@ -52,14 +52,14 @@
   <div
     x-cloak
     x-show="isOpen || openedWithKeyboard"
-    x-transition:enter="transition-opacity duration-75 ease-in-out"
-    x-transition:enter-start="{% if y|startswith:'bottom' %}translate-y-2{% else %}-translate-y-2{% endif %} opacity-70"
-    x-transition:enter-end="translate-y-0 opacity-100"
-    x-trap="openedWithKeyboard"
+    x-trap="isOpen || openedWithKeyboard"
+    x-transition:enter="ease-out duration-200"
+    x-transition:enter-start="{% if y|startswith:'bottom' %}translate-y-2{% else %}-translate-y-2{% endif %}"
+    x-transition:enter-end="translate-y-0"
     @click.outside="handleClose"
     @keydown.down.prevent="$focus.wrap().next()"
     @keydown.up.prevent="$focus.wrap().previous()"
-    class="absolute z-30 flex w-full min-w-40 flex-col divide-y divide-neutral-300 overflow-hidden rounded-md border border-neutral-300 bg-white dark:divide-neutral-800 dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none {{ axis_x|get_item:x }} {{ axis_y|get_item:y }}"
+    class="absolute z-30 flex w-full min-w-48 max-h-64 scroll overflow-auto flex-col divide-y divide-neutral-300 rounded-md border border-neutral-300 bg-white dark:divide-neutral-800 dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none {{ axis_x|get_item:x }} {{ axis_y|get_item:y }}"
     role="menu"
   >
     {{ slot }}

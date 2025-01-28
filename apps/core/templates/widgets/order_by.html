@@ -6,31 +6,40 @@
   button_icon="chevron-up-down"
   button_title="{% translate 'order by'|title %}"
 >
-  <c-layout.context-menu.section>
-    {% for _, group_choices, _ in widget.optgroups %}
-    <!--  -->
-    {% for option in group_choices %}
-    <c-layout.context-menu.item 
-      icon="check" 
-      class="[&:has(input:checked)]:bg-neutral-900/5 [&:has(input:checked)]:dark:bg-neutral-50/5"
-    >
-        <input
-          id="order-by-checkbox-{{ option.label }}"
-          name="{{ widget.name }}"
-          class="hidden peer"
-          type="radio"
-          {% if option.selected%}checked{% endif%}
-          value="{{ option.value|stringformat:'s' }}"
+  <div
+    x-data='{
+      options: [
+        {% for _, group_choices, _ in widget.optgroups %}
+        {% for option in group_choices %}
+          {
+            name: "{{ option.label }}", 
+            value: "{{ option.value }}",
+            checked: {{ option.selected|yesno:"true,false" }},
+          },
+        {% endfor %}
+        {% endfor %}
+      ],
+      handleChange(option) {
+        $refs.orderBy.value = option.value;
+        $dispatch("order-by-change")
+      },
+    }'
+  >
+    <input type="hidden" x-ref="orderBy" name="{{ widget.name }}" />
+    <c-layout.context-menu.section>
+      <template x-for="option in options" :key="option.value">
+        <c-layout.context-menu.item
+          :show_icon="False"
+          icon="check"
+          href="#"
+          x-bind:class="{
+            'bg-neutral-900/5 dark:bg-neutral-50/5': option.checked,
+          }"
+          x-text="option.name"
+          @click="handleChange(option)"
+          @keydown.enter="handleChange(option)"
         />
-        <label
-          class="cursor-pointer block w-full"
-          for="order-by-checkbox-{{ option.label }}"
-        >
-          {{ option.label }}
-        </label>
-    </c-layout.context-menu.item>
-    {% endfor %}
-    <!--  -->
-    {% endfor %}
-  </c-layout.context-menu.section>
+      </template>
+    </c-layout.context-menu.section>
+  </div>
 </c-layout.context-menu.menu>

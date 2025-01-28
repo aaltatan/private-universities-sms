@@ -97,24 +97,26 @@
         >
           {% if user.is_superuser %}
           <c-layout.context-menu.section>
-            <c-layout.context-menu.item icon="wrench-screwdriver">
-              <a href="/admin" class="block w-full" target="_blank">
-                {% translate 'admin'|title %}
-              </a>
+            <c-layout.context-menu.item icon="wrench-screwdriver" href="/admin" target="_blank">
+              {% translate 'admin'|title %}
             </c-layout.context-menu.item>
-            <c-layout.context-menu.item icon="wrench-screwdriver">
-              <a href="/api" class="block w-full" target="_blank"> Api Documentation </a>
+            <c-layout.context-menu.item icon="arrow-top-right-on-square" href="/api" target="_blank">
+              Api Documentation
             </c-layout.context-menu.item>
             {% if debug %}
-            <c-layout.context-menu.item icon="adjustments-horizontal">
-              <a href="/silk" class="block w-full" target="_blank"> Silk </a>
+            <c-layout.context-menu.item icon="adjustments-horizontal" href="/silk" target="_blank">
+              Silk
             </c-layout.context-menu.item>
             {% endif %}
           </c-layout.context-menu.section>
           {% endif %}
           <c-layout.context-menu.section>
-            <c-layout.context-menu.item color="danger" icon="arrow-left-start-on-rectangle">
-              <a href="#">{% translate 'logout'|title %}</a>
+            <c-layout.context-menu.item
+              color="danger"
+              icon="arrow-left-start-on-rectangle"
+              href="#"
+            >
+              {% translate 'logout'|title %}
             </c-layout.context-menu.item>
           </c-layout.context-menu.section>
         </c-layout.context-menu.menu>

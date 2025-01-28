@@ -1,18 +1,13 @@
 {% load i18n %}
 
 <c-table.container :id="id">
-
   <c-slot name="header">
     <div class="min-w-64 max-sm:w-full">{{ search }}</div>
     <div class="flex items-center flex-wrap gap-1">
       <!-- actions menu -->
       {% if actions %}
       <c-table.actions-container>
-        <c-layout.context-menu.menu
-          button_rounded="md"
-          button_theme="default"
-          button_icon="bolt"
-        >
+        <c-layout.context-menu.menu button_rounded="md" button_theme="default" button_icon="bolt">
           <c-slot name="button_text">
             <span>{% translate 'actions'|title %}</span>
             <span x-text="`(${selectedItems})`"></span>
@@ -37,35 +32,32 @@
         button_title="{% translate 'export'|title %}"
       >
         <c-layout.context-menu.section>
-          <c-layout.context-menu.item icon="table-cells">
-            <a
-              hx-get="{{ index_url }}?export=true&extension=xlsx"
-              hx-include="[aria-included=true]"
-              aria-label="export table as xlsx"
-              class="block w-full"
-            >
-              {% translate 'excel file'|title %}
-            </a>
+          <c-layout.context-menu.item
+            icon="table-cells"
+            href="#"
+            hx-get="{{ index_url }}?export=true&extension=xlsx"
+            hx-include="[aria-included=true]"
+            aria-label="export table as xlsx"
+          >
+            {% translate 'excel file'|title %}
           </c-layout.context-menu.item>
-          <c-layout.context-menu.item icon="document-text">
-            <a
-              hx-get="{{ index_url }}?export=true&extension=csv"
-              hx-include="[aria-included=true]"
-              aria-label="export table as csv"
-              class="block w-full"
-            >
-              CSV
-            </a>
+          <c-layout.context-menu.item
+            icon="document-text"
+            href="#"
+            hx-get="{{ index_url }}?export=true&extension=csv"
+            hx-include="[aria-included=true]"
+            aria-label="export table as csv"
+          >
+            CSV
           </c-layout.context-menu.item>
-          <c-layout.context-menu.item icon="document">
-            <a
-              hx-get="{{ index_url }}?export=true&extension=json"
-              hx-include="[aria-included=true]"
-              aria-label="export table as json"
-              class="block w-full"
-            >
-              JSON
-            </a>
+          <c-layout.context-menu.item
+            icon="document"
+            href="#"
+            hx-get="{{ index_url }}?export=true&extension=json"
+            hx-include="[aria-included=true]"
+            aria-label="export table as json"
+          >
+            JSON
           </c-layout.context-menu.item>
         </c-layout.context-menu.section>
       </c-layout.context-menu.menu>
@@ -81,12 +73,8 @@
         hx-indicator="#table-spinner"
         title="{% translate 'reset'|title %}"
       />
-
     </div>
   </c-slot>
 
-  {{ slot }}
-
-  {{ filters }}
-
+  {{ slot }} {{ filters }}
 </c-table.container>
