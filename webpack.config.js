@@ -1,12 +1,10 @@
 const path = require("path");
 
 module.exports = {
-  entry: {
-    path: path.resolve(__dirname, "static", "js", "src"),
-  },
+  entry: "./assets/js/index.js",
   mode: "production",
   output: {
-    path: path.resolve(__dirname, "static", "js"),
-    filename: "main.bundle.js",
+    path: path.resolve(__dirname, "static"),
+    filename: "main.min.js",
   },
 };

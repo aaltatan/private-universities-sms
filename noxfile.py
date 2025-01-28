@@ -7,12 +7,19 @@ def build(session: nox.Session) -> None:
         "npx",
         "tailwindcss",
         "-i",
-        "./static/css/src/input.css",
+        "./assets/css/input.css",
         "-o",
-        "./static/css/dist/styles.css",
+        "./static/main.min.css",
         "--minify",
     )
-    session.run("npx", "webpack", "--config", "webpack.config.js")
+    session.run(
+        "npx",
+        "webpack",
+        "--config",
+        "webpack.config.js",
+        "--mode",
+        "production",
+    )
     session.run(
         "uv",
         "pip",

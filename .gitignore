@@ -7,8 +7,6 @@ wheels/
 node_modules/
 staticfiles/
 
-dev.css
-
 .vscode/
 
 # Virtual environments

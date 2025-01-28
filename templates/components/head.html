@@ -19,22 +19,7 @@
   }
 </style>
 
-<!-- css files -->
-{% if debug %}
-<link rel="stylesheet" href="{% static 'css/dist/dev.css' %}" />
-{% else %}
-<link rel="stylesheet" href="{% static 'css/dist/styles.css' %}" />
-{% endif %}
-
-<!-- alpine plugins -->
-<script src="{% static 'js/plugins/persist.min.js' %}" defer></script>
-<script src="{% static 'js/plugins/collapse.min.js' %}" defer></script>
-<script src="{% static 'js/plugins/focus.min.js' %}" defer></script>
-<script src="{% static 'js/plugins/sort.min.js' %}" defer></script>
-<script src="{% static 'js/plugins/mask.min.js' %}" defer></script>
-<script src="{% static 'js/plugins/autosize.min.js' %}" defer></script>
-
-<script src="{% static 'js/alpine.min.js' %}" defer></script>
-<script src="{% static 'js/htmx.min.js' %}" defer></script>
+<link rel="stylesheet" href="{% static 'main.min.css' %}" />
+<script src="{% static 'main.min.js' %}" defer></script>
 
 <title>{{ project_name }}</title>
