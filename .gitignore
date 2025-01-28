@@ -8,6 +8,9 @@ node_modules/
 staticfiles/
 
 .vscode/
+# static development files
+main.dev.css
+main.dev.js
 
 # Virtual environments
 .venv/

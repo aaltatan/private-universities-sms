@@ -30,6 +30,6 @@ def build(session: nox.Session) -> None:
         "requirements.txt",
     )
     session.run("rm", "htmlcov", "-rf")
-    session.run("rm", ".coverage")
-    session.run("rm", "-rf", "__pycache__")
-    session.run("rm", "-rf", ".pytest_cache")
+    session.run("rm", ".coverage", "-f")
+    session.run("rm", "-rf", "__pycache__", "-f")
+    session.run("rm", "-rf", ".pytest_cache", "-f")

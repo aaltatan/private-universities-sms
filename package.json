@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "css": "npx tailwindcss -i ./assets/css/input.css -o ./static/main.min.css --watch",
+    "css": "npx tailwindcss -i ./assets/css/input.css -o ./static/main.dev.css --watch",
     "js": "npx webpack --config ./webpack.config.js --watch --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -19,10 +19,10 @@ export function layout({ title }) {
       this.sidebarOpened = false;
     },
     sidebarSearchFocus() {
-      searchInput = document.getElementById("sidebar-search");
+      let searchInput = document.getElementById("sidebar-search");
       this.showSidebar();
-      searchInput?.focus();
-      searchInput?.select();
+      searchInput.focus();
+      searchInput.select();
     },
     /* ----------- overlay sidebar ----------- */
     overlaySidebarOpened: false,

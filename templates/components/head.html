@@ -19,7 +19,12 @@
   }
 </style>
 
+{% if debug %}
+<link rel="stylesheet" href="{% static 'main.dev.css' %}" />
+<script src="{% static 'main.dev.js' %}" defer></script>
+{% else %}
 <link rel="stylesheet" href="{% static 'main.min.css' %}" />
 <script src="{% static 'main.min.js' %}" defer></script>
+{% endif %}
 
 <title>{{ project_name }}</title>
