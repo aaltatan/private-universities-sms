@@ -6,6 +6,7 @@ export function layout({ title }) {
     /* --------------- sidebar --------------- */
     sidebarOpened: false,
     sidebarFixed: Alpine.$persist(true).as("sidebar-fixed"),
+    sidebarSearch: Alpine.$persist("").as("sidebar-search"),
     toggleSidebarFixed() {
       this.sidebarFixed = !this.sidebarFixed;
     },
@@ -24,12 +25,22 @@ export function layout({ title }) {
       searchInput.focus();
       searchInput.select();
     },
+    sidebarSearchHandler() {
+      let hrefs = [...document.querySelectorAll(`a[id^='sidebar-link-']`)];
+      hrefs.forEach((href) => {
+        let obj = {
+          href: href.href,
+          text: href.innerText?.toLowerCase(),
+        };
+        href.ariaHidden = !obj.text.includes(this.sidebarSearch) && !obj.href.includes(this.sidebarSearch);
+      });
+    },
     /* ----------- overlay sidebar ----------- */
     overlaySidebarOpened: false,
     openOverlaySidebar() {
       this.overlaySidebarOpened = true;
     },
-    closeOverlaySidebar(e) {
+    closeOverlaySidebar() {
       this.overlaySidebarOpened = false;
     },
     toggleOverlaySidebar() {

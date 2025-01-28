@@ -1,7 +1,6 @@
 {% load i18n heroicons active_link %}
 
 <div
-  x-data="sidebarSearch"
   @keydown.esc.window="hideSidebar"
   :class="{
     'md:flex-row': sidebarFixed
@@ -39,11 +38,11 @@
       class="text-input my-2"
       name="search"
       aria-label="Search"
-      x-model="search"
+      x-model="sidebarSearch"
       id="sidebar-search"
-      @keydown.debounce.300ms="searchHandler"
-      @search="searchHandler"
-      x-init="searchHandler"
+      @keydown.debounce.300ms="sidebarSearchHandler"
+      @search="sidebarSearchHandler"
+      x-init="sidebarSearchHandler"
       placeholder="Alt ="
     />
 
