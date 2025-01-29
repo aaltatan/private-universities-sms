@@ -1,6 +1,7 @@
 import json
 
 from django import forms
+from django.db.models import QuerySet
 from django.forms.widgets import SelectMultiple, TextInput
 from django.template.loader import render_to_string
 
@@ -38,8 +39,12 @@ class OrderByWidget(RenderMixin, SelectMultiple):
     template_name = "widgets/order_by.html"
 
 
-def get_autocomplete_field(**kwargs: dict[str, str]) -> forms.CharField:
+def get_autocomplete_field(
+    queryset: QuerySet,
+    **kwargs: dict[str, str],
+) -> forms.ModelChoiceField:
     """Get autocomplete field."""
-    return forms.CharField(
+    return forms.ModelChoiceField(
+        queryset=queryset,
         widget=AutocompleteWidget({"data-data": json.dumps(kwargs)}),
     )

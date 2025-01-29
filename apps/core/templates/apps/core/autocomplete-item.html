@@ -1,7 +1,16 @@
 {% load i18n %}
-
+<!--  -->
 {% for obj in object_list %}
-<li class="p-2" tabindex="1">{{ obj }}</li>
+<li>
+  <button
+    class="block w-full text-start p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:bg-neutral-100 dark:focus:bg-neutral-800 focus:outline-none"
+    @click="handleSelectOption({{ obj.pk }})"
+  >
+    {{ obj }}
+  </button>
+</li>
 {% empty %}
-<li class="p-2">{% translate 'no results'|title %}</li>
+<li class="p-2">
+  <button @focus="reset">{% translate 'no results'|title %}</button>
+</li>
 {% endfor %}

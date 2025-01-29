@@ -1,22 +1,22 @@
 <div 
-x-data="autocomplete({% url 'core:autocomplete' %})" 
+x-data="autocomplete({
+  url: '{% url 'core:autocomplete' %}',
+  initial: '{% if widget.value != None %}{{ widget.value|stringformat:'s' }}{% endif %}',
+})" 
 class="relative"
-@blur="closeList"
-@keydown.esc.prevent="resetKeywords"
+@blur="reset"
+@click.away="reset"
+@keydown.esc.prevent="reset"
 >
   <div class="relative">
     <input
-    @keypress="resetList"
-    @focus="openList"
     @keypress.debounce.500="handleRequest"
+    @keydown.enter.prevent
     x-model="keywords"
     x-ref="input"
     class="!ps-10 text-input"
     type="{{ widget.type }}"
     name="{{ widget.name }}"
-    {% if widget.value != None %}
-    value="{{ widget.value|stringformat:'s' }}"
-    {% endif %}
     {% for name, value in widget.attrs.items %}
     {% if value is not False %}
     {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}
@@ -25,6 +25,11 @@ class="relative"
     >
     <span class="absolute start-2 top-1/2 -translate-y-1/2 text-neutral-500">
       {% heroicon_outline "magnifying-glass" size="20" %}
+    </span>
+    <span class="absolute end-2 top-1/2 -translate-y-1/2 hx-request:hidden" id="{{ widget.name }}-indicator">
+      <span class="block animate-spin">
+        {% heroicon_outline "arrow-path" size="20" %}
+      </span>
     </span>
   </div>
   <ul 
@@ -35,7 +40,7 @@ class="relative"
   x-transition:enter-end="translate-y-0"
   @keydown.down.prevent="$focus.wrap().next()"
   @keydown.up.prevent="$focus.wrap().previous()"
-  class="absolute top-[calc(100%+0.5rem)] z-50 w-full max-h-48 overflow-auto rounded-md border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none divide-y divide-neutral-300 dark:divide-neutral-800 scroll"
+  class="absolute top-[calc(100%+0.5rem)] z-50 w-full max-h-48 overflow-auto rounded-md border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none divide-y divide-neutral-300 dark:divide-neutral-800 scroll empty:hidden"
   role="list" 
   x-ref="list"
   ></ul>
@@ -46,13 +51,19 @@ class="relative"
     Alpine.data("autocomplete", autocomplete);
   });
 
-  function autocomplete(url) {
+  function autocomplete(data = { url, initial }) {
     return {
       keywords: "",
       isListOpen: false,
       context: {
         target: 'ul[role="list"]',
         swap: 'innerHTML',
+        indictor: '#{{ widget.name }}-indicator',
+      },
+      init() {
+        if (data.initial) {
+          this.keywords = data.initial;
+        }
       },
       openList() {
         this.isListOpen = true;
@@ -70,10 +81,20 @@ class="relative"
         let data = JSON.parse(input.dataset.data);
         return new URLSearchParams({...data, term: this.keywords});
       },
-      handleRequest() {
+      handleSelectOption(pk) {
+        this.keywords = pk;
+        this.closeList();
+      },
+      reset() {
+        this.resetKeywords();
+        this.closeList();
+      },
+      handleRequest(e) {
+        this.resetList();
+        this.openList();
         let input = this.$refs.input;
         let q = new URLSearchParams(this.getParams(input));
-        let fullPath = `${url}?${q.toString()}`;
+        let fullPath = `${data.url}?${q.toString()}`;
         
         if (this.keywords) {
           htmx.default.ajax('GET', fullPath, this.context)
