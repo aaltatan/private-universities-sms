@@ -2,18 +2,26 @@
 x-data="autocomplete({
   url: '{% url 'core:autocomplete' %}',
   initial: '{% if widget.value != None %}{{ widget.value|stringformat:'s' }}{% endif %}',
+  eventName: 'autocomplete-{{ widget.name }}',
 })" 
 class="relative"
-@blur="reset"
-@click.away="reset"
+@blur="resetList"
+@click.away="resetList"
 @keydown.esc.prevent="reset"
 >
   <div class="relative">
     <input
     @keypress.debounce.500="handleRequest"
-    @keydown.enter.prevent
+    @keydown.enter.prevent=""
     x-model="keywords"
     x-ref="input"
+    hx-get="{% url 'core:autocomplete' %}?{{ widget.attrs.url }}"
+    hx-trigger="autocomplete-{{ widget.name }}"
+    hx-target="ul[role='list']"
+    hx-swap="innerHTML"
+    hx-indicator="#{{ widget.name }}-indicator"
+    hx-vals="js:{term: event.target.value}"
+    hx-params="not governorate"
     class="!ps-10 text-input"
     type="{{ widget.type }}"
     name="{{ widget.name }}"
@@ -26,7 +34,10 @@ class="relative"
     <span class="absolute start-2 top-1/2 -translate-y-1/2 text-neutral-500">
       {% heroicon_outline "magnifying-glass" size="20" %}
     </span>
-    <span class="absolute end-2 top-1/2 -translate-y-1/2 hx-request:hidden" id="{{ widget.name }}-indicator">
+    <span 
+      class="absolute end-2 top-1/2 -translate-y-1/2 hidden hx-request:block" 
+      id="{{ widget.name }}-indicator"
+    >
       <span class="block animate-spin">
         {% heroicon_outline "arrow-path" size="20" %}
       </span>
@@ -40,66 +51,8 @@ class="relative"
   x-transition:enter-end="translate-y-0"
   @keydown.down.prevent="$focus.wrap().next()"
   @keydown.up.prevent="$focus.wrap().previous()"
-  class="absolute top-[calc(100%+0.5rem)] z-50 w-full max-h-48 overflow-auto rounded-md border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none divide-y divide-neutral-300 dark:divide-neutral-800 scroll empty:hidden"
+  class="absolute top-[calc(100%+0.5rem)] z-50 w-full max-h-48 overflow-auto rounded-md border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none scroll empty:hidden"
   role="list" 
   x-ref="list"
   ></ul>
 </div>
-
-<script>
-  document.addEventListener("alpine:init", () => {
-    Alpine.data("autocomplete", autocomplete);
-  });
-
-  function autocomplete(data = { url, initial }) {
-    return {
-      keywords: "",
-      isListOpen: false,
-      context: {
-        target: 'ul[role="list"]',
-        swap: 'innerHTML',
-        indictor: '#{{ widget.name }}-indicator',
-      },
-      init() {
-        if (data.initial) {
-          this.keywords = data.initial;
-        }
-      },
-      openList() {
-        this.isListOpen = true;
-      },
-      closeList() {
-        this.isListOpen = false;
-      },
-      resetList() {
-        this.$refs.list.innerHTML = "";
-      },
-      resetKeywords() {
-        this.keywords = "";
-      },
-      getParams(input) {
-        let data = JSON.parse(input.dataset.data);
-        return new URLSearchParams({...data, term: this.keywords});
-      },
-      handleSelectOption(pk) {
-        this.keywords = pk;
-        this.closeList();
-      },
-      reset() {
-        this.resetKeywords();
-        this.closeList();
-      },
-      handleRequest(e) {
-        this.resetList();
-        this.openList();
-        let input = this.$refs.input;
-        let q = new URLSearchParams(this.getParams(input));
-        let fullPath = `${data.url}?${q.toString()}`;
-        
-        if (this.keywords) {
-          htmx.default.ajax('GET', fullPath, this.context)
-        }
-      }
-    }
-  }
-</script>

@@ -1,7 +1,7 @@
 from dataclasses import InitVar, asdict, dataclass, field
-from typing import Any, Callable, Sequence
+from typing import Any, Callable, Literal, Sequence
 
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 from django.http import Http404, HttpRequest, HttpResponse
 
 from .constants import PERMISSION
@@ -89,6 +89,7 @@ class AutocompleteRequestParser:
     model_name: str = field(init=False)
     object_name: str = field(init=False)
     field_name: str = field(init=False)
+    label_field_name: str = field(init=False)
     term: str = field(init=False)
 
     def __post_init__(self, request: HttpRequest):
@@ -107,5 +108,31 @@ class AutocompleteRequestParser:
         self.field_name = request.GET.get("field_name", "")
         if not self.field_name:
             raise Http404("field_name is required")
+        
+        self.label_field_name = request.GET.get("label_field_name", "pk")
 
         self.term = request.GET.get("term", "")
+
+    def get_term_query(
+        self,
+        join: Literal["and", "or"] = "and",
+        type: Literal["word", "letter"] = "word",
+    ) -> Q:
+        """
+        Returns a search query.
+        """
+        query: Q = Q()
+        keywords: Sequence[str] = ""
+
+        if type == "word":
+            keywords = self.term.split(" ")
+        elif type == "letter":
+            keywords = self.term
+
+        for word in keywords:
+            if join == "and":
+                query &= Q(search__icontains=word)
+            else:
+                query |= Q(search__icontains=word)
+
+        return query

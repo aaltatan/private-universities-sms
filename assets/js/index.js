@@ -15,7 +15,7 @@ import { tableCheckAll } from "./src/td-check-all";
 import { alert } from "./src/alert";
 import { badge } from "./src/badge";
 import { messages } from "./src/messages";
-import { combobox } from "./src/combobox";
+import { autocomplete, combobox } from "./src/fields";
 
 Alpine.plugin(collapse);
 Alpine.plugin(focus);
@@ -32,6 +32,7 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("alert", alert);
   Alpine.data("badge", badge);
   Alpine.data("messages", messages);
+  Alpine.data("autocomplete", autocomplete);
   Alpine.data("combobox", combobox);
 });
 

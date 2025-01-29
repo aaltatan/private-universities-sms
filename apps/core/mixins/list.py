@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any, Literal, Sequence
+from typing import Any, Literal
 
 from content_settings.conf import content_settings
 from django.core.paginator import EmptyPage, Page, PageNotAnInteger, Paginator
-from django.db.models import CharField, F, Model, QuerySet, Value
-from django.db.models.functions import Concat
+from django.db.models import Model, QuerySet
 from django.http import (
     HttpRequest,
     HttpResponse,
@@ -35,11 +34,6 @@ class ListMixin(ABC):
     @property
     @abstractmethod
     def resource_class(self) -> type[ModelResource]:
-        pass
-
-    @property
-    @abstractmethod
-    def search_fields(self) -> Sequence[str]:
         pass
 
     @abstractmethod
@@ -175,31 +169,12 @@ class ListMixin(ABC):
 
         return f"components/{app_label}/table.html"
 
-    def annotate_search_field(self, qs: QuerySet) -> QuerySet:
-        """
-        Annotates a queryset with a search field.
-        """
-        search_fields: tuple[str] = self.search_fields
-        search_fields *= 2
-
-        fields: list[Value | F] = []
-
-        for idx, f in enumerate(search_fields, 1):
-            fields.append(F(f))
-            if idx != len(search_fields):
-                fields.append(Value(" "))
-
-        return qs.annotate(
-            search=Concat(*fields, output_field=CharField()),
-        )
-
     def get_queryset(self) -> QuerySet:
         """
         Returns the queryset.
         """
         model = self.get_model_class()
         qs = model.objects.all().order_by("id")
-        qs = self.annotate_search_field(qs)
 
         request: HttpRequest = self.request
 

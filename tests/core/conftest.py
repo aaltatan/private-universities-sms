@@ -15,7 +15,7 @@ def autocomplete_url() -> str:
 
 @pytest.fixture
 def autocomplete_template() -> str:
-    return "apps/core/autocomplete-item.html"
+    return "widgets/autocomplete-item.html"
 
 
 @pytest.fixture

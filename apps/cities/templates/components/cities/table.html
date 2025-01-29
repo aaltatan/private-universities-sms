@@ -18,11 +18,8 @@
     {% if can_create %}
     <c-button
       size="20"
-      hx-get="{{ create_url }}{% querystring %}"
-      hx-target="#modal-container"
-      hx-indicator="#modal-spinner"
-      hx-headers='{"modal": true, "target": "#{{ table_id }}"}'
-      @click="showModal"
+      kind="a"
+      href="{{ create_url }}{% querystring %}"
       theme="primary"
       title="{% translate 'add new'|title %}"
       aria-label="create new object"

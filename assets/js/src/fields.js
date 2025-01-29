@@ -71,3 +71,43 @@ export function combobox(comboboxData = { options: [], selectedText: "" }) {
     },
   };
 }
+
+
+export function autocomplete(data = { url, initial, eventName }) {
+  return {
+    keywords: "",
+    isListOpen: false,
+    init() {
+      if (data.initial) {
+        this.keywords = data.initial;
+      }
+    },
+    openList() {
+      this.isListOpen = true;
+    },
+    closeList() {
+      this.isListOpen = false;
+    },
+    resetList() {
+      this.$refs.list.innerHTML = "";
+    },
+    resetKeywords() {
+      this.keywords = "";
+    },
+    handleSelectOption(pk) {
+      this.keywords = pk;
+      this.closeList();
+    },
+    reset() {
+      this.resetKeywords();
+      this.closeList();
+    },
+    handleRequest(e) {
+      this.resetList();
+      this.openList();
+      if (this.keywords) {
+        this.$dispatch(data.eventName);
+      }
+    },
+  };
+}

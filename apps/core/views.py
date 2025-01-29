@@ -35,15 +35,16 @@ def autocomplete(request: HttpRequest) -> HttpResponse:
 
     Model = content_type.model_class()
 
-    if getattr(Model, parser.field_name, None) is None:
-        return HttpResponse(
-            f"field {parser.field_name} does not exist",
-            status=400,
-        )
+    # if getattr(Model, parser.field_name, None) is None:
+    #     return HttpResponse(
+    #         f"field {parser.field_name} does not exist",
+    #         status=400,
+    #     )
 
-    qs = Model.objects.filter(
-        **{f"{parser.field_name}__icontains": parser.term},
-    )
-    context = {"object_list": qs}
+    qs = Model.objects.filter(parser.get_term_query())
+    context = {
+        "object_list": qs,
+        "label_field_name": parser.label_field_name,
+    }
 
-    return render(request, "apps/core/autocomplete-item.html", context)
+    return render(request, "widgets/autocomplete-item.html", context)
