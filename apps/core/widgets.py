@@ -52,5 +52,5 @@ def get_autocomplete_field(
     return CustomModelChoiceField(
         queryset=queryset,
         to_field_name=to_field_name,
-        widget=AutocompleteWidget({"url": urlencode(kwargs)}),
+        widget=AutocompleteWidget({"querystring": urlencode(kwargs)}),
     )

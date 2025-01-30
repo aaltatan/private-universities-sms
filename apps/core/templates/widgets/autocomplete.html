@@ -11,11 +11,11 @@ class="relative"
 >
   <div class="relative">
     <input
-    @keypress.debounce.500="handleRequest"
+    @keypress.debounce.750="handleRequest"
     @keydown.enter.prevent=""
     x-model="keywords"
     x-ref="input"
-    hx-get="{% url 'core:autocomplete' %}?{{ widget.attrs.url }}"
+    hx-get="{% url 'core:autocomplete' %}?{{ widget.attrs.querystring }}"
     hx-trigger="autocomplete-{{ widget.name }}"
     hx-target="ul[role='list']"
     hx-swap="innerHTML"
@@ -37,6 +37,7 @@ class="relative"
     <span 
       class="absolute end-2 top-1/2 -translate-y-1/2 hidden hx-request:block" 
       id="{{ widget.name }}-indicator"
+      x-ref="indicator"
     >
       <span class="block animate-spin">
         {% heroicon_outline "arrow-path" size="20" %}

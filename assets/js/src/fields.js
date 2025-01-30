@@ -1,3 +1,6 @@
+import axios from "axios";
+import { getCookie } from "./utils";
+
 export function combobox(comboboxData = { options: [], selectedText: "" }) {
   return {
     comboboxOpen: false,
@@ -72,14 +75,14 @@ export function combobox(comboboxData = { options: [], selectedText: "" }) {
   };
 }
 
-
 export function autocomplete(data = { url, initial, eventName }) {
   return {
     keywords: "",
     isListOpen: false,
-    init() {
+    async init() {
       if (data.initial) {
-        this.keywords = data.initial;
+        let isNumeric = data.initial.match(/^\d+$/i);
+        this.keywords = isNumeric ? await this.getInitialValue() : data.initial;
       }
     },
     openList() {
@@ -102,11 +105,35 @@ export function autocomplete(data = { url, initial, eventName }) {
       this.resetKeywords();
       this.closeList();
     },
-    handleRequest(e) {
+    handleRequest() {
       this.resetList();
       this.openList();
       if (this.keywords) {
         this.$dispatch(data.eventName);
+      }
+    },
+    handleDisableInput() {
+      this.$refs.input.disabled = true;
+      this.$refs.indicator.classList.remove("hidden");
+    },
+    handleEnableInput() {
+      this.$refs.input.disabled = false;
+      this.$refs.indicator.classList.add("hidden");
+    },
+    async getInitialValue() {
+      this.handleDisableInput();
+      let querystring = this.$refs.input.getAttribute("querystring");
+      let csrfToken = getCookie("csrftoken");
+      let fullPath = `${data.url}${data.initial}/?${querystring}`;
+
+      let response = await axios.post(fullPath, null, {
+        headers: { "X-csrftoken": csrfToken },
+      });
+      if (response.status === 200) {
+        this.handleEnableInput();
+        return await response.data.value;
+      } else {
+        return '';
       }
     },
   };
