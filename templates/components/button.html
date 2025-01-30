@@ -2,10 +2,10 @@
 
 <c-vars
   :theme_variants="{
-    'default': 'dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-800 dark:border-neutral-800 hover:bg-neutral-200 border-neutral-300',
-    'primary': 'bg-neutral-950 text-white hover:bg-neutral-800 border-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 border-none',
-    'danger': 'bg-red-600 hover:bg-red-700 hover:border-red-700 text-white border-red-600',
-    'outline': 'border-none bg-transparent text-neutral-900 hover:bg-neutral-200 dark:text-neutral-300 dark:hover:bg-neutral-800'
+    'default': 'dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-800 dark:border-neutral-800 hover:bg-neutral-200 border-neutral-300 dark:ring-white ring-black',
+    'primary': 'bg-neutral-950 text-white hover:bg-neutral-800 border-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 border-none ring-neutral-500',
+    'danger': 'bg-red-600 hover:bg-red-700 hover:border-red-700 text-white border-red-600 ring-red-700',
+    'outline': 'border-none bg-transparent text-neutral-900 hover:bg-neutral-200 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:ring-white ring-black'
   }"
   :corners="{
     'sm': 'rounded-sm',
@@ -23,7 +23,7 @@
     'auto': 'w-auto',
     'full': 'w-full',
   }"
-  base_theme="border text-sm font-medium duration-75 flex items-center justify-center gap-1 aria-disabled:opacity-50 aria-disabled:pointer-events-none aria-expanded:ring-2 dark:ring-white ring-black cursor-pointer capitalize disabled:opacity-50 disabled:cursor-not-allowed"
+  base_theme="border text-sm font-medium duration-75 flex items-center justify-center gap-1 aria-disabled:opacity-50 aria-disabled:pointer-events-none focus:ring-2 focus:outline-none aria-expanded:ring-2 cursor-pointer capitalize disabled:opacity-50 disabled:cursor-not-allowed"
   width="auto"
   kind="button"
   theme="default"
