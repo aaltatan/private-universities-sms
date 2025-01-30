@@ -9,7 +9,8 @@ from .constants import PERMISSION
 
 @dataclass
 class Perm:
-    """ A dataclass that represents a permission. """
+    """A dataclass that represents a permission."""
+
     app_label: str
     permission: PERMISSION = "view"
     object_name: str | None = None
@@ -37,7 +38,8 @@ class Perm:
 
 @dataclass
 class Action:
-    """ A dataclass that represents an action. """
+    """A dataclass that represents an action."""
+
     method: Callable[[QuerySet, dict], HttpResponse]
     template: str
     kwargs: Sequence[str] = field(default_factory=list)
@@ -83,8 +85,9 @@ class RequestParser:
 
 @dataclass
 class AutocompleteRequestParser:
-    """ A dataclass that parses the request for autocomplete views. """
-    request: InitVar[HttpRequest]
+    """A dataclass that parses the request for autocomplete views."""
+
+    request: HttpRequest
     app_label: str = field(init=False)
     model_name: str = field(init=False)
     object_name: str = field(init=False)
@@ -92,26 +95,26 @@ class AutocompleteRequestParser:
     label_field_name: str = field(init=False)
     term: str = field(init=False)
 
-    def __post_init__(self, request: HttpRequest):
-        self.app_label = request.GET.get("app_label", "")
+    def __post_init__(self):
+        self.app_label = self.request.GET.get("app_label", "")
         if not self.app_label:
             raise Http404("app_label is required")
 
-        self.model_name = request.GET.get("model_name", "").lower()
+        self.model_name = self.request.GET.get("model_name", "").lower()
         if not self.model_name:
             raise Http404("model_name is required")
 
-        self.object_name = request.GET.get("object_name", "").lower()
+        self.object_name = self.request.GET.get("object_name", "").lower()
         if not self.object_name:
             raise Http404("object_name is required")
 
-        self.field_name = request.GET.get("field_name", "")
+        self.field_name = self.request.GET.get("field_name", "")
         if not self.field_name:
             raise Http404("field_name is required")
-        
-        self.label_field_name = request.GET.get("label_field_name", "pk")
 
-        self.term = request.GET.get("term", "")
+        self.label_field_name = self.request.GET.get("label_field_name", "pk")
+
+        self.term = self.request.GET.get("term", "")
 
     def get_term_query(
         self,
