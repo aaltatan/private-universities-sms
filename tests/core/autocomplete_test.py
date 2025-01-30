@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 import pytest
 from django.test import Client
 from selectolax.parser import HTMLParser
@@ -24,6 +26,104 @@ def test_autocomplete_without_permissions(
     }
     response = client.get(autocomplete_url, payload)
     assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_autocomplete_post_method_with_name_as_label_field_name(
+    admin_client: Client,
+    autocomplete_url: str,
+    create_governorates,
+) -> None:
+    payload = {
+        "app_label": "governorates",
+        "model_name": "Governorate",
+        "object_name": "governorate",
+        "field_name": "name",
+        "label_field_name": "name",
+    }
+    querystring = urlencode(payload)
+    response = admin_client.post(f"{autocomplete_url}1/?{querystring}")
+
+    assert response.status_code == 200
+    assert response.json()["value"] == "محافظة حماه"
+
+
+@pytest.mark.django_db
+def test_autocomplete_post_method_with_pk_as_label_field_name(
+    admin_client: Client,
+    autocomplete_url: str,
+    create_governorates,
+) -> None:
+    payload = {
+        "app_label": "governorates",
+        "model_name": "Governorate",
+        "object_name": "governorate",
+        "field_name": "name",
+        # "label_field_name": "pk", like default
+    }
+    querystring = urlencode(payload)
+    response = admin_client.post(f"{autocomplete_url}1/?{querystring}")
+
+    assert response.status_code == 200
+    assert response.json()["value"] == 1
+
+
+@pytest.mark.django_db
+def test_autocomplete_post_method_without_permissions(
+    client: Client,
+    autocomplete_url: str,
+    create_governorates,
+) -> None:
+    client.login(
+        username="user_with_no_perm",
+        password="user_with_no_perm",
+    )
+    payload = {
+        "app_label": "governorates",
+        "model_name": "Governorate",
+        "object_name": "governorate",
+        "field_name": "name",
+    }
+    querystring = urlencode(payload)
+    response = client.post(f"{autocomplete_url}1/?{querystring}")
+
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_autocomplete_post_method_with_wrong_model_name(
+    admin_client: Client,
+    autocomplete_url: str,
+    create_governorates,
+) -> None:
+    payload = {
+        "app_label": "governorates",
+        "model_name": "Governoratex",
+        "object_name": "governorate",
+        "field_name": "name",
+    }
+    querystring = urlencode(payload)
+    response = admin_client.post(f"{autocomplete_url}1/?{querystring}")
+
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_autocomplete_post_method_with_wrong_pk(
+    admin_client: Client,
+    autocomplete_url: str,
+    create_governorates,
+) -> None:
+    payload = {
+        "app_label": "governorates",
+        "model_name": "Governorate",
+        "object_name": "governorate",
+        "field_name": "name",
+    }
+    querystring = urlencode(payload)
+    response = admin_client.post(f"{autocomplete_url}1312/?{querystring}")
+
+    assert response.status_code == 404
 
 
 @pytest.mark.django_db
