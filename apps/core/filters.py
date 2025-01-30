@@ -1,14 +1,9 @@
-from typing import Literal, Mapping, Sequence
+from typing import Mapping
 
 import django_filters as filters
-from django.db.models import QuerySet, Q
-from djangoql.exceptions import (
-    DjangoQLError,
-    DjangoQLLexerError,
-    DjangoQLParserError,
-)
-from djangoql.queryset import apply_search
+from django.db.models import QuerySet
 
+from .utils import get_djangoql_query, get_keywords_query
 from .widgets import OrderByWidget
 
 
@@ -26,42 +21,8 @@ class FilterSearchMixin:
         """
         Searches the queryset for the given name and value.
         """
-        try:
-            queryset = apply_search(queryset, value)
-        except (
-            DjangoQLError,
-            DjangoQLParserError,
-            DjangoQLLexerError,
-        ):
-            query = self.__search(value)
-            queryset = queryset.filter(query)
-
-        return queryset
-
-    def __search(
-        self,
-        value: str,
-        join: Literal["and", "or"] = "and",
-        type: Literal["word", "letter"] = "word",
-    ) -> Q:
-        """
-        Returns a search query.
-        """
-        query: Q = Q()
-        keywords: Sequence[str] = ""
-
-        if type == "word":
-            keywords = value.split(" ")
-        elif type == "letter":
-            keywords = value
-
-        for word in keywords:
-            if join == "and":
-                query &= Q(search__icontains=word)
-            else:
-                query |= Q(search__icontains=word)
-
-        return query
+        default_queryset = queryset.filter(get_keywords_query(value))
+        return get_djangoql_query(queryset, value, default_queryset)
 
 
 def get_order_by_filter(fields: Mapping[str, str]) -> filters.OrderingFilter:

@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views import View
 
 from ..schemas import AutocompleteRequestParser
+from ..utils import get_djangoql_query
 
 
 class AutocompleteView(LoginRequiredMixin, View):
@@ -28,7 +29,14 @@ class AutocompleteView(LoginRequiredMixin, View):
 
         Model = self.get_model_class(parser=parser)
 
-        qs = Model.objects.filter(parser.get_term_query())
+        default_queryset = Model.objects.filter(
+            parser.get_keyword_query(parser.term),
+        )
+        qs = get_djangoql_query(
+            qs_to_filter=Model.objects.all(),
+            djangoql_query=parser.term,
+            default_queryset=default_queryset,
+        )
 
         if (
             getattr(Model, parser.field_name, None) is None
@@ -36,7 +44,7 @@ class AutocompleteView(LoginRequiredMixin, View):
         ):
             return HttpResponse(
                 f"field {parser.field_name} does not exist",
-                status=400,
+                status=400
             )
 
         context = {

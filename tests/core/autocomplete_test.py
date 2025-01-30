@@ -155,6 +155,34 @@ def test_autocomplete(
 
 
 @pytest.mark.django_db
+def test_autocomplete_with_djangoql(
+    admin_client: Client,
+    autocomplete_url: str,
+    autocomplete_template: str,
+    create_governorates,
+):
+    payload = {
+        "term": 'name endswith "ص"',
+        "app_label": "governorates",
+        "model_name": "Governorate",
+        "object_name": "governorate",
+        "field_name": "name",
+    }
+    response = admin_client.get(autocomplete_url, payload)
+    parser = HTMLParser(response.content)
+
+    lis = parser.css("li")
+    for li in lis:
+        assert li.text(strip=True) in [
+            "محافظة حمص",
+        ]
+
+    assert len(lis) == 1
+    assert is_template_used(autocomplete_template, response)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
 def test_autocomplete_with_no_permissions(
     admin_client: Client,
     autocomplete_url: str,

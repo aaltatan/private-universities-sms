@@ -1,13 +1,8 @@
-from django.http import HttpRequest
 from django.db.models import QuerySet
-
+from django.http import HttpRequest
 from rest_framework import filters
-from djangoql.exceptions import (
-    DjangoQLError,
-    DjangoQLParserError,
-    DjangoQLLexerError,
-)
-from djangoql.queryset import apply_search
+
+from .utils import get_djangoql_query
 
 
 class DjangoQLSearchFilter(filters.SearchFilter):
@@ -26,17 +21,6 @@ class DjangoQLSearchFilter(filters.SearchFilter):
         if not value:
             return super().filter_queryset(request, queryset, view)
 
-        try:
-            queryset = apply_search(queryset, value)
-        except (
-            DjangoQLError,
-            DjangoQLParserError,
-            DjangoQLLexerError,
-        ):
-            queryset = super().filter_queryset(
-                request,
-                queryset,
-                view,
-            )
+        default_queryset = super().filter_queryset(request, queryset, view)
 
-        return queryset
+        return get_djangoql_query(queryset, value, default_queryset)

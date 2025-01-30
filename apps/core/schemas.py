@@ -1,10 +1,11 @@
 from dataclasses import InitVar, asdict, dataclass, field
-from typing import Any, Callable, Literal, Sequence
+from typing import Any, Callable, Sequence
 
 from django.db.models import QuerySet, Q
 from django.http import Http404, HttpRequest, HttpResponse
 
 from .constants import PERMISSION
+from .utils import get_keywords_query
 
 
 @dataclass
@@ -116,26 +117,8 @@ class AutocompleteRequestParser:
 
         self.term = self.request.GET.get("term", "")
 
-    def get_term_query(
-        self,
-        join: Literal["and", "or"] = "and",
-        type: Literal["word", "letter"] = "word",
-    ) -> Q:
+    def get_keyword_query(self, value: str, join: str = "and", type: str = "word") -> Q:
         """
         Returns a search query.
         """
-        query: Q = Q()
-        keywords: Sequence[str] = ""
-
-        if type == "word":
-            keywords = self.term.split(" ")
-        elif type == "letter":
-            keywords = self.term
-
-        for word in keywords:
-            if join == "and":
-                query &= Q(search__icontains=word)
-            else:
-                query |= Q(search__icontains=word)
-
-        return query
+        return get_keywords_query(value, join, type)
