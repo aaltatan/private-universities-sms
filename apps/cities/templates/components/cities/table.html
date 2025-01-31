@@ -124,6 +124,17 @@
             {% if can_update %}
             <c-layout.context-menu.section>
               <c-layout.context-menu.item
+                icon="clipboard-document-list"
+                href="#"
+                hx-get="{% url 'core:activities' obj.id %}?app_label=cities&model=city"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="object activities"
+              >
+                {% translate 'activities' %}
+              </c-layout.context-menu.item>
+              <c-layout.context-menu.item
                 icon="pencil"
                 href="{{ obj.get_update_url }}{% querystring %}"
                 aria-label="edit object"

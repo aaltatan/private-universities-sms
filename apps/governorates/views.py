@@ -14,12 +14,13 @@ from . import constants, filters, forms, models, resources, serializers, utils
 
 
 class APIViewSet(
-    mixins.DestroyMixin,
+    mixins.APIMixin,
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
 ):
     queryset = models.Governorate.objects.all()
     serializer_class = serializers.GovernorateSerializer
+    activity_serializer = serializers.ActivitySerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
         rest_filters.OrderingFilter,
@@ -40,6 +41,7 @@ class ListView(
     permission_required: str = Perm("governorates").string
     filter_class = filters.GovernorateFilter
     resource_class = resources.GovernorateResource
+    activity_serializer = serializers.ActivitySerializer
     deleter = utils.Deleter
     search_fields = constants.SEARCH_FIELDS
 
@@ -72,6 +74,7 @@ class UpdateView(
 ):
     permission_required: str = Perm("governorates", "change").string
     form_class = forms.GovernorateForm
+    activity_serializer = serializers.ActivitySerializer
 
 
 class DeleteView(
@@ -81,5 +84,5 @@ class DeleteView(
     View,
 ):
     permission_required: str = Perm("governorates", "delete").string
-    model = models.Governorate
     deleter = utils.Deleter
+    activity_serializer = serializers.ActivitySerializer

@@ -1,16 +1,19 @@
-import json
 from abc import ABC, abstractmethod
 from typing import Any
 
 from django.contrib import messages
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.forms import ModelForm
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
+from rest_framework.serializers import ModelSerializer
 
+from ..models import Activity
 from ..schemas import RequestParser
+from ..utils import get_differences
 
 
 class UpdateMixin(ABC):
@@ -21,6 +24,11 @@ class UpdateMixin(ABC):
     @property
     @abstractmethod
     def form_class(self) -> type[ModelForm]:
+        pass
+
+    @property
+    @abstractmethod
+    def activity_serializer(self) -> type[ModelSerializer]:
         pass
 
     def get(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
@@ -52,18 +60,20 @@ class UpdateMixin(ABC):
         model = self.get_model_class()
         self.obj = get_object_or_404(model, slug=slug)
 
+        from_data: dict | list = self.activity_serializer(self.obj).data
+
         form = self.form_class(request.POST, instance=self.obj)
 
         request_parser = RequestParser(
             request=request,
             index_url=self.get_app_urls()["index_url"],
         )
-
         if form.is_valid():
             return self.get_form_valid_response(
                 request=request,
                 form=form,
                 request_parser=request_parser,
+                from_data=from_data,
             )
 
         return self.get_form_invalid_response(
@@ -77,11 +87,23 @@ class UpdateMixin(ABC):
         request: HttpRequest,
         form: type[ModelForm],
         request_parser: RequestParser,
+        from_data: dict | list,
     ) -> HttpResponse:
         """
         Returns the form valid response.
         """
         obj = form.save()
+        
+        to_data: dict | list = self.activity_serializer(obj).data
+        differences = get_differences(from_data, to_data)
+
+        Activity.objects.create(
+            user=request.user,
+            kind=Activity.KindChoices.UPDATE,
+            content_type=ContentType.objects.get_for_model(self.obj),
+            object_id=self.obj.pk,
+            data=differences,
+        )
 
         messages.success(
             request,
@@ -95,12 +117,7 @@ class UpdateMixin(ABC):
 
         if not request_parser.dont_redirect:
             if request_parser.is_modal_request:
-                response["Hx-Location"] = json.dumps(
-                    {
-                        "path": request_parser.next_url,
-                        "target": request_parser.target,
-                    },
-                )
+                response["Hx-Location"] = request_parser.hx_location
             else:
                 response["Hx-Redirect"] = request_parser.index_url
 

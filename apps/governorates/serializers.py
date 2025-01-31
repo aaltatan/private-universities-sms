@@ -7,3 +7,9 @@ class GovernorateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Governorate
         fields = "__all__"
+
+
+class ActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Governorate
+        fields = ("name", "description")

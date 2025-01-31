@@ -1,0 +1,14 @@
+<c-vars
+  base_theme="rounded-md w-fit border px-2 py-1 text-xs capitalize font-medium"
+  :themes="{
+    'primary': 'border-black bg-black text-neutral-100 dark:border-white dark:bg-white dark:text-neutral-100',
+    'secondary': 'border-neutral-800 bg-neutral-800 text-white dark:border-neutral-300 dark:bg-neutral-300 dark:text-black',
+    'sky': 'border-sky-500 bg-sky-500 text-white dark:border-sky-500 dark:bg-sky-500 dark:text-white',
+    'green': 'border-green-500 bg-green-500 text-white dark:border-green-500 dark:bg-green-500 dark:text-white',
+    'amber': 'border-amber-500 bg-amber-500 text-white dark:border-amber-500 dark:bg-amber-500 dark:text-white',
+    'red': 'border-red-500 bg-red-500 text-white dark:border-red-500 dark:bg-red-500 dark:text-white',
+  }"
+  theme="primary"
+/>
+
+<span class="{{ themes|get_item:theme }} {{ base_theme }}"> {{ slot }} </span>

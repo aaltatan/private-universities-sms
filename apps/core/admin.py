@@ -1,17 +1,56 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.utils.html import format_html
 
-from djangoql.admin import DjangoQLSearchMixin, apply_search
-
-from .models import User
-
-
-class CustomDjangoQLSearchMixin(DjangoQLSearchMixin):
-    def get_search_results(self, request, queryset, search_term):
-        if not search_term:
-            return queryset, False
-        qs = apply_search(queryset, search_term, self.djangoql_schema)
-        return qs, False
+from .models import Activity, User
+from .utils import dict_to_css
 
 
 admin.site.register(User, UserAdmin)
+
+
+@admin.register(Activity)
+class ActivityAdmin(admin.ModelAdmin):
+    @admin.display(description="Kind")
+    def formatted_kind(self, obj: Activity) -> str:
+        colors = {
+            "create": "green",
+            "update": "orangered",
+            "delete": "red",
+            "export": "blue",
+        }
+        styles = {
+            "color": "white",
+            "border-radius": "0.25rem",
+            "padding": "0.125rem 0.25rem",
+            "font-size": "0.75rem",
+            "text-transform": "capitalize",
+        }
+        styles["background-color"] = colors[obj.kind]
+        return format_html(
+            f'<div style="{dict_to_css(styles)}">{obj.kind}</div>',
+        )
+
+    list_per_page = 20
+    list_display = (
+        "created_at",
+        "user",
+        "formatted_kind",
+        "notes",
+    )
+    search_fields = (
+        "user__username",
+        "notes",
+    )
+    list_filter = (
+        "user__username",
+        "kind",
+    )
+    readonly_fields = (
+        "created_at",
+        "user",
+        "kind",
+        "data",
+        "content_type",
+        "object_id",
+    )

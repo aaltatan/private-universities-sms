@@ -15,6 +15,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django_filters import FilterSet
 from import_export.resources import ModelResource
+from rest_framework.serializers import ModelSerializer
 from tablib import Dataset
 
 from ..constants import PERMISSION
@@ -29,6 +30,11 @@ class ListMixin(ABC):
     @property
     @abstractmethod
     def filter_class(self) -> type[FilterSet]:
+        pass
+
+    @property
+    @abstractmethod
+    def activity_serializer(self) -> type[ModelSerializer]:
         pass
 
     @property

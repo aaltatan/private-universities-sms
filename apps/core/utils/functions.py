@@ -1,4 +1,5 @@
 import re
+from typing import Any
 
 
 def increase_slug_by_one(slug: str) -> str:
@@ -20,3 +21,27 @@ def increase_slug_by_one(slug: str) -> str:
         increased_slug = f"{slug}1"
 
     return increased_slug
+
+
+def dict_to_css(styles: dict[str, str]) -> str:
+    styles = [f"{key}: {value};" for key, value in styles.items()]
+    return "".join(styles)
+
+
+def get_differences(from_: dict, to: dict) -> dict[str, dict[str, Any]]:
+    """
+    Returns the differences between two dictionaries.
+    """
+    differences: set = set(from_.items()) ^ set(to.items())
+
+    before: dict = {}
+    after: dict = {}
+
+    for key, value in differences:
+        diff = key, value
+        if diff in from_.items():
+            before[key] = value
+        else:
+            after[key] = value
+
+    return {"before": before, "after": after}

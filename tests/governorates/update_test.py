@@ -27,7 +27,7 @@ def test_index_page_has_update_links_for_authorized_user(
     assert response.status_code == 200
     assert len(tds_name) == 10
     assert len(edit_context_menu_btns) == 10
-    assert len(context_menu_btns) == 20
+    assert len(context_menu_btns) == 30
 
     for pk, td in enumerate(tds_name, 1):
         update_url = model.objects.get(pk=pk).get_update_url()

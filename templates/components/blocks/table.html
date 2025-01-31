@@ -75,6 +75,11 @@
       />
     </div>
   </c-slot>
-
-  {{ slot }} {{ filters }}
+  <!--  -->
+  {{ slot }} 
+  <!--  -->
+  {{ filters }}
+  <c-slot name="pagination">
+    <c-table.pagination />
+  </c-slot>
 </c-table.container>

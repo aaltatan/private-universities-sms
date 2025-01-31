@@ -14,6 +14,11 @@ urlpatterns = [
         views.messages,
         name="messages",
     ),
+    path(
+        "activities/<int:object_id>/",
+        views.activities,
+        name="activities",
+    ),
     re_path(
         r"^autocomplete/(?P<pk>\d+)?/?",
         views.AutocompleteView.as_view(),

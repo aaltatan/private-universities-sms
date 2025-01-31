@@ -1,7 +1,8 @@
+import json
 from dataclasses import InitVar, asdict, dataclass, field
 from typing import Any, Callable, Sequence
 
-from django.db.models import QuerySet, Q
+from django.db.models import Q, QuerySet
 from django.http import Http404, HttpRequest, HttpResponse
 
 from .constants import PERMISSION
@@ -64,6 +65,7 @@ class RequestParser:
     next_url: str = field(init=False, default="")
     target: str = field(init=False, default="")
     dont_redirect: bool = field(init=False)
+    hx_location: str = field(init=False)
 
     def __post_init__(self, request: HttpRequest):
         self.is_modal_request = request.headers.get("modal") is not None
@@ -79,6 +81,10 @@ class RequestParser:
         self.index_url += querystring
 
         self.next_url = request.headers.get("referer", self.index_url)
+
+        self.hx_location = json.dumps(
+            {"path": self.next_url, "target": self.target},
+        )
 
     def asdict(self) -> dict[str, Any]:
         return asdict(self)
@@ -122,3 +128,22 @@ class AutocompleteRequestParser:
         Returns a search query.
         """
         return get_keywords_query(value, join, type)
+
+
+@dataclass
+class ActivityRequestParser:
+    request: InitVar[HttpRequest]
+    app_label: str = field(init=False)
+    model: str = field(init=False)
+
+    def __post_init__(self, request: HttpRequest):
+        self.app_label = request.GET.get("app_label")
+        if self.app_label is None:
+            raise Http404("app_label is required")
+
+        self.model = request.GET.get("model")
+        if self.model is None:
+            raise Http404("model is required")
+
+    def asdict(self) -> dict[str, str]:
+        return asdict(self)

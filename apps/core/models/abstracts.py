@@ -1,12 +1,7 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 
-from .validators import four_char_length_validator
-
-
-class User(AbstractUser):
-    pass
+from ..validators import four_char_length_validator
 
 
 class AbstractUniqueNameModel(models.Model):

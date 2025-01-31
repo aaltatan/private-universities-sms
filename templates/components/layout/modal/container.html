@@ -1,3 +1,13 @@
+<c-vars
+  :sizes="{
+    'base': 'w-[min(400px,100%)]',
+    'lg': 'w-[min(600px,100%)]',
+    'xl': 'w-[min(800px,100%)]',
+    '2xl': 'w-[min(1200px,100%)]',
+  }"
+  size="base"
+/>
+
 <div
   x-cloak
   x-show="modalStatus"
@@ -21,7 +31,7 @@
     x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100"
     x-ref="modal"
-    class="flex w-[min(400px,100%)] max-w-xl flex-col gap-4 overflow-hidden rounded-lg border border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 bg-white dark:bg-neutral-950"
+    class="flex max-w-xl flex-col gap-2 overflow-hidden rounded-lg border border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 bg-white dark:bg-neutral-950 {{ sizes|get_item:size }}"
   >
     {{ slot }}
   </div>

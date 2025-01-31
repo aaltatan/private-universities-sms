@@ -1,0 +1,56 @@
+{% load i18n utils %}
+
+<c-vars
+  :themes="{
+    'create': 'green',
+    'update': 'sky',
+    'delete': 'red',
+    'export': 'amber',
+  }"
+/>
+
+<c-layout.modal.container size="2xl">
+  <c-layout.modal.body>
+    <c-slot name="header">{% translate 'activities'|title %}</c-slot>
+    <c-slot name="body">
+      <c-table.container>
+        <c-table.table>
+          <c-table.tr :header="True">
+            <c-table.th>{% translate 'user'|title %}</c-table.th>
+            <c-table.th>{% translate 'date'|title %}</c-table.th>
+            <c-table.th>{% translate 'kind'|title %}</c-table.th>
+            <c-table.th>{% translate 'data'|title %}</c-table.th>
+          </c-table.tr>
+          {% for activity in activities %}
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'user'|title %}">
+              {{ activity.user }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'date'|title %}">
+              {{ activity.created_at }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'kind'|title %}">
+              <c-badge theme="{{ themes|get_item:activity.kind }}"> {{ activity.kind }} </c-badge>
+            </c-table.td>
+            <c-table.td data-header="{% translate 'data'|title %}">
+              <pre>{{ activity.data|pretty_json }}</pre>
+            </c-table.td>
+          </c-table.tr>
+          {% empty %}
+          <c-table.empty-tr />
+          {% endfor %}
+        </c-table.table>
+      </c-table.container>
+    </c-slot>
+    <c-slot name="footer">
+      <c-button
+        theme="outline"
+        title="{% translate 'close'|title %}"
+        @click="hideModal"
+        :hide_icon="True"
+      >
+        {% translate 'close'|title %}
+      </c-button>
+    </c-slot>
+  </c-layout.modal.body>
+</c-layout.modal.container>
