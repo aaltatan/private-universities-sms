@@ -1,33 +1,49 @@
 from typing import Any, Generator
 
-from django.urls import reverse
 import pytest
+from django.urls import reverse
 from playwright.sync_api import Page, sync_playwright
 
-from tests.utils import create_base_users
 from apps.governorates.models import Governorate
+from tests.utils import reset_sequence
 
 
 @pytest.fixture
-def autocomplete_url() -> str:
-    return reverse("core:autocomplete")
+def model() -> Governorate:
+    return Governorate
 
 
 @pytest.fixture
-def autocomplete_template() -> str:
-    return "widgets/autocomplete-item.html"
+def urls() -> dict[str, str]:
+    return {
+        "api": "/api/governorates/",
+        "autocomplete": reverse("core:autocomplete"),
+        "index": reverse("governorates:index"),
+        "create": reverse("governorates:create"),
+    }
 
 
 @pytest.fixture
-def create_governorates(db) -> None:
-    governorates = [
-        {"name": "محافظة حماه", "description": "goo"},
-        {"name": "محافظة حمص", "description": "meta"},
-        {"name": "محافظة ادلب", "description": "meta"},
-        {"name": "محافظة المنيا", "description": "language mena"},
-    ]
-    for governorate in governorates:
-        Governorate.objects.create(**governorate)
+def templates() -> dict[str, str]:
+    return {
+        "autocomplete-item": "widgets/autocomplete-item.html",
+    }
+
+
+@pytest.fixture(scope="package", autouse=True)
+def create_governorates(django_db_setup, django_db_blocker):
+    with django_db_blocker.unblock():
+        governorates = [
+            {"name": "محافظة حماه", "description": "goo"},
+            {"name": "محافظة حمص", "description": "meta"},
+            {"name": "محافظة ادلب", "description": "meta"},
+            {"name": "محافظة المنيا", "description": "language mena"},
+        ]
+        for governorate in governorates:
+            Governorate.objects.create(**governorate)
+        yield
+        Governorate.objects.all().delete()
+        reset_sequence(Governorate)
 
 
 @pytest.fixture
@@ -42,9 +58,3 @@ def admin_page(db, live_server) -> Generator[Page, Any, None]:
         page.click("button[type='submit']")
         page.wait_for_selector('nav[aria-label="sidebar navigation"]')
         yield page
-
-
-@pytest.fixture(autouse=True, scope="package")
-def create_users(django_db_setup, django_db_blocker) -> None:
-    with django_db_blocker.unblock():
-        create_base_users()

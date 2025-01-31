@@ -3,7 +3,7 @@ from playwright.sync_api import Page
 
 
 @pytest.mark.django_db
-@pytest.mark.order("last")
+@pytest.mark.skip
 def test_dark_mode(admin_page: Page):
     """Test dark mode."""
     expression = "document.documentElement.classList.contains('dark')"

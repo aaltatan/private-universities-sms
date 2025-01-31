@@ -16,7 +16,7 @@ def test_index_without_authentication_view(client: Client):
 def test_index_authentication_view(client: Client):
     client.login(
         username="user_with_no_perm",
-        password="user_with_no_perm",
+        password="password",
     )
     response = client.get(reverse("core:index"))
 
@@ -28,7 +28,7 @@ def test_index_authentication_view(client: Client):
 def test_index_authentication_view_with_no_perm(client: Client):
     client.login(
         username="user_with_no_perm",
-        password="user_with_no_perm",
+        password="password",
     )
     response = client.get(reverse("core:index"))
     parser = HTMLParser(response.content)

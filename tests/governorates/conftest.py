@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from apps.core.models import User
 from apps.governorates.models import Governorate
-from tests.utils import create_base_users
+from tests.utils import reset_sequence
 
 
 APP_LABEL = "governorates"
@@ -65,7 +65,7 @@ def clean_data_sample() -> dict[str, str]:
 
 
 @pytest.fixture(scope="package", autouse=True)
-def objects(django_db_setup, django_db_blocker) -> None:
+def create_objects(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
         governorates = [
             {"name": "محافظة حماه", "description": "goo"},
@@ -83,6 +83,32 @@ def objects(django_db_setup, django_db_blocker) -> None:
                 name=f"City {idx}",
                 description=description_order,
             )
+        yield
+        Governorate.objects.all().delete()
+        reset_sequence(Governorate)
+
+
+@pytest.fixture(autouse=True, scope="package")
+def create_users(django_db_setup, django_db_blocker) -> None:
+    with django_db_blocker.unblock():
+        user_with_view_perm_only = User.objects.create_user(
+            username=f"{APP_LABEL}_user_with_view_perm_only",
+            password="password",
+        )
+        view_perm = Permission.objects.get(codename="view_governorate")
+        user_with_view_perm_only.user_permissions.add(view_perm)
+
+        perms = ["add", "change", "delete", "export"]
+
+        for p in perms:
+            perm = Permission.objects.get(
+                codename=f"{p}_governorate",
+            )
+            user = User.objects.create_user(
+                username=f"{APP_LABEL}_user_with_view_{p}_perm",
+                password="password",
+            )
+            user.user_permissions.add(view_perm, perm)
 
 
 @pytest.fixture
@@ -121,27 +147,3 @@ def dirty_data() -> list[dict]:
             "api_error": ["governorate with this name already exists."],
         },
     ]
-
-
-@pytest.fixture(autouse=True, scope="package")
-def create_users(django_db_setup, django_db_blocker) -> None:
-    with django_db_blocker.unblock():
-        create_base_users()
-        user_with_view_perm_only = User.objects.create_user(
-            username="user_with_view_perm_only",
-            password="user_with_view_perm_only",
-        )
-        view_perm = Permission.objects.get(codename="view_governorate")
-        user_with_view_perm_only.user_permissions.add(view_perm)
-
-        perms = ["add", "change", "delete", "export"]
-
-        for p in perms:
-            perm = Permission.objects.get(
-                codename=f"{p}_governorate",
-            )
-            user = User.objects.create_user(
-                username=f"user_with_view_{p}_perm",
-                password=f"user_with_view_{p}_perm",
-            )
-            user.user_permissions.add(view_perm, perm)

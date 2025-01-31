@@ -46,11 +46,14 @@ def test_delete_object_if_headers_has_no_hx_request(
 
 @pytest.mark.django_db
 def test_delete_btn_appearance_if_user_has_no_delete_perm(
-    client: Client, urls: dict[str, str], model: type[Model]
+    client: Client,
+    urls: dict[str, str],
+    model: type[Model],
+    app_label: str,
 ) -> None:
     client.login(
-        username="user_with_view_perm_only",
-        password="user_with_view_perm_only",
+        username=f"{app_label}_user_with_view_perm_only",
+        password="password",
     )
     response = client.get(urls["index"])
     parser = HTMLParser(response.content)

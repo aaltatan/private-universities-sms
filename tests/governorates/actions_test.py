@@ -40,10 +40,11 @@ def test_bulk_delete_modal_response(
 def test_bulk_delete_without_permissions(
     client: Client,
     urls: dict[str, str],
+    app_label: str,
 ):
     client.login(
-        username="user_with_view_perm_only",
-        password="user_with_view_perm_only",
+        username=f"{app_label}_user_with_view_perm_only",
+        password="password",
     )
 
     data: dict = {
@@ -143,10 +144,11 @@ def test_bulk_action_not_found(
 def test_bulk_delete_with_permissions_only_for_view(
     client: Client,
     urls: dict[str, str],
+    app_label: str,
 ):
     client.login(
-        username="user_with_view_perm_only",
-        password="user_with_view_perm_only",
+        username=f"{app_label}_user_with_view_perm_only",
+        password="password",
     )
 
     data: dict = {

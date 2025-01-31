@@ -16,10 +16,11 @@ def test_add_new_btn_appearance_if_user_has_no_add_perm(
     client: Client,
     urls: dict[str, str],
     templates: dict[str, str],
+    app_label: str,
 ) -> None:
     client.login(
-        username="user_with_view_perm_only",
-        password="user_with_view_perm_only",
+        username=f"{app_label}_user_with_view_perm_only",
+        password="password",
     )
 
     response = client.get(urls["index"])
@@ -33,11 +34,11 @@ def test_add_new_btn_appearance_if_user_has_no_add_perm(
 
 @pytest.mark.django_db
 def test_send_request_to_create_page_without_permission(
-    client: Client, urls: dict[str, str]
+    client: Client, urls: dict[str, str], app_label: str
 ) -> None:
     client.login(
-        username="user_with_view_perm_only",
-        password="user_with_view_perm_only",
+        username=f"{app_label}_user_with_view_perm_only",
+        password="password",
     )
     response = client.get(urls["create"])
     assert response.status_code == 403

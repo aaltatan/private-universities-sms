@@ -1,21 +1,22 @@
 from datetime import datetime
 from typing import Literal
 
-from django.test import Client
+from django.db import connection
 from django.http import HttpResponse
+from django.test import Client
 from selectolax.parser import HTMLParser
-
-from apps.core.models import User
 
 
 def get_token_headers(
     client: Client,
     admin: bool = False,
 ) -> dict[str, str]:
-    user = "admin" if admin else "user_with_no_perm"
     response = client.post(
         "/api/token/",
-        {"username": user, "password": user},
+        {
+            "username": "admin" if admin else "user_with_no_perm",
+            "password": "password",
+        },
     )
     token = response.json()["access"]
     return {
@@ -82,16 +83,9 @@ def assert_export(
     assert filename_without_sec in response.headers["Content-Disposition"]
 
 
-def create_base_users() -> None:
-    exists = User.objects.filter(
-        username__in=["user_with_no_perm", "admin"],
-    ).exists()
-    if not exists:
-        User.objects.create_user(
-            username="user_with_no_perm",
-            password="user_with_no_perm",
-        )
-        User.objects.create_superuser(
-            username="admin",
-            password="admin",
+def reset_sequence(model):
+    table_name = model._meta.db_table
+    with connection.cursor() as cursor:
+        cursor.execute(
+            f"UPDATE sqlite_sequence SET seq = (SELECT MAX(id) FROM {table_name}) WHERE name = '{table_name}';"
         )

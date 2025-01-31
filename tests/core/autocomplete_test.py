@@ -10,12 +10,11 @@ from tests.utils import is_template_used
 @pytest.mark.django_db
 def test_autocomplete_without_permissions(
     client: Client,
-    autocomplete_url: str,
-    create_governorates,
+    urls: dict[str, str],
 ) -> None:
     client.login(
         username="user_with_no_perm",
-        password="user_with_no_perm",
+        password="password",
     )
     payload = {
         "term": "حم",
@@ -24,15 +23,14 @@ def test_autocomplete_without_permissions(
         "object_name": "governorate",
         "field_name": "name",
     }
-    response = client.get(autocomplete_url, payload)
+    response = client.get(urls['autocomplete'], payload)
     assert response.status_code == 403
 
 
 @pytest.mark.django_db
 def test_autocomplete_post_method_with_name_as_label_field_name(
     admin_client: Client,
-    autocomplete_url: str,
-    create_governorates,
+    urls: dict[str, str],
 ) -> None:
     payload = {
         "app_label": "governorates",
@@ -42,7 +40,7 @@ def test_autocomplete_post_method_with_name_as_label_field_name(
         "label_field_name": "name",
     }
     querystring = urlencode(payload)
-    response = admin_client.post(f"{autocomplete_url}1/?{querystring}")
+    response = admin_client.post(f"{urls['autocomplete']}1/?{querystring}")
 
     assert response.status_code == 200
     assert response.json()["value"] == "محافظة حماه"
@@ -51,8 +49,7 @@ def test_autocomplete_post_method_with_name_as_label_field_name(
 @pytest.mark.django_db
 def test_autocomplete_post_method_with_pk_as_label_field_name(
     admin_client: Client,
-    autocomplete_url: str,
-    create_governorates,
+    urls: dict[str, str],
 ) -> None:
     payload = {
         "app_label": "governorates",
@@ -62,7 +59,7 @@ def test_autocomplete_post_method_with_pk_as_label_field_name(
         # "label_field_name": "pk", like default
     }
     querystring = urlencode(payload)
-    response = admin_client.post(f"{autocomplete_url}1/?{querystring}")
+    response = admin_client.post(f"{urls['autocomplete']}1/?{querystring}")
 
     assert response.status_code == 200
     assert response.json()["value"] == 1
@@ -71,12 +68,11 @@ def test_autocomplete_post_method_with_pk_as_label_field_name(
 @pytest.mark.django_db
 def test_autocomplete_post_method_without_permissions(
     client: Client,
-    autocomplete_url: str,
-    create_governorates,
+    urls: dict[str, str],
 ) -> None:
     client.login(
         username="user_with_no_perm",
-        password="user_with_no_perm",
+        password="password",
     )
     payload = {
         "app_label": "governorates",
@@ -85,7 +81,7 @@ def test_autocomplete_post_method_without_permissions(
         "field_name": "name",
     }
     querystring = urlencode(payload)
-    response = client.post(f"{autocomplete_url}1/?{querystring}")
+    response = client.post(f"{urls['autocomplete']}1/?{querystring}")
 
     assert response.status_code == 403
 
@@ -93,8 +89,7 @@ def test_autocomplete_post_method_without_permissions(
 @pytest.mark.django_db
 def test_autocomplete_post_method_with_wrong_model_name(
     admin_client: Client,
-    autocomplete_url: str,
-    create_governorates,
+    urls: dict[str, str],
 ) -> None:
     payload = {
         "app_label": "governorates",
@@ -103,7 +98,7 @@ def test_autocomplete_post_method_with_wrong_model_name(
         "field_name": "name",
     }
     querystring = urlencode(payload)
-    response = admin_client.post(f"{autocomplete_url}1/?{querystring}")
+    response = admin_client.post(f"{urls['autocomplete']}1/?{querystring}")
 
     assert response.status_code == 404
 
@@ -111,8 +106,7 @@ def test_autocomplete_post_method_with_wrong_model_name(
 @pytest.mark.django_db
 def test_autocomplete_post_method_with_wrong_pk(
     admin_client: Client,
-    autocomplete_url: str,
-    create_governorates,
+    urls: dict[str, str],
 ) -> None:
     payload = {
         "app_label": "governorates",
@@ -121,7 +115,7 @@ def test_autocomplete_post_method_with_wrong_pk(
         "field_name": "name",
     }
     querystring = urlencode(payload)
-    response = admin_client.post(f"{autocomplete_url}1312/?{querystring}")
+    response = admin_client.post(f"{urls['autocomplete']}1312/?{querystring}")
 
     assert response.status_code == 404
 
@@ -129,9 +123,8 @@ def test_autocomplete_post_method_with_wrong_pk(
 @pytest.mark.django_db
 def test_autocomplete(
     admin_client: Client,
-    autocomplete_url: str,
-    autocomplete_template: str,
-    create_governorates,
+    urls: dict[str, str],
+    templates: dict[str, str],
 ):
     payload = {
         "term": "حم",
@@ -140,7 +133,7 @@ def test_autocomplete(
         "object_name": "governorate",
         "field_name": "name",
     }
-    response = admin_client.get(autocomplete_url, payload)
+    response = admin_client.get(urls['autocomplete'], payload)
     parser = HTMLParser(response.content)
 
     lis = parser.css("li")
@@ -150,16 +143,15 @@ def test_autocomplete(
             "محافظة حمص",
         ]
 
-    assert is_template_used(autocomplete_template, response)
+    assert is_template_used(templates['autocomplete-item'], response)
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_autocomplete_with_djangoql(
     admin_client: Client,
-    autocomplete_url: str,
-    autocomplete_template: str,
-    create_governorates,
+    urls: dict[str, str],
+    templates: dict[str, str],
 ):
     payload = {
         "term": 'name endswith "ص"',
@@ -168,7 +160,7 @@ def test_autocomplete_with_djangoql(
         "object_name": "governorate",
         "field_name": "name",
     }
-    response = admin_client.get(autocomplete_url, payload)
+    response = admin_client.get(urls['autocomplete'], payload)
     parser = HTMLParser(response.content)
 
     lis = parser.css("li")
@@ -178,16 +170,15 @@ def test_autocomplete_with_djangoql(
         ]
 
     assert len(lis) == 1
-    assert is_template_used(autocomplete_template, response)
+    assert is_template_used(templates['autocomplete-item'], response)
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_autocomplete_with_no_permissions(
     admin_client: Client,
-    autocomplete_url: str,
-    autocomplete_template: str,
-    create_governorates,
+    urls: dict[str, str],
+    templates: dict[str, str],
 ):
     payload = {
         "term": "حم",
@@ -196,7 +187,7 @@ def test_autocomplete_with_no_permissions(
         "object_name": "governorate",
         "field_name": "name",
     }
-    response = admin_client.get(autocomplete_url, payload)
+    response = admin_client.get(urls['autocomplete'], payload)
     parser = HTMLParser(response.content)
 
     lis = parser.css("li")
@@ -206,16 +197,15 @@ def test_autocomplete_with_no_permissions(
             "محافظة حمص",
         ]
 
-    assert is_template_used(autocomplete_template, response)
+    assert is_template_used(templates['autocomplete-item'], response)
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_autocomplete_with_empty_term(
     admin_client: Client,
-    autocomplete_url: str,
-    autocomplete_template: str,
-    create_governorates,
+    urls: dict[str, str],
+    templates: dict[str, str],
 ):
     payload = {
         "term": "xx",
@@ -224,13 +214,13 @@ def test_autocomplete_with_empty_term(
         "object_name": "governorate",
         "field_name": "name",
     }
-    response = admin_client.get(autocomplete_url, payload)
+    response = admin_client.get(urls['autocomplete'], payload)
     parser = HTMLParser(response.content)
 
     lis = parser.css("li")
 
     assert len(lis) == 1
-    assert is_template_used(autocomplete_template, response)
+    assert is_template_used(templates['autocomplete-item'], response)
     assert parser.css_first("li").text(strip=True) == "no results".title()
     assert response.status_code == 200
 
@@ -238,8 +228,8 @@ def test_autocomplete_with_empty_term(
 @pytest.mark.django_db
 def test_autocomplete_with_dirty_payload(
     admin_client: Client,
-    autocomplete_url: str,
-    autocomplete_template: str,
+    urls: dict[str, str],
+    templates: dict[str, str],
 ):
     payload = {
         "term": "حم",
@@ -247,7 +237,7 @@ def test_autocomplete_with_dirty_payload(
         "object_name": "governorate",
         "field_name": "name",
     }
-    response = admin_client.get(autocomplete_url, payload)
+    response = admin_client.get(urls['autocomplete'], payload)
 
     assert response.status_code == 404
 
@@ -257,7 +247,7 @@ def test_autocomplete_with_dirty_payload(
         "object_name": "governorate",
         "field_name": "name",
     }
-    response = admin_client.get(autocomplete_url, payload)
+    response = admin_client.get(urls['autocomplete'], payload)
 
     assert response.status_code == 404
 
@@ -267,7 +257,7 @@ def test_autocomplete_with_dirty_payload(
         "model_name": "Governorate",
         "object_name": "governorate",
     }
-    response = admin_client.get(autocomplete_url, payload)
+    response = admin_client.get(urls['autocomplete'], payload)
 
     assert response.status_code == 404
 
@@ -277,7 +267,7 @@ def test_autocomplete_with_dirty_payload(
         "model_name": "Governorate",
         "field_name": "name",
     }
-    response = admin_client.get(autocomplete_url, payload)
+    response = admin_client.get(urls['autocomplete'], payload)
 
     assert response.status_code == 404
 
@@ -288,7 +278,7 @@ def test_autocomplete_with_dirty_payload(
         "object_name": "governorate",
         "field_name": "namexx",
     }
-    response = admin_client.get(autocomplete_url, payload)
+    response = admin_client.get(urls['autocomplete'], payload)
 
     assert response.status_code == 400
 
@@ -299,7 +289,7 @@ def test_autocomplete_with_dirty_payload(
         "object_name": "governorate",
         "field_name": "name",
     }
-    response = admin_client.get(autocomplete_url, payload)
+    response = admin_client.get(urls['autocomplete'], payload)
 
     assert response.status_code == 404
 
@@ -310,6 +300,6 @@ def test_autocomplete_with_dirty_payload(
         "object_name": "governorate",
         "field_name": "name",
     }
-    response = admin_client.get(autocomplete_url, payload)
+    response = admin_client.get(urls['autocomplete'], payload)
 
     assert response.status_code == 404

@@ -36,7 +36,7 @@ class APIMixin(ABC):
         deleter: type[BaseDeleter] = self.deleter(instance)
 
         if deleter.is_deletable():
-            serializer = self.serializer_class(instance)
+            serializer = self.activity_serializer(instance)
             Activity.objects.create(
                 user=request.user,
                 kind=Activity.KindChoices.DELETE,

@@ -43,10 +43,11 @@ def test_index_page_has_no_update_links_for_unauthorized_user(
     client: Client,
     urls: dict[str, str],
     model: type[Model],
+    app_label: str,
 ) -> None:
     client.login(
-        username="user_with_view_delete_perm",
-        password="user_with_view_delete_perm",
+        username=f"{app_label}_user_with_view_delete_perm",
+        password="password",
     )
     response = client.get(urls["index"])
 
