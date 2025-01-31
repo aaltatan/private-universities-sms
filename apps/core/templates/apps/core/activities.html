@@ -9,11 +9,11 @@
   }"
 />
 
-<c-layout.modal.container size="2xl">
+<c-layout.modal.container width="xl">
   <c-layout.modal.body>
     <c-slot name="header">{% translate 'activities'|title %}</c-slot>
     <c-slot name="body">
-      <c-table.container>
+      <c-table.container height="sm">
         <c-table.table>
           <c-table.tr :header="True">
             <c-table.th>{% translate 'user'|title %}</c-table.th>
@@ -33,7 +33,7 @@
               <c-badge theme="{{ themes|get_item:activity.kind }}"> {{ activity.kind }} </c-badge>
             </c-table.td>
             <c-table.td data-header="{% translate 'data'|title %}">
-              <pre>{{ activity.data|pretty_json }}</pre>
+              <pre dir="ltr">{{ activity.data|pretty_json }}</pre>
             </c-table.td>
           </c-table.tr>
           {% empty %}

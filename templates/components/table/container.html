@@ -1,12 +1,20 @@
 {% load i18n %}
 
+<c-vars 
+  :heights="{
+    'sm': 'max-h-[50vh] sm:max-h-[65vh]',
+    'base': 'max-h-[55vh] sm:max-h-[70vh]',
+  }"
+  height="base"
+/>
+
 <div id="{{ id }}" class="relative hx-swap:opacity-80" x-data="tableCheckAll">
   <div class="flex items-center justify-between flex-col gap-2 sm:gap-1 sm:flex-row mb-2">
     {{ header }}
   </div>
 
   <div
-    class="relative overflow-auto w-full max-h-[55vh] sm:max-h-[70vh] overflow-x-auto rounded-md border border-neutral-300 dark:border-neutral-800 scroll overflow-y-scroll"
+    class="relative overflow-auto w-full overflow-x-auto rounded-md border border-neutral-300 dark:border-neutral-800 scroll overflow-y-scroll {{ heights|get_item:height }}"
   >
     <div
       id="table-spinner"
