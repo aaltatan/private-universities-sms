@@ -27,6 +27,7 @@ def urls() -> dict[str, str]:
 def templates() -> dict[str, str]:
     return {
         "autocomplete-item": "widgets/autocomplete-item.html",
+        "activities": "apps/core/activities.html",
     }
 
 

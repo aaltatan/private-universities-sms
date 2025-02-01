@@ -1,34 +1,45 @@
+from datetime import datetime
+
 import pytest
 from django.test import Client
 
-from tests.utils import assert_export
-
 
 @pytest.mark.django_db
-def test_export_response_xlsx(
+@pytest.mark.parametrize(
+    "extension",
+    [
+        "xlsx",
+        "csv",
+        "json",
+    ],
+)
+def test_export_response(
     admin_client: Client,
     urls: dict[str, str],
     headers_modal_GET: dict[str, str],
     filename: str,
+    extension: str,
 ) -> None:
-    assert_export(admin_client, urls, headers_modal_GET, filename, "xlsx")
+    url = urls["index"] + f"?export=true&extension={extension}"
 
+    content_types = {
+        "xlsx": "application/vnd.ms-excel",
+        "csv": "text/csv",
+        "json": "application/json",
+    }
 
-@pytest.mark.django_db
-def test_export_response_csv(
-    admin_client: Client,
-    urls: dict[str, str],
-    headers_modal_GET: dict[str, str],
-    filename: str,
-) -> None:
-    assert_export(admin_client, urls, headers_modal_GET, filename, "csv")
+    response = admin_client.get(url, headers=headers_modal_GET)
 
+    assert response.status_code == 200
+    assert "HX-Redirect" in response.headers
 
-@pytest.mark.django_db
-def test_export_response_json(
-    admin_client: Client,
-    urls: dict[str, str],
-    headers_modal_GET: dict[str, str],
-    filename: str,
-):
-    assert_export(admin_client, urls, headers_modal_GET, filename, "json")
+    url += "&redirected=true"
+    response = admin_client.get(url, headers=headers_modal_GET)
+
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == content_types[extension]
+
+    str_now_without_sec = datetime.now().strftime("%Y-%m-%d-%H-%M")
+    filename_without_sec = f"{filename}-{str_now_without_sec}"
+
+    assert filename_without_sec in response.headers["Content-Disposition"]

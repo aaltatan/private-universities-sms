@@ -7,22 +7,24 @@ from apps.core.models import AbstractUniqueNameModel as Model
 
 
 @pytest.mark.django_db
-def test_name_field(model: type[Model]):
-    object = model.objects.filter(name__contains="حماه").first()
-    assert object.name == "محافظة حماه"
-    assert object.slug == "محافظة-حماه"
-
-    object = model.objects.filter(name__contains="حمص").first()
-    assert object.name == "محافظة حمص"
-    assert object.slug == "محافظة-حمص"
-
-    object = model.objects.filter(name__contains="ادلب").first()
-    assert object.name == "محافظة ادلب"
-    assert object.slug == "محافظة-ادلب"
-
-    object = model.objects.filter(name__contains="المنيا").first()
-    assert object.name == "محافظة المنيا"
-    assert object.slug == "محافظة-المنيا"
+@pytest.mark.parametrize(
+    "filter,expected_name,expected_slug",
+    [
+        ("حماه", "محافظة حماه", "محافظة-حماه"),
+        ("حمص", "محافظة حمص", "محافظة-حمص"),
+        ("ادلب", "محافظة ادلب", "محافظة-ادلب"),
+        ("المنيا", "محافظة المنيا", "محافظة-المنيا"),
+    ],
+)
+def test_name_field(
+    model: type[Model],
+    filter: str,
+    expected_name: str,
+    expected_slug: str,
+):
+    object = model.objects.filter(name__contains=filter).first()
+    assert object.name == expected_name
+    assert object.slug == expected_slug
 
 
 @pytest.mark.django_db
@@ -31,15 +33,33 @@ def test_length_of_the_queryset(model: type[Model]):
 
 
 @pytest.mark.django_db
-def test_unique_name(model: type[Model]):
+@pytest.mark.parametrize(
+    "name",
+    [
+        "محافظة حماه",
+        "محافظة حمص",
+        "محافظة ادلب",
+        "محافظة المنيا",
+    ],
+)
+def test_unique_name_constraint(model: type[Model], name: str):
     with pytest.raises(IntegrityError):
-        model.objects.create(name="محافظة حماه", description="حماه")
+        model.objects.create(name=name, description="حماه")
 
 
 @pytest.mark.django_db
-def test_less_than_four_characters(model: type[Model]):
+@pytest.mark.parametrize(
+    "name,description",
+    [
+        ("", "goo"),
+        ("x", "meta"),
+        ("xx", "meta"),
+        ("xxx", "language mena"),
+    ],
+)
+def test_validators(model: type[Model], name: str, description: str):
     with pytest.raises(ValidationError):
-        obj = model.objects.create(name="ddd", description="حماه")
+        obj = model.objects.create(name=name, description=description)
         obj.full_clean()
 
 

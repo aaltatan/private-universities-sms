@@ -1,6 +1,3 @@
-from datetime import datetime
-from typing import Literal
-
 from django.db import connection
 from django.http import HttpResponse
 from django.test import Client
@@ -49,38 +46,6 @@ def is_template_used(
         return template_name in [t.name for t in response.templates]
     else:
         return template_name not in [t.name for t in response.templates]
-
-
-def assert_export(
-    admin_client: Client,
-    urls: dict[str, str],
-    headers_modal_GET: dict[str, str],
-    filename: str,
-    extension: Literal["xlsx", "csv", "json"],
-) -> None:
-    url = urls["index"] + f"?export=true&extension={extension}"
-
-    content_types = {
-        "xlsx": "application/vnd.ms-excel",
-        "csv": "text/csv",
-        "json": "application/json",
-    }
-
-    response = admin_client.get(url, headers=headers_modal_GET)
-
-    assert response.status_code == 200
-    assert "HX-Redirect" in response.headers
-
-    url += "&redirected=true"
-    response = admin_client.get(url, headers=headers_modal_GET)
-
-    assert response.status_code == 200
-    assert response.headers["Content-Type"] == content_types[extension]
-
-    str_now_without_sec = datetime.now().strftime("%Y-%m-%d-%H-%M")
-    filename_without_sec = f"{filename}-{str_now_without_sec}"
-
-    assert filename_without_sec in response.headers["Content-Disposition"]
 
 
 def reset_sequence(model):

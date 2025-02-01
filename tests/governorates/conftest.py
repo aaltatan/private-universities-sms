@@ -78,10 +78,10 @@ def create_objects(django_db_setup, django_db_blocker):
             Governorate.objects.create(**governorate)
 
         for idx in range(1, 301):
-            description_order = str(abs(idx - 301)).rjust(3, "0")
+            string = str(idx).rjust(3, "0")
             Governorate.objects.create(
-                name=f"City {idx}",
-                description=description_order,
+                name=f"City {string}",
+                description=string,
             )
         yield
         Governorate.objects.all().delete()

@@ -120,9 +120,9 @@ def test_view_contains_objects(
 ):
     response = admin_client.get(urls["index"])
 
-    assert "City 1" in response.content.decode()
-    assert "City 2" in response.content.decode()
-    assert "City 3" in response.content.decode()
+    assert "City 001" in response.content.decode()
+    assert "City 002" in response.content.decode()
+    assert "City 003" in response.content.decode()
 
     assert "حماه" in response.content.decode()
     assert "حمص" in response.content.decode()

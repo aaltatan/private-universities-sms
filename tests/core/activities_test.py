@@ -1,10 +1,14 @@
+import json
+
 import pytest
 from django.test import Client
 from django.urls import reverse
 from rest_framework.response import Response
 from rest_framework.test import APIClient
+from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
+from tests.utils import is_template_used
 
 
 @pytest.mark.django_db
@@ -31,6 +35,27 @@ def test_create_activities(
     assert activity.data is None
     assert activity.user.username == "admin"
     assert activities_count == 1
+
+    payload = {"app_label": "governorates", "model": "governorate"}
+    path = reverse("core:activities", args=[5])
+
+    response = admin_client.get(path=path, data=payload)
+
+    parser = HTMLParser(response.content)
+    data_td = parser.css_first(
+        "table td[data-header='Data'] pre",
+    ).text(strip=True)
+    user_td = parser.css_first(
+        "table td[data-header='User'] div",
+    ).text(strip=True)
+    kind_td = parser.css_first(
+        "table td[data-header='Kind'] div span",
+    ).text(strip=True)
+
+    assert response.status_code == 200
+    assert user_td == "admin"
+    assert kind_td == "create"
+    assert json.loads(data_td) is None
 
 
 @pytest.mark.django_db
@@ -108,6 +133,7 @@ def test_delete_api_activity(
 @pytest.mark.django_db
 def test_update_activity(
     admin_client: Client,
+    templates: dict[str, str],
     model: Model,
     activity_model,
 ):
@@ -126,15 +152,38 @@ def test_update_activity(
 
     qs = model.objects.all()
     activity = activity_model.objects.first()
+    expected_data = {
+        "before": {"name": "محافظة حماه", "description": "goo"},
+        "after": payload,
+    }
 
     assert response.status_code == 200
     assert qs.count() == 4
     assert activity.kind == "update"
-    assert activity.data == {
-        "before": {"name": "محافظة حماه", "description": "goo"},
-        "after": payload,
-    }
+    assert activity.data == expected_data
     assert activity.user.username == "admin"
+
+    payload = {"app_label": "governorates", "model": "governorate"}
+    path = reverse("core:activities", args=[1])
+
+    response = admin_client.get(path=path, data=payload)
+
+    parser = HTMLParser(response.content)
+    data_td = parser.css_first(
+        "table td[data-header='Data'] pre",
+    ).text(strip=True)
+    user_td = parser.css_first(
+        "table td[data-header='User'] div",
+    ).text(strip=True)
+    kind_td = parser.css_first(
+        "table td[data-header='Kind'] div span",
+    ).text(strip=True)
+
+    assert response.status_code == 200
+    assert user_td == "admin"
+    assert kind_td == "update"
+    assert json.loads(data_td) == expected_data
+    assert is_template_used(templates["activities"], response=response)
 
 
 @pytest.mark.django_db

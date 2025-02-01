@@ -82,7 +82,7 @@ def test_filter_objects_using_q(
         format="json",
     )
     assert response.status_code == status.HTTP_200_OK
-    assert response.json()["count"] == 6  # 40, 140, 240, description 40, 140, 240
+    assert response.json()["count"] == 3  # 40, 140, 240,
 
 
 @pytest.mark.django_db
