@@ -8,51 +8,41 @@ from apps.core.models import AbstractUniqueNameModel as Model
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize(
+    "querystring,results_count,next_page,previous_page",
+    [
+        ("", 10, "?page=2", None),
+        ("?page=2", 10, "?page=3", ""),
+        ("?page=31", 4, None, "?page=30"),
+    ]
+    + [(f"?page={i}", 10, f"?page={i + 1}", f"?page={i - 1}") for i in range(3, 31)],
+)
 def test_pagination(
     api_client: APIClient,
     urls: dict[str, str],
     admin_headers: dict[str, str],
+    querystring: str,
+    results_count: int,
+    next_page: str | None,
+    previous_page: str | None,
 ):
-    response = api_client.get(
-        path=urls["api"],
+    response: Response = api_client.get(
+        path=urls["api"] + querystring,
         headers=admin_headers,
     )
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["count"] == 304
-    assert len(response.json()["results"]) == 10
-    assert response.json()["next"].endswith(urls["api"] + "?page=2")
-    assert response.json()["previous"] is None
+    assert len(response.json()["results"]) == results_count
 
-    response = api_client.get(
-        path=urls["api"] + "?page=2",
-        headers=admin_headers,
-    )
-    assert response.status_code == status.HTTP_200_OK
-    assert response.json()["count"] == 304
-    assert len(response.json()["results"]) == 10
-    assert response.json()["next"].endswith(urls["api"] + "?page=3")
-    assert response.json()["previous"].endswith(urls["api"])
+    if next_page is not None:
+        assert response.json()["next"].endswith(urls["api"] + next_page)
+    else:
+        assert response.json()["next"] is None
 
-    response = api_client.get(
-        path=urls["api"] + "?page=31",
-        headers=admin_headers,
-    )
-    assert response.status_code == status.HTTP_200_OK
-    assert response.json()["count"] == 304
-    assert len(response.json()["results"]) == 4
-    assert response.json()["next"] is None
-    assert response.json()["previous"].endswith(urls["api"] + "?page=30")
-
-    for idx in range(3, 31):
-        response = api_client.get(
-            path=urls["api"] + f"?page={idx}",
-            headers=admin_headers,
-        )
-        assert response.status_code == status.HTTP_200_OK
-        assert response.json()["count"] == 304
-        assert len(response.json()["results"]) == 10
-        assert response.json()["next"].endswith(urls["api"] + f"?page={idx + 1}")
-        assert response.json()["previous"].endswith(urls["api"] + f"?page={idx - 1}")
+    if previous_page is not None:
+        assert response.json()["previous"].endswith(urls["api"] + previous_page)
+    else:
+        assert response.json()["previous"] is None
 
 
 @pytest.mark.django_db
@@ -71,57 +61,34 @@ def test_read_objects(
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize(
+    "querystring,results_count",
+    [
+        ("City+40", 3),  # 40, 140, 240,
+        ("حمص محاف", 1),
+        ("حم", 2),
+        ("id > 4", 300),
+        ('name ~ "حم"', 2),
+        ('description = "meta"', 2),
+        ('description ~ "me"', 3),
+        ('description startswith "20"', 10),
+        ('description ~ "20"', 13),
+    ],
+)
 def test_filter_objects_using_q(
     api_client: APIClient,
     urls: dict[str, str],
     admin_headers: dict[str, str],
+    querystring: str,
+    results_count: int,
 ):
     response: Response = api_client.get(
-        path=f"{urls['api']}?q=City+40",
+        path=f"{urls['api']}?q={querystring}",
         headers=admin_headers,
         format="json",
     )
     assert response.status_code == status.HTTP_200_OK
-    assert response.json()["count"] == 3  # 40, 140, 240,
-
-
-@pytest.mark.django_db
-def test_filter_objects_using_djangoql(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-):
-    response: Response = api_client.get(
-        path=f"{urls['api']}?q=id<4",
-        headers=admin_headers,
-        format="json",
-    )
-    assert response.status_code == status.HTTP_200_OK
-    assert {
-        "id": 1,
-        "name": "محافظة حماه",
-        "description": "goo",
-        "slug": "محافظة-حماه",
-    } in response.json()["results"]
-
-    assert response.json()["count"] == 3
-
-
-@pytest.mark.django_db
-def test_filter_objects_using_djangoql_endswith(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-):
-    response: Response = api_client.get(
-        path=f'{urls["api"]}?q=name endswith "3"',
-        headers=admin_headers,
-        format="json",
-    )
-    ids = [i for i in range(1, 301) if str(i).endswith("3")]
-
-    assert response.status_code == status.HTTP_200_OK
-    assert response.json()["count"] == len(ids)
+    assert response.json()["count"] == results_count
 
 
 @pytest.mark.django_db
@@ -130,7 +97,6 @@ def test_delete_object(
     urls: dict[str, str],
     admin_headers: dict[str, str],
     model: type[Model],
-    model_name: str,
 ):
     for idx in range(1, 11):
         response: Response = api_client.delete(
@@ -141,6 +107,15 @@ def test_delete_object(
 
     assert model.objects.count() == 294
 
+
+@pytest.mark.django_db
+def test_delete_object_with_invalid_id(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+    model_name: str,
+):
     response: Response = api_client.get(
         path=f"{urls['api']}312312",
         headers=admin_headers,
@@ -148,7 +123,7 @@ def test_delete_object(
     )
     assert response.json() == {"detail": f"No {model_name} matches the given query."}
     assert response.status_code == 404
-    assert model.objects.count() == 294
+    assert model.objects.count() == 304
 
 
 @pytest.mark.django_db
@@ -202,38 +177,29 @@ def test_delete_and_bulk_delete_object_when_deleter_class_is_not_a_subclass_of_D
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize("idx", list(range(1, 11)))
 def test_delete_object_undeletable(
     api_client: APIClient,
     urls: dict[str, str],
     admin_headers: dict[str, str],
     model: type[Model],
-    model_name: str,
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    idx: int,
 ):
     mocker.patch(
         f"apps.{app_label}.utils.Deleter.is_obj_deletable",
         return_value=False,
     )
 
-    for idx in range(1, 11):
-        response: Response = api_client.delete(
-            path=f"{urls['api']}{idx}/",
-            headers=admin_headers,
-        )
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert response.json()["details"].endswith("cannot be deleted.")
-
-    assert model.objects.count() == 304
-
-    response: Response = api_client.get(
-        path=f"{urls['api']}312312",
+    response: Response = api_client.delete(
+        path=f"{urls['api']}{idx}/",
         headers=admin_headers,
-        follow=True,
     )
-    assert response.json() == {"detail": f"No {model_name} matches the given query."}
-    assert response.status_code == 404
+
     assert model.objects.count() == 304
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.json()["details"].endswith("cannot be deleted.")
 
 
 @pytest.mark.django_db
@@ -298,9 +264,7 @@ def test_bulk_delete_objects_undeletable(
 
 @pytest.mark.django_db
 def test_read_objects_without_permissions(
-    api_client: APIClient,
-    urls: dict[str, str],
-    user_headers: dict[str, str],
+    api_client: APIClient, urls: dict[str, str], user_headers: dict[str, str]
 ):
     response: Response = api_client.get(
         path=urls["api"],
@@ -311,13 +275,10 @@ def test_read_objects_without_permissions(
 
 @pytest.mark.django_db
 def test_read_object(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    model: type[Model],
+    api_client: APIClient, urls: dict[str, str], admin_headers: dict[str, str]
 ):
     response: Response = api_client.get(
-        path=f"{urls['api']}{model.objects.get(id=1).pk}/",
+        path=f"{urls['api']}1/",
         headers=admin_headers,
     )
     assert response.status_code == status.HTTP_200_OK
@@ -425,9 +386,7 @@ def test_create_object_without_permissions(
     user_headers: dict[str, str],
 ):
     response = api_client.post(
-        path=urls["api"],
-        data={"name": "City"},
-        headers=user_headers,
+        path=urls["api"], data={"name": "City"}, headers=user_headers
     )
     assert response.status_code == 403
 

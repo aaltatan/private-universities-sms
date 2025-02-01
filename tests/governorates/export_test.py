@@ -6,11 +6,11 @@ from django.test import Client
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
-    "extension",
+    "extension,content_type",
     [
-        "xlsx",
-        "csv",
-        "json",
+        ("xlsx", "application/vnd.ms-excel"),
+        ("csv", "text/csv"),
+        ("json", "application/json"),
     ],
 )
 def test_export_response(
@@ -19,14 +19,9 @@ def test_export_response(
     headers_modal_GET: dict[str, str],
     filename: str,
     extension: str,
+    content_type: str,
 ) -> None:
     url = urls["index"] + f"?export=true&extension={extension}"
-
-    content_types = {
-        "xlsx": "application/vnd.ms-excel",
-        "csv": "text/csv",
-        "json": "application/json",
-    }
 
     response = admin_client.get(url, headers=headers_modal_GET)
 
@@ -37,7 +32,7 @@ def test_export_response(
     response = admin_client.get(url, headers=headers_modal_GET)
 
     assert response.status_code == 200
-    assert response.headers["Content-Type"] == content_types[extension]
+    assert response.headers["Content-Type"] == content_type
 
     str_now_without_sec = datetime.now().strftime("%Y-%m-%d-%H-%M")
     filename_without_sec = f"{filename}-{str_now_without_sec}"
