@@ -1,3 +1,6 @@
+from pathlib import Path
+
+import yaml
 from django.db import connection
 from django.http import HttpResponse
 from django.test import Client
@@ -54,3 +57,9 @@ def reset_sequence(model):
         cursor.execute(
             f"UPDATE sqlite_sequence SET seq = (SELECT MAX(id) FROM {table_name}) WHERE name = '{table_name}';"
         )
+
+
+def get_test_cases(filename: str, app_label: str) -> dict:
+    path = Path(__file__).resolve().parent / app_label / "test_cases" / filename
+    with open(path, "r", encoding="utf-8") as file:
+        return yaml.safe_load(file)
