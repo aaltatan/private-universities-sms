@@ -32,12 +32,12 @@ class ComboboxWidget(RenderMixin, SelectMultiple):
     checked_attribute = {"checked": True}
 
 
-class OrderByWidget(RenderMixin, SelectMultiple):
+class OrderingWidget(RenderMixin, SelectMultiple):
     """
     An extended SelectMultiple widget that order functionality and styling.
     """
 
-    template_name = "widgets/order_by.html"
+    template_name = "widgets/ordering.html"
 
 
 def get_autocomplete_field(

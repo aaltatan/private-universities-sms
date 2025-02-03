@@ -59,7 +59,7 @@ def reset_sequence(model):
         )
 
 
-def get_test_cases(filename: str, app_label: str) -> dict:
-    path = Path(__file__).resolve().parent / app_label / "test_cases" / filename
+def load_yaml(filename: str, app_label: str) -> dict:
+    path = Path(__file__).resolve().parent / app_label / filename
     with open(path, "r", encoding="utf-8") as file:
         return yaml.safe_load(file)

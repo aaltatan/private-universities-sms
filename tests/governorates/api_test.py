@@ -5,42 +5,39 @@ from rest_framework.response import Response
 from rest_framework.test import APIClient
 
 from apps.core.models import AbstractUniqueNameModel as Model
+from tests.utils import load_yaml
 
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
-    "querystring,results_count,next_page,previous_page",
-    [
-        ("", 10, "?page=2", None),
-        ("?page=2", 10, "?page=3", ""),
-        ("?page=31", 4, None, "?page=30"),
-    ]
-    + [(f"?page={i}", 10, f"?page={i + 1}", f"?page={i - 1}") for i in range(3, 31)],
+    "params",
+    load_yaml("test_cases.yaml", "governorates")["pagination"],
 )
 def test_pagination(
     api_client: APIClient,
     urls: dict[str, str],
     admin_headers: dict[str, str],
-    querystring: str,
-    results_count: int,
-    next_page: str | None,
-    previous_page: str | None,
+    params: dict,
 ):
     response: Response = api_client.get(
-        path=urls["api"] + querystring,
+        path=urls["api"] + params["querystring"],
         headers=admin_headers,
     )
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["count"] == 304
-    assert len(response.json()["results"]) == results_count
+    assert len(response.json()["results"]) == params["count"]
 
-    if next_page is not None:
-        assert response.json()["next"].endswith(urls["api"] + next_page)
+    if params["next_page"] is not None:
+        assert response.json()["next"].endswith(
+            urls["api"] + params["next_page"],
+        )
     else:
         assert response.json()["next"] is None
 
-    if previous_page is not None:
-        assert response.json()["previous"].endswith(urls["api"] + previous_page)
+    if params["previous_page"] is not None:
+        assert response.json()["previous"].endswith(
+            urls["api"] + params["previous_page"],
+        )
     else:
         assert response.json()["previous"] is None
 
@@ -58,37 +55,6 @@ def test_read_objects(
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["count"] == 304
     assert len(response.json()["results"]) == 10
-
-
-@pytest.mark.django_db
-@pytest.mark.parametrize(
-    "querystring,results_count",
-    [
-        ("City+40", 3),  # 40, 140, 240,
-        ("حمص محاف", 1),
-        ("حم", 2),
-        ("id > 4", 300),
-        ('name ~ "حم"', 2),
-        ('description = "meta"', 2),
-        ('description ~ "me"', 3),
-        ('description startswith "20"', 10),
-        ('description ~ "20"', 13),
-    ],
-)
-def test_filter_objects_using_q(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    querystring: str,
-    results_count: int,
-):
-    response: Response = api_client.get(
-        path=f"{urls['api']}?q={querystring}",
-        headers=admin_headers,
-        format="json",
-    )
-    assert response.status_code == status.HTTP_200_OK
-    assert response.json()["count"] == results_count
 
 
 @pytest.mark.django_db

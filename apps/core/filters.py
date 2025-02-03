@@ -4,7 +4,7 @@ import django_filters as filters
 from django.db.models import QuerySet
 
 from .utils import get_djangoql_query, get_keywords_query
-from .widgets import OrderByWidget
+from .widgets import OrderingWidget
 
 
 class FilterSearchMixin:
@@ -25,11 +25,11 @@ class FilterSearchMixin:
         return get_djangoql_query(queryset, value, default_queryset)
 
 
-def get_order_by_filter(fields: Mapping[str, str]) -> filters.OrderingFilter:
+def get_ordering_filter(fields: Mapping[str, str]) -> filters.OrderingFilter:
     """
     Returns an OrderingFilter.
     """
     return filters.OrderingFilter(
         fields=list(fields.items()),
-        widget=OrderByWidget,
+        widget=OrderingWidget,
     )

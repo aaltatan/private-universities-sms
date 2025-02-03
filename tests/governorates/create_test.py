@@ -206,7 +206,7 @@ def test_create_with_redirect_from_modal(
     headers_modal_GET: dict[str, str],
     app_label: str,
 ) -> None:
-    url = urls["create"] + "?per_page=10&order_by=-Name"
+    url = urls["create"] + "?per_page=10&ordering=-Name"
     headers = {
         **headers_modal_GET,
         "target": "#modal-container",
@@ -230,7 +230,7 @@ def test_create_with_redirect_from_modal(
     assert response.status_code == 201
     assert model.objects.count() == 305
     assert location.get("target") == target
-    assert location.get("path") == urls["index"] + "?per_page=10&order_by=-Name"
+    assert location.get("path") == urls["index"] + "?per_page=10&ordering=-Name"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == success_message
 
@@ -246,7 +246,7 @@ def test_create_with_redirect_from_modal(
     assert response.status_code == 201
     assert model.objects.count() == 306
     assert location.get("target") == target
-    assert location.get("path") == urls["index"] + "?per_page=10&order_by=-Name"
+    assert location.get("path") == urls["index"] + "?per_page=10&ordering=-Name"
 
 
 @pytest.mark.django_db
@@ -286,7 +286,7 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
     headers_modal_GET: dict[str, str],
     app_label: str,
 ) -> None:
-    url = urls["create"] + "?per_page=10&order_by=-Name"
+    url = urls["create"] + "?per_page=10&ordering=-Name"
     headers = {
         **headers_modal_GET,
         "target": "#modal-container",

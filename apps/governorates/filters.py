@@ -1,17 +1,12 @@
 import django_filters as filters
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.filters import FilterSearchMixin, get_order_by_filter
+from apps.core.filters import FilterSearchMixin, get_ordering_filter
 
 from . import constants, models
 
 
-class GovernorateFilter(
-    filters.FilterSet,
-    FilterSearchMixin,
-):
-    q = filters.CharFilter(method="search")
-    order_by = get_order_by_filter(constants.ORDERING_FIELDS)
+class BaseGovernoratesFilter(filters.FilterSet):
     name = filters.CharFilter(
         lookup_expr="icontains",
         label=_("name").title(),
@@ -24,3 +19,12 @@ class GovernorateFilter(
     class Meta:
         model = models.Governorate
         fields = ("name", "description")
+
+
+class APIGovernoratesFilter(BaseGovernoratesFilter):
+    pass
+
+
+class GovernorateFilter(FilterSearchMixin, BaseGovernoratesFilter):
+    q = filters.CharFilter(method="search")
+    ordering = get_ordering_filter(constants.ORDERING_FIELDS)
