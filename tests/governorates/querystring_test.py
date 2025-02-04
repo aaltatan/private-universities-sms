@@ -7,17 +7,12 @@ from selectolax.parser import HTMLParser
 
 
 @pytest.mark.django_db
-def test_view_order(
+def test_order(
     admin_client: Client,
     urls: dict[str, str],
-    order_test_cases: tuple[str, list[int], list[str], list[str]],
+    order_test_cases: tuple[str, list[tuple[int, str, str]]],
 ):
-    (
-        querystring,
-        expected_ids,
-        expected_names,
-        expected_descriptions,
-    ) = order_test_cases
+    querystring, data = order_test_cases
     url: str = urls["index"] + querystring
 
     response = admin_client.get(url)
@@ -25,19 +20,19 @@ def test_view_order(
     object_list = response.context["page"].object_list
 
     assert response.status_code == 200
-    assert object_list[0].id == expected_ids[0]
-    assert object_list[1].id == expected_ids[1]
-    assert object_list[-1].id == expected_ids[2]
-    assert object_list[0].name == expected_names[0]
-    assert object_list[1].name == expected_names[1]
-    assert object_list[-1].name == expected_names[2]
-    assert object_list[0].description == expected_descriptions[0]
-    assert object_list[1].description == expected_descriptions[1]
-    assert object_list[-1].description == expected_descriptions[2]
+
+    for idx, (id, name, description) in enumerate(data):
+
+        if idx == 2:
+            idx = -1
+
+        assert object_list[idx].id == id
+        assert object_list[idx].name == name
+        assert object_list[idx].description == description
 
 
 @pytest.mark.django_db
-def test_view_pagination(
+def test_pagination(
     admin_client: Client,
     urls: dict[str, str],
     pagination_test_cases: tuple[str, int, str, str],
@@ -97,3 +92,53 @@ def test_api_pagination(
         assert response.json()["previous"].endswith(urls["api"] + prev_page)
     else:
         assert response.json()["previous"] is None
+
+
+@pytest.mark.django_db
+def test_filters(
+    admin_client: Client,
+    urls: dict[str, str],
+    filters_test_cases: tuple[str, int, tuple[tuple[str, int]]],
+):
+    querystring, results_count, data = filters_test_cases
+    url: str = urls["index"] + querystring
+    response = admin_client.get(url)
+
+    assert response.status_code == 200
+
+    for item in data:
+        name, exists = item
+        if exists:
+            assert name in response.content.decode()
+        else:
+            assert name not in response.content.decode()
+
+    assert response.context["page"].paginator.count == results_count
+
+
+@pytest.mark.django_db
+def test_api_filters(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    filters_test_cases: tuple[str, int, tuple[tuple[str, bool]]],
+):
+    querystring, results_count, data = filters_test_cases
+
+    response: Response = api_client.get(
+        path=urls["api"] + querystring,
+        headers=admin_headers,
+        format="json",
+    )
+    names = [item["name"] for item in response.json()["results"]]
+    names = ", ".join(names)
+
+    for item in data:
+        name, exists = item
+        if exists:
+            assert name in names
+        else:
+            assert name not in names
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["count"] == results_count

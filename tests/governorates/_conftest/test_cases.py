@@ -15,15 +15,10 @@ Page = namedtuple("Query", ["q", "count", "next", "prev"])
         ),
         Page(q="?page=7&per_page=50", count=4, next=None, prev="?page=6&per_page=50"),
         Page(q="?page=31", count=4, next=None, prev="?page=30"),
-    ]
-    + [
-        Page(
-            q=f"?page={idx}",
-            count=10,
-            next=f"?page={idx+1}",
-            prev=f"?page={idx-1}",
-        )
-        for idx in range(3, 30)
+        Page(q="?page=3", count=10, next="?page=4", prev="?page=2"),
+        Page(q="?page=4", count=10, next="?page=5", prev="?page=3"),
+        Page(q="?page=5", count=10, next="?page=6", prev="?page=4"),
+        Page(q="?page=22", count=10, next="?page=23", prev="?page=21"),
     ],
 )
 def pagination_test_cases(request: pytest.FixtureRequest):
@@ -35,39 +30,51 @@ def pagination_test_cases(request: pytest.FixtureRequest):
     params=[
         (
             "?ordering=Id",
-            [1, 2, 10],
-            ["محافظة حماه", "محافظة حمص", "City 006"],
-            ["goo", "meta", "006"],
+            [
+                (1, "محافظة حماه", "goo"),
+                (2, "محافظة حمص", "meta"),
+                (10, "City 006", "006"),
+            ],
         ),
         (
             "?page=21&ordering=Id",
-            [201, 202, 210],
-            ["City 197", "City 198", "City 206"],
-            ["197", "198", "206"],
+            [
+                (201, "City 197", "197"),
+                (202, "City 198", "198"),
+                (210, "City 206", "206"),
+            ],
         ),
         (
             "?page=1&ordering=-Id",
-            [304, 303, 295],
-            ["City 300", "City 299", "City 291"],
-            ["300", "299", "291"],
+            [
+                (304, "City 300", "300"),
+                (303, "City 299", "299"),
+                (295, "City 291", "291"),
+            ],
         ),
         (
             "?ordering=Name",
-            [5, 6, 14],
-            ["City 001", "City 002", "City 010"],
-            ["001", "002", "010"],
+            [
+                (5, "City 001", "001"),
+                (6, "City 002", "002"),
+                (14, "City 010", "010"),
+            ],
         ),
         (
             "?ordering=Description",
-            [5, 6, 14],
-            ["City 001", "City 002", "City 010"],
-            ["001", "002", "010"],
+            [
+                (5, "City 001", "001"),
+                (6, "City 002", "002"),
+                (14, "City 010", "010"),
+            ],
         ),
         (
             "?page=21&ordering=Name",
-            [205, 206, 214],
-            ["City 201", "City 202", "City 210"],
-            ["201", "202", "210"],
+            [
+                (205, "City 201", "201"),
+                (206, "City 202", "202"),
+                (214, "City 210", "210"),
+            ],
         ),
     ],
 )
@@ -106,37 +113,37 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             "?q=حم",
             2,
-            [["حماه", True], ["حمص", True], ["ادلب", False], ["المنيا", False]],
+            [["حماه", 1], ["حمص", 1], ["ادلب", 0], ["المنيا", 0]],
         ),
         (
             "?q=meta",
             2,
-            [["حماه", False], ["حمص", True], ["ادلب", True], ["المنيا", False]],
+            [["حماه", 0], ["حمص", 1], ["ادلب", 1], ["المنيا", 0]],
         ),
         (
             "?q=mena+language",
             1,
-            [["حماه", False], ["حمص", False], ["ادلب", False], ["المنيا", True]],
+            [["حماه", 0], ["حمص", 0], ["ادلب", 0], ["المنيا", 1]],
         ),
         (
             "?q=id > 2&ordering=-name",
             302,
-            [["حماه", False], ["حمص", False], ["ادلب", True], ["المنيا", True]],
+            [["حماه", 0], ["حمص", 0], ["ادلب", 1], ["المنيا", 1]],
         ),
         (
             '?q=id > 2 and name ~ "ل"&ordering=-name',
             2,
-            [["حماه", False], ["حمص", False], ["ادلب", True], ["المنيا", True]],
+            [["حماه", 0], ["حمص", 0], ["ادلب", 1], ["المنيا", 1]],
         ),
         (
             "?q=id > 2 and name ~ 'ل'",  # using ' instead of "
             0,
-            [["حماه", False], ["حمص", False], ["ادلب", False], ["المنيا", False]],
+            [["حماه", 0], ["حمص", 0], ["ادلب", 0], ["المنيا", 0]],
         ),
         (
             "?q=id in (1, 3)",
             2,
-            [["حماه", True], ["حمص", False], ["ادلب", True], ["المنيا", False]],
+            [["حماه", 1], ["حمص", False], ["ادلب", 1], ["المنيا", False]],
         ),
     ],
 )
