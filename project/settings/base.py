@@ -175,8 +175,7 @@ COTTON_SNAKE_CASED_NAMES = False
 
 # Django Rest Framework settings
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 10,
+    "DEFAULT_PAGINATION_CLASS": "apps.core.pagination.CorePagination",
     "DEFAULT_PERMISSION_CLASSES": ("apps.core.permissions.ModelPermissions",),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",

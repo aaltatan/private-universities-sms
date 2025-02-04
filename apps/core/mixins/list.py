@@ -18,7 +18,7 @@ from import_export.resources import ModelResource
 from rest_framework.serializers import ModelSerializer
 from tablib import Dataset
 
-from ..constants import PERMISSION
+from ..constants import MAX_PAGE_SIZE, PERMISSION
 from ..schemas import Action
 
 
@@ -238,7 +238,7 @@ class ListMixin(ABC):
         request_per_page: str = request.GET.get("per_page", None)
 
         if request_per_page == "all":
-            return 1_000_000
+            return MAX_PAGE_SIZE
 
         return request_per_page or default_per_page
 

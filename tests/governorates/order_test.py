@@ -40,18 +40,36 @@ def test_view_order(
 def test_view_pagination(
     admin_client: Client,
     urls: dict[str, str],
-    pagination_test_cases: tuple[str, int, int],
+    pagination_test_cases: tuple[str, int, str, str],
 ):
-    querystring, rows_count, page_number = pagination_test_cases
+    querystring, count, next_page, prev_page = pagination_test_cases
+
     url: str = urls["index"] + querystring
 
     response = admin_client.get(url)
     parser = HTMLParser(response.content)
     rows = parser.css("table tr:not(:first-child)")
 
+    res_next_page = parser.css_first(
+        'button[title="Next Page"]',
+    ).attributes.get("hx-get")
+
+    res_prev_page = parser.css_first(
+        'button[title="Previous Page"]',
+    ).attributes.get("hx-get")
+
+    if next_page is not None:
+        assert res_next_page in next_page
+    else:
+        assert res_next_page == "?page="
+
+    if prev_page is not None:
+        assert res_prev_page in prev_page
+    else:
+        assert res_prev_page == "?page="
+
     assert response.status_code == 200
-    assert response.context["page"].number == page_number
-    assert len(rows) == rows_count
+    assert len(rows) == count
 
 
 @pytest.mark.django_db
@@ -59,11 +77,11 @@ def test_api_pagination(
     api_client: APIClient,
     urls: dict[str, str],
     admin_headers: dict[str, str],
-    api_pagination_test_cases: tuple[str, int, str, str],
+    pagination_test_cases: tuple[str, int, str, str],
 ):
-    query_string, count, next_page, prev_page = api_pagination_test_cases
+    querystring, count, next_page, prev_page = pagination_test_cases
     response: Response = api_client.get(
-        path=urls["api"] + query_string,
+        path=urls["api"] + querystring,
         headers=admin_headers,
     )
     assert response.status_code == status.HTTP_200_OK
