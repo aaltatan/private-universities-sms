@@ -1,5 +1,8 @@
 import pytest
 from django.test import Client
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 
@@ -49,3 +52,30 @@ def test_view_pagination(
     assert response.status_code == 200
     assert response.context["page"].number == page_number
     assert len(rows) == rows_count
+
+
+@pytest.mark.django_db
+def test_api_pagination(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    api_pagination_test_cases: tuple[str, int, str, str],
+):
+    query_string, count, next_page, prev_page = api_pagination_test_cases
+    response: Response = api_client.get(
+        path=urls["api"] + query_string,
+        headers=admin_headers,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["count"] == 304
+    assert len(response.json()["results"]) == count
+
+    if next_page is not None:
+        assert response.json()["next"].endswith(urls["api"] + next_page)
+    else:
+        assert response.json()["next"] is None
+
+    if prev_page is not None:
+        assert response.json()["previous"].endswith(urls["api"] + prev_page)
+    else:
+        assert response.json()["previous"] is None

@@ -1,5 +1,8 @@
 import pytest
 from django.test import Client
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from tests.utils import is_template_used, parse_buttons
@@ -252,3 +255,67 @@ def test_view_user_has_view_permissions_export(
     assert buttons["delete_all_btn_exists"] is False
     assert buttons["edit_btn_exists"] is False
     assert buttons["export_btn_exists"]
+
+
+@pytest.mark.django_db
+def test_read_objects(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+):
+    response: Response = api_client.get(
+        path=urls["api"],
+        headers=admin_headers,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["count"] == 304
+    assert len(response.json()["results"]) == 10
+
+
+@pytest.mark.django_db
+def test_read_objects_without_permissions(
+    api_client: APIClient, urls: dict[str, str], user_headers: dict[str, str]
+):
+    response: Response = api_client.get(
+        path=urls["api"],
+        headers=user_headers,
+    )
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+def test_read_object(
+    api_client: APIClient, urls: dict[str, str], admin_headers: dict[str, str]
+):
+    response: Response = api_client.get(
+        path=f"{urls['api']}1/",
+        headers=admin_headers,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["name"] == "محافظة حماه"
+
+
+@pytest.mark.django_db
+def test_read_object_without_permissions(
+    api_client: APIClient,
+    urls: dict[str, str],
+    user_headers: dict[str, str],
+):
+    response: Response = api_client.get(
+        path=f"{urls['api']}1/",
+        headers=user_headers,
+    )
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+def test_read_object_with_invalid_id(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+):
+    response: Response = api_client.get(
+        path=f"{urls['api']}4123/",
+        headers=admin_headers,
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND

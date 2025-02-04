@@ -4,6 +4,9 @@ import pytest
 from django.contrib import messages
 from django.contrib.messages import get_messages
 from django.test import Client
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
@@ -55,15 +58,9 @@ def test_index_page_has_no_update_links_for_unauthorized_user(
 
     tds_name = parser.css("td[data-header='name']")
     tds_name_href = parser.css("td[data-header='name'] a")
-    edit_context_menu_btns = parser.css(
-        "li a[aria-label='edit object']",
-    )
-    delete_context_menu_btns = parser.css(
-        "table li[role='menuitem']",
-    )
-    update_response = client.get(
-        model.objects.first().get_update_url(),
-    )
+    edit_context_menu_btns = parser.css("li a[aria-label='edit object']")
+    delete_context_menu_btns = parser.css("table li[role='menuitem']")
+    update_response = client.get(model.objects.first().get_update_url())
 
     assert response.status_code == 200
     assert len(tds_name_href) == 0
@@ -91,12 +88,8 @@ def test_update_page(
     h1 = parser.css_first("form h1").text(strip=True)
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
-    description_input = form.css_first(
-        "textarea[name='description']",
-    )
-    required_star = form.css_first(
-        "span[aria-label='required field']",
-    )
+    description_input = form.css_first("textarea[name='description']")
+    required_star = form.css_first("span[aria-label='required field']")
 
     assert response.status_code == 200
     assert is_template_used(templates["update"], response)
@@ -283,3 +276,43 @@ def test_update_without_redirect_from_modal(
 
     assert obj.name == name
     assert obj.description == description
+
+
+@pytest.mark.django_db
+def test_update_object(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+):
+    response: Response = api_client.put(
+        path=f"{urls['api']}1/",
+        data={
+            "name": "Hamah",
+            "description": "some description",
+        },
+        headers=admin_headers,
+        follow=True,
+    )
+    first = model.objects.get(id=1)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["name"] == "Hamah"
+    assert response.json()["description"] == "some description"
+    assert first.name == "Hamah"
+    assert first.description == "some description"
+
+
+@pytest.mark.django_db
+def test_update_object_with_dirty_data(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
+):
+    data, _, error = dirty_data_test_cases
+    response: Response = api_client.put(
+        path=f"{urls['api']}3/", data=data, headers=admin_headers
+    )
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.json()["name"] == error

@@ -5,6 +5,9 @@ from django.contrib import messages
 from django.contrib.messages import get_messages
 from django.test import Client
 from django.utils.text import slugify
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
@@ -306,3 +309,62 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
     assert response.status_code == 200
     assert form_hx_post == urls["create"]
     assert model.objects.count() == 304
+
+
+@pytest.mark.django_db
+def test_create_objects(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+):
+    for idx in range(500, 550):
+        response = api_client.post(
+            path=urls["api"],
+            data={"name": f"City {idx}"},
+            headers=admin_headers,
+        )
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.json()["name"] == f"City {idx}"
+
+    response: Response = api_client.get(
+        path=urls["api"],
+        headers=admin_headers,
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["count"] == 354
+    assert model.objects.count() == 354
+
+
+@pytest.mark.django_db
+def test_create_object_without_permissions(
+    api_client: APIClient,
+    urls: dict[str, str],
+    user_headers: dict[str, str],
+):
+    response = api_client.post(
+        path=urls["api"], data={"name": "City"}, headers=user_headers
+    )
+    assert response.status_code == 403
+
+    response: Response = api_client.post(
+        path=urls["api"],
+        data={"name": "City"},
+    )
+    assert response.status_code == 401
+
+
+@pytest.mark.django_db
+def test_create_object_with_dirty_data(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
+):
+    data, _, error = dirty_data_test_cases
+    response: Response = api_client.post(
+        path=urls["api"], data=data, headers=admin_headers
+    )
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.json()["name"] == error

@@ -1,10 +1,13 @@
-import re
 import json
+import re
 
 import pytest
 import pytest_mock
-from django.test import Client
 from django.contrib import messages
+from django.test import Client
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
@@ -196,3 +199,63 @@ def test_bulk_delete_when_deleter_class_is_not_subclass_of_Deleter(
     }
     with pytest.raises(TypeError):
         admin_client.post(urls["index"], data)
+
+
+@pytest.mark.django_db
+def test_bulk_delete_objects(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+):
+    response: Response = api_client.post(
+        path=f"{urls['api']}bulk-delete/",
+        data={"ids": [1, 2, 3, 4, 500, 501]},
+        headers=admin_headers,
+    )
+
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    assert model.objects.count() == 300
+
+    response: Response = api_client.post(
+        path=f"{urls['api']}bulk-delete/",
+        data={"ids": [500, 501]},
+        headers=admin_headers,
+    )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert model.objects.count() == 300
+
+
+@pytest.mark.django_db
+def test_bulk_delete_objects_undeletable(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+    mocker: pytest_mock.MockerFixture,
+    app_label: str,
+):
+    mocker.patch(
+        f"apps.{app_label}.utils.Deleter.is_qs_deletable",
+        return_value=False,
+    )
+
+    response: Response = api_client.post(
+        path=f"{urls['api']}bulk-delete/",
+        data={"ids": [1, 2, 3, 4, 500, 501]},
+        headers=admin_headers,
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.json()["details"] == "selected 4 objects cannot be deleted."
+    assert model.objects.count() == 304
+
+    response: Response = api_client.post(
+        path=f"{urls['api']}bulk-delete/",
+        data={"ids": [500, 501]},
+        headers=admin_headers,
+    )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert model.objects.count() == 304
