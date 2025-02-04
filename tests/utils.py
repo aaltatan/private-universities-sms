@@ -1,16 +1,10 @@
-from pathlib import Path
-
-import yaml
 from django.db import connection
 from django.http import HttpResponse
 from django.test import Client
 from selectolax.parser import HTMLParser
 
 
-def get_token_headers(
-    client: Client,
-    admin: bool = False,
-) -> dict[str, str]:
+def get_token_headers(client: Client, admin: bool = False) -> dict[str, str]:
     response = client.post(
         "/api/token/",
         {
@@ -41,9 +35,7 @@ def parse_buttons(parser: HTMLParser) -> dict[str, bool]:
 
 
 def is_template_used(
-    template_name: str,
-    response: HttpResponse,
-    used: bool = True,
+    template_name: str, response: HttpResponse, used: bool = True
 ) -> bool:
     if used:
         return template_name in [t.name for t in response.templates]
@@ -57,9 +49,3 @@ def reset_sequence(model):
         cursor.execute(
             f"UPDATE sqlite_sequence SET seq = (SELECT MAX(id) FROM {table_name}) WHERE name = '{table_name}';"
         )
-
-
-def load_yaml(filename: str, app_label: str) -> dict:
-    path = Path(__file__).resolve().parent / app_label / filename
-    with open(path, "r", encoding="utf-8") as file:
-        return yaml.safe_load(file)

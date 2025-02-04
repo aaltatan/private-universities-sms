@@ -4,18 +4,14 @@ from django.forms import ValidationError
 from django.db.utils import IntegrityError
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import load_yaml
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize(
-    "params",
-    load_yaml("test_cases.yaml", "governorates")["models"]["data"],
-)
-def test_name_field(model: type[Model], params: dict):
-    object = model.objects.filter(name__contains=params["filter"]).first()
-    assert object.name == params["name"]
-    assert object.slug == params["slug"]
+def test_name_field(model: type[Model], models_data_test_cases: tuple[str]):
+    filter_, name, _, slug = models_data_test_cases
+    object = model.objects.filter(name__contains=filter_).first()
+    assert object.name == name
+    assert object.slug == slug
 
 
 @pytest.mark.django_db
@@ -24,29 +20,23 @@ def test_length_of_the_queryset(model: type[Model]):
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize(
-    "params",
-    load_yaml("test_cases.yaml", "governorates")["models"]["data"],
-)
-def test_unique_name_constraint(model: type[Model], params: dict):
+def test_unique_name_constraint(
+    model: type[Model],
+    models_data_test_cases: tuple[str, ...],
+):
+    _, name, description, _ = models_data_test_cases
     with pytest.raises(IntegrityError):
-        model.objects.create(
-            name=params["name"],
-            description=params["description"],
-        )
+        model.objects.create(name=name, description=description)
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize(
-    "params",
-    load_yaml("test_cases.yaml", "governorates")["models"]["dirty_data"],
-)
-def test_validators(model: type[Model], params: dict):
+def test_validators(
+    model: type[Model],
+    models_dirty_data_test_cases: tuple[str],
+):
+    name, description = models_dirty_data_test_cases
     with pytest.raises(ValidationError):
-        obj = model.objects.create(
-            name=params["name"],
-            description=params["description"],
-        )
+        obj = model.objects.create(name=name, description=description)
         obj.full_clean()
 
 

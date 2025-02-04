@@ -112,17 +112,17 @@ def test_update_page(
 def test_update_with_dirty_data(
     admin_client: Client,
     model: type[Model],
-    dirty_data: list[dict],
+    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
     templates: dict[str, str],
 ):
+    data, error, _ = dirty_data_test_cases
     obj = model.objects.first()
     url = obj.get_update_url()
 
-    for data in dirty_data:
-        response = admin_client.post(url, data["data"])
-        assert data["error"] in response.content.decode()
-        assert is_template_used(templates["update_form"], response)
-        assert response.status_code == 200
+    response = admin_client.post(url, data)
+    assert error in response.content.decode()
+    assert is_template_used(templates["update_form"], response)
+    assert response.status_code == 200
 
     assert model.objects.count() == 304
 
@@ -131,11 +131,12 @@ def test_update_with_dirty_data(
 def test_update_with_modal_with_dirty_data(
     admin_client: Client,
     model: type[Model],
-    dirty_data: list[dict],
+    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
     templates: dict[str, str],
     headers_modal_GET: dict[str, str],
     app_label: str,
 ):
+    data, error, _ = dirty_data_test_cases
     obj = model.objects.first()
     url = obj.get_update_url() + "?page=1&per_page=10&ordering=-Id"
 
@@ -144,11 +145,10 @@ def test_update_with_modal_with_dirty_data(
         "target": f"#{app_label}-table",
     }
 
-    for data in dirty_data:
-        response = admin_client.post(url, data["data"], headers=headers)
-        assert data["error"] in response.content.decode()
-        assert is_template_used(templates["update_modal_form"], response)
-        assert response.status_code == 200
+    response = admin_client.post(url, data, headers=headers)
+    assert error in response.content.decode()
+    assert is_template_used(templates["update_modal_form"], response)
+    assert response.status_code == 200
 
     assert model.objects.count() == 304
 

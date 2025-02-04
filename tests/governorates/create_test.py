@@ -255,25 +255,23 @@ def test_create_new_object_with_dirty_or_duplicated_data(
     urls: dict[str, str],
     templates: dict[str, str],
     model: type[Model],
-    dirty_data: list[dict],
+    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
 ) -> None:
+    data, error, _ = dirty_data_test_cases
     response = admin_client.get(urls["create"])
 
     assert response.status_code == 200
     assert is_template_used(templates["create"], response)
 
-    for item in dirty_data:
-        response = admin_client.post(urls["create"], item["data"])
-        parser = HTMLParser(response.content)
-        form_hx_post = parser.css_first(
-            "form[hx-post]",
-        ).attributes.get("hx-post")
+    response = admin_client.post(urls["create"], data)
+    parser = HTMLParser(response.content)
+    form_hx_post = parser.css_first("form[hx-post]").attributes.get("hx-post")
 
-        assert item["error"] in response.content.decode()
-        assert is_template_used(templates["create_form"], response)
-        assert response.status_code == 200
-        assert form_hx_post == urls["create"]
-        assert model.objects.count() == 304
+    assert error in response.content.decode()
+    assert is_template_used(templates["create_form"], response)
+    assert response.status_code == 200
+    assert form_hx_post == urls["create"]
+    assert model.objects.count() == 304
 
 
 @pytest.mark.django_db
@@ -282,10 +280,11 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
     urls: dict[str, str],
     templates: dict[str, str],
     model: type[Model],
-    dirty_data: list[dict],
+    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
     headers_modal_GET: dict[str, str],
     app_label: str,
 ) -> None:
+    data, error, _ = dirty_data_test_cases
     url = urls["create"] + "?per_page=10&ordering=-Name"
     headers = {
         **headers_modal_GET,
@@ -298,13 +297,12 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
 
     headers = {**headers, "target": f"{app_label}-table"}
 
-    for item in dirty_data:
-        response = admin_client.post(urls["create"], item["data"], headers=headers)
-        parser = HTMLParser(response.content)
-        form_hx_post = parser.css_first("form[hx-post]").attributes.get("hx-post")
+    response = admin_client.post(urls["create"], data, headers=headers)
+    parser = HTMLParser(response.content)
+    form_hx_post = parser.css_first("form[hx-post]").attributes.get("hx-post")
 
-        assert item["error"] in response.content.decode()
-        assert is_template_used(templates["create_modal_form"], response)
-        assert response.status_code == 200
-        assert form_hx_post == urls["create"]
-        assert model.objects.count() == 304
+    assert error in response.content.decode()
+    assert is_template_used(templates["create_modal_form"], response)
+    assert response.status_code == 200
+    assert form_hx_post == urls["create"]
+    assert model.objects.count() == 304
