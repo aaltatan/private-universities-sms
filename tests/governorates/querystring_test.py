@@ -22,7 +22,6 @@ def test_order(
     assert response.status_code == 200
 
     for idx, (id, name, description) in enumerate(data):
-
         if idx == 2:
             idx = -1
 
@@ -100,18 +99,22 @@ def test_filters(
     urls: dict[str, str],
     filters_test_cases: tuple[str, int, tuple[tuple[str, int]]],
 ):
-    querystring, results_count, data = filters_test_cases
+    (
+        querystring,
+        results_count,
+        exists_names,
+        not_exists_names,
+    ) = filters_test_cases
     url: str = urls["index"] + querystring
     response = admin_client.get(url)
 
     assert response.status_code == 200
 
-    for item in data:
-        name, exists = item
-        if exists:
-            assert name in response.content.decode()
-        else:
-            assert name not in response.content.decode()
+    for name in exists_names:
+        assert name in response.content.decode()
+
+    for name in not_exists_names:
+        assert name not in response.content.decode()
 
     assert response.context["page"].paginator.count == results_count
 
@@ -123,7 +126,12 @@ def test_api_filters(
     admin_headers: dict[str, str],
     filters_test_cases: tuple[str, int, tuple[tuple[str, bool]]],
 ):
-    querystring, results_count, data = filters_test_cases
+    (
+        querystring,
+        results_count,
+        exists_names,
+        not_exists_names
+    ) = filters_test_cases
 
     response: Response = api_client.get(
         path=urls["api"] + querystring,
@@ -133,12 +141,11 @@ def test_api_filters(
     names = [item["name"] for item in response.json()["results"]]
     names = ", ".join(names)
 
-    for item in data:
-        name, exists = item
-        if exists:
-            assert name in names
-        else:
-            assert name not in names
+    for name in exists_names:
+        assert name in names
+
+    for name in not_exists_names:
+        assert name not in names
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["count"] == results_count

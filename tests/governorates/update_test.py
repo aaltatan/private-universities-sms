@@ -27,7 +27,7 @@ def test_index_page_has_update_links_for_authorized_user(
     )
     context_menu_btns = parser.css("table li[role='menuitem']")
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert len(tds_name) == 10
     assert len(edit_context_menu_btns) == 10
     assert len(context_menu_btns) == 30
@@ -62,7 +62,7 @@ def test_index_page_has_no_update_links_for_unauthorized_user(
     delete_context_menu_btns = parser.css("table li[role='menuitem']")
     update_response = client.get(model.objects.first().get_update_url())
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert len(tds_name_href) == 0
     assert len(edit_context_menu_btns) == 0
 
@@ -71,7 +71,7 @@ def test_index_page_has_no_update_links_for_unauthorized_user(
         assert update_url == td.text(strip=True)
 
     assert len(delete_context_menu_btns) == 10
-    assert update_response.status_code == 403
+    assert update_response.status_code == status.HTTP_403_FORBIDDEN
 
 
 @pytest.mark.django_db
@@ -91,7 +91,7 @@ def test_update_page(
     description_input = form.css_first("textarea[name='description']")
     required_star = form.css_first("span[aria-label='required field']")
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["update"], response)
     assert h1 == f"update {obj.name}"
     assert form.attributes["hx-post"] == obj.get_update_url()
@@ -107,6 +107,7 @@ def test_update_with_dirty_data(
     model: type[Model],
     dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
     templates: dict[str, str],
+    counts: dict[str, int],
 ):
     data, error, _ = dirty_data_test_cases
     obj = model.objects.first()
@@ -115,9 +116,9 @@ def test_update_with_dirty_data(
     response = admin_client.post(url, data)
     assert error in response.content.decode()
     assert is_template_used(templates["update_form"], response)
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
 
-    assert model.objects.count() == 304
+    assert model.objects.count() == counts["objects"]
 
 
 @pytest.mark.django_db
@@ -128,6 +129,7 @@ def test_update_with_modal_with_dirty_data(
     templates: dict[str, str],
     headers_modal_GET: dict[str, str],
     app_label: str,
+    counts: dict[str, int],
 ):
     data, error, _ = dirty_data_test_cases
     obj = model.objects.first()
@@ -141,9 +143,9 @@ def test_update_with_modal_with_dirty_data(
     response = admin_client.post(url, data, headers=headers)
     assert error in response.content.decode()
     assert is_template_used(templates["update_modal_form"], response)
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
 
-    assert model.objects.count() == 304
+    assert model.objects.count() == counts["objects"]
 
 
 @pytest.mark.django_db
@@ -152,6 +154,7 @@ def test_update_form_with_clean_data(
     model: type[Model],
     urls: dict[str, str],
     clean_data_sample: dict[str, str],
+    counts: dict[str, int],
 ):
     querystring = "?page=1&per_page=10&ordering=-Id"
     obj = model.objects.get(id=1)
@@ -165,11 +168,11 @@ def test_update_form_with_clean_data(
     description = clean_data_sample["description"]
     obj = model.objects.get(id=1)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"
     assert response.headers.get("Hx-redirect") == urls["index"] + querystring
-    assert model.objects.count() == 304
+    assert model.objects.count() == counts["objects"]
     assert obj.name == name
     assert obj.description == description
 
@@ -183,6 +186,7 @@ def test_update_with_redirect_from_modal(
     clean_data_sample: dict[str, str],
     headers_modal_GET: dict[str, str],
     app_label: str,
+    counts: dict[str, int],
 ) -> None:
     obj = model.objects.get(id=1)
     url = obj.get_update_url() + "?per_page=10&ordering=-Id"
@@ -194,7 +198,7 @@ def test_update_with_redirect_from_modal(
 
     response = admin_client.get(url, headers=headers)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["update_modal_form"], response)
 
     headers["target"] = f"#{app_label}-table"
@@ -213,7 +217,7 @@ def test_update_with_redirect_from_modal(
     assert location.get("path") == urls["index"] + "?per_page=10&ordering=-Id"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"
-    assert model.objects.count() == 304
+    assert model.objects.count() == counts["objects"]
 
     obj = model.objects.get(id=1)
 
@@ -241,6 +245,7 @@ def test_update_without_redirect_from_modal(
     templates: dict[str, str],
     clean_data_sample: dict[str, str],
     headers_modal_GET: dict[str, str],
+    counts: dict[str, int],
 ) -> None:
     obj = model.objects.get(id=4)
     url = obj.get_update_url() + "?per_page=10&ordering=-Id"
@@ -253,7 +258,7 @@ def test_update_without_redirect_from_modal(
 
     response = admin_client.get(url, headers=headers)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["update_modal_form"], response)
     assert "Hx-Location" not in response.headers
     assert "Hx-Retarget" not in response.headers
@@ -270,7 +275,7 @@ def test_update_without_redirect_from_modal(
     assert response.headers.get("Hx-Reswap") == "innerHTML"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"
-    assert model.objects.count() == 304
+    assert model.objects.count() == counts["objects"]
 
     obj = model.objects.get(id=4)
 

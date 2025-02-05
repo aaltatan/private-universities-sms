@@ -22,7 +22,7 @@ def test_delete_btn_appearance_if_user_has_delete_perm(
     parser = HTMLParser(response.content)
     btn = parser.css_first("a[aria-label='delete object']")
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert btn is not None
 
 
@@ -38,7 +38,7 @@ def test_delete_object_if_headers_has_no_hx_request(
         messages.get_messages(response.wsgi_request),
     )
 
-    assert response.status_code == 404
+    assert response.status_code == status.HTTP_404_NOT_FOUND
     assert messages_list[0].level == messages.ERROR
     assert (
         messages_list[0].message
@@ -61,13 +61,13 @@ def test_delete_btn_appearance_if_user_has_no_delete_perm(
     parser = HTMLParser(response.content)
     btn = parser.css_first("a[aria-label='delete object']")
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert btn is None
 
     obj = model.objects.first()
     response = client.get(obj.get_delete_url())
 
-    assert response.status_code == 403
+    assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
 @pytest.mark.django_db
@@ -76,7 +76,7 @@ def test_get_delete_modal_without_using_htmx(
 ) -> None:
     obj = model.objects.first()
     response = admin_client.get(obj.get_delete_url())
-    assert response.status_code == 404
+    assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
 @pytest.mark.django_db
@@ -100,7 +100,7 @@ def test_get_delete_modal_with_using_htmx(
     modal_body = re.sub(r"\s+", " ", modal_body)
 
     assert modal_body == f"are you sure you want to delete {obj.name} ?"
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["delete_modal"], response)
 
 
@@ -110,6 +110,7 @@ def test_delete_object(
     admin_client: Client,
     urls: dict[str, str],
     headers_modal_GET: dict[str, str],
+    counts: dict[str, int],
 ) -> None:
     obj = model.objects.first()
     response = admin_client.post(
@@ -124,12 +125,12 @@ def test_delete_object(
         messages.get_messages(response.wsgi_request),
     )
 
-    assert response.status_code == 204
+    assert response.status_code == status.HTTP_204_NO_CONTENT
     assert location_path == urls["index"]
     assert response.headers.get("Hx-Trigger") == "messages"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"{obj.name} has been deleted successfully."
-    assert model.objects.count() == 303
+    assert model.objects.count() == counts["objects"] - 1
 
 
 @pytest.mark.django_db
@@ -139,6 +140,7 @@ def test_delete_object_undeletable(
     headers_modal_GET: dict[str, str],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    counts: dict[str, int],
 ) -> None:
     mocker.patch(
         f"apps.{app_label}.utils.Deleter.is_obj_deletable",
@@ -154,14 +156,14 @@ def test_delete_object_undeletable(
         messages.get_messages(response.wsgi_request),
     )
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert response.headers.get("Hx-Location") is None
     assert response.headers.get("Hx-Retarget") == "#no-content"
     assert response.headers.get("HX-Reswap") == "innerHTML"
     assert response.headers.get("Hx-Trigger") == "messages"
     assert messages_list[0].level == messages.ERROR
     assert messages_list[0].message == f"{obj.name} cannot be deleted."
-    assert model.objects.count() == 304
+    assert model.objects.count() == counts["objects"]
 
 
 @pytest.mark.django_db
@@ -206,6 +208,7 @@ def test_api_delete_object(
     urls: dict[str, str],
     admin_headers: dict[str, str],
     model: type[Model],
+    counts: dict[str, int],
 ):
     for idx in range(1, 11):
         response: Response = api_client.delete(
@@ -214,7 +217,7 @@ def test_api_delete_object(
         )
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
-    assert model.objects.count() == 294
+    assert model.objects.count() == counts["objects"] - 10
 
 
 @pytest.mark.django_db
@@ -224,15 +227,17 @@ def test_delete_object_with_invalid_id(
     admin_headers: dict[str, str],
     model: type[Model],
     model_name: str,
+    counts: dict[str, int],
 ):
+    objects_count = counts["objects"]
     response: Response = api_client.get(
         path=f"{urls['api']}312312",
         headers=admin_headers,
         follow=True,
     )
     assert response.json() == {"detail": f"No {model_name} matches the given query."}
-    assert response.status_code == 404
-    assert model.objects.count() == 304
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert model.objects.count() == objects_count
 
 
 @pytest.mark.django_db
@@ -267,7 +272,8 @@ def test_delete_and_bulk_delete_object_when_deleter_class_is_not_a_subclass_of_D
     mocker: pytest_mock.MockerFixture,
     app_label: str,
 ):
-    class Deleter: ...
+    class Deleter:
+        pass
 
     mocker.patch(f"apps.{app_label}.views.APIViewSet.deleter", new=Deleter)
 
@@ -295,7 +301,9 @@ def test_api_delete_object_undeletable(
     mocker: pytest_mock.MockerFixture,
     app_label: str,
     idx: int,
+    counts: dict[str, int],
 ):
+    objects_count = counts["objects"]
     mocker.patch(
         f"apps.{app_label}.utils.Deleter.is_obj_deletable",
         return_value=False,
@@ -306,6 +314,6 @@ def test_api_delete_object_undeletable(
         headers=admin_headers,
     )
 
-    assert model.objects.count() == 304
+    assert model.objects.count() == objects_count
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert response.json()["details"].endswith("cannot be deleted.")

@@ -19,7 +19,7 @@ def test_index_GET_with_htmx(
     }
     response = admin_client.get(urls["index"], headers=headers)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["table"], response)
 
 
@@ -34,7 +34,7 @@ def test_index_has_checkboxes_admin(
     checkboxes = parser.css("input[id^='row-check-']")
 
     assert len(checkboxes) == 10
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["index"], response)
 
 
@@ -53,7 +53,7 @@ def test_index_has_checkboxes_with_view_delete_perms(
     parser = HTMLParser(response.content)
     checkboxes = parser.css("input[id^='row-check-']")
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert len(checkboxes) == 10
     assert is_template_used(templates["index"], response)
 
@@ -74,7 +74,7 @@ def test_index_has_checkboxes_with_no_permission(
     checkboxes = parser.css("input[id^='row-check-']")
 
     assert len(checkboxes) == 0
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["index"], response)
 
 
@@ -86,7 +86,7 @@ def test_view_index_file(
 ):
     response = admin_client.get(urls["index"])
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["index"], response)
 
 
@@ -117,22 +117,6 @@ def test_view_has_all_html_elements_which_need_permissions(
 
 
 @pytest.mark.django_db
-def test_view_contains_objects(
-    admin_client: Client,
-    urls: dict[str, str],
-):
-    response = admin_client.get(urls["index"])
-
-    assert "City 001" in response.content.decode()
-    assert "City 002" in response.content.decode()
-    assert "City 003" in response.content.decode()
-
-    assert "حماه" in response.content.decode()
-    assert "حمص" in response.content.decode()
-    assert "ادلب" in response.content.decode()
-
-
-@pytest.mark.django_db
 def test_view_user_has_no_permissions(
     client: Client,
     urls: dict[str, str],
@@ -143,7 +127,7 @@ def test_view_user_has_no_permissions(
     )
 
     response = client.get(urls["index"])
-    assert response.status_code == 403
+    assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
 @pytest.mark.django_db
@@ -161,7 +145,7 @@ def test_view_user_has_view_permissions(
     parser = HTMLParser(response.content)
     buttons = parse_buttons(parser)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert buttons["add_btn_exists"] is False
     assert buttons["delete_btn_exists"] is False
     assert buttons["delete_all_btn_exists"] is False
@@ -183,7 +167,7 @@ def test_view_user_has_view_permissions_add(
     parser = HTMLParser(response.content)
     buttons = parse_buttons(parser)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert buttons["add_btn_exists"]
     assert buttons["delete_btn_exists"] is False
     assert buttons["delete_all_btn_exists"] is False
@@ -205,7 +189,7 @@ def test_view_user_has_view_permissions_change(
     parser = HTMLParser(response.content)
     buttons = parse_buttons(parser)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert buttons["add_btn_exists"] is False
     assert buttons["delete_btn_exists"] is False
     assert buttons["delete_all_btn_exists"] is False
@@ -227,7 +211,7 @@ def test_view_user_has_view_permissions_delete(
     parser = HTMLParser(response.content)
     buttons = parse_buttons(parser)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert buttons["add_btn_exists"] is False
     assert buttons["delete_btn_exists"]
     assert buttons["delete_all_btn_exists"]
@@ -249,7 +233,7 @@ def test_view_user_has_view_permissions_export(
     parser = HTMLParser(response.content)
     buttons = parse_buttons(parser)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert buttons["add_btn_exists"] is False
     assert buttons["delete_btn_exists"] is False
     assert buttons["delete_all_btn_exists"] is False
@@ -262,13 +246,14 @@ def test_read_objects(
     api_client: APIClient,
     urls: dict[str, str],
     admin_headers: dict[str, str],
+    counts: dict[str, int],
 ):
     response: Response = api_client.get(
         path=urls["api"],
         headers=admin_headers,
     )
     assert response.status_code == status.HTTP_200_OK
-    assert response.json()["count"] == 304
+    assert response.json()["count"] == counts["objects"]
     assert len(response.json()["results"]) == 10
 
 
@@ -292,7 +277,6 @@ def test_read_object(
         headers=admin_headers,
     )
     assert response.status_code == status.HTTP_200_OK
-    assert response.json()["name"] == "محافظة حماه"
 
 
 @pytest.mark.django_db

@@ -28,6 +28,27 @@ def pagination_test_cases(request: pytest.FixtureRequest):
 @pytest.fixture(
     scope="package",
     params=[
+        ("?q=حم", 2, ("حماه", "حمص"), ("ادلب", "المنيا")),
+        ("?q=meta", 2, ("ادلب", "حمص"), ("حماه", "المنيا")),
+        ("?q=mena+language", 1, ("المنيا",), ("ادلب", "حمص", "حماه")),
+        ("?q=id > 2&ordering=-name", 302, ("ادلب", "المنيا"), ("حمص", "حماه")),
+        (
+            '?q=id > 2 and name ~ "ل"&ordering=-name',
+            2,
+            ("ادلب", "المنيا"),
+            ("حمص", "حماه"),
+        ),
+        ("?q=id > 2 and name ~ 'ل'", 0, (), ("حمص", "حماه", "ادلب", "المنيا")),
+        ("?q=id in (1, 3)", 2, ("حماه", "ادلب"), ("حمص", "المنيا")),
+    ],
+)
+def filters_test_cases(request: pytest.FixtureRequest):
+    return request.param
+
+
+@pytest.fixture(
+    scope="package",
+    params=[
         (
             "?ordering=Id",
             [
@@ -104,50 +125,6 @@ def models_dirty_data_test_cases(request: pytest.FixtureRequest):
     ],
 )
 def export_test_cases(request: pytest.FixtureRequest):
-    return request.param
-
-
-@pytest.fixture(
-    scope="package",
-    params=[
-        (
-            "?q=حم",
-            2,
-            [["حماه", 1], ["حمص", 1], ["ادلب", 0], ["المنيا", 0]],
-        ),
-        (
-            "?q=meta",
-            2,
-            [["حماه", 0], ["حمص", 1], ["ادلب", 1], ["المنيا", 0]],
-        ),
-        (
-            "?q=mena+language",
-            1,
-            [["حماه", 0], ["حمص", 0], ["ادلب", 0], ["المنيا", 1]],
-        ),
-        (
-            "?q=id > 2&ordering=-name",
-            302,
-            [["حماه", 0], ["حمص", 0], ["ادلب", 1], ["المنيا", 1]],
-        ),
-        (
-            '?q=id > 2 and name ~ "ل"&ordering=-name',
-            2,
-            [["حماه", 0], ["حمص", 0], ["ادلب", 1], ["المنيا", 1]],
-        ),
-        (
-            "?q=id > 2 and name ~ 'ل'",  # using ' instead of "
-            0,
-            [["حماه", 0], ["حمص", 0], ["ادلب", 0], ["المنيا", 0]],
-        ),
-        (
-            "?q=id in (1, 3)",
-            2,
-            [["حماه", 1], ["حمص", False], ["ادلب", 1], ["المنيا", False]],
-        ),
-    ],
-)
-def filters_test_cases(request: pytest.FixtureRequest):
     return request.param
 
 

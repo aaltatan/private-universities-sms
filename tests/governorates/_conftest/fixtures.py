@@ -33,6 +33,14 @@ def model() -> type[Model]:
 
 
 @pytest.fixture
+def counts() -> dict[str, int]:
+    return {
+        "objects": 304,
+        "bulk_delete_batch": 50,
+    }
+
+
+@pytest.fixture
 def urls() -> dict[str, str]:
     return {
         "api": f"/api/{APP_LABEL}/",

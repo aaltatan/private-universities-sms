@@ -30,7 +30,7 @@ def test_add_new_btn_appearance_if_user_has_no_add_perm(
     parser = HTMLParser(response.content)
     btn = parser.css_first("[aria-label='create new object']")
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["index"], response)
     assert btn is None
 
@@ -44,7 +44,7 @@ def test_send_request_to_create_page_without_permission(
         password="password",
     )
     response = client.get(urls["create"])
-    assert response.status_code == 403
+    assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
 @pytest.mark.django_db
@@ -57,7 +57,7 @@ def test_add_new_btn_appearance_if_user_has_add_perm(
     parser = HTMLParser(response.content)
     btn = parser.css_first("[aria-label='create new object']")
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["index"], response)
     assert btn is not None
 
@@ -70,7 +70,7 @@ def test_send_request_to_create_page_with_permission(
 ) -> None:
     response = admin_client.get(urls["create"])
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create"], response)
 
 
@@ -81,10 +81,12 @@ def test_create_new_object_with_save_btn(
     urls: dict[str, str],
     templates: dict[str, str],
     clean_data_sample: dict[str, str],
+    counts: dict[str, int],
 ) -> None:
+    objects_count = counts["objects"]
     response = admin_client.get(urls["create"])
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create"], response)
 
     clean_data_sample["save"] = "true"
@@ -101,7 +103,7 @@ def test_create_new_object_with_save_btn(
     assert response.headers.get("Hx-Trigger") == "messages"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == success_message
-    assert model.objects.count() == 305
+    assert model.objects.count() == objects_count + 1
 
 
 @pytest.mark.django_db
@@ -111,10 +113,12 @@ def test_create_new_object_with_save_and_add_another_btn(
     templates: dict[str, str],
     clean_data_sample: dict[str, str],
     model: type[Model],
+    counts: dict[str, int],
 ) -> None:
+    objects_count = counts["objects"]
     response = admin_client.get(urls["create"])
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create"], response)
 
     data = clean_data_sample.copy()
@@ -124,14 +128,14 @@ def test_create_new_object_with_save_and_add_another_btn(
     qs = model.objects.all()
     last_obj = qs.last()
 
-    assert response.status_code == 201
+    assert response.status_code == status.HTTP_201_CREATED
     assert response.headers.get("Hx-Trigger") == "messages"
     assert is_template_used(templates["create_form"], response)
-    assert last_obj.pk == 305
+    assert last_obj.pk == objects_count + 1
     assert last_obj.name == data["name"]
     assert last_obj.description == data["description"]
     assert last_obj.slug == slugify(data["name"], allow_unicode=True)
-    assert qs.count() == 305
+    assert qs.count() == objects_count + 1
 
 
 @pytest.mark.django_db
@@ -167,14 +171,16 @@ def test_create_without_redirect_from_modal(
     clean_data_sample: dict[str, str],
     model: type[Model],
     headers_modal_GET: dict[str, str],
+    counts: dict[str, int],
 ) -> None:
+    objects_count = counts["objects"]
     headers = {
         **headers_modal_GET,
         "target": "#modal-container",
     }
     response = admin_client.get(urls["create"], headers=headers)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create_modal_form"], response)
 
     headers = {
@@ -187,11 +193,11 @@ def test_create_without_redirect_from_modal(
     messages_list = list(get_messages(request=response.wsgi_request))
     success_message = f"{clean_data_sample['name']} has been created successfully"
 
-    assert response.status_code == 201
+    assert response.status_code == status.HTTP_201_CREATED
     assert is_template_used(templates["create_modal_form"], response, used=False)
     assert is_template_used(templates["create_form"], response, used=False)
     assert is_template_used(templates["create"], response, used=False)
-    assert model.objects.count() == 305
+    assert model.objects.count() == objects_count + 1
     assert response.headers.get("Hx-Redirect") is None
     assert response.headers.get("Hx-Location") is None
     assert response.headers.get("Hx-Reswap") == "innerHTML"
@@ -208,7 +214,9 @@ def test_create_with_redirect_from_modal(
     model: type[Model],
     headers_modal_GET: dict[str, str],
     app_label: str,
+    counts: dict[str, int],
 ) -> None:
+    objects_count = counts["objects"]
     url = urls["create"] + "?per_page=10&ordering=-Name"
     headers = {
         **headers_modal_GET,
@@ -216,7 +224,7 @@ def test_create_with_redirect_from_modal(
     }
     response = admin_client.get(url, headers=headers)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create_modal_form"], response)
 
     data = clean_data_sample.copy()
@@ -230,8 +238,8 @@ def test_create_with_redirect_from_modal(
     messages_list = list(get_messages(request=response.wsgi_request))
     success_message = f"{clean_data_sample['name']} has been created successfully"
 
-    assert response.status_code == 201
-    assert model.objects.count() == 305
+    assert response.status_code == status.HTTP_201_CREATED
+    assert model.objects.count() == objects_count + 1
     assert location.get("target") == target
     assert location.get("path") == urls["index"] + "?per_page=10&ordering=-Name"
     assert messages_list[0].level == messages.SUCCESS
@@ -246,8 +254,8 @@ def test_create_with_redirect_from_modal(
         response.headers.get("Hx-Location", {}),
     )
 
-    assert response.status_code == 201
-    assert model.objects.count() == 306
+    assert response.status_code == status.HTTP_201_CREATED
+    assert model.objects.count() == objects_count + 2
     assert location.get("target") == target
     assert location.get("path") == urls["index"] + "?per_page=10&ordering=-Name"
 
@@ -259,11 +267,13 @@ def test_create_new_object_with_dirty_or_duplicated_data(
     templates: dict[str, str],
     model: type[Model],
     dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
+    counts: dict[str, int],
 ) -> None:
+    objects_count = counts["objects"]
     data, error, _ = dirty_data_test_cases
     response = admin_client.get(urls["create"])
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create"], response)
 
     response = admin_client.post(urls["create"], data)
@@ -272,9 +282,9 @@ def test_create_new_object_with_dirty_or_duplicated_data(
 
     assert error in response.content.decode()
     assert is_template_used(templates["create_form"], response)
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert form_hx_post == urls["create"]
-    assert model.objects.count() == 304
+    assert model.objects.count() == objects_count
 
 
 @pytest.mark.django_db
@@ -286,7 +296,9 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
     dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
     headers_modal_GET: dict[str, str],
     app_label: str,
+    counts: dict[str, int],
 ) -> None:
+    objects_count = counts["objects"]
     data, error, _ = dirty_data_test_cases
     url = urls["create"] + "?per_page=10&ordering=-Name"
     headers = {
@@ -295,7 +307,7 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
     }
     response = admin_client.get(url, headers=headers)
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create_modal_form"], response)
 
     headers = {**headers, "target": f"{app_label}-table"}
@@ -306,9 +318,9 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
 
     assert error in response.content.decode()
     assert is_template_used(templates["create_modal_form"], response)
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert form_hx_post == urls["create"]
-    assert model.objects.count() == 304
+    assert model.objects.count() == objects_count
 
 
 @pytest.mark.django_db
@@ -317,8 +329,11 @@ def test_create_objects(
     urls: dict[str, str],
     admin_headers: dict[str, str],
     model: type[Model],
+    counts: dict[str, int],
 ):
-    for idx in range(500, 550):
+    objects_count = counts["objects"]
+    batch_size = counts["bulk_delete_batch"]
+    for idx in range(10_000, 10_000 + batch_size):
         response = api_client.post(
             path=urls["api"],
             data={"name": f"City {idx}"},
@@ -333,8 +348,8 @@ def test_create_objects(
     )
 
     assert response.status_code == status.HTTP_200_OK
-    assert response.json()["count"] == 354
-    assert model.objects.count() == 354
+    assert response.json()["count"] == objects_count + batch_size
+    assert model.objects.count() == objects_count + batch_size
 
 
 @pytest.mark.django_db
@@ -346,13 +361,13 @@ def test_create_object_without_permissions(
     response = api_client.post(
         path=urls["api"], data={"name": "City"}, headers=user_headers
     )
-    assert response.status_code == 403
+    assert response.status_code == status.HTTP_403_FORBIDDEN
 
     response: Response = api_client.post(
         path=urls["api"],
         data={"name": "City"},
     )
-    assert response.status_code == 401
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 @pytest.mark.django_db
