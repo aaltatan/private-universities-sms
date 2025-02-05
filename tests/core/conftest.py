@@ -4,7 +4,7 @@ import pytest
 from django.urls import reverse
 from playwright.sync_api import Page, sync_playwright
 
-from apps.governorates.models import Governorate
+from apps.areas.models import Governorate
 from tests.utils import reset_sequence
 
 

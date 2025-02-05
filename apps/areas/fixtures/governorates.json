@@ -1,0 +1,128 @@
+[
+  {
+    "model": "areas.governorate",
+    "pk": 1,
+    "fields": {
+      "name": "محافظة حماه",
+      "description": "",
+      "slug": "محافظة-حماه1"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 2,
+    "fields": {
+      "name": "محافظة حمص",
+      "description": "",
+      "slug": "محافظة-حمص1"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 3,
+    "fields": {
+      "name": "محافظة دمشق",
+      "description": "",
+      "slug": "محافظة-دمشق"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 4,
+    "fields": {
+      "name": "محافظة ريف دمشق",
+      "description": "",
+      "slug": "محافظة-ريف-دمشق"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 5,
+    "fields": {
+      "name": "محافظة حلب",
+      "description": "",
+      "slug": "محافظة-حلب"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 6,
+    "fields": {
+      "name": "محافظة اللاذقية",
+      "description": "",
+      "slug": "محافظة-اللاذقية"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 7,
+    "fields": {
+      "name": "محافظة طرطوس",
+      "description": "",
+      "slug": "محافظة-طرطوس"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 8,
+    "fields": {
+      "name": "محافظة ادلب",
+      "description": "",
+      "slug": "محافظة-ادلب"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 9,
+    "fields": {
+      "name": "محافظة الرقة",
+      "description": "",
+      "slug": "محافظة-الرقة"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 10,
+    "fields": {
+      "name": "محافظة دير الزور",
+      "description": "",
+      "slug": "محافظة-دير-الزور"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 11,
+    "fields": {
+      "name": "محافظة درعا",
+      "description": "",
+      "slug": "محافظة-درعا"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 12,
+    "fields": {
+      "name": "محافظة القنيطرة",
+      "description": "",
+      "slug": "محافظة-القنيطرة"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 13,
+    "fields": {
+      "name": "محافظة القامشلي",
+      "description": "",
+      "slug": "محافظة-القامشلي"
+    }
+  },
+  {
+    "model": "areas.governorate",
+    "pk": 14,
+    "fields": {
+      "name": "محافظة الحسكة",
+      "description": "",
+      "slug": "محافظة-الحسكة"
+    }
+  }
+]

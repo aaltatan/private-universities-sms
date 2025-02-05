@@ -46,4 +46,4 @@ class AbstractUniqueNameModel(models.Model):
         )
 
     def __get_app_label(self) -> str:
-        return self._meta.app_label
+        return self._meta.verbose_name_plural

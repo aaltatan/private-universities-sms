@@ -49,11 +49,11 @@ urlpatterns = [
     ),
     path(
         "governorates/",
-        include("apps.governorates.urls"),
+        include("apps.areas.urls.governorates"),
     ),
     path(
         "cities/",
-        include("apps.cities.urls"),
+        include("apps.areas.urls.cities"),
     ),
 ]
 

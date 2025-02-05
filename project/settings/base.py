@@ -52,8 +52,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     # local apps
     "apps.core",
-    "apps.governorates",
-    "apps.cities",
+    "apps.areas",
 ]
 
 MIDDLEWARE = [

@@ -219,7 +219,7 @@ class ListMixin(ABC):
         Returns the app label using the model.
         """
         model = self.get_model_class()
-        return model._meta.app_label
+        return model._meta.verbose_name_plural
 
     def get_object_name(self) -> str:
         """
