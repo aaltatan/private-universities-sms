@@ -1,16 +1,19 @@
 from rest_framework import serializers
 
-from apps.governorates.serializers import GovernorateSerializer
-
-from .models import City
+from .models import City, Governorate
 
 
 class CitySerializer(serializers.ModelSerializer):
+    class GovernorateSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Governorate
+            fields = ("id", "name", "description")
+
     governorate = GovernorateSerializer(read_only=True)
 
     class Meta:
         model = City
-        fields = "__all__"
+        fields = ("id", "name", "description", "governorate")
 
 
 class ActivitySerializer(serializers.ModelSerializer):
