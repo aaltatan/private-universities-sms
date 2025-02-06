@@ -1,6 +1,6 @@
 [
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 1,
     "fields": {
       "name": "مدينة حماه",
@@ -10,7 +10,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 2,
     "fields": {
       "name": "مدينة كفربهم",
@@ -20,7 +20,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 3,
     "fields": {
       "name": "مدينة ايو",
@@ -30,7 +30,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 4,
     "fields": {
       "name": "مدينة حمص",
@@ -40,7 +40,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 5,
     "fields": {
       "name": "مدينة الرستن",
@@ -50,7 +50,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 6,
     "fields": {
       "name": "مدينة تلبيسه",
@@ -60,7 +60,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 7,
     "fields": {
       "name": "مدينة دمشق",
@@ -70,7 +70,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 8,
     "fields": {
       "name": "مدينة ريف دمشق",
@@ -80,7 +80,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 17,
     "fields": {
       "name": "مدينة حلب",
@@ -90,7 +90,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 18,
     "fields": {
       "name": "مدينة عزاز",
@@ -100,7 +100,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 19,
     "fields": {
       "name": "مدينة تقسيس",
@@ -110,7 +110,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 20,
     "fields": {
       "name": "مدينة تلبيسة",
@@ -120,7 +120,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 23,
     "fields": {
       "name": "مدينة القلمون",
@@ -130,7 +130,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 24,
     "fields": {
       "name": "مدينة النبك",
@@ -140,7 +140,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 25,
     "fields": {
       "name": "مدينة تلكلخ",
@@ -150,7 +150,7 @@
     }
   },
   {
-    "model": "areas.city",
+    "model": "geo.city",
     "pk": 26,
     "fields": {
       "name": "بلدة النهر البارد",

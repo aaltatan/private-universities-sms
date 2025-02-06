@@ -143,7 +143,7 @@ def test_delete_object_undeletable(
     counts: dict[str, int],
 ) -> None:
     mocker.patch(
-        f"apps.areas.{app_label}.utils.Deleter.is_obj_deletable",
+        f"apps.geo.{app_label}.utils.Deleter.is_obj_deletable",
         return_value=False,
     )
 
@@ -174,7 +174,7 @@ def test_delete_when_no_deleter_class_is_defined(
     mocker: pytest_mock.MockerFixture,
     app_label: str,
 ):
-    mocker.patch(f"apps.areas.views.{app_label}.DeleteView.deleter", new=None)
+    mocker.patch(f"apps.geo.views.{app_label}.DeleteView.deleter", new=None)
     obj = model.objects.first()
     with pytest.raises(AttributeError):
         admin_client.post(
@@ -193,7 +193,7 @@ def test_delete_when_deleter_class_is_not_subclass_of_Deleter(
 ):
     class Deleter: ...
 
-    mocker.patch(f"apps.areas.{app_label}.views.DeleteView.deleter", new=Deleter)
+    mocker.patch(f"apps.geo.{app_label}.views.DeleteView.deleter", new=Deleter)
     obj = model.objects.first()
     with pytest.raises(TypeError):
         admin_client.post(
@@ -248,7 +248,7 @@ def test_delete_and_bulk_delete_object_when_deleter_class_is_None(
     mocker: pytest_mock.MockerFixture,
     app_label: str,
 ):
-    mocker.patch(f"apps.areas.{app_label}.views.APIViewSet.deleter", new=None)
+    mocker.patch(f"apps.geo.{app_label}.views.APIViewSet.deleter", new=None)
 
     with pytest.raises(AttributeError):
         api_client.delete(
@@ -275,7 +275,7 @@ def test_delete_and_bulk_delete_object_when_deleter_class_is_not_a_subclass_of_D
     class Deleter:
         pass
 
-    mocker.patch(f"apps.areas.{app_label}.views.APIViewSet.deleter", new=Deleter)
+    mocker.patch(f"apps.geo.{app_label}.views.APIViewSet.deleter", new=Deleter)
 
     with pytest.raises(TypeError):
         api_client.delete(
@@ -305,7 +305,7 @@ def test_api_delete_object_undeletable(
 ):
     objects_count = counts["objects"]
     mocker.patch(
-        f"apps.areas.{app_label}.utils.Deleter.is_obj_deletable",
+        f"apps.geo.{app_label}.utils.Deleter.is_obj_deletable",
         return_value=False,
     )
 

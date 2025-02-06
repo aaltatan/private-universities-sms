@@ -12,7 +12,10 @@ class Governorate(AbstractUniqueNameModel):
 
     class Meta:
         ordering = ("name",)
-        permissions = (("export_governorate", "Can export governorate"),)
+        permissions = (
+            ("export_governorate", "Can export governorate"),
+            ("view_governorate_activity", "Can view governorate activity"),
+        )
 
 
 class City(AbstractUniqueNameModel):
@@ -27,7 +30,10 @@ class City(AbstractUniqueNameModel):
     class Meta:
         ordering = ("name",)
         verbose_name_plural = "cities"
-        permissions = (("export_city", "Can export city"),)
+        permissions = (
+            ("export_city", "Can export city"),
+            ("view_city_activity", "Can view city activity"),
+        )
 
 
 pre_save.connect(slugify_name, sender=City)

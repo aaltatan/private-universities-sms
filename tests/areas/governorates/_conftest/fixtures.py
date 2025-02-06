@@ -4,7 +4,7 @@ from django.db.models import Model
 from django.urls import reverse
 
 from apps.core.models import User
-from apps.areas.models import Governorate
+from apps.geo.models import Governorate
 from tests.utils import reset_sequence
 
 

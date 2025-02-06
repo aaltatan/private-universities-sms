@@ -16,7 +16,7 @@ def test_list_view_with_model_is_defined(
     app_label: str,
     model: type[Model],
 ):
-    mocker.patch(f"apps.areas.{app_label}.views.ListView.model", new=model)
+    mocker.patch(f"apps.geo.{app_label}.views.ListView.model", new=model)
     response = admin_client.get(urls["index"])
 
     assert response.status_code == status.HTTP_200_OK
@@ -32,7 +32,7 @@ def test_list_view_with_template_name_is_defined(
 ):
     template_name: str = f"apps/{app_label}/index.html"
     mocker.patch(
-        f"apps.areas.{app_label}.views.ListView.template_name",
+        f"apps.geo.{app_label}.views.ListView.template_name",
         new=template_name,
         create=True,
     )
@@ -51,7 +51,7 @@ def test_list_view_with_table_template_name_is_defined(
 ):
     template_name: str = f"components/{app_label}/table.html"
     mocker.patch(
-        f"apps.areas.{app_label}.views.ListView.table_template_name",
+        f"apps.geo.{app_label}.views.ListView.table_template_name",
         new=template_name,
         create=True,
     )

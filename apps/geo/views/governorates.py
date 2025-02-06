@@ -9,7 +9,7 @@ from rest_framework import filters as rest_filters
 from rest_framework import viewsets
 
 from apps.core import filter_backends, mixins
-from apps.core.schemas import Action, Perm
+from apps.core.schemas import Action
 
 from .. import filters, forms, models, resources, serializers
 from ..constants import governorates as constants
@@ -43,7 +43,7 @@ class ListView(
     MultipleObjectMixin,
     View,
 ):
-    permission_required: str = Perm("areas", "view", "governorate").string
+    permission_required = "geo.view_governorate"
     filter_class = filters.GovernorateFilter
     resource_class = resources.GovernorateResource
     activity_serializer = serializers.GovernorateActivitySerializer
@@ -56,7 +56,7 @@ class ListView(
                 method=self.bulk_delete,
                 template="components/blocks/modals/bulk-delete.html",
                 kwargs=("new_value",),
-                permissions=(Perm("governorates", "delete"),),
+                permissions=("geo.delete_governorate"),
             ),
         }
 
@@ -67,7 +67,7 @@ class CreateView(
     mixins.CreateMixin,
     View,
 ):
-    permission_required: str = Perm("aras", "add", "governorate").string
+    permission_required = "geo.create_governorate"
     form_class = forms.GovernorateForm
 
 
@@ -77,7 +77,7 @@ class UpdateView(
     mixins.UpdateMixin,
     View,
 ):
-    permission_required: str = Perm("areas", "change", "governorate").string
+    permission_required = "geo.change_governorate"
     form_class = forms.GovernorateForm
     activity_serializer = serializers.GovernorateActivitySerializer
 
@@ -88,6 +88,6 @@ class DeleteView(
     mixins.DeleteMixin,
     View,
 ):
-    permission_required: str = Perm("areas", "delete", "governorate").string
+    permission_required = "geo.delete_governorate"
     deleter = utils.Deleter
     activity_serializer = serializers.GovernorateActivitySerializer

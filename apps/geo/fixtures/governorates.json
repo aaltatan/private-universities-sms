@@ -1,6 +1,6 @@
 [
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 1,
     "fields": {
       "name": "محافظة حماه",
@@ -9,7 +9,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 2,
     "fields": {
       "name": "محافظة حمص",
@@ -18,7 +18,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 3,
     "fields": {
       "name": "محافظة دمشق",
@@ -27,7 +27,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 4,
     "fields": {
       "name": "محافظة ريف دمشق",
@@ -36,7 +36,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 5,
     "fields": {
       "name": "محافظة حلب",
@@ -45,7 +45,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 6,
     "fields": {
       "name": "محافظة اللاذقية",
@@ -54,7 +54,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 7,
     "fields": {
       "name": "محافظة طرطوس",
@@ -63,7 +63,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 8,
     "fields": {
       "name": "محافظة ادلب",
@@ -72,7 +72,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 9,
     "fields": {
       "name": "محافظة الرقة",
@@ -81,7 +81,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 10,
     "fields": {
       "name": "محافظة دير الزور",
@@ -90,7 +90,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 11,
     "fields": {
       "name": "محافظة درعا",
@@ -99,7 +99,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 12,
     "fields": {
       "name": "محافظة القنيطرة",
@@ -108,7 +108,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 13,
     "fields": {
       "name": "محافظة القامشلي",
@@ -117,7 +117,7 @@
     }
   },
   {
-    "model": "areas.governorate",
+    "model": "geo.governorate",
     "pk": 14,
     "fields": {
       "name": "محافظة الحسكة",

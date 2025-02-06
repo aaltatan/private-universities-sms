@@ -18,7 +18,7 @@ def test_autocomplete_without_permissions(
     )
     payload = {
         "term": "حم",
-        "app_label": "areas",
+        "app_label": "geo",
         "model_name": "Governorate",
         "object_name": "governorate",
         "field_name": "name",
@@ -33,7 +33,7 @@ def test_autocomplete_post_method_with_name_as_label_field_name(
     urls: dict[str, str],
 ) -> None:
     payload = {
-        "app_label": "areas",
+        "app_label": "geo",
         "model_name": "Governorate",
         "object_name": "governorate",
         "field_name": "name",
@@ -52,7 +52,7 @@ def test_autocomplete_post_method_with_pk_as_label_field_name(
     urls: dict[str, str],
 ) -> None:
     payload = {
-        "app_label": "areas",
+        "app_label": "geo",
         "model_name": "Governorate",
         "object_name": "governorate",
         "field_name": "name",
@@ -75,7 +75,7 @@ def test_autocomplete_post_method_without_permissions(
         password="password",
     )
     payload = {
-        "app_label": "areas",
+        "app_label": "geo",
         "model_name": "Governorate",
         "object_name": "governorate",
         "field_name": "name",
@@ -92,7 +92,7 @@ def test_autocomplete_post_method_with_wrong_model_name(
     urls: dict[str, str],
 ) -> None:
     payload = {
-        "app_label": "areas",
+        "app_label": "geo",
         "model_name": "Governoratex",
         "object_name": "governorate",
         "field_name": "name",
@@ -109,7 +109,7 @@ def test_autocomplete_post_method_with_wrong_pk(
     urls: dict[str, str],
 ) -> None:
     payload = {
-        "app_label": "areas",
+        "app_label": "geo",
         "model_name": "Governorate",
         "object_name": "governorate",
         "field_name": "name",
@@ -128,7 +128,7 @@ def test_autocomplete(
 ):
     payload = {
         "term": "حم",
-        "app_label": "areas",
+        "app_label": "geo",
         "model_name": "Governorate",
         "object_name": "governorate",
         "field_name": "name",
@@ -155,7 +155,7 @@ def test_autocomplete_with_djangoql(
 ):
     payload = {
         "term": 'name endswith "ص"',
-        "app_label": "areas",
+        "app_label": "geo",
         "model_name": "Governorate",
         "object_name": "governorate",
         "field_name": "name",
@@ -182,7 +182,7 @@ def test_autocomplete_with_no_permissions(
 ):
     payload = {
         "term": "حم",
-        "app_label": "areas",
+        "app_label": "geo",
         "model_name": "Governorate",
         "object_name": "governorate",
         "field_name": "name",
@@ -209,7 +209,7 @@ def test_autocomplete_with_empty_term(
 ):
     payload = {
         "term": "xx",
-        "app_label": "areas",
+        "app_label": "geo",
         "model_name": "Governorate",
         "object_name": "governorate",
         "field_name": "name",
@@ -241,7 +241,7 @@ def test_autocomplete_with_empty_term(
         (
             {
                 "term": "حم",
-                "app_label": "areas",
+                "app_label": "geo",
                 "object_name": "governorate",
                 "field_name": "name",
             },
@@ -250,7 +250,7 @@ def test_autocomplete_with_empty_term(
         (
             {
                 "term": "حم",
-                "app_label": "areas",
+                "app_label": "geo",
                 "model_name": "Governorate",
                 "object_name": "governorate",
             },
@@ -259,7 +259,7 @@ def test_autocomplete_with_empty_term(
         (
             {
                 "term": "حم",
-                "app_label": "areas",
+                "app_label": "geo",
                 "model_name": "Governorate",
                 "field_name": "name",
             },
@@ -268,7 +268,7 @@ def test_autocomplete_with_empty_term(
         (
             {
                 "term": "حم",
-                "app_label": "areas",
+                "app_label": "geo",
                 "model_name": "Governorate",
                 "object_name": "governorate",
                 "field_name": "namexx",
@@ -278,7 +278,7 @@ def test_autocomplete_with_empty_term(
         (
             {
                 "term": "حم",
-                "app_label": "areasx",
+                "app_label": "geox",
                 "model_name": "Governorate",
                 "object_name": "governorate",
                 "field_name": "name",
@@ -288,7 +288,7 @@ def test_autocomplete_with_empty_term(
         (
             {
                 "term": "حم",
-                "app_label": "areas",
+                "app_label": "geo",
                 "model_name": "Governoratef",
                 "object_name": "governorate",
                 "field_name": "name",

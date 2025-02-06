@@ -43,7 +43,7 @@ class ListView(
     MultipleObjectMixin,
     View,
 ):
-    permission_required: str = Perm(app_label="areas", object_name="city").string
+    permission_required = "geo.view_city"
     filter_class = filters.CityFilter
     resource_class = resources.CityResource
     activity_serializer = serializers.CityActivitySerializer
@@ -67,7 +67,7 @@ class CreateView(
     mixins.CreateMixin,
     View,
 ):
-    permission_required: str = Perm("areas", "add", "city").string
+    permission_required = "geo.create_city"
     form_class = forms.CityForm
 
 
@@ -77,7 +77,7 @@ class UpdateView(
     mixins.UpdateMixin,
     View,
 ):
-    permission_required: str = Perm("areas", "change", "city").string
+    permission_required = "geo.change_city"
     form_class = forms.CityForm
     activity_serializer = serializers.CityActivitySerializer
 
@@ -88,6 +88,6 @@ class DeleteView(
     mixins.DeleteMixin,
     View,
 ):
-    permission_required: str = Perm("areas", "delete", "city").string
+    permission_required = "geo.delete_city"
     deleter = utils.Deleter
     activity_serializer = serializers.CityActivitySerializer

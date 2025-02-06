@@ -126,7 +126,7 @@
               <c-layout.context-menu.item
                 icon="clock"
                 href="#"
-                hx-get="{% url 'core:activities' obj.id %}?app_label=cities&model=city"
+                hx-get="{% url 'core:activities' obj.id %}?app_label=geo&model=city"
                 hx-target="#modal-container"
                 hx-indicator="#modal-spinner"
                 @click="showModal"

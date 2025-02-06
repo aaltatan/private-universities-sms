@@ -119,7 +119,7 @@ def test_bulk_delete_with_permissions_with_undeletable_objects(
     }
   
     mocker.patch(
-        f"apps.areas.{app_label}.utils.Deleter.is_qs_deletable",
+        f"apps.geo.{app_label}.utils.Deleter.is_qs_deletable",
         return_value=False,
     )
 
@@ -191,7 +191,7 @@ def test_bulk_delete_when_no_deleter_class_is_defined(
     counts: dict[str, int],
 ):
     bulk_delete_batch = counts["bulk_delete_batch"]
-    mocker.patch(f"apps.areas.{app_label}.views.ListView.deleter", new=None)
+    mocker.patch(f"apps.geo.{app_label}.views.ListView.deleter", new=None)
     data: dict = {
         "action-check": list(range(1, bulk_delete_batch + 1)),
         "kind": "action",
@@ -214,7 +214,7 @@ def test_bulk_delete_when_deleter_class_is_not_subclass_of_Deleter(
     class Deleter:
         pass
 
-    mocker.patch(f"apps.areas.{app_label}.views.ListView.deleter", new=Deleter)
+    mocker.patch(f"apps.geo.{app_label}.views.ListView.deleter", new=Deleter)
     data: dict = {
         "action-check": list(range(1, bulk_delete_batch + 1)),
         "kind": "action",
@@ -264,7 +264,7 @@ def test_bulk_delete_objects_undeletable(
 ):
     objects_count = counts["objects"]
     mocker.patch(
-        f"apps.areas.{app_label}.utils.Deleter.is_qs_deletable",
+        f"apps.geo.{app_label}.utils.Deleter.is_qs_deletable",
         return_value=False,
     )
 
