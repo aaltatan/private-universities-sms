@@ -129,7 +129,7 @@ class ListMixin(ABC):
         dataset: Dataset = self.resource_class().export(qs)
 
         now: str = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        filename: str = f"{self.get_app_label().title()}-{now}"
+        filename: str = f"{self.get_verbose_name_plural().title()}-{now}"
 
         dataset.title = filename
 
@@ -159,21 +159,21 @@ class ListMixin(ABC):
         if getattr(self, "template_name", None):
             return self.template_name
 
-        app_label: str = self.get_app_label()
+        verbose_name_plural: str = self.get_verbose_name_plural()
 
-        return f"apps/{app_label}/index.html"
+        return f"apps/{verbose_name_plural}/index.html"
 
     def get_table_template_name(self) -> str:
         """
         Returns the table template name.
         Notes: you can use the table_template_name attribute to override the default table template name.
         """
-        app_label = self.get_app_label()
+        verbose_name_plural = self.get_verbose_name_plural()
 
         if getattr(self, "table_template_name", None):
             return self.table_template_name
 
-        return f"components/{app_label}/table.html"
+        return f"components/{verbose_name_plural}/table.html"
 
     def get_queryset(self) -> QuerySet:
         """
@@ -206,17 +206,23 @@ class ListMixin(ABC):
         """
         Returns whether the user has a given permission.
         """
-        app_label: str = self.get_app_label()
+        app_label = self.get_app_label()
         object_name: str = self.get_object_name()
         permission_string: str = f"{app_label}.{permission}_{object_name}"
 
         request: HttpRequest = self.request
 
         return request.user.has_perm(permission_string)
-
+    
     def get_app_label(self) -> str:
         """
-        Returns the app label using the model.
+        Returns the app label using the model
+        """
+        return self.get_model_class()._meta.app_label
+
+    def get_verbose_name_plural(self) -> str:
+        """
+        Returns the verbose name plural using the model.
         """
         model = self.get_model_class()
         return model._meta.verbose_name_plural
@@ -267,21 +273,21 @@ class ListMixin(ABC):
         """
         Returns the app links.
         """
-        app_label: str = self.get_app_label()
+        verbose_name_plural: str = self.get_verbose_name_plural()
         return {
-            "index_url": reverse(f"{app_label}:index"),
-            "create_url": reverse(f"{app_label}:create"),
+            "index_url": reverse(f"{verbose_name_plural}:index"),
+            "create_url": reverse(f"{verbose_name_plural}:create"),
         }
 
     def get_html_ids(self) -> dict[str, str]:
         """
         Returns the html ids.
         """
-        app_label: str = self.get_app_label()
+        verbose_name_plural: str = self.get_verbose_name_plural()
         return {
-            "table_id": f"{app_label}-table",
-            "form_table_id": f"{app_label}-form-table",
-            "filter_form_id": f"{app_label}-filter",
+            "table_id": f"{verbose_name_plural}-table",
+            "form_table_id": f"{verbose_name_plural}-form-table",
+            "filter_form_id": f"{verbose_name_plural}-filter",
         }
 
     def get_modal_context_data(self, qs: QuerySet, **kwargs) -> dict[str, Any]:

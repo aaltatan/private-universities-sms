@@ -48,12 +48,12 @@ def test_bulk_delete_modal_response(
 def test_bulk_delete_without_permissions(
     client: Client,
     urls: dict[str, str],
-    app_label: str,
+    subapp_label: str,
     counts: dict[str, int],
 ):
     bulk_delete_batch = counts["bulk_delete_batch"]
     client.login(
-        username=f"{app_label}_user_with_view_perm_only",
+        username=f"{subapp_label}_user_with_view_perm_only",
         password="password",
     )
 
@@ -108,6 +108,7 @@ def test_bulk_delete_with_permissions_with_undeletable_objects(
     model: type[Model],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    subapp_label: str,
     counts: dict[str, int],
 ):
     objects_count = counts["objects"]
@@ -119,7 +120,7 @@ def test_bulk_delete_with_permissions_with_undeletable_objects(
     }
   
     mocker.patch(
-        f"apps.geo.{app_label}.utils.Deleter.is_qs_deletable",
+        f"apps.{app_label}.utils.{subapp_label}.Deleter.is_qs_deletable",
         return_value=False,
     )
 
@@ -162,12 +163,12 @@ def test_bulk_action_not_found(
 def test_bulk_delete_with_permissions_only_for_view(
     client: Client,
     urls: dict[str, str],
-    app_label: str,
+    subapp_label: str,
     counts: dict[str, int],
 ):
     bulk_delete_batch = counts["bulk_delete_batch"]
     client.login(
-        username=f"{app_label}_user_with_view_perm_only",
+        username=f"{subapp_label}_user_with_view_perm_only",
         password="password",
     )
 
@@ -188,10 +189,11 @@ def test_bulk_delete_when_no_deleter_class_is_defined(
     urls: dict[str, str],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    subapp_label: str,
     counts: dict[str, int],
 ):
     bulk_delete_batch = counts["bulk_delete_batch"]
-    mocker.patch(f"apps.geo.{app_label}.views.ListView.deleter", new=None)
+    mocker.patch(f"apps.{app_label}.views.{subapp_label}.ListView.deleter", new=None)
     data: dict = {
         "action-check": list(range(1, bulk_delete_batch + 1)),
         "kind": "action",
@@ -207,6 +209,7 @@ def test_bulk_delete_when_deleter_class_is_not_subclass_of_Deleter(
     urls: dict[str, str],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    subapp_label: str,
     counts: dict[str, int],
 ):
     bulk_delete_batch = counts["bulk_delete_batch"]
@@ -214,7 +217,7 @@ def test_bulk_delete_when_deleter_class_is_not_subclass_of_Deleter(
     class Deleter:
         pass
 
-    mocker.patch(f"apps.geo.{app_label}.views.ListView.deleter", new=Deleter)
+    mocker.patch(f"apps.{app_label}.views.{subapp_label}.ListView.deleter", new=Deleter)
     data: dict = {
         "action-check": list(range(1, bulk_delete_batch + 1)),
         "kind": "action",
@@ -260,11 +263,12 @@ def test_bulk_delete_objects_undeletable(
     model: type[Model],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    subapp_label: str,
     counts: dict[str, int],
 ):
     objects_count = counts["objects"]
     mocker.patch(
-        f"apps.geo.{app_label}.utils.Deleter.is_qs_deletable",
+        f"apps.{app_label}.utils.{subapp_label}.Deleter.is_qs_deletable",
         return_value=False,
     )
 

@@ -46,10 +46,10 @@ def test_index_page_has_no_update_links_for_unauthorized_user(
     client: Client,
     urls: dict[str, str],
     model: type[Model],
-    app_label: str,
+    subapp_label: str,
 ) -> None:
     client.login(
-        username=f"{app_label}_user_with_view_delete_perm",
+        username=f"{subapp_label}_user_with_view_delete_perm",
         password="password",
     )
     response = client.get(urls["index"])
@@ -79,7 +79,7 @@ def test_update_page(
     admin_client: Client,
     model: type[Model],
     templates: dict[str, str],
-    app_label: str,
+    subapp_label: str,
 ):
     obj = model.objects.first()
     response = admin_client.get(obj.get_update_url())
@@ -95,7 +95,7 @@ def test_update_page(
     assert is_template_used(templates["update"], response)
     assert h1 == f"update {obj.name}"
     assert form.attributes["hx-post"] == obj.get_update_url()
-    assert form.attributes["id"] == f"{app_label}-form"
+    assert form.attributes["id"] == f"{subapp_label}-form"
     assert name_input.attributes["value"] == obj.name
     assert description_input.text(strip=True) == obj.description
     assert required_star is not None
@@ -128,7 +128,7 @@ def test_update_with_modal_with_dirty_data(
     dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
     templates: dict[str, str],
     headers_modal_GET: dict[str, str],
-    app_label: str,
+    subapp_label: str,
     counts: dict[str, int],
 ):
     data, error, _ = dirty_data_test_cases
@@ -137,7 +137,7 @@ def test_update_with_modal_with_dirty_data(
 
     headers = {
         **headers_modal_GET,
-        "target": f"#{app_label}-table",
+        "target": f"#{subapp_label}-table",
     }
 
     response = admin_client.post(url, data, headers=headers)
@@ -185,7 +185,7 @@ def test_update_with_redirect_from_modal(
     templates: dict[str, str],
     clean_data_sample: dict[str, str],
     headers_modal_GET: dict[str, str],
-    app_label: str,
+    subapp_label: str,
     counts: dict[str, int],
 ) -> None:
     obj = model.objects.get(id=1)
@@ -201,7 +201,7 @@ def test_update_with_redirect_from_modal(
     assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["update_modal_form"], response)
 
-    headers["target"] = f"#{app_label}-table"
+    headers["target"] = f"#{subapp_label}-table"
     response = admin_client.post(url, clean_data_sample, headers=headers)
 
     location: dict = json.loads(
@@ -213,7 +213,7 @@ def test_update_with_redirect_from_modal(
     name = clean_data_sample["name"]
     description = clean_data_sample["description"]
 
-    assert location.get("target") == f"#{app_label}-table"
+    assert location.get("target") == f"#{subapp_label}-table"
     assert location.get("path") == urls["index"] + "?per_page=10&ordering=-Id"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"

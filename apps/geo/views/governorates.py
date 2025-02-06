@@ -56,7 +56,7 @@ class ListView(
                 method=self.bulk_delete,
                 template="components/blocks/modals/bulk-delete.html",
                 kwargs=("new_value",),
-                permissions=("geo.delete_governorate"),
+                permissions=("geo.delete_governorate",),
             ),
         }
 

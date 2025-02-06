@@ -1,9 +1,25 @@
+from typing import Literal
+
 import pytest
 from django.test import Client
 from rest_framework.test import APIClient
 
 from apps.core.models import Activity, User
 from tests.utils import get_token_headers
+
+
+PERMISSION = Literal["view", "add", "change", "delete", "export"]
+
+
+@pytest.fixture(scope="session")
+def permissions() -> tuple[PERMISSION, ...]:
+    return (
+        "view",
+        "add",
+        "change",
+        "delete",
+        "export",
+    )
 
 
 @pytest.fixture(scope="session")

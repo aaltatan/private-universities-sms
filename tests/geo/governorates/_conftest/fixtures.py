@@ -8,13 +8,14 @@ from apps.geo.models import Governorate
 from tests.utils import reset_sequence
 
 
-APP_LABEL = "governorates"
+APP_LABEL = "geo"
+SUBAPP_LABEL = "governorates"
 MODEL_NAME = "Governorate"
 
 
 @pytest.fixture
 def filename() -> str:
-    return APP_LABEL.title()
+    return SUBAPP_LABEL.title()
 
 
 @pytest.fixture
@@ -25,6 +26,11 @@ def model_name() -> str:
 @pytest.fixture
 def app_label() -> str:
     return APP_LABEL
+
+
+@pytest.fixture
+def subapp_label() -> str:
+    return SUBAPP_LABEL
 
 
 @pytest.fixture
@@ -43,23 +49,23 @@ def counts() -> dict[str, int]:
 @pytest.fixture
 def urls() -> dict[str, str]:
     return {
-        "api": f"/api/{APP_LABEL}/",
-        "index": reverse(f"{APP_LABEL}:index"),
-        "create": reverse(f"{APP_LABEL}:create"),
+        "api": f"/api/{SUBAPP_LABEL}/",
+        "index": reverse(f"{SUBAPP_LABEL}:index"),
+        "create": reverse(f"{SUBAPP_LABEL}:create"),
     }
 
 
 @pytest.fixture
 def templates() -> dict[str, str]:
     return {
-        "index": f"apps/{APP_LABEL}/index.html",
-        "create": f"apps/{APP_LABEL}/create.html",
-        "update": f"apps/{APP_LABEL}/update.html",
-        "table": f"components/{APP_LABEL}/table.html",
-        "create_form": f"components/{APP_LABEL}/create.html",
-        "update_form": f"components/{APP_LABEL}/update.html",
-        "create_modal_form": f"components/{APP_LABEL}/modal-create.html",
-        "update_modal_form": f"components/{APP_LABEL}/modal-update.html",
+        "index": f"apps/{SUBAPP_LABEL}/index.html",
+        "create": f"apps/{SUBAPP_LABEL}/create.html",
+        "update": f"apps/{SUBAPP_LABEL}/update.html",
+        "table": f"components/{SUBAPP_LABEL}/table.html",
+        "create_form": f"components/{SUBAPP_LABEL}/create.html",
+        "update_form": f"components/{SUBAPP_LABEL}/update.html",
+        "create_modal_form": f"components/{SUBAPP_LABEL}/modal-create.html",
+        "update_modal_form": f"components/{SUBAPP_LABEL}/modal-update.html",
         "delete_modal": "components/blocks/modals/delete.html",
     }
 
@@ -97,23 +103,23 @@ def create_objects(django_db_setup, django_db_blocker):
 
 
 @pytest.fixture(autouse=True, scope="package")
-def create_users(django_db_setup, django_db_blocker) -> None:
+def create_users(django_db_setup, django_db_blocker, permissions) -> None:
     with django_db_blocker.unblock():
         user_with_view_perm_only = User.objects.create_user(
-            username=f"{APP_LABEL}_user_with_view_perm_only",
+            username=f"{SUBAPP_LABEL}_user_with_view_perm_only",
             password="password",
         )
         view_perm = Permission.objects.get(codename="view_governorate")
         user_with_view_perm_only.user_permissions.add(view_perm)
 
-        perms = ["add", "change", "delete", "export"]
-
-        for p in perms:
+        for p in permissions:
             perm = Permission.objects.get(
                 codename=f"{p}_governorate",
             )
             user = User.objects.create_user(
-                username=f"{APP_LABEL}_user_with_view_{p}_perm",
+                username=f"{SUBAPP_LABEL}_user_with_view_{p}_perm",
                 password="password",
             )
             user.user_permissions.add(view_perm, perm)
+            print(user.user_permissions.all())
+            print("#" * 100)

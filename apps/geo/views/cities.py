@@ -9,7 +9,7 @@ from rest_framework import filters as rest_filters
 from rest_framework import viewsets
 
 from apps.core import filter_backends, mixins
-from apps.core.schemas import Action, Perm
+from apps.core.schemas import Action
 
 from .. import filters, forms, models, resources, serializers
 from ..constants import cities as constants
@@ -56,7 +56,7 @@ class ListView(
                 method=self.bulk_delete,
                 template="components/blocks/modals/bulk-delete.html",
                 kwargs=("new_value",),
-                permissions=(Perm("cities", "delete"),),
+                permissions=("geo.delete_city",),
             ),
         }
 

@@ -36,7 +36,7 @@ def test_create_activities(
     assert activity.user.username == "admin"
     assert activities_count == 1
 
-    payload = {"app_label": "governorates", "model": "governorate"}
+    payload = {"app_label": "geo", "model": "governorate"}
     path = reverse("core:activities", args=[5])
 
     response = admin_client.get(path=path, data=payload)
@@ -163,7 +163,7 @@ def test_update_activity(
     assert activity.data == expected_data
     assert activity.user.username == "admin"
 
-    payload = {"app_label": "governorates", "model": "governorate"}
+    payload = {"app_label": "geo", "model": "governorate"}
     path = reverse("core:activities", args=[1])
 
     response = admin_client.get(path=path, data=payload)

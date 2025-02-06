@@ -51,10 +51,10 @@ def test_delete_btn_appearance_if_user_has_no_delete_perm(
     client: Client,
     urls: dict[str, str],
     model: type[Model],
-    app_label: str,
+    subapp_label: str,
 ) -> None:
     client.login(
-        username=f"{app_label}_user_with_view_perm_only",
+        username=f"{subapp_label}_user_with_view_perm_only",
         password="password",
     )
     response = client.get(urls["index"])
@@ -140,10 +140,11 @@ def test_delete_object_undeletable(
     headers_modal_GET: dict[str, str],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    subapp_label: str,
     counts: dict[str, int],
 ) -> None:
     mocker.patch(
-        f"apps.geo.{app_label}.utils.Deleter.is_obj_deletable",
+        f"apps.{app_label}.utils.{subapp_label}.Deleter.is_obj_deletable",
         return_value=False,
     )
 
@@ -173,8 +174,9 @@ def test_delete_when_no_deleter_class_is_defined(
     headers_modal_GET: dict[str, str],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    subapp_label: str,
 ):
-    mocker.patch(f"apps.geo.views.{app_label}.DeleteView.deleter", new=None)
+    mocker.patch(f"apps.{app_label}.views.{subapp_label}.DeleteView.deleter", new=None)
     obj = model.objects.first()
     with pytest.raises(AttributeError):
         admin_client.post(
@@ -190,10 +192,14 @@ def test_delete_when_deleter_class_is_not_subclass_of_Deleter(
     headers_modal_GET: dict[str, str],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    subapp_label: str,
 ):
-    class Deleter: ...
+    class Deleter:
+        pass
 
-    mocker.patch(f"apps.geo.{app_label}.views.DeleteView.deleter", new=Deleter)
+    mocker.patch(
+        f"apps.{app_label}.views.{subapp_label}.DeleteView.deleter", new=Deleter
+    )
     obj = model.objects.first()
     with pytest.raises(TypeError):
         admin_client.post(
@@ -247,8 +253,9 @@ def test_delete_and_bulk_delete_object_when_deleter_class_is_None(
     admin_headers: dict[str, str],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    subapp_label: str,
 ):
-    mocker.patch(f"apps.geo.{app_label}.views.APIViewSet.deleter", new=None)
+    mocker.patch(f"apps.{app_label}.views.{subapp_label}.APIViewSet.deleter", new=None)
 
     with pytest.raises(AttributeError):
         api_client.delete(
@@ -271,11 +278,14 @@ def test_delete_and_bulk_delete_object_when_deleter_class_is_not_a_subclass_of_D
     admin_headers: dict[str, str],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    subapp_label: str,
 ):
     class Deleter:
         pass
 
-    mocker.patch(f"apps.geo.{app_label}.views.APIViewSet.deleter", new=Deleter)
+    mocker.patch(
+        f"apps.{app_label}.views.{subapp_label}.APIViewSet.deleter", new=Deleter
+    )
 
     with pytest.raises(TypeError):
         api_client.delete(
@@ -300,12 +310,13 @@ def test_api_delete_object_undeletable(
     model: type[Model],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
+    subapp_label: str,
     idx: int,
     counts: dict[str, int],
 ):
     objects_count = counts["objects"]
     mocker.patch(
-        f"apps.geo.{app_label}.utils.Deleter.is_obj_deletable",
+        f"apps.{app_label}.utils.{subapp_label}.Deleter.is_obj_deletable",
         return_value=False,
     )
 

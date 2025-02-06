@@ -105,9 +105,9 @@ class DeleteMixin(ABC):
             **kwargs,
         }
 
-    def get_app_label(self) -> str:
+    def get_verbose_name_plural(self) -> str:
         """
-        Returns the app label using the model.
+        Returns the verbose name plural using the model.
         """
         model = self.get_model_class()
         return model._meta.verbose_name_plural
@@ -117,16 +117,16 @@ class DeleteMixin(ABC):
         Returns the html ids.
         """
         return {
-            "table_id": f"{self.get_app_label()}-table",
+            "table_id": f"{self.get_verbose_name_plural()}-table",
         }
 
     def get_app_urls(self) -> dict[str, str]:
         """
         Returns the app links.
         """
-        app_label = self.get_app_label()
+        verbose_name_plural = self.get_verbose_name_plural()
         return {
-            "index_url": reverse(f"{app_label}:index"),
+            "index_url": reverse(f"{verbose_name_plural}:index"),
         }
 
     def get_modal_template_name(self) -> str:

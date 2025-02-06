@@ -43,10 +43,10 @@ def test_index_has_checkboxes_with_view_delete_perms(
     client: Client,
     urls: dict[str, str],
     templates: dict[str, str],
-    app_label: str,
+    subapp_label: str,
 ):
     client.login(
-        username=f"{app_label}_user_with_view_delete_perm",
+        username=f"{subapp_label}_user_with_view_delete_perm",
         password="password",
     )
     response = client.get(urls["index"])
@@ -63,10 +63,10 @@ def test_index_has_checkboxes_with_no_permission(
     client: Client,
     urls: dict[str, str],
     templates: dict[str, str],
-    app_label: str,
+    subapp_label: str,
 ):
     client.login(
-        username=f"{app_label}_user_with_view_perm_only",
+        username=f"{subapp_label}_user_with_view_perm_only",
         password="password",
     )
     response = client.get(urls["index"])
@@ -134,10 +134,10 @@ def test_view_user_has_no_permissions(
 def test_view_user_has_view_permissions(
     client: Client,
     urls: dict[str, str],
-    app_label: str,
+    subapp_label: str,
 ):
     client.login(
-        username=f"{app_label}_user_with_view_perm_only",
+        username=f"{subapp_label}_user_with_view_perm_only",
         password="password",
     )
 
@@ -157,10 +157,10 @@ def test_view_user_has_view_permissions(
 def test_view_user_has_view_permissions_add(
     client: Client,
     urls: dict[str, str],
-    app_label: str,
+    subapp_label: str,
 ):
     client.login(
-        username=f"{app_label}_user_with_view_add_perm",
+        username=f"{subapp_label}_user_with_view_add_perm",
         password="password",
     )
     response = client.get(urls["index"])
@@ -179,10 +179,10 @@ def test_view_user_has_view_permissions_add(
 def test_view_user_has_view_permissions_change(
     client: Client,
     urls: dict[str, str],
-    app_label: str,
+    subapp_label: str,
 ):
     client.login(
-        username=f"{app_label}_user_with_view_change_perm",
+        username=f"{subapp_label}_user_with_view_change_perm",
         password="password",
     )
     response = client.get(urls["index"])
@@ -201,10 +201,10 @@ def test_view_user_has_view_permissions_change(
 def test_view_user_has_view_permissions_delete(
     client: Client,
     urls: dict[str, str],
-    app_label: str,
+    subapp_label: str,
 ):
     client.login(
-        username=f"{app_label}_user_with_view_delete_perm",
+        username=f"{subapp_label}_user_with_view_delete_perm",
         password="password",
     )
     response = client.get(urls["index"])
@@ -223,10 +223,10 @@ def test_view_user_has_view_permissions_delete(
 def test_view_user_has_view_permissions_export(
     client: Client,
     urls: dict[str, str],
-    app_label: str,
+    subapp_label: str,
 ):
     client.login(
-        username=f"{app_label}_user_with_view_export_perm",
+        username=f"{subapp_label}_user_with_view_export_perm",
         password="password",
     )
     response = client.get(urls["index"])

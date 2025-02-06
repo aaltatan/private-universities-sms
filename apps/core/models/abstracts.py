@@ -32,18 +32,18 @@ class AbstractUniqueNameModel(models.Model):
         return self.name
 
     def get_delete_url(self) -> str:
-        app_label: str = self.__get_app_label()
+        verbose_name_plural: str = self.__get_verbose_name_plural()
         return reverse(
-            f"{app_label}:delete",
+            f"{verbose_name_plural}:delete",
             kwargs={"slug": self.slug},
         )
 
     def get_update_url(self) -> str:
-        app_label: str = self.__get_app_label()
+        verbose_name_plural: str = self.__get_verbose_name_plural()
         return reverse(
-            f"{app_label}:update",
+            f"{verbose_name_plural}:update",
             kwargs={"slug": self.slug},
         )
 
-    def __get_app_label(self) -> str:
+    def __get_verbose_name_plural(self) -> str:
         return self._meta.verbose_name_plural

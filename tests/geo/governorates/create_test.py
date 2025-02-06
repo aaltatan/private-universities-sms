@@ -19,10 +19,10 @@ def test_add_new_btn_appearance_if_user_has_no_add_perm(
     client: Client,
     urls: dict[str, str],
     templates: dict[str, str],
-    app_label: str,
+    subapp_label: str,
 ) -> None:
     client.login(
-        username=f"{app_label}_user_with_view_perm_only",
+        username=f"{subapp_label}_user_with_view_perm_only",
         password="password",
     )
 
@@ -37,10 +37,10 @@ def test_add_new_btn_appearance_if_user_has_no_add_perm(
 
 @pytest.mark.django_db
 def test_send_request_to_create_page_without_permission(
-    client: Client, urls: dict[str, str], app_label: str
+    client: Client, urls: dict[str, str], subapp_label: str
 ) -> None:
     client.login(
-        username=f"{app_label}_user_with_view_perm_only",
+        username=f"{subapp_label}_user_with_view_perm_only",
         password="password",
     )
     response = client.get(urls["create"])
@@ -213,7 +213,7 @@ def test_create_with_redirect_from_modal(
     clean_data_sample: dict[str, str],
     model: type[Model],
     headers_modal_GET: dict[str, str],
-    app_label: str,
+    subapp_label: str,
     counts: dict[str, int],
 ) -> None:
     objects_count = counts["objects"]
@@ -230,7 +230,7 @@ def test_create_with_redirect_from_modal(
     data = clean_data_sample.copy()
     data["save"] = "true"
 
-    target = f"#{app_label}-table"
+    target = f"#{subapp_label}-table"
     headers = {**headers, "target": target}
 
     response = admin_client.post(url, data, headers=headers)
@@ -295,7 +295,7 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
     model: type[Model],
     dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
     headers_modal_GET: dict[str, str],
-    app_label: str,
+    subapp_label: str,
     counts: dict[str, int],
 ) -> None:
     objects_count = counts["objects"]
@@ -310,7 +310,7 @@ def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
     assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create_modal_form"], response)
 
-    headers = {**headers, "target": f"{app_label}-table"}
+    headers = {**headers, "target": f"{subapp_label}-table"}
 
     response = admin_client.post(urls["create"], data, headers=headers)
     parser = HTMLParser(response.content)
