@@ -1,14 +1,76 @@
-from typing import Literal
-
 import pytest
 from django.test import Client
 from rest_framework.test import APIClient
 
 from apps.core.models import Activity, User
+from apps.core.constants import PERMISSION
 from tests.utils import get_token_headers
 
 
-PERMISSION = Literal["view", "add", "change", "delete", "export"]
+@pytest.fixture(
+    scope="package",
+    params=[
+        (
+            "add",
+            (
+                ("add_btn_exists", 1),
+                ("delete_btn_exists", 0),
+                ("delete_all_btn_exists", 0),
+                ("edit_btn_exists", 0),
+                ("export_btn_exists", 0),
+                ("activities_btn_exists", 0),
+            ),
+        ),
+        (
+            "delete",
+            (
+                ("add_btn_exists", 0),
+                ("delete_btn_exists", 1),
+                ("delete_all_btn_exists", 1),
+                ("edit_btn_exists", 0),
+                ("export_btn_exists", 0),
+                ("activities_btn_exists", 0),
+            ),
+        ),
+        (
+            "change",
+            (
+                ("add_btn_exists", 0),
+                ("delete_btn_exists", 0),
+                ("delete_all_btn_exists", 0),
+                ("edit_btn_exists", 1),
+                ("export_btn_exists", 0),
+                ("activities_btn_exists", 0),
+            ),
+        ),
+        (
+            "export",
+            (
+                ("add_btn_exists", 0),
+                ("delete_btn_exists", 0),
+                ("delete_all_btn_exists", 0),
+                ("edit_btn_exists", 0),
+                ("export_btn_exists", 1),
+                ("activities_btn_exists", 0),
+            ),
+        ),
+        (
+            "view_activity",
+            (
+                ("add_btn_exists", 0),
+                ("delete_btn_exists", 0),
+                ("delete_all_btn_exists", 0),
+                ("edit_btn_exists", 0),
+                ("export_btn_exists", 0),
+                ("activities_btn_exists", 1),
+            ),
+        ),
+    ],
+)
+def buttons_test_cases(
+    request: pytest.FixtureRequest,
+) -> tuple[PERMISSION, tuple[tuple[str, int], ...]]:
+    return request.param
 
 
 @pytest.fixture(scope="session")
@@ -19,6 +81,7 @@ def permissions() -> tuple[PERMISSION, ...]:
         "change",
         "delete",
         "export",
+        "view_activity",
     )
 
 

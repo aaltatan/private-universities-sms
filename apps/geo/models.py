@@ -14,7 +14,7 @@ class Governorate(AbstractUniqueNameModel):
         ordering = ("name",)
         permissions = (
             ("export_governorate", "Can export governorate"),
-            ("view_governorate_activity", "Can view governorate activity"),
+            ("view_activity_governorate", "Can view governorate activity"),
         )
 
 
@@ -32,7 +32,7 @@ class City(AbstractUniqueNameModel):
         verbose_name_plural = "cities"
         permissions = (
             ("export_city", "Can export city"),
-            ("view_city_activity", "Can view city activity"),
+            ("view_activity_city", "Can view city activity"),
         )
 
 

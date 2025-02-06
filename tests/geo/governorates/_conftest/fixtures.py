@@ -121,5 +121,3 @@ def create_users(django_db_setup, django_db_blocker, permissions) -> None:
                 password="password",
             )
             user.user_permissions.add(view_perm, perm)
-            print(user.user_permissions.all())
-            print("#" * 100)

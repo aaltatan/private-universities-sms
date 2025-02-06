@@ -23,6 +23,7 @@ def parse_buttons(parser: HTMLParser) -> dict[str, bool]:
     delete_btn = parser.css_first("a[aria-label='delete object']")
     delete_all_btn = parser.css_first("input[aria-label='delete all objects']")
     edit_btn = parser.css_first("a[aria-label='edit object']")
+    activities_btn = parser.css_first("a[aria-label='object activities']")
     export_btn = parser.css_first("a[aria-label^='export table']")
 
     return {
@@ -30,6 +31,7 @@ def parse_buttons(parser: HTMLParser) -> dict[str, bool]:
         "delete_btn_exists": delete_btn is not None,
         "delete_all_btn_exists": delete_all_btn is not None,
         "edit_btn_exists": edit_btn is not None,
+        "activities_btn_exists": activities_btn is not None,
         "export_btn_exists": export_btn is not None,
     }
 

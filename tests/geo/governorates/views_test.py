@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
+from apps.core.constants import PERMISSION
 from tests.utils import is_template_used, parse_buttons
 
 
@@ -96,24 +97,15 @@ def test_view_has_all_html_elements_which_need_permissions(
 ):
     response = admin_client.get(urls["index"])
     parser = HTMLParser(response.content)
+    buttons = parse_buttons(parser)
 
-    add_new_btn = parser.css_first(
-        "[aria-label='create new object']",
-    )
-    export_btn = parser.css_first("a[aria-label^='export table']")
-    row_delete_btn = parser.css_first(
-        "a[aria-label='delete object']",
-    )
-    row_edit_btn = parser.css_first("a[aria-label='edit object']")
-    row_delete_all_btn = parser.css_first(
-        "input[aria-label='delete all objects']",
-    )
-
-    assert add_new_btn is not None
-    assert export_btn is not None
-    assert row_delete_btn is not None
-    assert row_edit_btn is not None
-    assert row_delete_all_btn is not None
+    assert buttons["add_btn_exists"]
+    assert buttons["export_btn_exists"]
+    assert buttons["activities_btn_exists"]
+    assert buttons["delete_btn_exists"]
+    assert buttons["edit_btn_exists"]
+    assert buttons["delete_all_btn_exists"]
+    assert buttons["activities_btn_exists"]
 
 
 @pytest.mark.django_db
@@ -154,91 +146,25 @@ def test_view_user_has_view_permissions(
 
 
 @pytest.mark.django_db
-def test_view_user_has_view_permissions_add(
+def test_view_buttons_does_exists(
     client: Client,
     urls: dict[str, str],
     subapp_label: str,
+    buttons_test_cases: tuple[PERMISSION, tuple[tuple[str, int], ...]],
 ):
+    perm, buttons = buttons_test_cases
     client.login(
-        username=f"{subapp_label}_user_with_view_add_perm",
+        username=f"{subapp_label}_user_with_view_{perm}_perm",
         password="password",
     )
     response = client.get(urls["index"])
     parser = HTMLParser(response.content)
-    buttons = parse_buttons(parser)
+    res_buttons = parse_buttons(parser)
 
     assert response.status_code == status.HTTP_200_OK
-    assert buttons["add_btn_exists"]
-    assert buttons["delete_btn_exists"] is False
-    assert buttons["delete_all_btn_exists"] is False
-    assert buttons["edit_btn_exists"] is False
-    assert buttons["export_btn_exists"] is False
-
-
-@pytest.mark.django_db
-def test_view_user_has_view_permissions_change(
-    client: Client,
-    urls: dict[str, str],
-    subapp_label: str,
-):
-    client.login(
-        username=f"{subapp_label}_user_with_view_change_perm",
-        password="password",
-    )
-    response = client.get(urls["index"])
-    parser = HTMLParser(response.content)
-    buttons = parse_buttons(parser)
-
-    assert response.status_code == status.HTTP_200_OK
-    assert buttons["add_btn_exists"] is False
-    assert buttons["delete_btn_exists"] is False
-    assert buttons["delete_all_btn_exists"] is False
-    assert buttons["edit_btn_exists"]
-    assert buttons["export_btn_exists"] is False
-
-
-@pytest.mark.django_db
-def test_view_user_has_view_permissions_delete(
-    client: Client,
-    urls: dict[str, str],
-    subapp_label: str,
-):
-    client.login(
-        username=f"{subapp_label}_user_with_view_delete_perm",
-        password="password",
-    )
-    response = client.get(urls["index"])
-    parser = HTMLParser(response.content)
-    buttons = parse_buttons(parser)
-
-    assert response.status_code == status.HTTP_200_OK
-    assert buttons["add_btn_exists"] is False
-    assert buttons["delete_btn_exists"]
-    assert buttons["delete_all_btn_exists"]
-    assert buttons["edit_btn_exists"] is False
-    assert buttons["export_btn_exists"] is False
-
-
-@pytest.mark.django_db
-def test_view_user_has_view_permissions_export(
-    client: Client,
-    urls: dict[str, str],
-    subapp_label: str,
-):
-    client.login(
-        username=f"{subapp_label}_user_with_view_export_perm",
-        password="password",
-    )
-    response = client.get(urls["index"])
-    parser = HTMLParser(response.content)
-    buttons = parse_buttons(parser)
-
-    assert response.status_code == status.HTTP_200_OK
-    assert buttons["add_btn_exists"] is False
-    assert buttons["delete_btn_exists"] is False
-    assert buttons["delete_all_btn_exists"] is False
-    assert buttons["edit_btn_exists"] is False
-    assert buttons["export_btn_exists"]
+    for key, exists in buttons:
+        exists = bool(exists)
+        assert res_buttons[key] is exists
 
 
 @pytest.mark.django_db

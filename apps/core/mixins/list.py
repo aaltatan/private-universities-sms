@@ -200,6 +200,7 @@ class ListMixin(ABC):
             "can_update": self.get_permission("change"),
             "can_delete": self.get_permission("delete"),
             "can_export": self.get_permission("export"),
+            "can_view_activity": self.get_permission("view_activity"),
         }
 
     def get_permission(self, permission: PERMISSION) -> bool:
@@ -213,7 +214,13 @@ class ListMixin(ABC):
         request: HttpRequest = self.request
 
         return request.user.has_perm(permission_string)
-    
+
+    def get_model_name(self) -> str:
+        """
+        return model name
+        """
+        return self.get_model_class()._meta.model_name
+
     def get_app_label(self) -> str:
         """
         Returns the app label using the model
@@ -314,6 +321,9 @@ class ListMixin(ABC):
         return {
             "page": page,
             "filter": filter_class,
+            "app_label": self.get_app_label(),
+            "subapp_label": self.get_verbose_name_plural(),
+            "model_name": self.get_model_name(),
             **self.get_app_urls(),
             **self.get_html_ids(),
             **self.get_permissions(),
