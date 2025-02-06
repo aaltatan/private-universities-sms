@@ -31,6 +31,14 @@ class AbstractUniqueNameModel(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    def get_activities_url(self) -> str:
+        app_label: str = self.__get_app_label()
+        model_name: str = self.__get_model_name()
+
+        base_url = reverse("core:activities", kwargs={"object_id": self.pk})
+
+        return f"{base_url}?app_label={app_label}&model={model_name}"
+
     def get_delete_url(self) -> str:
         verbose_name_plural: str = self.__get_verbose_name_plural()
         return reverse(
@@ -47,3 +55,9 @@ class AbstractUniqueNameModel(models.Model):
 
     def __get_verbose_name_plural(self) -> str:
         return self._meta.verbose_name_plural
+
+    def __get_app_label(self) -> str:
+        return self._meta.app_label
+
+    def __get_model_name(self) -> str:
+        return self._meta.model_name

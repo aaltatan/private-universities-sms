@@ -3,12 +3,24 @@ import json
 import pytest
 from django.test import Client
 from django.urls import reverse
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
 from tests.utils import is_template_used
+
+
+@pytest.mark.django_db
+def test_activities_with_no_permissions(client: Client):
+    client.login(
+        username="user_with_no_perm",
+        password="password",
+    )
+    path = reverse("core:activities", args=[1])
+    response = client.get(path + "?app_label=geo&model=governorate")
+    assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
 @pytest.mark.django_db

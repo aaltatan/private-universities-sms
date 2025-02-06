@@ -107,7 +107,7 @@
               <c-layout.context-menu.item
                 icon="clock"
                 href="#"
-                hx-get="{% url 'core:activities' obj.id %}?app_label={{ app_label }}&model={{ model_name }}"
+                hx-get="{{ obj.get_activities_url }}"
                 hx-target="#modal-container"
                 hx-indicator="#modal-spinner"
                 @click="showModal"
