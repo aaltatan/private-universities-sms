@@ -10,6 +10,7 @@ class GovernorateManager(models.Manager):
         return (
             super()
             .get_queryset()
+            .prefetch_related("cities")
             .annotate(
                 search=annotate_search(governorates.SEARCH_FIELDS),
             )
