@@ -34,7 +34,7 @@ def test_index_page_has_update_links_for_authorized_user(
 
     for pk, td in enumerate(tds_name, 1):
         update_url = model.objects.get(pk=pk).get_update_url()
-        assert update_url == td.attributes["hx-get"]
+        assert update_url == td.attributes["href"]
 
     for pk, btn in enumerate(edit_context_menu_btns, 1):
         update_url = model.objects.get(pk=pk).get_update_url()
