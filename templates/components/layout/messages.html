@@ -21,7 +21,7 @@
   x-transition:leave="transition ease-in duration-150"
   x-transition:leave-start="opacity-100 translate-x-0"
   x-transition:leave-end="opacity-0 ltr:translate-x-4 rtl:-translate-x-4"
-  x-data="messages('{{ CONTENT_SETTINGS.MESSAGES_TIMEOUT }}000')"
+  x-data="messages('{{ settings.messages_timeout }}000')"
 >
   {% if messages %}
   <!--  -->

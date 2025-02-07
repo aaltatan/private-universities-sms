@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Any, Literal
 
-from content_settings.conf import content_settings
 from django.core.paginator import EmptyPage, Page, PageNotAnInteger, Paginator
 from django.db.models import Model, QuerySet
 from django.http import (
@@ -18,7 +17,7 @@ from import_export.resources import ModelResource
 from rest_framework.serializers import ModelSerializer
 from tablib import Dataset
 
-from ..constants import MAX_PAGE_SIZE, PERMISSION
+from ..constants import MAX_PAGE_SIZE, PERMISSION, PER_PAGE
 from ..schemas import Action
 
 
@@ -247,7 +246,7 @@ class ListMixin(ABC):
         """
         request: HttpRequest = self.request
 
-        default_per_page: int = content_settings.PER_PAGE
+        default_per_page: int = PER_PAGE
         request_per_page: str = request.GET.get("per_page", None)
 
         if request_per_page == "all":

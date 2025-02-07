@@ -20,7 +20,7 @@
           id="per-page"
           title="{% translate 'per page'|title %}"
         >
-          {% for option in CONTENT_SETTINGS.PER_PAGE_ARRAY %}
+          {% for option in settings.per_page_array %}
               <option
                 value="{{ option }}"
                 {% if request.GET.per_page is not None %}
@@ -28,7 +28,7 @@
                     selected
                   {% endif %}
                 {% else %}
-                  {% if option == CONTENT_SETTINGS.PER_PAGE|stringformat:'s' %}
+                  {% if option == settings.per_page|stringformat:'s' %}
                     selected
                   {% endif %}
                 {% endif %}

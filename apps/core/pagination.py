@@ -1,14 +1,13 @@
-from content_settings.conf import content_settings
 from django.core.paginator import InvalidPage
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.utils.urls import replace_query_param
 
-from .constants import MAX_PAGE_SIZE
+from .constants import MAX_PAGE_SIZE, PER_PAGE
 
 
 class CorePagination(PageNumberPagination):
-    page_size = content_settings.PER_PAGE
+    page_size = PER_PAGE
     page_size_query_param = "per_page"
     max_page_size = MAX_PAGE_SIZE
 
