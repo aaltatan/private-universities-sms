@@ -1,10 +1,24 @@
 from typing import Mapping
 
 import django_filters as filters
-from django.db.models import QuerySet
+from django.db.models import Model, Q, QuerySet
 
 from .utils import get_djangoql_query, get_keywords_query
-from .widgets import OrderingWidget
+from .widgets import ComboboxWidget, OrderingWidget
+
+
+class FilterComboboxMixin:
+    """
+    A mixin that add a filter_combobox to a model.
+    """
+
+    def filter_combobox(self, qs, name, value):
+        if not value:
+            return qs
+
+        stmt = Q(**{f"{name}__in": value})
+
+        return qs.filter(stmt).distinct()
 
 
 class FilterSearchMixin:
@@ -33,3 +47,29 @@ def get_ordering_filter(fields: Mapping[str, str]) -> filters.OrderingFilter:
         fields=list(fields.items()),
         widget=OrderingWidget,
     )
+
+
+def get_combobox_choices_filter(
+    model: Model,
+    field_name: str,
+    label: str,
+    method_name: str = "filter_combobox",
+    choices=None,
+) -> filters.MultipleChoiceFilter:
+    kwargs = {
+        "field_name": field_name,
+        "label": label,
+        "method": method_name,
+        "widget": ComboboxWidget(
+            attrs={"data-name": label},
+        ),
+    }
+
+    if choices is not None:
+        kwargs["choices"] = choices
+    else:
+        values_list = model.objects.values_list(field_name, flat=True)
+        values_list = sorted([(f, f) for f in set(values_list)])
+        kwargs["choices"] = values_list
+
+    return filters.MultipleChoiceFilter(**kwargs)
