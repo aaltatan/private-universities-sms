@@ -5,7 +5,7 @@ PERMISSION = Literal["view", "add", "change", "delete", "export", "view_activity
 
 MAX_PAGE_SIZE: int = 100
 
-PER_PAGE: int = 10
+PER_PAGE: int = 50
 
 MESSAGES_TIMEOUT: int = 7
 
