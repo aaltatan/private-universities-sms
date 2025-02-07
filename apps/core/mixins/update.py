@@ -1,3 +1,4 @@
+import json
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -93,7 +94,7 @@ class UpdateMixin(ABC):
         Returns the form valid response.
         """
         obj = form.save()
-        
+
         to_data: dict | list = self.activity_serializer(obj).data
         differences = get_differences(from_data, to_data)
 
@@ -122,6 +123,15 @@ class UpdateMixin(ABC):
                 response["Hx-Redirect"] = request_parser.index_url
 
         response["Hx-Trigger"] = "messages"
+
+        if request_parser.is_modal_request:
+            response["Hx-Trigger"] = json.dumps(
+                {
+                    "hidemodal": "hiding modal after success request",
+                    "messages": "getting messages",
+                },
+            )
+
         return response
 
     def get_form_invalid_response(

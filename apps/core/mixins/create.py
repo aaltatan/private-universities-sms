@@ -1,3 +1,4 @@
+import json
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -135,6 +136,15 @@ class CreateMixin(ABC):
             raise ValueError("save or save_and_add_another is required")
 
         response["Hx-Trigger"] = "messages"
+
+        if request_parser.is_modal_request:
+            response["Hx-Trigger"] = json.dumps(
+                {
+                    "hidemodal": "hiding modal after success request",
+                    "messages": "getting messages",
+                },
+            )
+
         return response
 
     def get_model_class(self) -> type[Model]:
