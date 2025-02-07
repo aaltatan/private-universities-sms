@@ -24,7 +24,7 @@
               <option
                 value="{{ option }}"
                 {% if request.GET.per_page is not None %}
-                  {% if option == request.GET.per_page %}
+                  {% if option|stringformat:'s' == request.GET.per_page %}
                     selected
                   {% endif %}
                 {% else %}
