@@ -1,6 +1,7 @@
 from django import template
 from django.http import HttpRequest
 from django.utils.encoding import escape_uri_path
+from django.urls import reverse
 
 
 register = template.Library()
@@ -22,7 +23,7 @@ def active_link(
     active = False
     request_path = escape_uri_path(request.path)
 
-    if request_path == path == "/":
+    if request_path == path == reverse("core:index"):
         active = True
     else:
         path = path[1:]

@@ -44,7 +44,7 @@ urlpatterns = [
     ),
     # apps
     path(
-        "",
+        "home/",
         include("apps.core.urls"),
     ),
     path(

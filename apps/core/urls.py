@@ -1,4 +1,5 @@
 from django.urls import path, re_path
+from django.utils.translation import gettext as _
 from . import views
 
 app_name = "core"
@@ -8,6 +9,7 @@ urlpatterns = [
         "",
         views.index,
         name="index",
+        kwargs={"title": _("home")},
     ),
     path(
         "messages/",

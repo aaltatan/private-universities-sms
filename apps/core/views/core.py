@@ -4,10 +4,10 @@ from django.shortcuts import render
 
 
 @login_required
-def index(request: HttpRequest) -> HttpResponse:
+def index(request: HttpRequest, *args, **kwargs) -> HttpResponse:
     return render(request, "apps/core/index.html")
 
 
 @login_required
-def messages(request: HttpRequest) -> HttpResponse:
+def messages(request: HttpRequest, *args, **kwargs) -> HttpResponse:
     return render(request, "apps/core/messages.html")

@@ -39,6 +39,8 @@ def get_breadcrumbs(context):
         accumulate(path_keywords, lambda a, b: f"{a}/{b}"),
     )
 
+    print(f'{paths=}')
+
     breadcrumbs: list[Path] = []
 
     for path in paths:
@@ -48,5 +50,7 @@ def get_breadcrumbs(context):
             breadcrumbs.append(Path(path).model_dump())
         except Resolver404:
             pass
+    
+    print(f'{breadcrumbs=}')
 
     return breadcrumbs
