@@ -1,9 +1,69 @@
+import pytest
+
 from apps.core.schemas import Perm
-from apps.core.utils import increase_slug_by_one
+from apps.core.utils import (
+    dict_to_css,
+    get_differences,
+    increase_slug_by_one,
+)
 
 
-def test_increase_slug_by_one():
-    slugs = [
+@pytest.mark.parametrize(
+    "from_, to, expected",
+    [
+        (
+            {"a": "b", "c": "d"},
+            {"a": "b", "c": "d"},
+            {},
+        ),
+        (
+            {"a": "b", "c": "d"},
+            {"a": "b", "c": "e"},
+            {"after": {"c": "e"}, "before": {"c": "d"}},
+        ),
+        (
+            {"a": "b", "c": "d"},
+            {"e": "f", "g": "h"},
+            {
+                "before": {"a": "b", "c": "d"},
+                "after": {"e": "f", "g": "h"},
+            },
+        ),
+        (
+            {"a": "b", "b": "c", "c": "d"},
+            {"a": "b", "c": "d", "d": "e"},
+            {"after": {"d": "e"}, "before": {"b": "c"}},
+        ),
+    ],
+)
+def test_get_differences(from_: dict, to: dict, expected: dict):
+    assert get_differences(from_, to) == expected
+
+
+@pytest.mark.parametrize(
+    "dict_styles, expected_styles",
+    [
+        (
+            {"a": "b", "c": "d"},
+            "a: b; c: d;",
+        ),
+        (
+            {"a": "b", "c": "d", "e": "f"},
+            "a: b; c: d; e: f;",
+        ),
+        (
+            {"a": "b", "c": "d", "e": "f", "g": "h"},
+            "a: b; c: d; e: f; g: h;",
+        ),
+    ],
+)
+def test_dict_to_css(dict_styles: dict[str, str], expected_styles: str):
+    assert dict_to_css(dict_styles) == expected_styles
+
+
+@pytest.mark.parametrize(
+    "slug, expected_slug",
+    [
         ("text", "text1"),
         ("text-2", "text-3"),
         ("text0", "text1"),
@@ -11,9 +71,10 @@ def test_increase_slug_by_one():
         ("dAFSFAeqwd", "dafsfaeqwd1"),
         ("2", "3"),
         ("a", "a1"),
-    ]
-    for slug, expected_slug in slugs:
-        assert increase_slug_by_one(slug) == expected_slug
+    ],
+)
+def test_increase_slug_by_one(slug: str, expected_slug: str):
+    assert increase_slug_by_one(slug) == expected_slug
 
 
 def test_perm_dataclass():

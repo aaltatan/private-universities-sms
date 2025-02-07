@@ -24,8 +24,8 @@ def increase_slug_by_one(slug: str) -> str:
 
 
 def dict_to_css(styles: dict[str, str]) -> str:
-    styles = [f"{key}: {value};" for key, value in styles.items()]
-    return "".join(styles)
+    styles = [f"{key}: {value}; " for key, value in styles.items()]
+    return "".join(styles).strip()
 
 
 def get_differences(from_: dict, to: dict) -> dict[str, dict[str, Any]]:
@@ -44,4 +44,7 @@ def get_differences(from_: dict, to: dict) -> dict[str, dict[str, Any]]:
         else:
             after[key] = value
 
-    return {"before": before, "after": after}
+    if differences:
+        return {"before": before, "after": after}
+    else:
+        return {}
