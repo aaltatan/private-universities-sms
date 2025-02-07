@@ -26,11 +26,21 @@ def test_autocomplete_without_permissions(
     response = client.get(urls["autocomplete"], payload)
     assert response.status_code == 403
 
+    payload = {
+        "app_label": "geo",
+        "model_name": "Governorate",
+        "object_name": "governorate",
+        "field_name": "name",
+    }
+    querystring = urlencode(payload)
+    response = client.post(f"{urls['autocomplete']}1/?{querystring}")
+
+    assert response.status_code == 403
+
 
 @pytest.mark.django_db
 def test_autocomplete_post_method_with_name_as_label_field_name(
-    admin_client: Client,
-    urls: dict[str, str],
+    admin_client: Client, urls: dict[str, str]
 ) -> None:
     payload = {
         "app_label": "geo",
@@ -48,8 +58,7 @@ def test_autocomplete_post_method_with_name_as_label_field_name(
 
 @pytest.mark.django_db
 def test_autocomplete_post_method_with_pk_as_label_field_name(
-    admin_client: Client,
-    urls: dict[str, str],
+    admin_client: Client, urls: dict[str, str]
 ) -> None:
     payload = {
         "app_label": "geo",
@@ -66,47 +75,8 @@ def test_autocomplete_post_method_with_pk_as_label_field_name(
 
 
 @pytest.mark.django_db
-def test_autocomplete_post_method_without_permissions(
-    client: Client,
-    urls: dict[str, str],
-) -> None:
-    client.login(
-        username="user_with_no_perm",
-        password="password",
-    )
-    payload = {
-        "app_label": "geo",
-        "model_name": "Governorate",
-        "object_name": "governorate",
-        "field_name": "name",
-    }
-    querystring = urlencode(payload)
-    response = client.post(f"{urls['autocomplete']}1/?{querystring}")
-
-    assert response.status_code == 403
-
-
-@pytest.mark.django_db
-def test_autocomplete_post_method_with_wrong_model_name(
-    admin_client: Client,
-    urls: dict[str, str],
-) -> None:
-    payload = {
-        "app_label": "geo",
-        "model_name": "Governoratex",
-        "object_name": "governorate",
-        "field_name": "name",
-    }
-    querystring = urlencode(payload)
-    response = admin_client.post(f"{urls['autocomplete']}1/?{querystring}")
-
-    assert response.status_code == 404
-
-
-@pytest.mark.django_db
 def test_autocomplete_post_method_with_wrong_pk(
-    admin_client: Client,
-    urls: dict[str, str],
+    admin_client: Client, urls: dict[str, str]
 ) -> None:
     payload = {
         "app_label": "geo",
@@ -121,13 +91,26 @@ def test_autocomplete_post_method_with_wrong_pk(
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize(
+    "term, expected_count",
+    [
+        ("حم", 2),
+        ("محافظة حماه", 1),
+        ("محافظة حمص", 1),
+        ('name endswith "ص"', 1),
+        ("id > 2", 2),
+        ("xx", 0),
+    ],
+)
 def test_autocomplete(
     admin_client: Client,
     urls: dict[str, str],
     templates: dict[str, str],
+    term: str,
+    expected_count: int,
 ):
     payload = {
-        "term": "حم",
+        "term": term,
         "app_label": "geo",
         "model_name": "Governorate",
         "object_name": "governorate",
@@ -136,149 +119,71 @@ def test_autocomplete(
     response = admin_client.get(urls["autocomplete"], payload)
     parser = HTMLParser(response.content)
 
-    lis = parser.css("li")
-    for li in lis:
-        assert li.text(strip=True) in [
-            "محافظة حماه",
-            "محافظة حمص",
-        ]
+    lis = parser.css("li button[role='option']")
 
+    assert len(lis) == expected_count
     assert is_template_used(templates["autocomplete-item"], response)
-    assert response.status_code == 200
-
-
-@pytest.mark.django_db
-def test_autocomplete_with_djangoql(
-    admin_client: Client,
-    urls: dict[str, str],
-    templates: dict[str, str],
-):
-    payload = {
-        "term": 'name endswith "ص"',
-        "app_label": "geo",
-        "model_name": "Governorate",
-        "object_name": "governorate",
-        "field_name": "name",
-    }
-    response = admin_client.get(urls["autocomplete"], payload)
-    parser = HTMLParser(response.content)
-
-    lis = parser.css("li")
-    for li in lis:
-        assert li.text(strip=True) in [
-            "محافظة حمص",
-        ]
-
-    assert len(lis) == 1
-    assert is_template_used(templates["autocomplete-item"], response)
-    assert response.status_code == 200
-
-
-@pytest.mark.django_db
-def test_autocomplete_with_no_permissions(
-    admin_client: Client,
-    urls: dict[str, str],
-    templates: dict[str, str],
-):
-    payload = {
-        "term": "حم",
-        "app_label": "geo",
-        "model_name": "Governorate",
-        "object_name": "governorate",
-        "field_name": "name",
-    }
-    response = admin_client.get(urls["autocomplete"], payload)
-    parser = HTMLParser(response.content)
-
-    lis = parser.css("li")
-    for li in lis:
-        assert li.text(strip=True) in [
-            "محافظة حماه",
-            "محافظة حمص",
-        ]
-
-    assert is_template_used(templates["autocomplete-item"], response)
-    assert response.status_code == 200
-
-
-@pytest.mark.django_db
-def test_autocomplete_with_empty_term(
-    admin_client: Client,
-    urls: dict[str, str],
-    templates: dict[str, str],
-):
-    payload = {
-        "term": "xx",
-        "app_label": "geo",
-        "model_name": "Governorate",
-        "object_name": "governorate",
-        "field_name": "name",
-    }
-    response = admin_client.get(urls["autocomplete"], payload)
-    parser = HTMLParser(response.content)
-
-    lis = parser.css("li")
-
-    assert len(lis) == 1
-    assert is_template_used(templates["autocomplete-item"], response)
-    assert parser.css_first("li").text(strip=True) == "no results".title()
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
-    "payload,status_code",
+    "payload, status_code",
     [
         (
             {
                 "term": "حم",
+                # "app_label": "geo",
                 "model_name": "Governorate",
                 "object_name": "governorate",
                 "field_name": "name",
-            },
-            404,
-        ),
-        (
-            {
-                "term": "حم",
-                "app_label": "geo",
-                "object_name": "governorate",
-                "field_name": "name",
-            },
-            404,
-        ),
-        (
-            {
-                "term": "حم",
-                "app_label": "geo",
-                "model_name": "Governorate",
-                "object_name": "governorate",
-            },
-            404,
-        ),
-        (
-            {
-                "term": "حم",
-                "app_label": "geo",
-                "model_name": "Governorate",
-                "field_name": "name",
-            },
-            404,
-        ),
-        (
-            {
-                "term": "حم",
-                "app_label": "geo",
-                "model_name": "Governorate",
-                "object_name": "governorate",
-                "field_name": "namexx",
             },
             400,
         ),
         (
             {
                 "term": "حم",
-                "app_label": "geox",
+                "app_label": "geo",
+                # "model_name": "Governorate",
+                "object_name": "governorate",
+                "field_name": "name",
+            },
+            400,
+        ),
+        (
+            {
+                "term": "حم",
+                "app_label": "geo",
+                "model_name": "Governorate",
+                "object_name": "governorate",
+                # "field_name": "name",
+            },
+            400,
+        ),
+        (
+            {
+                "term": "حم",
+                "app_label": "geo",
+                "model_name": "Governorate",
+                # "object_name": "governorate",
+                "field_name": "name",
+            },
+            400,
+        ),
+        (
+            {
+                "term": "حم",
+                "app_label": "geo",
+                "model_name": "Governorate",
+                "object_name": "governorate",
+                "field_name": "namexx",  # wrong field name
+            },
+            400,
+        ),
+        (
+            {
+                "term": "حم",
+                "app_label": "geox",  # wrong app label
                 "model_name": "Governorate",
                 "object_name": "governorate",
                 "field_name": "name",
@@ -289,7 +194,7 @@ def test_autocomplete_with_empty_term(
             {
                 "term": "حم",
                 "app_label": "geo",
-                "model_name": "Governoratef",
+                "model_name": "Governoratef",  # wrong model name
                 "object_name": "governorate",
                 "field_name": "name",
             },

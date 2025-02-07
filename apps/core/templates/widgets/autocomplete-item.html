@@ -4,6 +4,7 @@
 <li>
   <button
     class="block w-full text-sm text-start p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:bg-neutral-100 dark:focus:bg-neutral-800 focus:outline-none"
+    role="option"
     @click.prevent="handleSelectOption('{{ obj|get:label_field_name }}')"
   >
     {{ obj }}

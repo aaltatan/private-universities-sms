@@ -21,9 +21,13 @@ class AutocompleteView(LoginRequiredMixin, View):
     """
 
     def get(self, request: HttpRequest) -> HttpResponse:
-        parser = AutocompleteRequestParser(request=request)
+        try:
+            parser = AutocompleteRequestParser(request=request)
+        except AttributeError as e:
+            return HttpResponse(str(e), status=400)
 
         has_permissions = self.has_permissions(parser)
+
         if not has_permissions:
             return HttpResponseForbidden()
 
@@ -42,10 +46,7 @@ class AutocompleteView(LoginRequiredMixin, View):
             getattr(Model, parser.field_name, None) is None
             and parser.field_name not in qs.query.annotations
         ):
-            return HttpResponse(
-                f"field {parser.field_name} does not exist",
-                status=400
-            )
+            return HttpResponse(f"field {parser.field_name} does not exist", status=400)
 
         context = {
             "object_list": qs,
@@ -55,9 +56,13 @@ class AutocompleteView(LoginRequiredMixin, View):
         return render(request, "widgets/autocomplete-item.html", context)
 
     def post(self, request: HttpRequest, pk: str, *args, **kwargs) -> HttpResponse:
-        parser = AutocompleteRequestParser(request=request)
+        try:
+            parser = AutocompleteRequestParser(request=request)
+        except AttributeError as e:
+            return HttpResponse(str(e), status=400)
 
         has_permissions = self.has_permissions(parser=parser)
+
         if not has_permissions:
             return HttpResponseForbidden()
 

@@ -105,19 +105,19 @@ class AutocompleteRequestParser:
     def __post_init__(self):
         self.app_label = self.request.GET.get("app_label", "")
         if not self.app_label:
-            raise Http404("app_label is required")
+            raise AttributeError("app_label is required")
 
         self.model_name = self.request.GET.get("model_name", "").lower()
         if not self.model_name:
-            raise Http404("model_name is required")
+            raise AttributeError("model_name is required")
 
         self.object_name = self.request.GET.get("object_name", "").lower()
         if not self.object_name:
-            raise Http404("object_name is required")
+            raise AttributeError("object_name is required")
 
         self.field_name = self.request.GET.get("field_name", "")
         if not self.field_name:
-            raise Http404("field_name is required")
+            raise AttributeError("field_name is required")
 
         self.label_field_name = self.request.GET.get("label_field_name", "pk")
 
