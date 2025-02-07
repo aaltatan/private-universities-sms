@@ -15,9 +15,9 @@ def slugify_name(
         "slug",
         slugify(instance.name, allow_unicode=True),
     )
-    class_ = instance.__class__
+    Model = instance.__class__
 
-    slug_exists = class_.objects.filter(slug=slug).exists()
+    slug_exists = Model.objects.filter(slug=slug).exclude(pk=instance.pk).exists()
 
     if slug_exists:
         slug = utils.increase_slug_by_one(slug)
@@ -26,5 +26,5 @@ def slugify_name(
             instance=instance,
             slug=slug,
         )
-    
+
     instance.slug = slug

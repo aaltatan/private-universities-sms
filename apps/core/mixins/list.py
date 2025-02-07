@@ -12,12 +12,13 @@ from django.http import (
 )
 from django.shortcuts import render
 from django.urls import reverse
+from django.conf import settings
 from django_filters import FilterSet
 from import_export.resources import ModelResource
 from rest_framework.serializers import ModelSerializer
 from tablib import Dataset
 
-from ..constants import MAX_PAGE_SIZE, PERMISSION, PER_PAGE
+from ..constants import PERMISSION
 from ..schemas import Action
 
 
@@ -246,11 +247,11 @@ class ListMixin(ABC):
         """
         request: HttpRequest = self.request
 
-        default_per_page: int = PER_PAGE
+        default_per_page: int = settings.PER_PAGE
         request_per_page: str = request.GET.get("per_page", None)
 
         if request_per_page == "all":
-            return MAX_PAGE_SIZE
+            return settings.MAX_PAGE_SIZE
 
         return request_per_page or default_per_page
 

@@ -126,12 +126,7 @@ def test_api_filters(
     admin_headers: dict[str, str],
     filters_test_cases: tuple[str, int, tuple[tuple[str, bool]]],
 ):
-    (
-        querystring,
-        results_count,
-        exists_names,
-        not_exists_names
-    ) = filters_test_cases
+    (querystring, results_count, exists_names, not_exists_names) = filters_test_cases
 
     response: Response = api_client.get(
         path=urls["api"] + querystring,

@@ -22,7 +22,13 @@ class GovernorateAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(models.City)
 class CityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ("id", "name", "governorate__name", "description")
+    list_display = (
+        "id",
+        "name",
+        "governorate__name",
+        "description",
+        "slug",
+    )
     list_display_links = ("id", "name")
     search_fields = cities.SEARCH_FIELDS
     list_per_page = 20

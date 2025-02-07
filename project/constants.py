@@ -2,18 +2,18 @@ from typing import Any
 
 from django.http import HttpRequest
 from django.urls import reverse
+from django.conf import settings
 from django.utils.translation import gettext as _
 
-from apps.core.constants import MESSAGES_TIMEOUT, PER_PAGE_ARRAY, PER_PAGE
 
 
 def constants(request: HttpRequest) -> dict[str, Any]:
     data = {
         "project_name": "Salaries Management System",
         "settings": {
-            "messages_timeout": MESSAGES_TIMEOUT,
-            "per_page_array": PER_PAGE_ARRAY,
-            "per_page": PER_PAGE,
+            "messages_timeout": settings.MESSAGES_TIMEOUT,
+            "per_page_array": settings.PER_PAGE_ARRAY,
+            "per_page": settings.PER_PAGE,
         },
         "sidebar_links": [
             {

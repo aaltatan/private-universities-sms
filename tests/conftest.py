@@ -7,6 +7,11 @@ from apps.core.constants import PERMISSION
 from tests.utils import get_token_headers
 
 
+@pytest.fixture(autouse=True)
+def mock_per_page(settings) -> None:
+    settings.PER_PAGE = 10
+
+
 @pytest.fixture(
     scope="package",
     params=[

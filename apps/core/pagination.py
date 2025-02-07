@@ -1,15 +1,15 @@
 from django.core.paginator import InvalidPage
+from django.conf import settings
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.utils.urls import replace_query_param
 
-from .constants import MAX_PAGE_SIZE, PER_PAGE
 
 
 class CorePagination(PageNumberPagination):
-    page_size = PER_PAGE
+    page_size = settings.PER_PAGE
     page_size_query_param = "per_page"
-    max_page_size = MAX_PAGE_SIZE
+    max_page_size = settings.MAX_PAGE_SIZE
 
     def get_current_link(self):
         url = self.request.build_absolute_uri()
