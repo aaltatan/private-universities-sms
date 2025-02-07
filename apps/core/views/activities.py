@@ -1,5 +1,4 @@
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.decorators import login_required
 from django.http import (
     Http404,
     HttpRequest,
@@ -12,8 +11,12 @@ from ..models import Activity
 from ..schemas import ActivityRequestParser
 
 
-@login_required
-def activities(request: HttpRequest, object_id: int, *args, **kwargs) -> HttpResponse:
+def activities(
+    request: HttpRequest,
+    object_id: int,
+    *args,
+    **kwargs,
+) -> HttpResponse:
     parser = ActivityRequestParser(request=request)
     content_type = ContentType.objects.filter(**parser.asdict()).first()
 

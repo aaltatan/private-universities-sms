@@ -1,4 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
@@ -15,7 +14,7 @@ from ..schemas import AutocompleteRequestParser
 from ..utils import get_djangoql_query
 
 
-class AutocompleteView(LoginRequiredMixin, View):
+class AutocompleteView(View):
     """
     A view that handles autocomplete requests.
     """

@@ -1,7 +1,4 @@
-from django.contrib.auth.mixins import (
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-)
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views import View
 from django.views.generic.list import MultipleObjectMixin
 from django_filters import rest_framework as django_filters
@@ -36,7 +33,6 @@ class APIViewSet(
 
 
 class ListView(
-    LoginRequiredMixin,
     PermissionRequiredMixin,
     mixins.BulkDeleteMixin,
     mixins.ListMixin,
@@ -61,33 +57,18 @@ class ListView(
         }
 
 
-class CreateView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    mixins.CreateMixin,
-    View,
-):
+class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
     permission_required = "geo.create_governorate"
     form_class = forms.GovernorateForm
 
 
-class UpdateView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    mixins.UpdateMixin,
-    View,
-):
+class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "geo.change_governorate"
     form_class = forms.GovernorateForm
     activity_serializer = serializers.GovernorateActivitySerializer
 
 
-class DeleteView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-    mixins.DeleteMixin,
-    View,
-):
+class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
     permission_required = "geo.delete_governorate"
     deleter = utils.Deleter
     activity_serializer = serializers.GovernorateActivitySerializer
