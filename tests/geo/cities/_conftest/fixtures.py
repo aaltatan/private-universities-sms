@@ -4,14 +4,16 @@ from django.db.models import Model
 from django.urls import reverse
 
 from apps.core.models import User
-from apps.geo.models import Governorate
+from apps.geo.models import Governorate, City
 from tests.utils import reset_sequence
+
+from .factories import GovernorateFactory, CityFactory
 
 
 APP_LABEL = "geo"
-SUBAPP_LABEL = "governorates"
-MODEL_NAME = "Governorate"
-OBJECT_NAME = "governorate"
+SUBAPP_LABEL = "cities"
+MODEL_NAME = "City"
+OBJECT_NAME = "city"
 
 
 @pytest.fixture
@@ -36,13 +38,18 @@ def subapp_label() -> str:
 
 @pytest.fixture
 def model() -> type[Model]:
+    return City
+
+
+@pytest.fixture
+def governorate_model() -> Governorate:
     return Governorate
 
 
 @pytest.fixture
 def counts() -> dict[str, int]:
     return {
-        "objects": 304,
+        "objects": 100,
         "bulk_delete_batch": 50,
     }
 
@@ -74,33 +81,27 @@ def templates() -> dict[str, str]:
 @pytest.fixture
 def clean_data_sample() -> dict[str, str]:
     return {
-        "name": "محافظة دمشق",
-        "description": "دمشق",
+        "name": "مدينة حماه",
+        "governorate": 1,
+        "description": "حماه",
     }
 
 
 @pytest.fixture(scope="package", autouse=True)
 def create_objects(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
-        governorates = [
-            {"name": "محافظة حماه", "description": "goo"},
-            {"name": "محافظة حمص", "description": "meta"},
-            {"name": "محافظة ادلب", "description": "meta"},
-            {"name": "محافظة المنيا", "description": "language mena"},
-        ]
+        governorates = GovernorateFactory.create_batch(10)
 
-        for governorate in governorates:
-            Governorate.objects.create(**governorate)
+        for gov in governorates:
+            CityFactory.create_batch(10, governorate=gov)
 
-        for idx in range(1, 301):
-            string = str(idx).rjust(3, "0")
-            Governorate.objects.create(
-                name=f"City {string}",
-                description=string,
-            )
         yield
+
+        City.objects.all().delete()
         Governorate.objects.all().delete()
+
         reset_sequence(Governorate)
+        reset_sequence(City)
 
 
 @pytest.fixture(autouse=True, scope="package")
@@ -114,9 +115,7 @@ def create_users(django_db_setup, django_db_blocker, permissions) -> None:
         user_with_view_perm_only.user_permissions.add(view_perm)
 
         for p in permissions:
-            perm = Permission.objects.get(
-                codename=f"{p}_{OBJECT_NAME}",
-            )
+            perm = Permission.objects.get(codename=f"{p}_{OBJECT_NAME}")
             user = User.objects.create_user(
                 username=f"{SUBAPP_LABEL}_user_with_view_{p}_perm",
                 password="password",
