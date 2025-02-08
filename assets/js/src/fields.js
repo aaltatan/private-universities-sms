@@ -1,4 +1,3 @@
-import axios from "axios";
 import { getCookie } from "./utils";
 
 export function combobox(comboboxData = { options: [], selectedText: "" }) {
@@ -126,14 +125,19 @@ export function autocomplete(data = { url, initial, eventName }) {
       let csrfToken = getCookie("csrftoken");
       let fullPath = `${data.url}${data.initial}/?${querystring}`;
 
-      let response = await axios.post(fullPath, null, {
-        headers: { "X-csrftoken": csrfToken },
+      let response = await fetch(fullPath, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken,
+        },
       });
+
       if (response.status === 200) {
         this.handleEnableInput();
-        return await response.data.value;
+        let data = await response.json();
+        return data.value;
       } else {
-        return '';
+        return "";
       }
     },
   };
