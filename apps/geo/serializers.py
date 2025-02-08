@@ -16,6 +16,12 @@ class GovernorateSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "description", "cities")
 
 
+class GovernorateActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Governorate
+        fields = ("name", "description")
+
+
 class CitySerializer(serializers.ModelSerializer):
     class BaseGovernorateSerializer(serializers.ModelSerializer):
         class Meta:
@@ -29,10 +35,12 @@ class CitySerializer(serializers.ModelSerializer):
         fields = ("id", "name", "description", "governorate")
 
 
-class GovernorateActivitySerializer(serializers.ModelSerializer):
+class CreateUpdateCitySerializer(serializers.ModelSerializer):
+    governorate_id = serializers.IntegerField()
+
     class Meta:
-        model = Governorate
-        fields = ("name", "description")
+        model = City
+        fields = ("name", "governorate_id", "description")
 
 
 class CityActivitySerializer(serializers.ModelSerializer):

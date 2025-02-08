@@ -49,7 +49,7 @@ def governorate_model() -> Governorate:
 @pytest.fixture
 def counts() -> dict[str, int]:
     return {
-        "objects": 100,
+        "objects": 101,
         "bulk_delete_batch": 50,
     }
 
@@ -82,7 +82,7 @@ def templates() -> dict[str, str]:
 def clean_data_sample() -> dict[str, str]:
     return {
         "name": "مدينة حماه",
-        "governorate": 1,
+        "governorate": "محافظة حماه",
         "description": "حماه",
     }
 
@@ -94,6 +94,8 @@ def create_objects(django_db_setup, django_db_blocker):
 
         for gov in governorates:
             CityFactory.create_batch(10, governorate=gov)
+
+        CityFactory.create(name="Hama City", governorate=governorates[0])
 
         yield
 

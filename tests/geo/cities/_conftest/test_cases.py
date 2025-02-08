@@ -136,38 +136,41 @@ def export_test_cases(request: pytest.FixtureRequest):
 @pytest.fixture(
     scope="package",
     params=[
-        ("حماه", "محافظة حماه", "محافظة حماه", "محافظة-حماه"),
-        ("حمص", "محافظة حمص", "محافظة حمص", "محافظة-حمص"),
-        ("ادلب", "محافظة ادلب", "محافظة ادلب", "محافظة-ادلب"),
-        ("المنيا", "محافظة المنيا", "محافظة المنيا", "محافظة-المنيا"),
-    ],
-)
-def models_data_test_cases(request: pytest.FixtureRequest):
-    return request.param
-
-
-@pytest.fixture(
-    scope="package",
-    params=[
         (
-            {"name": "Ha", "description": "google"},
+            {
+                "name": "Ha",
+                "governorate": "محافظة حمص",
+                "description": "google",
+            },
             "the field must be at least 4 characters long",
             ["Ensure this field has at least 4 characters."],
         ),
         (
-            {"name": "", "description": ""},
+            {
+                "name": "",
+                "governorate": "محافظة حمص",
+                "description": "",
+            },
             "This field is required.",
             ["This field may not be blank."],
         ),
         (
-            {"name": "a" * 265, "description": ""},
+            {
+                "name": "a" * 265,
+                "governorate": "محافظة حمص",
+                "description": "",
+            },
             "Ensure this value has at most 255 characters (it has 265).",
             ["Ensure this field has no more than 255 characters."],
         ),
         (
-            {"name": "محافظة حماه", "description": "google"},
-            "Governorate with this Name already exists.",
-            ["governorate with this name already exists."],
+            {
+                "name": "Hama City",
+                "governorate": "محافظة حمص",
+                "description": "google",
+            },
+            "City with this Name already exists.",
+            ["city with this name already exists."],
         ),
     ],
 )
