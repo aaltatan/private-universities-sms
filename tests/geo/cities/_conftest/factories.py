@@ -1,4 +1,5 @@
 import factory
+from factory.fuzzy import FuzzyText
 
 
 class GovernorateFactory(factory.django.DjangoModelFactory):
@@ -26,6 +27,6 @@ class CityFactory(factory.django.DjangoModelFactory):
         model = "geo.City"
         django_get_or_create = ("name",)
 
-    name = factory.Faker("name")
+    name = FuzzyText(length=10)
     governorate = factory.SubFactory(GovernorateFactory)
     description = factory.Faker("text")

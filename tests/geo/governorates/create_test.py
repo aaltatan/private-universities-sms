@@ -11,6 +11,7 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
+from tests.common import create
 from tests.utils import is_template_used
 
 
@@ -21,30 +22,18 @@ def test_add_new_btn_appearance_if_user_has_no_add_perm(
     templates: dict[str, str],
     subapp_label: str,
 ) -> None:
-    client.login(
-        username=f"{subapp_label}_user_with_view_perm_only",
-        password="password",
+    create.test_add_new_btn_appearance_if_user_has_no_add_perm(
+        client, urls, templates, subapp_label
     )
-
-    response = client.get(urls["index"])
-    parser = HTMLParser(response.content)
-    btn = parser.css_first("[aria-label='create new object']")
-
-    assert response.status_code == status.HTTP_200_OK
-    assert is_template_used(templates["index"], response)
-    assert btn is None
 
 
 @pytest.mark.django_db
 def test_send_request_to_create_page_without_permission(
     client: Client, urls: dict[str, str], subapp_label: str
 ) -> None:
-    client.login(
-        username=f"{subapp_label}_user_with_view_perm_only",
-        password="password",
+    create.test_send_request_to_create_page_without_permission(
+        client, urls, subapp_label
     )
-    response = client.get(urls["create"])
-    assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
 @pytest.mark.django_db
@@ -53,13 +42,9 @@ def test_add_new_btn_appearance_if_user_has_add_perm(
     urls: dict[str, str],
     templates: dict[str, str],
 ) -> None:
-    response = admin_client.get(urls["index"])
-    parser = HTMLParser(response.content)
-    btn = parser.css_first("[aria-label='create new object']")
-
-    assert response.status_code == status.HTTP_200_OK
-    assert is_template_used(templates["index"], response)
-    assert btn is not None
+    create.test_add_new_btn_appearance_if_user_has_add_perm(
+        admin_client, urls, templates
+    )
 
 
 @pytest.mark.django_db
@@ -68,10 +53,29 @@ def test_send_request_to_create_page_with_permission(
     urls: dict[str, str],
     templates: dict[str, str],
 ) -> None:
-    response = admin_client.get(urls["create"])
+    create.test_send_request_to_create_page_with_permission(
+        admin_client, urls, templates
+    )
 
-    assert response.status_code == status.HTTP_200_OK
-    assert is_template_used(templates["create"], response)
+
+@pytest.mark.django_db
+def test_create_from_modal_without_using_target_in_hx_request(
+    admin_client: Client,
+    urls: dict[str, str],
+    headers_modal_GET: dict[str, str],
+) -> None:
+    create.test_create_from_modal_without_using_target_in_hx_request(
+        admin_client, urls, headers_modal_GET
+    )
+
+
+@pytest.mark.django_db
+def test_create_object_without_permissions(
+    api_client: APIClient,
+    urls: dict[str, str],
+    user_headers: dict[str, str],
+):
+    create.test_create_object_without_permissions(api_client, urls, user_headers)
 
 
 @pytest.mark.django_db
@@ -83,27 +87,42 @@ def test_create_new_object_with_save_btn(
     clean_data_sample: dict[str, str],
     counts: dict[str, int],
 ) -> None:
-    objects_count = counts["objects"]
-    response = admin_client.get(urls["create"])
-
-    assert response.status_code == status.HTTP_200_OK
-    assert is_template_used(templates["create"], response)
-
-    clean_data_sample["save"] = "true"
-    response = admin_client.post(urls["create"], clean_data_sample)
-    messages_list = list(
-        get_messages(request=response.wsgi_request),
+    create.test_create_new_object_with_save_btn(
+        model, admin_client, urls, templates, clean_data_sample, counts
     )
-    success_message = f"{clean_data_sample['name']} has been created successfully"
 
-    assert is_template_used(templates["create_form"], response, False)
-    assert is_template_used(templates["create_modal_form"], response, False)
-    assert response.status_code == 201
-    assert response.headers.get("Hx-Redirect") is not None
-    assert response.headers.get("Hx-Trigger") == "messages"
-    assert messages_list[0].level == messages.SUCCESS
-    assert messages_list[0].message == success_message
-    assert model.objects.count() == objects_count + 1
+
+@pytest.mark.django_db
+def test_create_from_modal_without_using_save_or_save_and_add_another(
+    admin_client: Client,
+    urls: dict[str, str],
+    headers_modal_GET: dict[str, str],
+    clean_data_sample: dict[str, str],
+) -> None:
+    create.test_create_from_modal_without_using_save_or_save_and_add_another(
+        admin_client, urls, headers_modal_GET, clean_data_sample
+    )
+
+
+@pytest.mark.django_db
+def test_create_without_redirect_from_modal(
+    admin_client: Client,
+    urls: dict[str, str],
+    templates: dict[str, str],
+    clean_data_sample: dict[str, str],
+    model: type[Model],
+    headers_modal_GET: dict[str, str],
+    counts: dict[str, int],
+) -> None:
+    create.test_create_without_redirect_from_modal(
+        admin_client,
+        urls,
+        templates,
+        clean_data_sample,
+        model,
+        headers_modal_GET,
+        counts,
+    )
 
 
 @pytest.mark.django_db
@@ -136,73 +155,6 @@ def test_create_new_object_with_save_and_add_another_btn(
     assert last_obj.description == data["description"]
     assert last_obj.slug == slugify(data["name"], allow_unicode=True)
     assert qs.count() == objects_count + 1
-
-
-@pytest.mark.django_db
-def test_create_from_modal_without_using_target_in_hx_request(
-    admin_client: Client,
-    urls: dict[str, str],
-    headers_modal_GET: dict[str, str],
-) -> None:
-    with pytest.raises(ValueError, match="target is required"):
-        admin_client.get(urls["create"], headers=headers_modal_GET)
-
-
-@pytest.mark.django_db
-def test_create_from_modal_without_using_save_or_save_and_add_another(
-    admin_client: Client,
-    urls: dict[str, str],
-    headers_modal_GET: dict[str, str],
-    clean_data_sample: dict[str, str],
-) -> None:
-    headers = {**headers_modal_GET, "target": "#modal-container"}
-    with pytest.raises(
-        ValueError,
-        match="save or save_and_add_another is required",
-    ):
-        admin_client.post(urls["create"], clean_data_sample, headers=headers)
-
-
-@pytest.mark.django_db
-def test_create_without_redirect_from_modal(
-    admin_client: Client,
-    urls: dict[str, str],
-    templates: dict[str, str],
-    clean_data_sample: dict[str, str],
-    model: type[Model],
-    headers_modal_GET: dict[str, str],
-    counts: dict[str, int],
-) -> None:
-    objects_count = counts["objects"]
-    headers = {
-        **headers_modal_GET,
-        "target": "#modal-container",
-    }
-    response = admin_client.get(urls["create"], headers=headers)
-
-    assert response.status_code == status.HTTP_200_OK
-    assert is_template_used(templates["create_modal_form"], response)
-
-    headers = {
-        **headers,
-        "dont-redirect": "true",
-        "target": "#no-content",
-    }
-    sample = {**clean_data_sample, "save": "true"}
-    response = admin_client.post(urls["create"], sample, headers=headers)
-    messages_list = list(get_messages(request=response.wsgi_request))
-    success_message = f"{clean_data_sample['name']} has been created successfully"
-
-    assert response.status_code == status.HTTP_201_CREATED
-    assert is_template_used(templates["create_modal_form"], response, used=False)
-    assert is_template_used(templates["create_form"], response, used=False)
-    assert is_template_used(templates["create"], response, used=False)
-    assert model.objects.count() == objects_count + 1
-    assert response.headers.get("Hx-Redirect") is None
-    assert response.headers.get("Hx-Location") is None
-    assert response.headers.get("Hx-Reswap") == "innerHTML"
-    assert messages_list[0].level == messages.SUCCESS
-    assert messages_list[0].message == success_message
 
 
 @pytest.mark.django_db
@@ -350,24 +302,6 @@ def test_create_objects(
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["count"] == objects_count + batch_size
     assert model.objects.count() == objects_count + batch_size
-
-
-@pytest.mark.django_db
-def test_create_object_without_permissions(
-    api_client: APIClient,
-    urls: dict[str, str],
-    user_headers: dict[str, str],
-):
-    response = api_client.post(
-        path=urls["api"], data={"name": "City"}, headers=user_headers
-    )
-    assert response.status_code == status.HTTP_403_FORBIDDEN
-
-    response: Response = api_client.post(
-        path=urls["api"],
-        data={"name": "City"},
-    )
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 @pytest.mark.django_db
