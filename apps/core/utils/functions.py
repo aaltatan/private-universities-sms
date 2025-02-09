@@ -1,5 +1,4 @@
 import re
-from typing import Any
 
 
 def increase_slug_by_one(slug: str) -> str:
@@ -28,7 +27,7 @@ def dict_to_css(styles: dict[str, str]) -> str:
     return "".join(styles).strip()
 
 
-def get_differences(from_: dict, to: dict) -> dict[str, dict[str, Any]]:
+def get_differences(from_: dict, to: dict) -> dict:
     """
     Returns the differences between two dictionaries.
     """

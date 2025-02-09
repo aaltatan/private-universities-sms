@@ -98,13 +98,14 @@ class UpdateMixin(ABC):
         to_data: dict | list = self.activity_serializer(obj).data
         differences = get_differences(from_data, to_data)
 
-        Activity.objects.create(
-            user=request.user,
-            kind=Activity.KindChoices.UPDATE,
-            content_type=ContentType.objects.get_for_model(self.obj),
-            object_id=self.obj.pk,
-            data=differences,
-        )
+        if differences:
+            Activity.objects.create(
+                user=request.user,
+                kind=Activity.KindChoices.UPDATE,
+                content_type=ContentType.objects.get_for_model(self.obj),
+                object_id=self.obj.pk,
+                data=differences,
+            )
 
         messages.success(
             request,
