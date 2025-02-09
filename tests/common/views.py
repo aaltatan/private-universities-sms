@@ -8,6 +8,41 @@ from apps.core.constants import PERMISSION
 from tests.utils import is_template_used, parse_buttons
 
 
+def test_read_object_has_keys(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    api_keys: list[str],
+):
+    response = api_client.get(
+        path=f"{urls['api']}1/",
+        headers=admin_headers,
+    )
+    assert response.status_code == 200
+
+    for key in api_keys:
+        assert key in response.json()
+
+
+def test_index_has_right_columns(
+    admin_client: Client,
+    urls: dict[str, str],
+    templates: dict[str, str],
+    index_columns: list[str],
+):
+    response = admin_client.get(urls["index"])
+    parser = HTMLParser(response.content)
+    ths = parser.css("th[scope='col']")
+    ths = [th.text(strip=True).lower() for th in ths]
+
+    assert response.status_code == 200
+    assert len(ths) == len(index_columns) + 1  # checkbox column
+    assert is_template_used(templates["index"], response)
+
+    for column in index_columns:
+        assert column in ths
+
+
 def test_index_GET_with_htmx(
     admin_client: Client,
     urls: dict[str, str],

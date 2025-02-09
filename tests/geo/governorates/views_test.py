@@ -3,8 +3,27 @@ from django.test import Client
 from rest_framework.test import APIClient
 
 from apps.core.constants import PERMISSION
-
 from tests.common import views
+
+
+@pytest.mark.django_db
+def test_read_object_has_keys(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    api_keys: list[str],
+):
+    views.test_read_object_has_keys(api_client, urls, admin_headers, api_keys)
+
+
+@pytest.mark.django_db
+def test_index_has_right_columns(
+    admin_client: Client,
+    urls: dict[str, str],
+    templates: dict[str, str],
+    index_columns: list[str],
+):
+    views.test_index_has_right_columns(admin_client, urls, templates, index_columns)
 
 
 @pytest.mark.django_db

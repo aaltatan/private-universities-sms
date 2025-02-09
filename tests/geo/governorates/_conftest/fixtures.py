@@ -40,6 +40,16 @@ def model() -> type[Model]:
 
 
 @pytest.fixture
+def api_keys() -> list[str]:
+    return ["id", "name", "description", "cities"]
+
+
+@pytest.fixture
+def index_columns() -> list[str]:
+    return ["name", "description", "options"]
+
+
+@pytest.fixture
 def counts() -> dict[str, int]:
     return {
         "objects": 304,

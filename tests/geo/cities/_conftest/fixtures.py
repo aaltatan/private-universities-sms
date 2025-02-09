@@ -47,6 +47,16 @@ def governorate_model() -> Governorate:
 
 
 @pytest.fixture
+def api_keys() -> list[str]:
+    return ["id", "name", "description", "governorate"]
+
+
+@pytest.fixture
+def index_columns() -> list[str]:
+    return ["name", "description", "governorate", "options"]
+
+
+@pytest.fixture
 def counts() -> dict[str, int]:
     return {
         "objects": 101,
