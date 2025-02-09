@@ -51,6 +51,11 @@ class Activity(models.Model):
 
     def __str__(self) -> str:
         return f"Activity[{self.kind}] @{self.user.username}"
+    
+    def save(self, *args, **kwargs) -> None:
+        if self.kind == self.KindChoices.CREATE:
+            self.notes = str(self.content_object)
+        return super().save(*args, **kwargs)
 
     class Meta:
         ordering = ["-created_at", "kind"]

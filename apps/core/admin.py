@@ -1,16 +1,16 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
+from import_export.admin import ImportExportModelAdmin
 
 from .models import Activity, User
 from .utils import dict_to_css
-
 
 admin.site.register(User, UserAdmin)
 
 
 @admin.register(Activity)
-class ActivityAdmin(admin.ModelAdmin):
+class ActivityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     @admin.display(description="Kind")
     def formatted_kind(self, obj: Activity) -> str:
         colors = {
@@ -36,6 +36,9 @@ class ActivityAdmin(admin.ModelAdmin):
         "created_at",
         "user",
         "formatted_kind",
+        "content_type",
+        "content_object",
+        "object_id",
         "notes",
     )
     search_fields = (
@@ -44,6 +47,7 @@ class ActivityAdmin(admin.ModelAdmin):
     )
     list_filter = (
         "user__username",
+        "content_type",
         "kind",
     )
     readonly_fields = (
