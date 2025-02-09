@@ -12,7 +12,7 @@ from django.utils.translation import gettext as _
 from rest_framework.serializers import ModelSerializer
 
 from ..models import Activity
-from ..utils import BaseDeleter
+from ..utils import Deleter
 
 
 class DeleteMixin(ABC):
@@ -21,13 +21,17 @@ class DeleteMixin(ABC):
     def activity_serializer(self) -> type[ModelSerializer]:
         pass
 
+    @property
+    @abstractmethod
+    def deleter(self) -> Deleter:
+        pass
+
     def __init__(self):
         if getattr(self, "deleter", None) is None:
             raise AttributeError(
                 "you must define a deleter class for the ListView.",
             )
-
-        if not issubclass(self.deleter, BaseDeleter):
+        if type(self.deleter) == Deleter:
             raise TypeError(
                 "the deleter class must be a subclass of Deleter.",
             )
@@ -63,22 +67,24 @@ class DeleteMixin(ABC):
 
         model = self.get_model_class()
         self.obj = get_object_or_404(model, slug=slug)
+        serializer = self.activity_serializer(self.obj)
+        object_id = self.obj.pk
 
-        deleter: type[BaseDeleter] = self.deleter(self.obj)
+        deleter: Deleter = self.deleter(obj=self.obj)
 
-        if deleter.is_deletable():
-            serializer = self.activity_serializer(self.obj)
+        deleter.delete()
+
+        if deleter.has_deleted:
             Activity.objects.create(
                 user=request.user,
                 kind=Activity.KindChoices.DELETE,
                 content_type=ContentType.objects.get_for_model(self.obj),
-                object_id=self.obj.pk,
+                object_id=object_id,
                 data=serializer.data,
             )
-            deleter.delete()
             response = HttpResponse(status=204)
             querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
-            messages.success(request, deleter.get_message(self.obj))
+            messages.success(request, deleter.get_message())
             response["Hx-Location"] = json.dumps(
                 {
                     "path": self.get_app_urls()["index_url"] + querystring,
@@ -89,7 +95,7 @@ class DeleteMixin(ABC):
             response = HttpResponse(status=200)
             response["Hx-Retarget"] = "#no-content"
             response["HX-Reswap"] = "innerHTML"
-            messages.error(request, deleter.get_message(self.obj))
+            messages.error(request, deleter.get_message())
 
         response["HX-Trigger"] = "messages"
 
@@ -144,5 +150,5 @@ class DeleteMixin(ABC):
         """
         if getattr(self, "model", None) is not None:
             return self.model
-        
+
         return self.activity_serializer.Meta.model

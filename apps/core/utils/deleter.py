@@ -1,82 +1,122 @@
-from typing import Any, Literal
-from abc import ABC, abstractmethod
+from typing import Literal, Generic, TypeVar
 
-from django.db.models import QuerySet
+from django.db.models import ProtectedError, QuerySet, Model
 from django.utils.translation import gettext as _
 
+KIND = Literal["obj", "qs"]
+STATUS = Literal["success", "error"]
 
-class BaseDeleter(ABC):
-    obj_success_message: str = _(
-        "{} has been deleted successfully.",
-    )
-    qs_success_message: str = _(
-        "all selected {} objects have been deleted successfully.",
-    )
-    obj_error_message: str = _(
-        "{} cannot be deleted.",
-    )
-    qs_error_message: str = _(
-        "selected {} objects cannot be deleted.",
-    )
 
-    def __init__(self, obj: Any):
-        self.obj = obj
+T = TypeVar("T", bound=Model)
 
-    @abstractmethod
-    def is_obj_deletable(self) -> bool:
-        """
-        Returns whether the object can be deleted or not.
-        you can use self.obj to get the object.
-        """
-        pass
 
-    @abstractmethod
-    def is_qs_deletable(self, qs: QuerySet) -> bool:
-        """
-        Returns whether the QuerySet can be deleted or not.
-        you can use self.obj to get the QuerySet.
-        """
-        pass
+class Deleter(Generic[T]):
+    """
+    A class that handles the deletion of objects.
+    """
 
-    def is_deletable(self) -> bool:
-        """
-        Deletes the object.
-        """
-        if isinstance(self.obj, QuerySet):
-            return self.is_qs_deletable(self.obj)
-        else:
-            return self.is_obj_deletable()
+    success_qs_msg: str | None = None
+    error_qs_msg: str | None = None
+    success_obj_msg: str | None = None
+    error_obj_msg: str | None = None
 
-    def delete(self) -> None:
-        self.obj.delete()
-
-    def get_message(self, placeholder: str) -> str:
-        obj_type = "qs" if isinstance(self.obj, QuerySet) else "obj"
-        status = "success" if self.is_deletable() else "error"
-        return self.__get_message(obj_type, status, placeholder)
-
-    def __get_message(
+    def __init__(
         self,
-        obj_type: Literal["obj", "qs"],
-        status: Literal["success", "error"],
-        placeholder: str,
-    ) -> str:
-        messages: dict[str, dict[str, str]] = {
+        obj: T | None = None,
+        queryset: QuerySet | None = None,
+    ):
+        if obj is None and queryset is None:
+            raise ValueError(
+                "obj or queryset must be provided.",
+            )
+
+        if obj is not None and queryset is not None:
+            raise ValueError(
+                "obj and queryset cannot be provided at the same time.",
+            )
+
+        if queryset is not None and not isinstance(queryset, QuerySet):
+            raise ValueError(
+                "queryset must be a QuerySet instance.",
+            )
+
+        self.has_deleted = False
+        self._kind: KIND = "obj"
+        self._status: STATUS = "success"
+        self._count = 0
+
+        if obj is None:
+            self._obj = queryset
+            self._kind = "qs"
+        else:
+            self._obj = obj
+
+    def check_obj_deleting_possibility(self, obj: T) -> bool:
+        """
+        Hook for doing any extra not delete reasoning before deleting the object.
+        """
+        return True
+
+    def check_queryset_deleting_possibility(self, qs: QuerySet) -> bool:
+        """
+        Hook for doing any extra not delete reasoning before deleting the queryset.
+        """
+        return True
+
+    def delete(self) -> tuple[int, dict[str, int]] | None:
+        obj_status = self.check_obj_deleting_possibility(self._obj)
+        qs_status = self.check_queryset_deleting_possibility(self._obj)
+
+        if self._kind == "obj" and not obj_status:
+            return self._handle_deleting_error()
+
+        if self._kind == "qs" and not qs_status:
+            return self._handle_deleting_error()
+
+        try:
+            self.has_deleted = True
+            deleted_obj = self._obj.delete()
+            self._count, _ = deleted_obj
+            return deleted_obj
+        except ProtectedError:
+            self._handle_deleting_error()
+
+    def get_message(self) -> str:
+        if self._kind == "obj" and self._status == "success":
+            return self._messages["obj"]["success"].format(self._obj)
+
+        if self._kind == "obj" and self._status == "error":
+            return self._messages["obj"]["error"].format(self._obj)
+
+        if self._kind == "qs" and self._status == "success":
+            return self._messages["qs"]["success"]
+
+        if self._kind == "qs" and self._status == "error":
+            return self._messages["qs"]["error"]
+
+    def _handle_deleting_error(self) -> None:
+        self.has_deleted = False
+        self._status = "error"
+        return
+
+    @property
+    def _messages(self) -> dict[KIND, dict[STATUS, str]]:
+        return {
             "obj": {
-                "success": self.obj_success_message.format(
-                    placeholder,
-                ),
-                "error": self.obj_error_message.format(
-                    placeholder,
-                ),
+                "success": self.success_obj_msg
+                or _("{} has been deleted successfully."),
+                "error": self.error_obj_msg or _("{} cannot be deleted."),
             },
             "qs": {
-                "error": self.qs_error_message.format(
-                    placeholder,
+                "success": self.success_qs_msg
+                or _(
+                    "{} selected objects have been deleted successfully.".format(
+                        self._count
+                    ),
                 ),
-                "success": self.qs_success_message.format(
-                    placeholder,
+                "error": self.error_qs_msg
+                or _(
+                    "selected objects CANNOT be deleted because they are related to other objects.",
                 ),
             },
         }
-        return messages[obj_type][status]

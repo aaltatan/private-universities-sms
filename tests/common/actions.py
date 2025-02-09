@@ -93,46 +93,9 @@ def test_bulk_delete_with_permissions(
     assert messages_list[0].level == messages.SUCCESS
     assert (
         messages_list[0].message
-        == "all selected 50 objects have been deleted successfully."
+        == f"{counts['bulk_delete_batch']} selected objects have been deleted successfully."
     )
     assert model.objects.count() == objects_count - bulk_delete_batch
-
-
-def test_bulk_delete_with_permissions_with_undeletable_objects(
-    admin_client: Client,
-    urls: dict[str, str],
-    model: type[Model],
-    mocker: pytest_mock.MockerFixture,
-    app_label: str,
-    subapp_label: str,
-    counts: dict[str, int],
-):
-    objects_count = counts["objects"]
-    bulk_delete_batch = counts["bulk_delete_batch"]
-    data: dict = {
-        "action-check": list(range(1, bulk_delete_batch + 1)),
-        "kind": "action",
-        "name": "delete",
-    }
-
-    mocker.patch(
-        f"apps.{app_label}.utils.{subapp_label}.Deleter.is_qs_deletable",
-        return_value=False,
-    )
-
-    response = admin_client.post(urls["index"], data)
-    messages_list = list(
-        messages.get_messages(request=response.wsgi_request),
-    )
-
-    assert response.status_code == status.HTTP_200_OK
-    assert response.headers.get("Hx-Location") is None
-    assert response.headers.get("Hx-Retarget") == "#no-content"
-    assert response.headers.get("HX-Reswap") == "innerHTML"
-    assert response.headers.get("HX-Trigger") == "messages"
-    assert messages_list[0].level == messages.ERROR
-    assert messages_list[0].message == "selected 50 objects cannot be deleted."
-    assert model.objects.count() == objects_count
 
 
 def test_bulk_action_not_found(
@@ -244,39 +207,3 @@ def test_bulk_delete_objects(
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
     assert model.objects.count() == objects_count - 4
-
-
-def test_bulk_delete_objects_undeletable(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    model: type[Model],
-    mocker: pytest_mock.MockerFixture,
-    app_label: str,
-    subapp_label: str,
-    counts: dict[str, int],
-):
-    objects_count = counts["objects"]
-    mocker.patch(
-        f"apps.{app_label}.utils.{subapp_label}.Deleter.is_qs_deletable",
-        return_value=False,
-    )
-
-    response: Response = api_client.post(
-        path=f"{urls['api']}bulk-delete/",
-        data={"ids": [1, 2, 3, 4, 500, 501]},
-        headers=admin_headers,
-    )
-
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert response.json()["details"] == "selected 4 objects cannot be deleted."
-    assert model.objects.count() == objects_count
-
-    response: Response = api_client.post(
-        path=f"{urls['api']}bulk-delete/",
-        data={"ids": [500, 501]},
-        headers=admin_headers,
-    )
-
-    assert response.status_code == status.HTTP_404_NOT_FOUND
-    assert model.objects.count() == objects_count

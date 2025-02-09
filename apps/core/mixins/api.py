@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
 
 from ..models import Activity
-from ..utils import BaseDeleter, get_differences
+from ..utils import get_differences, Deleter
 
 
 class APIMixin(ABC):
@@ -17,7 +17,7 @@ class APIMixin(ABC):
 
     @property
     @abstractmethod
-    def deleter(self) -> type[BaseDeleter]:
+    def deleter(self) -> Deleter:
         pass
 
     def destroy(self, request, *args, **kwargs):
@@ -25,30 +25,30 @@ class APIMixin(ABC):
             raise AttributeError(
                 "you must define a deleter class for the ListView.",
             )
-
-        if not issubclass(self.deleter, BaseDeleter):
+        if type(self.deleter) == Deleter:
             raise TypeError(
                 "the deleter class must be a subclass of Deleter.",
             )
 
         instance = self.get_object()
+        object_id = instance.pk
+        serializer = self.activity_serializer(instance)
 
-        deleter: type[BaseDeleter] = self.deleter(instance)
+        deleter: Deleter = self.deleter(obj=instance)
+        deleter.delete()
 
-        if deleter.is_deletable():
-            serializer = self.activity_serializer(instance)
+        if deleter.has_deleted:
             Activity.objects.create(
                 user=request.user,
                 kind=Activity.KindChoices.DELETE,
                 content_type=ContentType.objects.get_for_model(instance),
-                object_id=instance.pk,
+                object_id=object_id,
                 data=serializer.data,
             )
-            deleter.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(
-                {"details": deleter.get_message(instance)},
+                {"details": deleter.get_message()},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 

@@ -4,7 +4,7 @@ import pytest
 from django.urls import reverse
 from playwright.sync_api import Page, sync_playwright
 
-from apps.geo.models import Governorate
+from apps.geo.models import Governorate, City
 from tests.utils import reset_sequence
 
 
@@ -35,16 +35,41 @@ def templates() -> dict[str, str]:
 def create_governorates(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
         governorates = [
-            {"name": "محافظة حماه", "description": "goo"},
-            {"name": "محافظة حمص", "description": "meta"},
-            {"name": "محافظة ادلب", "description": "meta"},
-            {"name": "محافظة المنيا", "description": "language mena"},
+            {
+                "name": "محافظة حماه",
+                "description": "goo",
+                "cities": [{"name": "مدينة الحماه", "description": "meta"}],
+            },
+            {
+                "name": "محافظة حمص",
+                "description": "meta",
+                "cities": [{"name": "مدينة حمص", "description": "meta"}],
+            },
+            {
+                "name": "محافظة ادلب",
+                "description": "meta",
+                "cities": [],
+            },
+            {
+                "name": "محافظة المنيا",
+                "description": "language mena",
+                "cities": [],
+            },
         ]
+
         for governorate in governorates:
-            Governorate.objects.create(**governorate)
+            cities = governorate.pop("cities")
+            governorate_obj = Governorate.objects.create(**governorate)
+            for city in cities:
+                City.objects.create(governorate=governorate_obj, **city)
+
         yield
+
+        City.objects.all().delete()
         Governorate.objects.all().delete()
+
         reset_sequence(Governorate)
+        reset_sequence(City)
 
 
 @pytest.fixture

@@ -7,10 +7,10 @@ from rest_framework import viewsets
 
 from apps.core import filter_backends, mixins
 from apps.core.schemas import Action
+from apps.core.utils import Deleter
 
 from .. import filters, forms, models, resources, serializers
 from ..constants import cities as constants
-from ..utils import cities as utils
 
 
 class APIViewSet(
@@ -29,7 +29,7 @@ class APIViewSet(
     filterset_class = filters.APICitiesFilter
     ordering_fields = constants.ORDERING_FIELDS
     search_fields = constants.SEARCH_FIELDS
-    deleter = utils.Deleter
+    deleter = Deleter
 
     def get_serializer_class(self):
         if self.action in ("create", "update"):
@@ -48,7 +48,7 @@ class ListView(
     filter_class = filters.CityFilter
     resource_class = resources.CityResource
     activity_serializer = serializers.CityActivitySerializer
-    deleter = utils.Deleter
+    deleter = Deleter
     search_fields = constants.SEARCH_FIELDS
 
     def get_actions(self) -> dict[str, Action]:
@@ -75,5 +75,5 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
     permission_required = "geo.delete_city"
-    deleter = utils.Deleter
+    deleter = Deleter
     activity_serializer = serializers.CityActivitySerializer

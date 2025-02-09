@@ -108,7 +108,7 @@ def test_delete_activity(
 ):
     path = reverse(
         viewname="governorates:delete",
-        kwargs={"slug": "محافظة-حماه"},
+        kwargs={"slug": "محافظة-ادلب"},
     )
     response = admin_client.post(path=path, headers={"hx-request": "true"})
 
@@ -118,7 +118,7 @@ def test_delete_activity(
     assert response.status_code == 204
     assert qs.count() == 3
     assert activity.kind == "delete"
-    assert activity.data == {"name": "محافظة حماه", "description": "goo"}
+    assert activity.data == {"name": "محافظة ادلب", "description": "meta"}
     assert activity.user.username == "admin"
 
 
@@ -130,7 +130,7 @@ def test_delete_api_activity(
     model: Model,
     activity_model,
 ):
-    response = api_client.delete(path=f'{urls["api"]}1/', headers=admin_headers)
+    response = api_client.delete(path=f'{urls["api"]}3/', headers=admin_headers)
 
     qs = model.objects.all()
     activity = activity_model.objects.first()
@@ -138,7 +138,7 @@ def test_delete_api_activity(
     assert response.status_code == 204
     assert qs.count() == 3
     assert activity.kind == "delete"
-    assert activity.data == {"name": "محافظة حماه", "description": "goo"}
+    assert activity.data == {"name": "محافظة ادلب", "description": "meta"}
     assert activity.user.username == "admin"
 
 
@@ -237,7 +237,7 @@ def test_bulk_delete_activity(
     activity_model,
 ):
     data: dict = {
-        "action-check": list(range(1, 5)),
+        "action-check": list(range(3, 5)),
         "kind": "action",
         "name": "delete",
     }
@@ -246,15 +246,13 @@ def test_bulk_delete_activity(
     activities = activity_model.objects.all()
 
     data = [
-        {"name": "محافظة حماه", "description": "goo"},
-        {"name": "محافظة حمص", "description": "meta"},
         {"name": "محافظة ادلب", "description": "meta"},
         {"name": "محافظة المنيا", "description": "language mena"},
     ]
 
     assert response.status_code == 204
-    assert model.objects.count() == 0
-    assert activities.count() == 4
+    assert model.objects.count() == 2
+    assert activities.count() == 2
 
     for activity in activities:
         assert activity.kind == "delete"
@@ -272,21 +270,19 @@ def test_bulk_delete_api_activity(
 ):
     response = api_client.post(
         path=f'{urls["api"]}bulk-delete/',
-        data={"ids": list(range(1, 5))},
+        data={"ids": list(range(3, 5))},
         headers=admin_headers,
     )
     activities = activity_model.objects.all()
 
     data = [
-        {"name": "محافظة حماه", "description": "goo"},
-        {"name": "محافظة حمص", "description": "meta"},
         {"name": "محافظة ادلب", "description": "meta"},
         {"name": "محافظة المنيا", "description": "language mena"},
     ]
 
     assert response.status_code == 204
-    assert model.objects.count() == 0
-    assert activities.count() == 4
+    assert model.objects.count() == 2
+    assert activities.count() == 2
 
     for activity in activities:
         assert activity.kind == "delete"

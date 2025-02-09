@@ -65,21 +65,6 @@ def test_delete_object(
 
 
 @pytest.mark.django_db
-def test_delete_object_undeletable(
-    model: type[Model],
-    admin_client: Client,
-    headers_modal_GET: dict[str, str],
-    mocker: pytest_mock.MockerFixture,
-    app_label: str,
-    subapp_label: str,
-    counts: dict[str, int],
-) -> None:
-    delete.test_delete_object_undeletable(
-        model, admin_client, headers_modal_GET, mocker, app_label, subapp_label, counts
-    )
-
-
-@pytest.mark.django_db
 def test_delete_when_no_deleter_class_is_defined(
     admin_client: Client,
     model: type[Model],
@@ -157,30 +142,4 @@ def test_delete_and_bulk_delete_object_when_deleter_class_is_not_a_subclass_of_D
 ):
     delete.test_delete_and_bulk_delete_object_when_deleter_class_is_not_a_subclass_of_Deleter(
         api_client, urls, admin_headers, mocker, app_label, subapp_label
-    )
-
-
-@pytest.mark.django_db
-@pytest.mark.parametrize("idx", list(range(1, 11)))
-def test_api_delete_object_undeletable(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    model: type[Model],
-    mocker: pytest_mock.MockerFixture,
-    app_label: str,
-    subapp_label: str,
-    idx: int,
-    counts: dict[str, int],
-):
-    delete.test_api_delete_object_undeletable(
-        api_client,
-        urls,
-        admin_headers,
-        model,
-        mocker,
-        app_label,
-        subapp_label,
-        idx,
-        counts,
     )

@@ -127,39 +127,6 @@ def test_delete_object(
     assert model.objects.count() == counts["objects"] - 1
 
 
-def test_delete_object_undeletable(
-    model: type[Model],
-    admin_client: Client,
-    headers_modal_GET: dict[str, str],
-    mocker: pytest_mock.MockerFixture,
-    app_label: str,
-    subapp_label: str,
-    counts: dict[str, int],
-) -> None:
-    mocker.patch(
-        f"apps.{app_label}.utils.{subapp_label}.Deleter.is_obj_deletable",
-        return_value=False,
-    )
-
-    obj = model.objects.first()
-    response = admin_client.post(
-        obj.get_delete_url(),
-        headers=headers_modal_GET,
-    )
-    messages_list = list(
-        messages.get_messages(response.wsgi_request),
-    )
-
-    assert response.status_code == status.HTTP_200_OK
-    assert response.headers.get("Hx-Location") is None
-    assert response.headers.get("Hx-Retarget") == "#no-content"
-    assert response.headers.get("HX-Reswap") == "innerHTML"
-    assert response.headers.get("Hx-Trigger") == "messages"
-    assert messages_list[0].level == messages.ERROR
-    assert messages_list[0].message == f"{obj.name} cannot be deleted."
-    assert model.objects.count() == counts["objects"]
-
-
 def test_delete_when_no_deleter_class_is_defined(
     admin_client: Client,
     model: type[Model],
@@ -286,31 +253,3 @@ def test_delete_and_bulk_delete_object_when_deleter_class_is_not_a_subclass_of_D
             data={"ids": [1, 2, 3, 4, 500, 501]},
             headers=admin_headers,
         )
-
-
-@pytest.mark.parametrize("idx", list(range(1, 11)))
-def test_api_delete_object_undeletable(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    model: type[Model],
-    mocker: pytest_mock.MockerFixture,
-    app_label: str,
-    subapp_label: str,
-    idx: int,
-    counts: dict[str, int],
-):
-    objects_count = counts["objects"]
-    mocker.patch(
-        f"apps.{app_label}.utils.{subapp_label}.Deleter.is_obj_deletable",
-        return_value=False,
-    )
-
-    response: Response = api_client.delete(
-        path=f"{urls['api']}{idx}/",
-        headers=admin_headers,
-    )
-
-    assert model.objects.count() == objects_count
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert response.json()["details"].endswith("cannot be deleted.")

@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
 
 from ..models import Activity
-from ..utils import BaseDeleter
+from ..utils import Deleter
 
 
 class CreateActivitiesMixin:
@@ -33,8 +33,8 @@ class CreateActivitiesMixin:
                 data=serializer.data,
             )
             activities.append(activity)
-
-        Activity.objects.bulk_create(activities)
+        
+        return activities
 
 
 class BulkDeleteMixin(CreateActivitiesMixin):
@@ -43,19 +43,18 @@ class BulkDeleteMixin(CreateActivitiesMixin):
             raise AttributeError(
                 "you must define a deleter class for the ListView.",
             )
-
-        if not issubclass(self.deleter, BaseDeleter):
+        
+        if type(self.deleter) == Deleter:
             raise TypeError(
                 "the deleter class must be a subclass of Deleter.",
             )
 
-        deleter = self.deleter(qs)
-        count = qs.count()
+        activities = self.create_activities(qs=qs)
+        deleter: Deleter = self.deleter(queryset=qs)
+        deleter.delete()
 
-        if deleter.is_deletable():
-            self.create_activities(qs=qs)
-
-            deleter.delete()
+        if deleter.has_deleted:
+            Activity.objects.bulk_create(activities)
             response = HttpResponse(status=204)
             response["Hx-Location"] = json.dumps(
                 {
@@ -65,7 +64,7 @@ class BulkDeleteMixin(CreateActivitiesMixin):
             )
             messages.success(
                 self.request,
-                deleter.get_message(count),
+                deleter.get_message(),
             )
             response["HX-Trigger"] = "messages"
             return response
@@ -76,7 +75,7 @@ class BulkDeleteMixin(CreateActivitiesMixin):
             response["HX-Trigger"] = "messages"
             messages.error(
                 self.request,
-                deleter.get_message(count),
+                deleter.get_message(),
             )
             return response
 
@@ -92,14 +91,14 @@ class BulkDeleteAPIMixin(CreateActivitiesMixin):
                 "you must define a deleter class for the ListView.",
             )
 
-        if not issubclass(self.deleter, BaseDeleter):
+        if type(self.deleter) == Deleter:
             raise TypeError(
                 "the deleter class must be a subclass of Deleter.",
             )
 
         ids = request.data.get("ids", [])
         qs: QuerySet = self.queryset.filter(pk__in=ids)
-        count = qs.count()
+        activities = self.create_activities(qs=qs)
 
         if not qs.exists():
             return Response(
@@ -107,14 +106,14 @@ class BulkDeleteAPIMixin(CreateActivitiesMixin):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        deleter = self.deleter(qs)
+        deleter: Deleter = self.deleter(queryset=qs)
+        deleter.delete()
 
-        if deleter.is_deletable():
-            self.create_activities(qs)
-            deleter.delete()
+        if deleter.has_deleted:
+            Activity.objects.bulk_create(activities)
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(
-                {"details": deleter.get_message(count)},
+                {"details": deleter.get_message()},
                 status=status.HTTP_400_BAD_REQUEST,
             )

@@ -38,21 +38,6 @@ def test_bulk_delete_with_permissions(
 
 
 @pytest.mark.django_db
-def test_bulk_delete_with_permissions_with_undeletable_objects(
-    admin_client: Client,
-    urls: dict[str, str],
-    model: type[Model],
-    mocker: pytest_mock.MockerFixture,
-    app_label: str,
-    subapp_label: str,
-    counts: dict[str, int],
-):
-    actions.test_bulk_delete_with_permissions_with_undeletable_objects(
-        admin_client, urls, model, mocker, app_label, subapp_label, counts
-    )
-
-
-@pytest.mark.django_db
 def test_bulk_action_not_found(
     admin_client: Client,
     urls: dict[str, str],
@@ -110,19 +95,3 @@ def test_bulk_delete_objects(
     counts: dict[str, int],
 ):
     actions.test_bulk_delete_objects(api_client, urls, admin_headers, model, counts)
-
-
-@pytest.mark.django_db
-def test_bulk_delete_objects_undeletable(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    model: type[Model],
-    mocker: pytest_mock.MockerFixture,
-    app_label: str,
-    subapp_label: str,
-    counts: dict[str, int],
-):
-    actions.test_bulk_delete_objects_undeletable(
-        api_client, urls, admin_headers, model, mocker, app_label, subapp_label, counts
-    )

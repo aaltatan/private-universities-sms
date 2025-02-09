@@ -7,10 +7,10 @@ from rest_framework import viewsets
 
 from apps.core import filter_backends, mixins
 from apps.core.schemas import Action
+from apps.core.utils import Deleter
 
 from .. import filters, forms, models, resources, serializers
 from ..constants import governorates as constants
-from ..utils import governorates as utils
 
 
 class APIViewSet(
@@ -29,7 +29,7 @@ class APIViewSet(
     filterset_class = filters.APIGovernoratesFilter
     ordering_fields = constants.ORDERING_FIELDS
     search_fields = constants.SEARCH_FIELDS
-    deleter = utils.Deleter
+    deleter = Deleter
 
 
 class ListView(
@@ -43,7 +43,7 @@ class ListView(
     filter_class = filters.GovernorateFilter
     resource_class = resources.GovernorateResource
     activity_serializer = serializers.GovernorateActivitySerializer
-    deleter = utils.Deleter
+    deleter = Deleter
     search_fields = constants.SEARCH_FIELDS
 
     def get_actions(self) -> dict[str, Action]:
@@ -70,5 +70,5 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
     permission_required = "geo.delete_governorate"
-    deleter = utils.Deleter
+    deleter = Deleter
     activity_serializer = serializers.GovernorateActivitySerializer
