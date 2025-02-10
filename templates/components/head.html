@@ -19,6 +19,14 @@
   }
 </style>
 
+<script>
+  if (localStorage.getItem("dark") === "true") {
+    document.documentElement.style.backgroundColor = "#000000";
+  } else {
+    document.documentElement.style.backgroundColor = "#ffffff";
+  }
+</script>
+
 <link rel="icon" href="{% static 'favicon.ico' %}" />
 
 {% if debug %}

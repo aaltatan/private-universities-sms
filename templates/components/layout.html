@@ -5,12 +5,7 @@
 {% get_breadcrumbs as breadcrumbs %}
 
 <!DOCTYPE html>
-<html
-  lang="en"
-  :class="{'dark': dark}"
-  class="scroll"
-  x-data="theme"
->
+<html lang="en" :class="{'dark': dark}" class="scroll" x-data="theme">
   <head>
     <c-head />
   </head>
@@ -22,11 +17,11 @@
     :class="{'lg:me-64': overlaySidebarOpened}"
     @keyup.alt.equal="sidebarSearchFocus"
     x-data="layout({ title: '{{ page_title }}' || '{{ project_name }}' })"
+    x-cloak
   >
     <c-layout.modal.container />
     <c-layout.messages />
     <span class="hidden" id="no-content"></span>
-
     <c-layout.sidebar.sidebar>
       <c-layout.header />
       <div class="mt-2 text-center sm:hidden">
