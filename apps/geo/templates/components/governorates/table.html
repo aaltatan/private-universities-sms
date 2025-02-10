@@ -112,17 +112,6 @@
                 {% translate 'activities' %}
               </c-layout.context-menu.item>
               {% endif %}
-              <!--  -->
-              {% if can_update %}
-              <c-layout.context-menu.item
-                icon="pencil"
-                href="{{ obj.get_update_url }}{% querystring %}"
-                class="capitalize block w-full"
-                aria-label="edit object"
-              >
-                {% translate 'edit' %}
-              </c-layout.context-menu.item>
-              {% endif %}
             </c-layout.context-menu.section>
             {% endif %}
             <!--  -->

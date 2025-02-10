@@ -7,6 +7,7 @@
   :form="form"
 >
   <c-inputs.text :field="form.name" />
+  {% if perms.governorates.can_create %}
   <c-inputs.text :field="form.governorate" :has_add="True">
     <c-button
       rounded="full"
@@ -19,5 +20,8 @@
       @click.prevent="showModal"
     />
   </c-inputs.text>
+  {% else %}
+  <c-inputs.text :field="form.governorate" />
+  {% endif %}
   <c-inputs.text :field="form.description" />
 </c-forms.update>

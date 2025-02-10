@@ -29,6 +29,7 @@
     href="#"
     role="button"
     :title="textsConcat"
+    @keydown.down="comboboxOpen = true"
     @keypress.space="sortHandler"
     @click="sortHandler"
     class="text-input !flex items-center justify-between"
@@ -118,7 +119,3 @@
     <div class="w-full p-2" x-show="!options.length">{% translate 'no options' %}</div>
   </div>
 </div>
-
-<script>
-  
-</script>

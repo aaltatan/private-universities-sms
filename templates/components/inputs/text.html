@@ -20,7 +20,7 @@
   {% if has_add or show_label %}
   <div class="flex items-center gap-1">
     {% if show_label %}
-    <label for="{{ field.id_for_label }}" class="flex w-fit items-center gap-1 pl-0.5 text-sm">
+    <label for="{{ field.id_for_label }}" class="flex w-fit items-center gap-1 pl-0.5 text-sm capitalize">
       {{ field.label }}:
       <span
         class="text-[red] hidden"

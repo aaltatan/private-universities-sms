@@ -91,10 +91,13 @@ export function autocomplete(data = { url, initial, eventName }) {
       this.isListOpen = false;
     },
     resetList() {
-      this.$refs.list.innerHTML = "";
+      this.$refs.autocompleteList.innerHTML = "";
     },
     resetKeywords() {
       this.keywords = "";
+    },
+    handleNoResults() {
+      this.$refs.autocompleteInput.select();
     },
     handleSelectOption(pk) {
       this.keywords = pk;
@@ -112,16 +115,16 @@ export function autocomplete(data = { url, initial, eventName }) {
       }
     },
     handleDisableInput() {
-      this.$refs.input.disabled = true;
-      this.$refs.indicator.classList.remove("hidden");
+      this.$refs.autocompleteInput.disabled = true;
+      this.$refs.autocompleteIndicator.classList.remove("hidden");
     },
     handleEnableInput() {
-      this.$refs.input.disabled = false;
-      this.$refs.indicator.classList.add("hidden");
+      this.$refs.autocompleteInput.disabled = false;
+      this.$refs.autocompleteIndicator.classList.add("hidden");
     },
     async getInitialValue() {
       this.handleDisableInput();
-      let querystring = this.$refs.input.getAttribute("querystring");
+      let querystring = this.$refs.autocompleteInput.getAttribute("querystring");
       let csrfToken = getCookie("csrftoken");
       let fullPath = `${data.url}${data.initial}/?${querystring}`;
 

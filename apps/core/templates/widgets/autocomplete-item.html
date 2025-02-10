@@ -12,6 +12,8 @@
 </li>
 {% empty %}
 <li class="p-2">
-  <button @focus.prevent="reset">{% translate 'no results'|title %}</button>
+  <button x-init="handleNoResults" @focus.prevent="reset">
+    {% translate 'no results'|title %}
+  </button>
 </li>
 {% endfor %}

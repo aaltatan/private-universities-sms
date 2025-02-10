@@ -3,7 +3,61 @@ export function layout({ title }) {
     init() {
       document.title = title;
     },
-    /* --------------- sidebar --------------- */
+    ...sidebar(),
+    ...overlaySidebar(),
+    ...modal(),
+    ...fullWidthContainer(),
+  };
+}
+
+export function theme() {
+  return {
+    dark: Alpine.$persist(true).as("dark"),
+    toggleDark() {
+      this.dark = !this.dark;
+    },
+  };
+}
+
+function fullWidthContainer() {
+  return {
+    fullWidthContainer: Alpine.$persist(false).as("full-width-container"),
+    toggleFullWidthContainer() {
+      this.fullWidthContainer = !this.fullWidthContainer;
+    },
+  };
+}
+
+function modal() {
+  return {
+    modalStatus: false,
+    showModal() {
+      this.modalStatus = !this.modalStatus;
+      this.$refs.modal.remove();
+    },
+    hideModal() {
+      this.modalStatus = false;
+    },
+  };
+}
+
+function overlaySidebar() {
+  return {
+    overlaySidebarOpened: false,
+    openOverlaySidebar() {
+      this.overlaySidebarOpened = true;
+    },
+    closeOverlaySidebar() {
+      this.overlaySidebarOpened = false;
+    },
+    toggleOverlaySidebar() {
+      this.overlaySidebarOpened = !this.overlaySidebarOpened;
+    },
+  };
+}
+
+function sidebar() {
+  return {
     sidebarOpened: false,
     sidebarFixed: Alpine.$persist(true).as("sidebar-fixed"),
     sidebarSearch: Alpine.$persist("").as("sidebar-search"),
@@ -32,42 +86,9 @@ export function layout({ title }) {
           href: href.href,
           text: href.innerText?.toLowerCase(),
         };
-        href.ariaHidden = !obj.text.includes(this.sidebarSearch) && !obj.href.includes(this.sidebarSearch);
+        href.ariaHidden =
+          !obj.text.includes(this.sidebarSearch) && !obj.href.includes(this.sidebarSearch);
       });
-    },
-    /* ----------- overlay sidebar ----------- */
-    overlaySidebarOpened: false,
-    openOverlaySidebar() {
-      this.overlaySidebarOpened = true;
-    },
-    closeOverlaySidebar() {
-      this.overlaySidebarOpened = false;
-    },
-    toggleOverlaySidebar() {
-      this.overlaySidebarOpened = !this.overlaySidebarOpened;
-    },
-    /* ---------------- modal ---------------- */
-    modalStatus: false,
-    showModal() {
-      this.modalStatus = !this.modalStatus;
-      this.$refs.modal.remove();
-    },
-    hideModal() {
-      this.modalStatus = false;
-    },
-    /* -------------- full width ------------- */
-    fullWidthContainer: Alpine.$persist(false).as("full-width-container"),
-    toggleFullWidthContainer() {
-      this.fullWidthContainer = !this.fullWidthContainer;
-    },
-  };
-}
-
-export function theme() {
-  return {
-    dark: Alpine.$persist(true).as("dark"),
-    toggleDark() {
-      this.dark = !this.dark;
     },
   };
 }

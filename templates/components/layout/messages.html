@@ -5,11 +5,17 @@
     'warning': 'exclamation-triangle',
     'error': 'exclamation-circle',
   }"
+  :ring_colors="{
+    'info': 'ring-blue-500',
+    'success': 'ring-green-500',
+    'warning': 'ring-orange-500',
+    'error': 'ring-red-500',
+  }"
   icon="success"
 />
 
 <ul
-  class="fixed end-4 bottom-4 z-50 w-64 space-y-2 bg-white dark:bg-neutral-900 rounded-md shadow-md dark:shadow-none border border-neutral-300 dark:border-neutral-800 text-neutral-600 dark:text-neutral-300"
+  class="fixed end-4 bottom-4 z-50 w-64 space-y-2 bg-white dark:bg-neutral-900 rounded-md shadow-md dark:shadow-none text-neutral-600 dark:text-neutral-300"
   :class="!$el.innerHTML.trim().replace(' ', '') && '!hidden'"
   id="messages-container"
   hx-get="{% url 'core:messages' %}"
@@ -26,7 +32,7 @@
   {% if messages %}
   <!--  -->
   {% for message in messages %}
-  <li class="flex items-center gap-1 w-full rounded-md p-4 text-xs">
+  <li class="flex items-center gap-1 w-full rounded-md p-4 text-xs ring-2 {{ ring_colors|get_item:message.tags }}">
     {% heroicon_outline icons|get_item:message.tags size="32" class=message.tags %}
     <!--  -->
     {{ message }}

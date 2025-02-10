@@ -14,7 +14,7 @@ class="relative"
     @keypress.debounce.750="handleRequest"
     @keydown.enter.prevent=""
     x-model="keywords"
-    x-ref="input"
+    x-ref="autocompleteInput"
     hx-get="{% url 'core:autocomplete' %}?{{ widget.attrs.querystring }}"
     hx-trigger="autocomplete-{{ widget.name }}"
     hx-target="ul[role='list']"
@@ -37,7 +37,7 @@ class="relative"
     <span 
       class="absolute end-2 top-1/2 -translate-y-1/2 hidden hx-request:block" 
       id="{{ widget.name }}-indicator"
-      x-ref="indicator"
+      x-ref="autocompleteIndicator"
     >
       <span class="block animate-spin">
         {% heroicon_outline "arrow-path" size="20" %}
@@ -54,6 +54,6 @@ class="relative"
   @keydown.up.prevent="$focus.wrap().previous()"
   class="absolute top-[calc(100%+0.5rem)] z-50 w-full max-h-48 overflow-auto rounded-md border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none scroll empty:hidden"
   role="list" 
-  x-ref="list"
+  x-ref="autocompleteList"
   ></ul>
 </div>
