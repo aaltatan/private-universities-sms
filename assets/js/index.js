@@ -9,7 +9,7 @@ import Autosize from "@marcreichel/alpine-autosize";
 window.htmx = require("htmx.org");
 window.Alpine = Alpine;
 
-import { layout, theme } from "./src/layout";
+import { layout, theme, sidebarLinks } from "./src/layout";
 import { contextMenu } from "./src/context-menu";
 import { tableCheckAll } from "./src/td-check-all";
 import { alert } from "./src/alert";
@@ -26,6 +26,7 @@ Alpine.plugin(Autosize);
 
 document.addEventListener("alpine:init", () => {
   Alpine.data("layout", layout);
+  Alpine.data("sidebarLinks", sidebarLinks);
   Alpine.data("theme", theme);
   Alpine.data("contextMenu", contextMenu);
   Alpine.data("tableCheckAll", tableCheckAll);

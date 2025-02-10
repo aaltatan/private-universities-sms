@@ -49,7 +49,7 @@
     <div class="flex flex-col gap-2 overflow-y-auto pb-6">
       {% for link in sidebar_links %}
       <a
-        href="{{ link.href }}"
+        :href="'{{ link.href }}' + (sidebarLinksQuerystring['{{ link.href }}'] || '')"
         aria-hidden="false"
         id="sidebar-link-{{ forloop.counter }}"
         class="{% active_link link.href %} aria-hidden:hidden flex items-center rounded-md gap-2 p-2 text-sm underline-offset-2 focus-visible:underline text-neutral-700 font-medium hover:text-black dark:text-neutral-300 dark:hover:text-white focus:outline-none [&.active]:bg-neutral-200/60 [&.active]:dark:bg-neutral-900 hover:!bg-neutral-200/60 hover:dark:!bg-neutral-900"

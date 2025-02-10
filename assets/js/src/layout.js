@@ -10,6 +10,16 @@ export function layout({ title }) {
   };
 }
 
+export function sidebarLinks() {
+  return {
+    init() {
+      let querystring = window.location.search;
+      let path = window.location.pathname;
+      this.sidebarLinksQuerystring[path] = querystring;
+    }
+  }
+}
+
 export function theme() {
   return {
     dark: Alpine.$persist(true).as("dark"),
@@ -61,6 +71,7 @@ function sidebar() {
     sidebarOpened: false,
     sidebarFixed: Alpine.$persist(true).as("sidebar-fixed"),
     sidebarSearch: Alpine.$persist("").as("sidebar-search"),
+    sidebarLinksQuerystring: Alpine.$persist({}).as("sidebar-links"),
     toggleSidebarFixed() {
       this.sidebarFixed = !this.sidebarFixed;
     },
