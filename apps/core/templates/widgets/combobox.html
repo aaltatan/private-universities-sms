@@ -71,8 +71,7 @@
       />
 
       <ul class="text-sm max-h-48 overflow-y-auto scroll p-1">
-        <li
-          class="p-2 rounded flex items-center gap-2 hover:dark:bg-neutral-900 hover:bg-neutral-200"
+        <li class="px-2 rounded flex items-center gap-2 hover:dark:bg-neutral-900 hover:bg-neutral-200"
         >
           <div class="relative flex items-center">
             <input
@@ -85,13 +84,13 @@
           </div>
           <label
             :for="`check-all-options-${name}`"
-            class="w-full block first-letter:capitalize text-xs"
+            class="w-full block first-letter:capitalize text-xs py-2"
             >{% translate 'select all' %}</label
           >
         </li>
         <template x-for="option in options" :key="option.value">
           <li
-            class="p-2 rounded flex items-center gap-2 hover:dark:bg-neutral-900 hover:bg-neutral-200"
+            class="px-2 rounded flex items-center gap-2 hover:dark:bg-neutral-900 hover:bg-neutral-200"
             x-show="option.show"
           >
             <div class="relative flex items-center">
@@ -109,7 +108,7 @@
             <label
               :for="option.name + '-' + option.value"
               x-text="option.label"
-              class="w-full block first-letter:capitalize text-xs"
+              class="w-full block first-letter:capitalize text-xs py-2"
             ></label>
           </li>
         </template>
