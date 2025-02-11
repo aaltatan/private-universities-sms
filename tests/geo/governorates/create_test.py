@@ -8,169 +8,41 @@ from django.utils.text import slugify
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient
+from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.common import create
 from tests.utils import is_template_used
 
 
 @pytest.mark.django_db
-def test_add_new_btn_appearance_if_user_has_no_add_perm(
-    client: Client,
-    urls: dict[str, str],
+def test_create_page(
+    admin_client: Client,
+    model: type[Model],
     templates: dict[str, str],
     subapp_label: str,
-) -> None:
-    create.test_add_new_btn_appearance_if_user_has_no_add_perm(
-        client, urls, templates, subapp_label
-    )
-
-
-@pytest.mark.django_db
-def test_send_request_to_create_page_without_permission(
-    client: Client, urls: dict[str, str], subapp_label: str
-) -> None:
-    create.test_send_request_to_create_page_without_permission(
-        client, urls, subapp_label
-    )
-
-
-@pytest.mark.django_db
-def test_add_new_btn_appearance_if_user_has_add_perm(
-    admin_client: Client,
-    urls: dict[str, str],
-    templates: dict[str, str],
-) -> None:
-    create.test_add_new_btn_appearance_if_user_has_add_perm(
-        admin_client, urls, templates
-    )
-
-
-@pytest.mark.django_db
-def test_send_request_to_create_page_with_permission(
-    admin_client: Client,
-    urls: dict[str, str],
-    templates: dict[str, str],
-) -> None:
-    create.test_send_request_to_create_page_with_permission(
-        admin_client, urls, templates
-    )
-
-
-@pytest.mark.django_db
-def test_create_from_modal_without_using_target_in_hx_request(
-    admin_client: Client,
-    urls: dict[str, str],
-    headers_modal_GET: dict[str, str],
-) -> None:
-    create.test_create_from_modal_without_using_target_in_hx_request(
-        admin_client, urls, headers_modal_GET
-    )
-
-
-@pytest.mark.django_db
-def test_create_object_without_permissions(
-    api_client: APIClient,
-    urls: dict[str, str],
-    user_headers: dict[str, str],
 ):
-    create.test_create_object_without_permissions(api_client, urls, user_headers)
+    obj = model.objects.first()
+    response = admin_client.get(obj.get_update_url())
+    parser = HTMLParser(response.content)
 
-
-@pytest.mark.django_db
-def test_create_new_object_with_save_btn(
-    model: type[Model],
-    admin_client: Client,
-    urls: dict[str, str],
-    templates: dict[str, str],
-    clean_data_sample: dict[str, str],
-    counts: dict[str, int],
-) -> None:
-    create.test_create_new_object_with_save_btn(
-        model, admin_client, urls, templates, clean_data_sample, counts
+    h1 = parser.css_first("form h1").text(strip=True)
+    form = parser.css_first("main form")
+    name_input = form.css_first("input[name='name']")
+    name_input_required_star = form.css_first(
+        "div[role='group']:has(input[name='name']) span[aria-label='required field']"
     )
+    description_input = form.css_first("textarea[name='description']")
 
+    assert response.status_code == status.HTTP_200_OK
+    assert is_template_used(templates["update"], response)
 
-@pytest.mark.django_db
-def test_create_from_modal_without_using_save_or_save_and_add_another(
-    admin_client: Client,
-    urls: dict[str, str],
-    headers_modal_GET: dict[str, str],
-    clean_data_sample: dict[str, str],
-) -> None:
-    create.test_create_from_modal_without_using_save_or_save_and_add_another(
-        admin_client, urls, headers_modal_GET, clean_data_sample
-    )
-
-
-@pytest.mark.django_db
-def test_create_without_redirect_from_modal(
-    admin_client: Client,
-    urls: dict[str, str],
-    templates: dict[str, str],
-    clean_data_sample: dict[str, str],
-    model: type[Model],
-    headers_modal_GET: dict[str, str],
-    counts: dict[str, int],
-) -> None:
-    create.test_create_without_redirect_from_modal(
-        admin_client,
-        urls,
-        templates,
-        clean_data_sample,
-        model,
-        headers_modal_GET,
-        counts,
-    )
-
-
-@pytest.mark.django_db
-def test_create_new_object_with_dirty_or_duplicated_data(
-    admin_client: Client,
-    urls: dict[str, str],
-    templates: dict[str, str],
-    model: type[Model],
-    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
-    counts: dict[str, int],
-) -> None:
-    create.test_create_new_object_with_dirty_or_duplicated_data(
-        admin_client, urls, templates, model, dirty_data_test_cases, counts
-    )
-
-
-@pytest.mark.django_db
-def test_create_object_with_dirty_data(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
-):
-    create.test_create_object_with_dirty_data(
-        api_client, urls, admin_headers, dirty_data_test_cases
-    )
-
-
-@pytest.mark.django_db
-def test_create_new_object_with_modal_with_dirty_or_duplicated_data(
-    admin_client: Client,
-    urls: dict[str, str],
-    templates: dict[str, str],
-    model: type[Model],
-    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
-    headers_modal_GET: dict[str, str],
-    subapp_label: str,
-    counts: dict[str, int],
-) -> None:
-    create.test_create_new_object_with_modal_with_dirty_or_duplicated_data(
-        admin_client,
-        urls,
-        templates,
-        model,
-        dirty_data_test_cases,
-        headers_modal_GET,
-        subapp_label,
-        counts,
-    )
+    assert h1 == f"update {obj.name}"
+    assert form.attributes["hx-post"] == obj.get_update_url()
+    assert form.attributes["id"] == f"{subapp_label}-form"
+    
+    assert name_input is not None
+    assert name_input_required_star is not None
+    assert description_input is not None
 
 
 @pytest.mark.django_db

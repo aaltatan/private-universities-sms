@@ -33,7 +33,7 @@ class CreateActivitiesMixin:
                 data=serializer.data,
             )
             activities.append(activity)
-        
+
         return activities
 
 
@@ -43,8 +43,8 @@ class BulkDeleteMixin(CreateActivitiesMixin):
             raise AttributeError(
                 "you must define a deleter class for the ListView.",
             )
-        
-        if type(self.deleter) == Deleter:
+
+        if not issubclass(self.deleter, Deleter):
             raise TypeError(
                 "the deleter class must be a subclass of Deleter.",
             )
@@ -91,7 +91,7 @@ class BulkDeleteAPIMixin(CreateActivitiesMixin):
                 "you must define a deleter class for the ListView.",
             )
 
-        if type(self.deleter) == Deleter:
+        if not issubclass(self.deleter, Deleter):
             raise TypeError(
                 "the deleter class must be a subclass of Deleter.",
             )

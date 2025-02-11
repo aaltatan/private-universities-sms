@@ -51,10 +51,12 @@ class BaseCitiesFilter(filters.FilterSet):
         fields = ("name", "governorate", "description")
 
 
-class APICitiesFilter(BaseCitiesFilter):
-    governorate = filters.ModelMultipleChoiceFilter(
-        queryset=models.Governorate.objects.all(),
-        label=_("governorate").title(),
+class APICitiesFilter(FilterComboboxMixin, BaseCitiesFilter):
+    governorate = get_combobox_choices_filter(
+        model=models.City,
+        field_name="governorate__name",
+        label=_("governorate"),
+        api_filter=True,
     )
 
 

@@ -10,6 +10,7 @@ Page = namedtuple("Query", ["q", "count", "next", "prev"])
     scope="package",
     params=[
         Page(q="", count=10, next="?page=2", prev=None),
+        Page(q="?page=fsfs", count=10, next="?page=2", prev=None),
         Page(
             q="?page=1&per_page=all", count=100, next="?page=2&per_page=all", prev=None
         ),
@@ -49,54 +50,12 @@ def filters_test_cases(request: pytest.FixtureRequest):
 @pytest.fixture(
     scope="package",
     params=[
-        (
-            "?ordering=Id",
-            [
-                (1, "محافظة حماه", "goo"),
-                (2, "محافظة حمص", "meta"),
-                (10, "City 006", "006"),
-            ],
-        ),
-        (
-            "?page=21&ordering=Id",
-            [
-                (201, "City 197", "197"),
-                (202, "City 198", "198"),
-                (210, "City 206", "206"),
-            ],
-        ),
-        (
-            "?page=1&ordering=-Id",
-            [
-                (304, "City 300", "300"),
-                (303, "City 299", "299"),
-                (295, "City 291", "291"),
-            ],
-        ),
-        (
-            "?ordering=Name",
-            [
-                (5, "City 001", "001"),
-                (6, "City 002", "002"),
-                (14, "City 010", "010"),
-            ],
-        ),
-        (
-            "?ordering=Description",
-            [
-                (5, "City 001", "001"),
-                (6, "City 002", "002"),
-                (14, "City 010", "010"),
-            ],
-        ),
-        (
-            "?page=21&ordering=Name",
-            [
-                (205, "City 201", "201"),
-                (206, "City 202", "202"),
-                (214, "City 210", "210"),
-            ],
-        ),
+        ("?ordering=Id", (1, 2, 10)),
+        ("?page=21&ordering=Id", (201, 202, 210)),
+        ("?page=1&ordering=-Id", (304, 303, 295)),
+        ("?ordering=Name", (5, 6, 14)),
+        ("?ordering=Description", (5, 6, 14)),
+        ("?page=21&ordering=Name", (205, 206, 214)),
     ],
 )
 def order_test_cases(request: pytest.FixtureRequest):

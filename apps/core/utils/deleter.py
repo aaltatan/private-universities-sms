@@ -64,13 +64,13 @@ class Deleter(Generic[T]):
         return True
 
     def delete(self) -> tuple[int, dict[str, int]] | None:
-        obj_status = self.check_obj_deleting_possibility(self._obj)
-        qs_status = self.check_queryset_deleting_possibility(self._obj)
 
-        if self._kind == "obj" and not obj_status:
-            return self._handle_deleting_error()
+        if self._kind == "obj":
+            status = self.check_obj_deleting_possibility(self._obj)
+        elif self._kind == "qs":
+            status = self.check_queryset_deleting_possibility(self._obj)
 
-        if self._kind == "qs" and not qs_status:
+        if not status:
             return self._handle_deleting_error()
 
         try:

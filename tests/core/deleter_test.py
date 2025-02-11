@@ -175,3 +175,35 @@ def test_deleter_class_with_qs_with_custom_checking(model: type[Model]):
     assert deleter.has_deleted is False
     assert deleter.get_message() == "error qs message"
     assert model.objects.count() == 4
+
+
+@pytest.mark.django_db
+def test_deleter_class_when_provide_qs_and_object(model: type[Model]):
+    class InvalidDeleter(Deleter):
+        pass
+
+    with pytest.raises(ValueError):
+        InvalidDeleter(
+            queryset=model.objects.all(),
+            obj=model.objects.first(),
+        )
+
+
+@pytest.mark.django_db
+def test_deleter_class_when_not_provide_qs_or_object(model: type[Model]):
+    class InvalidDeleter(Deleter):
+        pass
+
+    with pytest.raises(ValueError):
+        InvalidDeleter()
+
+
+@pytest.mark.django_db
+def test_deleter_class_when_provide_qs_not_instance_of_queryset(
+    model: type[Model],
+):
+    class InvalidDeleter(Deleter):
+        pass
+
+    with pytest.raises(ValueError):
+        InvalidDeleter(queryset=model.objects.all().first())

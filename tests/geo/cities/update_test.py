@@ -30,6 +30,10 @@ def test_update_page(
     name_input_required_star = form.css_first(
         "div[role='group']:has(input[name='name']) span[aria-label='required field']"
     )
+    governorate_input = form.css_first("input[name='governorate']")
+    governorate_input_required_star = form.css_first(
+        "div[role='group']:has(input[name='governorate']) span[aria-label='required field']"
+    )
     description_input = form.css_first("textarea[name='description']")
     required_star = form.css_first("span[aria-label='required field']")
 
@@ -41,10 +45,12 @@ def test_update_page(
 
     assert "required" in name_input.attributes
     assert name_input.attributes["value"] == obj.name
+    assert governorate_input.attributes["value"] == str(obj.governorate.pk)
     assert description_input.text(strip=True) == obj.description
 
     assert required_star is not None
     assert name_input_required_star is not None
+    assert governorate_input_required_star is not None
 
 
 @pytest.mark.django_db
@@ -111,6 +117,7 @@ def test_update_form_with_clean_data(
         get_messages(request=response.wsgi_request),
     )
     name = clean_data_sample["name"]
+    governorate = clean_data_sample["governorate"]
     description = clean_data_sample["description"]
     obj = model.objects.get(id=1)
 
@@ -120,6 +127,7 @@ def test_update_form_with_clean_data(
     assert response.headers.get("Hx-redirect") == urls["index"] + querystring
     assert model.objects.count() == counts["objects"]
     assert obj.name == name
+    assert obj.governorate.name == governorate
     assert obj.description == description
 
 
@@ -157,6 +165,7 @@ def test_update_with_redirect_from_modal(
         get_messages(request=response.wsgi_request),
     )
     name = clean_data_sample["name"]
+    governorate = clean_data_sample["governorate"]
     description = clean_data_sample["description"]
 
     assert location.get("target") == f"#{subapp_label}-table"
@@ -168,6 +177,7 @@ def test_update_with_redirect_from_modal(
     obj = model.objects.get(id=1)
 
     assert obj.name == name
+    assert obj.governorate.name == governorate
     assert obj.description == description
 
 
@@ -199,7 +209,9 @@ def test_update_without_redirect_from_modal(
     headers = {**headers, "target": "#no-content"}
     response = admin_client.post(url, clean_data_sample, headers=headers)
     messages_list = list(get_messages(request=response.wsgi_request))
+
     name = clean_data_sample["name"]
+    governorate = clean_data_sample["governorate"]
     description = clean_data_sample["description"]
 
     assert response.headers.get("Hx-Location") is None
@@ -213,6 +225,7 @@ def test_update_without_redirect_from_modal(
     obj = model.objects.get(id=4)
 
     assert obj.name == name
+    assert obj.governorate.name == governorate
     assert obj.description == description
 
 
@@ -227,6 +240,7 @@ def test_update_object(
         path=f"{urls['api']}1/",
         data={
             "name": "Hamah",
+            "governorate_id": 3,
             "description": "some description",
         },
         headers=admin_headers,
@@ -237,7 +251,9 @@ def test_update_object(
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["name"] == "Hamah"
     assert response.json()["description"] == "some description"
+
     assert first.name == "Hamah"
+    assert first.governorate.name == "محافظة دمشق"
     assert first.description == "some description"
 
 

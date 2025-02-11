@@ -1,71 +1,27 @@
 import pytest
 import pytest_mock
+from django.contrib import messages
 from django.test import Client
 from rest_framework.test import APIClient
 
 from apps.core.models import AbstractUniqueNameModel as Model
-
-from tests.common import delete
-
-
-@pytest.mark.django_db
-def test_delete_btn_appearance_if_user_has_delete_perm(
-    admin_client: Client, urls: dict[str, str]
-) -> None:
-    delete.test_delete_btn_appearance_if_user_has_delete_perm(admin_client, urls)
+from apps.core.utils import Deleter
+from apps.geo.models import Governorate
 
 
-@pytest.mark.django_db
-def test_delete_object_if_headers_has_no_hx_request(
-    admin_client: Client, model: type[Model]
-) -> None:
-    delete.test_delete_object_if_headers_has_no_hx_request(admin_client, model)
+class CustomDeleter(Deleter[Governorate]):
+    error_obj_msg = "error obj message"
+    error_qs_msg = "error qs message"
+
+    def check_obj_deleting_possibility(self, obj: Governorate) -> bool:
+        return obj.pk not in [1, 2]
+
+    def check_queryset_deleting_possibility(self, qs) -> bool:
+        return not qs.filter(pk__in=[1, 2]).exists()
 
 
 @pytest.mark.django_db
-def test_delete_btn_appearance_if_user_has_no_delete_perm(
-    client: Client,
-    urls: dict[str, str],
-    model: type[Model],
-    subapp_label: str,
-) -> None:
-    delete.test_delete_btn_appearance_if_user_has_no_delete_perm(
-        client, urls, model, subapp_label
-    )
-
-
-@pytest.mark.django_db
-def test_get_delete_modal_without_using_htmx(
-    model: type[Model], admin_client: Client
-) -> None:
-    delete.test_get_delete_modal_without_using_htmx(model, admin_client)
-
-
-@pytest.mark.django_db
-def test_get_delete_modal_with_using_htmx(
-    model: type[Model],
-    admin_client: Client,
-    templates: dict[str, str],
-    headers_modal_GET: dict[str, str],
-) -> None:
-    delete.test_get_delete_modal_with_using_htmx(
-        model, admin_client, templates, headers_modal_GET
-    )
-
-
-@pytest.mark.django_db
-def test_delete_object(
-    model: type[Model],
-    admin_client: Client,
-    urls: dict[str, str],
-    headers_modal_GET: dict[str, str],
-    counts: dict[str, int],
-) -> None:
-    delete.test_delete_object(model, admin_client, urls, headers_modal_GET, counts)
-
-
-@pytest.mark.django_db
-def test_delete_when_no_deleter_class_is_defined(
+def test_delete_object_not_deletable(
     admin_client: Client,
     model: type[Model],
     headers_modal_GET: dict[str, str],
@@ -73,73 +29,103 @@ def test_delete_when_no_deleter_class_is_defined(
     app_label: str,
     subapp_label: str,
 ):
-    delete.test_delete_when_no_deleter_class_is_defined(
-        admin_client, model, headers_modal_GET, mocker, app_label, subapp_label
+    mocker.patch(
+        f"apps.{app_label}.views.{subapp_label}.DeleteView.deleter", new=CustomDeleter
     )
+
+    delete_url = model.objects.order_by("id").first().get_delete_url()
+    response = admin_client.post(delete_url, headers=headers_modal_GET)
+    messages_list = list(
+        messages.get_messages(request=response.wsgi_request),
+    )
+
+    assert response.status_code == 200
+    assert messages_list[0].level == messages.ERROR
+    assert messages_list[0].message == "error obj message"
+    assert model.objects.count() == 304
 
 
 @pytest.mark.django_db
-def test_delete_when_deleter_class_is_not_subclass_of_Deleter(
+def test_api_delete_object_not_deletable(
+    api_client: APIClient,
+    admin_headers: dict[str, str],
+    urls: dict[str, str],
+    model: type[Model],
+    mocker: pytest_mock.MockerFixture,
+    app_label: str,
+    subapp_label: str,
+):
+    mocker.patch(
+        f"apps.{app_label}.views.{subapp_label}.APIViewSet.deleter", new=CustomDeleter
+    )
+
+    delete_url = f"{urls['api']}1/"
+
+    response = api_client.delete(delete_url, headers=admin_headers)
+
+    assert response.status_code == 400
+    assert model.objects.count() == 304
+    assert response.json()["details"] == "error obj message"
+
+
+@pytest.mark.django_db
+def test_api_delete_objects_not_deletable(
+    api_client: APIClient,
+    admin_headers: dict[str, str],
+    urls: dict[str, str],
+    model: type[Model],
+    mocker: pytest_mock.MockerFixture,
+    app_label: str,
+    subapp_label: str,
+):
+    mocker.patch(
+        f"apps.{app_label}.views.{subapp_label}.APIViewSet.deleter", new=CustomDeleter
+    )
+
+    delete_url = f"{urls['api']}bulk-delete/"
+    payload = {"ids": [1, 2, 3, 4, 500, 501]}
+
+    response = api_client.post(
+        delete_url,
+        headers=admin_headers,
+        data=payload,
+    )
+
+    assert response.status_code == 400
+    assert model.objects.count() == 304
+    assert response.json()["details"] == "error qs message"
+
+
+@pytest.mark.django_db
+def test_delete_objects_not_deletable(
     admin_client: Client,
     model: type[Model],
+    urls: dict[str, str],
     headers_modal_GET: dict[str, str],
     mocker: pytest_mock.MockerFixture,
     app_label: str,
     subapp_label: str,
 ):
-    delete.test_delete_when_deleter_class_is_not_subclass_of_Deleter(
-        admin_client, model, headers_modal_GET, mocker, app_label, subapp_label
+    mocker.patch(
+        f"apps.{app_label}.views.{subapp_label}.ListView.deleter", new=CustomDeleter
     )
 
+    payload = {
+        "action-check": list(range(1, 10)),
+        "kind": "action",
+        "name": "delete",
+    }
 
-@pytest.mark.django_db
-def test_api_delete_object(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    model: type[Model],
-    counts: dict[str, int],
-):
-    delete.test_api_delete_object(api_client, urls, admin_headers, model, counts)
-
-
-@pytest.mark.django_db
-def test_delete_object_with_invalid_id(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    model: type[Model],
-    model_name: str,
-    counts: dict[str, int],
-):
-    delete.test_delete_object_with_invalid_id(
-        api_client, urls, admin_headers, model, model_name, counts
+    response = admin_client.post(
+        urls["index"],
+        headers=headers_modal_GET,
+        data=payload,
+    )
+    messages_list = list(
+        messages.get_messages(request=response.wsgi_request),
     )
 
-
-@pytest.mark.django_db
-def test_delete_and_bulk_delete_object_when_deleter_class_is_None(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    mocker: pytest_mock.MockerFixture,
-    app_label: str,
-    subapp_label: str,
-):
-    delete.test_delete_and_bulk_delete_object_when_deleter_class_is_None(
-        api_client, urls, admin_headers, mocker, app_label, subapp_label
-    )
-
-
-@pytest.mark.django_db
-def test_delete_and_bulk_delete_object_when_deleter_class_is_not_a_subclass_of_Deleter(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    mocker: pytest_mock.MockerFixture,
-    app_label: str,
-    subapp_label: str,
-):
-    delete.test_delete_and_bulk_delete_object_when_deleter_class_is_not_a_subclass_of_Deleter(
-        api_client, urls, admin_headers, mocker, app_label, subapp_label
-    )
+    assert response.status_code == 200
+    assert messages_list[0].level == messages.ERROR
+    assert messages_list[0].message == "error qs message"
+    assert model.objects.count() == 304

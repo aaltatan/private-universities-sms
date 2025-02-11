@@ -1,4 +1,4 @@
-from typing import Mapping
+from typing import Any, Mapping
 
 import django_filters as filters
 from django.db.models import Model, Q, QuerySet
@@ -54,16 +54,22 @@ def get_combobox_choices_filter(
     field_name: str,
     label: str,
     method_name: str = "filter_combobox",
-    choices=None,
+    choices: Any = None,
+    api_filter: bool = False,
 ) -> filters.MultipleChoiceFilter:
+    """
+    you must define a filter_combobox method in the model or useFilterComboboxMixin .
+    """
     kwargs = {
         "field_name": field_name,
         "label": label,
         "method": method_name,
-        "widget": ComboboxWidget(
-            attrs={"data-name": label},
-        ),
     }
+
+    if not api_filter:
+        kwargs["widget"] = ComboboxWidget(
+            attrs={"data-name": label},
+        )
 
     if choices is not None:
         kwargs["choices"] = choices

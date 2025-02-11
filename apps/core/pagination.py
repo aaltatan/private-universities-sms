@@ -11,6 +11,13 @@ class CorePagination(PageNumberPagination):
     page_size_query_param = "per_page"
     max_page_size = settings.MAX_PAGE_SIZE
 
+    def get_previous_link(self):
+        if not self.page.has_previous():
+            return None
+        url = self.request.build_absolute_uri()
+        page_number = self.page.previous_page_number()
+        return replace_query_param(url, self.page_query_param, page_number)
+
     def get_current_link(self):
         url = self.request.build_absolute_uri()
         page_number = self.page.number
