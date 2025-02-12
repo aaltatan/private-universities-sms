@@ -25,13 +25,13 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                 "href": reverse("governorates:index"),
                 "text": _("governorates").title(),
                 "icon": "home-modern",
-                "perm": "governorates.view_governorate",
+                "perm": "geo.view_governorate",
             },
             {
                 "href": reverse("cities:index"),
                 "text": _("cities").title(),
                 "icon": "home-modern",
-                "perm": "cities.view_city",
+                "perm": "geo.view_city",
             },
         ],
     }

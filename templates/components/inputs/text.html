@@ -33,7 +33,9 @@
     </label>
     {% endif %}
     <!--  -->
-    {% if has_add %} {{ slot }} {% endif %}
+    {% if has_add %} 
+    <div aria-label="create nested object">{{ slot }}</div>
+    {% endif %}
   </div>
   {% endif %}
   <!--  -->

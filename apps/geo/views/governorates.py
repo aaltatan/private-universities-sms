@@ -58,7 +58,7 @@ class ListView(
 
 
 class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
-    permission_required = "geo.create_governorate"
+    permission_required = "geo.add_governorate"
     form_class = forms.GovernorateForm
 
 

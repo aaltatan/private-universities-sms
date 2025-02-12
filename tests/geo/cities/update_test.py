@@ -34,6 +34,9 @@ def test_update_page(
     governorate_input_required_star = form.css_first(
         "div[role='group']:has(input[name='governorate']) span[aria-label='required field']"
     )
+    create_governorate_btn = form.css_first(
+        "div[role='group']:has(input[name='governorate']) div[aria-label='create nested object']"
+    )
     description_input = form.css_first("textarea[name='description']")
     required_star = form.css_first("span[aria-label='required field']")
 
@@ -50,7 +53,40 @@ def test_update_page(
 
     assert required_star is not None
     assert name_input_required_star is not None
+    assert create_governorate_btn is not None
     assert governorate_input_required_star is not None
+
+
+@pytest.mark.django_db
+def test_add_nested_object_appearance_if_user_has_no_add_governorates_perm(
+    client: Client,
+    model: type[Model],
+    templates: dict[str, str],
+    subapp_label: str,
+):
+    client.login(
+        username=f"{subapp_label}_user_with_view_change_perm",
+        password="password",
+    )
+    update_url = model.objects.first().get_update_url()
+    response = client.get(update_url)
+    parser = HTMLParser(response.content)
+
+    form = parser.css_first("main form")
+
+    governorate_input = form.css_first("input[name='governorate']")
+    governorate_input_required_star = form.css_first(
+        "div[role='group']:has(input[name='governorate']) span[aria-label='required field']"
+    )
+    create_governorate_btn = form.css_first(
+        "div[role='group']:has(input[name='governorate']) div[aria-label='create nested object']"
+    )
+
+    assert is_template_used(templates["update"], response)
+    assert response.status_code == status.HTTP_200_OK
+    assert governorate_input is not None
+    assert governorate_input_required_star is not None
+    assert create_governorate_btn is None
 
 
 @pytest.mark.django_db

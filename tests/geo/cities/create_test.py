@@ -16,12 +16,12 @@ from tests.utils import is_template_used
 @pytest.mark.django_db
 def test_create_page(
     admin_client: Client,
+    urls: dict[str, str],
     model: type[Model],
     templates: dict[str, str],
     subapp_label: str,
 ):
-    obj = model.objects.first()
-    response = admin_client.get(obj.get_update_url())
+    response = admin_client.get(urls['create'])
     parser = HTMLParser(response.content)
 
     h1 = parser.css_first("form h1").text(strip=True)
@@ -34,21 +34,56 @@ def test_create_page(
     governorate_input_required_star = form.css_first(
         "div[role='group']:has(input[name='governorate']) span[aria-label='required field']"
     )
+    create_governorate_btn = form.css_first(
+        "div[role='group']:has(input[name='governorate']) div[aria-label='create nested object']"
+    )
     description_input = form.css_first("textarea[name='description']")
 
     assert response.status_code == status.HTTP_200_OK
-    assert is_template_used(templates["update"], response)
-    
-    assert h1 == f"update {obj.name}"
-    assert form.attributes["hx-post"] == obj.get_update_url()
+    assert is_template_used(templates["create"], response)
+
+    assert h1 == "add new city"
+    assert form.attributes["hx-post"] == urls['create']
     assert form.attributes["id"] == f"{subapp_label}-form"
 
     assert name_input is not None
     assert governorate_input is not None
     assert description_input is not None
 
+    assert create_governorate_btn is not None
     assert name_input_required_star is not None
     assert governorate_input_required_star is not None
+
+
+@pytest.mark.django_db
+def test_add_nested_object_appearance_if_user_has_no_add_governorates_perm(
+    client: Client,
+    urls: dict[str, str],
+    templates: dict[str, str],
+    subapp_label: str,
+):
+    client.login(
+        username=f"{subapp_label}_user_with_view_add_perm",
+        password="password",
+    )
+    response = client.get(urls['create'])
+    parser = HTMLParser(response.content)
+
+    form = parser.css_first("main form")
+
+    governorate_input = form.css_first("input[name='governorate']")
+    governorate_input_required_star = form.css_first(
+        "div[role='group']:has(input[name='governorate']) span[aria-label='required field']"
+    )
+    create_governorate_btn = form.css_first(
+        "div[role='group']:has(input[name='governorate']) div[aria-label='create nested object']"
+    )
+
+    assert is_template_used(templates['create'], response)
+    assert response.status_code == status.HTTP_200_OK
+    assert governorate_input is not None
+    assert governorate_input_required_star is not None
+    assert create_governorate_btn is None
 
 
 @pytest.mark.django_db

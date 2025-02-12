@@ -63,7 +63,7 @@ class ListView(
 
 
 class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
-    permission_required = "geo.create_city"
+    permission_required = "geo.add_city"
     form_class = forms.CityForm
 
 
