@@ -60,20 +60,16 @@
   <form hx-post="{{ index_url }}" id="{{ form_table_id }}">
     <c-table.table>
       <c-table.tr header="True">
-        {% if can_delete %}
         <c-table.th>
-          <c-table.check-all />
+          {% if can_delete %}<c-table.check-all />{% endif %}
         </c-table.th>
-        {% endif %}
         <c-table.th>{% translate 'name' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
       <c-table.tr>
-        {% if can_delete %}
-        <c-table.td-check :obj="obj" idx="{{ forloop.counter }}" />
-        {% endif %}
+        <c-table.td-check :show_checkbox="can_delete" :obj="obj" idx="{{ forloop.counter }}" />
         <c-table.td data-header="{% translate 'name' %}">
           {% if can_update %}
           <a

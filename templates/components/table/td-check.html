@@ -1,5 +1,8 @@
+<c-vars :show_checkbox="True" />
+
 <c-table.td fixed="True">
   <div class="flex items-center gap-2">
+    {% if show_checkbox %}
     <label
       for="row-check-{{ obj.pk }}"
       class="flex items-center justify-center cursor-pointer text-neutral-600 dark:text-neutral-300"
@@ -17,6 +20,7 @@
         {% heroicon_outline "check" class="checkbox-icon" %}
       </div>
     </label>
+    {% endif %}
     <span>{{ idx }}</span>
   </div>
 </c-table.td>
