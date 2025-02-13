@@ -21,7 +21,7 @@ def test_create_page(
     templates: dict[str, str],
     subapp_label: str,
 ):
-    response = admin_client.get(urls['create'])
+    response = admin_client.get(urls["create"])
     parser = HTMLParser(response.content)
 
     h1 = parser.css_first("form h1").text(strip=True)
@@ -43,7 +43,7 @@ def test_create_page(
     assert is_template_used(templates["create"], response)
 
     assert h1 == "add new city"
-    assert form.attributes["hx-post"] == urls['create']
+    assert form.attributes["hx-post"] == urls["create"]
     assert form.attributes["id"] == f"{subapp_label}-form"
 
     assert name_input is not None
@@ -66,7 +66,7 @@ def test_add_nested_object_appearance_if_user_has_no_add_governorates_perm(
         username=f"{subapp_label}_user_with_view_add_perm",
         password="password",
     )
-    response = client.get(urls['create'])
+    response = client.get(urls["create"])
     parser = HTMLParser(response.content)
 
     form = parser.css_first("main form")
@@ -79,7 +79,7 @@ def test_add_nested_object_appearance_if_user_has_no_add_governorates_perm(
         "div[role='group']:has(input[name='governorate']) div[aria-label='create nested object']"
     )
 
-    assert is_template_used(templates['create'], response)
+    assert is_template_used(templates["create"], response)
     assert response.status_code == status.HTTP_200_OK
     assert governorate_input is not None
     assert governorate_input_required_star is not None
@@ -111,7 +111,7 @@ def test_create_objects(
     )
 
     assert response.status_code == status.HTTP_200_OK
-    assert response.json()["count"] == objects_count + batch_size
+    assert response.json()["meta"]["results_count"] == objects_count + batch_size
     assert model.objects.count() == objects_count + batch_size
 
 

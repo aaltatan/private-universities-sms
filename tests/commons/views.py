@@ -26,7 +26,7 @@ class CommonViewsTests:
             headers=admin_headers,
         )
         assert response.status_code == status.HTTP_200_OK
-        assert response.json()["count"] == counts["objects"]
+        assert response.json()["meta"]["results_count"] == counts["objects"]
         assert len(response.json()["results"]) == 10
 
     @staticmethod

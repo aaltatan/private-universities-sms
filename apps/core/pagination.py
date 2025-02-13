@@ -1,9 +1,9 @@
-from django.core.paginator import InvalidPage
 from django.conf import settings
+from django.core.paginator import InvalidPage
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
+from rest_framework.response import Response
 from rest_framework.utils.urls import replace_query_param
-
 
 
 class CorePagination(PageNumberPagination):
@@ -18,9 +18,34 @@ class CorePagination(PageNumberPagination):
         page_number = self.page.previous_page_number()
         return replace_query_param(url, self.page_query_param, page_number)
 
-    def get_current_link(self):
+    def get_paginated_response(self, data):
+        return Response(
+            {
+                "links": {
+                    "first": self.get_first_link(),
+                    "next": self.get_next_link(),
+                    "previous": self.get_previous_link(),
+                    "last": self.get_last_link(),
+                },
+                "meta": {
+                    "results_count": self.page.paginator.count,
+                    "current_page": self.page.number,
+                    "pages_count": self.get_pages_count(),
+                },
+                "results": data,
+            }
+        )
+
+    def get_pages_count(self):
+        return self.page.paginator.num_pages
+
+    def get_first_link(self):
         url = self.request.build_absolute_uri()
-        page_number = self.page.number
+        return replace_query_param(url, self.page_query_param, 1)
+
+    def get_last_link(self):
+        url = self.request.build_absolute_uri()
+        page_number = self.page.paginator.num_pages
         return replace_query_param(url, self.page_query_param, page_number)
 
     def get_page_size(self, request: Request):

@@ -70,7 +70,7 @@ def test_create_objects(
     )
 
     assert response.status_code == status.HTTP_200_OK
-    assert response.json()["count"] == objects_count + batch_size
+    assert response.json()["meta"]["results_count"] == objects_count + batch_size
     assert model.objects.count() == objects_count + batch_size
 
 

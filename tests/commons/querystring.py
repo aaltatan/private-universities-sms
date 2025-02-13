@@ -77,18 +77,22 @@ class CommonQuerystringTests:
             headers=admin_headers,
         )
         assert response.status_code == status.HTTP_200_OK
-        assert response.json()["count"] == objects_count
+        assert response.json()["meta"]["results_count"] == objects_count
         assert len(response.json()["results"]) == count
 
         if next_page is not None:
-            assert response.json()["next"].endswith(urls["api"] + next_page)
+            assert response.json()["links"]["next"].endswith(
+                urls["api"] + next_page,
+            )
         else:
-            assert response.json()["next"] is None
+            assert response.json()["links"]["next"] is None
 
         if prev_page is not None:
-            assert response.json()["previous"].endswith(urls["api"] + prev_page)
+            assert response.json()["links"]["previous"].endswith(
+                urls["api"] + prev_page
+            )
         else:
-            assert response.json()["previous"] is None
+            assert response.json()["links"]["previous"] is None
 
     @staticmethod
     def test_filters(
@@ -144,4 +148,4 @@ class CommonQuerystringTests:
             assert name not in names
 
         assert response.status_code == status.HTTP_200_OK
-        assert response.json()["count"] == results_count
+        assert response.json()["meta"]["results_count"] == results_count
