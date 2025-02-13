@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytest
 from django.contrib import messages
 from django.contrib.messages import get_messages
@@ -104,11 +106,11 @@ class CommonCreateTests:
         urls: dict[str, str],
         templates: dict[str, str],
         model: type[Model],
-        dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
+        dirty_data_test_cases: tuple[dict[str, str], list[str]],
         counts: dict[str, int],
     ) -> None:
         objects_count = counts["objects"]
-        data, error, _ = dirty_data_test_cases
+        data, errors = dirty_data_test_cases
         response = admin_client.get(urls["create"])
 
         assert response.status_code == status.HTTP_200_OK
@@ -118,7 +120,13 @@ class CommonCreateTests:
         parser = HTMLParser(response.content)
         form_hx_post = parser.css_first("form[hx-post]").attributes.get("hx-post")
 
-        assert error in response.content.decode()
+        errors_el = parser.css(
+            "form ul[aria-label='errors list'] span[aria-label='error']"
+        )
+
+        for error in errors:
+            assert error in [e.text(strip=True) for e in errors_el]
+
         assert is_template_used(templates["create_form"], response)
         assert response.status_code == status.HTTP_200_OK
         assert form_hx_post == urls["create"]
@@ -130,13 +138,13 @@ class CommonCreateTests:
         urls: dict[str, str],
         templates: dict[str, str],
         model: type[Model],
-        dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
+        dirty_data_test_cases: tuple[dict[str, Any], list[str]],
         headers_modal_GET: dict[str, str],
         subapp_label: str,
         counts: dict[str, int],
     ) -> None:
         objects_count = counts["objects"]
-        data, error, _ = dirty_data_test_cases
+        data, errors = dirty_data_test_cases
         url = urls["create"] + "?per_page=10&ordering=-Name"
         headers = {
             **headers_modal_GET,
@@ -155,24 +163,31 @@ class CommonCreateTests:
 
         response = admin_client.post(urls["create"], data, headers=headers)
         parser = HTMLParser(response.content)
-        form_hx_post = parser.css_first("form[hx-post]").attributes.get("hx-post")
+        form_hx_post = parser.css_first("form[hx-post]").attributes.get(
+            "hx-post",
+        )
+        errors_el = parser.css(
+            "form ul[aria-label='errors list'] span[aria-label='error']"
+        )
 
-        assert error in response.content.decode()
+        for error in errors:
+            assert error in [e.text(strip=True) for e in errors_el]
+
         assert is_template_used(templates["create_modal_form"], response)
         assert response.status_code == status.HTTP_200_OK
         assert form_hx_post == urls["create"]
         assert model.objects.count() == objects_count
 
     @staticmethod
-    def test_create_object_with_dirty_data(
+    def test_create_api_object_with_dirty_data(
         api_client: APIClient,
         urls: dict[str, str],
         admin_headers: dict[str, str],
-        dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
+        dirty_data_api_test_cases: tuple[dict[str, Any], dict[str, list[str]]],
     ):
-        data, _, error = dirty_data_test_cases
+        data, error = dirty_data_api_test_cases
         response: Response = api_client.post(
             path=urls["api"], data=data, headers=admin_headers
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert response.json()["name"] == error
+        assert response.json() == error

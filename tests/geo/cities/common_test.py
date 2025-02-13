@@ -39,5 +39,10 @@ class TestQuerystring(commons.CommonQuerystringTests):
 
 
 @pytest.mark.django_db
+class TestUpdate(commons.CommonUpdateTests):
+    pytestmark = pytest.mark.django_db
+
+
+@pytest.mark.django_db
 class TestViews(commons.CommonViewsTests):
     pytestmark = pytest.mark.django_db

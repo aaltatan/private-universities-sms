@@ -48,53 +48,6 @@ def test_update_page(
 
 
 @pytest.mark.django_db
-def test_update_with_dirty_data(
-    admin_client: Client,
-    model: type[Model],
-    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
-    templates: dict[str, str],
-    counts: dict[str, int],
-):
-    data, error, _ = dirty_data_test_cases
-    obj = model.objects.first()
-    url = obj.get_update_url()
-
-    response = admin_client.post(url, data)
-    assert error in response.content.decode()
-    assert is_template_used(templates["update_form"], response)
-    assert response.status_code == status.HTTP_200_OK
-
-    assert model.objects.count() == counts["objects"]
-
-
-@pytest.mark.django_db
-def test_update_with_modal_with_dirty_data(
-    admin_client: Client,
-    model: type[Model],
-    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
-    templates: dict[str, str],
-    headers_modal_GET: dict[str, str],
-    subapp_label: str,
-    counts: dict[str, int],
-):
-    data, error, _ = dirty_data_test_cases
-    obj = model.objects.first()
-    url = obj.get_update_url() + "?page=1&per_page=10&ordering=-Id"
-
-    headers = {
-        **headers_modal_GET,
-        "target": f"#{subapp_label}-table",
-    }
-
-    response = admin_client.post(url, data, headers=headers)
-    assert error in response.content.decode()
-    assert is_template_used(templates["update_modal_form"], response)
-    assert response.status_code == status.HTTP_200_OK
-
-    assert model.objects.count() == counts["objects"]
-
-
-@pytest.mark.django_db
 def test_update_form_with_clean_data(
     admin_client: Client,
     model: type[Model],
@@ -239,18 +192,3 @@ def test_update_object(
     assert response.json()["description"] == "some description"
     assert first.name == "Hamah"
     assert first.description == "some description"
-
-
-@pytest.mark.django_db
-def test_update_object_with_dirty_data(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    dirty_data_test_cases: tuple[dict[str, str], str, list[str]],
-):
-    data, _, error = dirty_data_test_cases
-    response: Response = api_client.put(
-        path=f"{urls['api']}3/", data=data, headers=admin_headers
-    )
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert response.json()["name"] == error

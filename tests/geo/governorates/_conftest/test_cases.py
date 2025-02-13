@@ -105,25 +105,46 @@ def models_data_test_cases(request: pytest.FixtureRequest):
     params=[
         (
             {"name": "Ha", "description": "google"},
-            "the field must be at least 4 characters long",
-            ["Ensure this field has at least 4 characters."],
+            ["the field must be at least 4 characters long."],
         ),
         (
             {"name": "", "description": ""},
-            "This field is required.",
-            ["This field may not be blank."],
+            ["This field is required."],
         ),
         (
             {"name": "a" * 265, "description": ""},
-            "Ensure this value has at most 255 characters (it has 265).",
-            ["Ensure this field has no more than 255 characters."],
+            ["Ensure this value has at most 255 characters (it has 265)."],
         ),
         (
             {"name": "محافظة حماه", "description": "google"},
-            "Governorate with this Name already exists.",
-            ["governorate with this name already exists."],
+            ["Governorate with this Name already exists."],
         ),
     ],
 )
 def dirty_data_test_cases(request: pytest.FixtureRequest):
+    return request.param
+
+
+@pytest.fixture(
+    scope="package",
+    params=[
+        (
+            {"name": "Ha", "description": "google"},
+            {"name": ["Ensure this field has at least 4 characters."]},
+        ),
+        (
+            {"name": "", "description": ""},
+            {"name": ["This field may not be blank."]},
+        ),
+        (
+            {"name": "a" * 265, "description": ""},
+            {"name": ["Ensure this field has no more than 255 characters."]},
+        ),
+        (
+            {"name": "محافظة حماه", "description": "google"},
+            {"name": ["governorate with this name already exists."]},
+        ),
+    ],
+)
+def dirty_data_api_test_cases(request: pytest.FixtureRequest):
     return request.param

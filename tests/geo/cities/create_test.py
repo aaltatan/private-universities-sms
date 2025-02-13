@@ -99,7 +99,7 @@ def test_create_objects(
     for idx in range(10_000, 10_000 + batch_size):
         response = api_client.post(
             path=urls["api"],
-            data={"name": f"City {idx}", "governorate_id": 1},
+            data={"name": f"City {idx}", "governorate": 1},
             headers=admin_headers,
         )
         assert response.status_code == status.HTTP_201_CREATED

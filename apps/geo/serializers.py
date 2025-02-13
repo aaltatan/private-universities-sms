@@ -36,11 +36,13 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class CreateUpdateCitySerializer(serializers.ModelSerializer):
-    governorate_id = serializers.IntegerField()
+    governorate = serializers.PrimaryKeyRelatedField(
+        queryset=Governorate.objects.all(),
+    )
 
     class Meta:
         model = City
-        fields = ("name", "governorate_id", "description")
+        fields = ("name", "governorate", "description")
 
 
 class CityActivitySerializer(serializers.ModelSerializer):

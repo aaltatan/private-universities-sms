@@ -138,8 +138,7 @@ def export_test_cases(request: pytest.FixtureRequest):
                 "governorate": "محافظة حمص",
                 "description": "google",
             },
-            "the field must be at least 4 characters long",
-            ["Ensure this field has at least 4 characters."],
+            ["the field must be at least 4 characters long."],
         ),
         (
             {
@@ -147,8 +146,7 @@ def export_test_cases(request: pytest.FixtureRequest):
                 "governorate": "محافظة حمص",
                 "description": "",
             },
-            "This field is required.",
-            ["This field may not be blank."],
+            ["This field is required."],
         ),
         (
             {
@@ -156,8 +154,7 @@ def export_test_cases(request: pytest.FixtureRequest):
                 "governorate": "محافظة حمص",
                 "description": "",
             },
-            "Ensure this value has at most 255 characters (it has 265).",
-            ["Ensure this field has no more than 255 characters."],
+            ["Ensure this value has at most 255 characters (it has 265)."],
         ),
         (
             {
@@ -165,10 +162,135 @@ def export_test_cases(request: pytest.FixtureRequest):
                 "governorate": "محافظة حمص",
                 "description": "google",
             },
-            "City with this Name already exists.",
-            ["city with this name already exists."],
+            ["City with this Name already exists."],
+        ),
+        (
+            {
+                "name": "Hama City sdadsas",
+                "governorate": "محافظة x",
+                "description": "google",
+            },
+            ["this choice is not valid"],
+        ),
+        (
+            {
+                "name": "Ham",
+                "governorate": "محافظة x",
+                "description": "google",
+            },
+            [
+                "the field must be at least 4 characters long.",
+                "this choice is not valid",
+            ],
+        ),
+        (
+            {
+                "name": "Ham",
+                "governorate": "",
+                "description": "google",
+            },
+            [
+                "the field must be at least 4 characters long.",
+                "This field is required.",
+            ],
+        ),
+        (
+            {
+                "name": "",
+                "governorate": "",
+            },
+            [
+                "This field is required.",
+            ] * 2,
         ),
     ],
 )
 def dirty_data_test_cases(request: pytest.FixtureRequest):
+    return request.param
+
+
+@pytest.fixture(
+    scope="package",
+    params=[
+        (
+            {
+                "name": "Ha",
+                "governorate": 1,
+                "description": "google",
+            },
+            {"name": ["Ensure this field has at least 4 characters."]},
+        ),
+        (
+            {
+                "name": "",
+                "governorate": 2,
+                "description": "",
+            },
+            {"name": ["This field may not be blank."]},
+        ),
+        (
+            {
+                "name": "a" * 265,
+                "governorate": 3,
+                "description": "",
+            },
+            {"name": ["Ensure this field has no more than 255 characters."]},
+        ),
+        (
+            {
+                "name": "Hama City",
+                "governorate": 4,
+                "description": "google",
+            },
+            {"name": ["city with this name already exists."]},
+        ),
+        (
+            {
+                "name": "Hama City sss",
+                "governorate_id": 4,
+                "description": "google",
+            },
+            {"governorate": ["This field is required."]},
+        ),
+        (
+            {
+                "name": "Hama City sss",
+                "governorate": "dasdas",
+                "description": "google",
+            },
+            {"governorate": ["Incorrect type. Expected pk value, received str."]},
+        ),
+        (
+            {
+                "name": "Hama City sss",
+                "governorate": 412312,
+                "description": "google",
+            },
+            {"governorate": ['Invalid pk "412312" - object does not exist.']},
+        ),
+        (
+            {
+                "name": "Ham",
+                "governorate": 412312,
+                "description": "google",
+            },
+            {
+                "name": ["Ensure this field has at least 4 characters."],
+                "governorate": ['Invalid pk "412312" - object does not exist.'],
+            },
+        ),
+        (
+            {
+                "name": "",
+                "governorate": "412312",
+                "description": "google",
+            },
+            {
+                "name": ["This field may not be blank."],
+                "governorate": ['Invalid pk "412312" - object does not exist.'],
+            },
+        ),
+    ],
+)
+def dirty_data_api_test_cases(request: pytest.FixtureRequest):
     return request.param
