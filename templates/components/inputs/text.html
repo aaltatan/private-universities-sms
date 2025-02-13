@@ -5,7 +5,11 @@
   :show_label="True"
   :show_help="True"
   :has_add="False"
-  base_theme="text-input"
+  :themes="{
+    'text': 'text-input',
+    'select': 'select-input',
+  }"
+  theme="text"
   icon="plus"
   icon_size="20"
   mask=""
@@ -50,18 +54,13 @@
     <span class="absolute start-2 top-1/2 -translate-y-1/2">
       {% heroicon_outline icon size=icon_size class="text-neutral-500" %}
     </span>
-    {% if "cols" in field.field.widget.attrs %} {% render_field field autocomplete="true"
-    autofocus=autofocus class=base_theme style="padding-inline-start: 2rem" placeholder=placeholder
-    x-mask=mask x-autosize="" rows="1" %} {% else %} {% render_field field autocomplete="true"
-    autofocus=autofocus class=base_theme style="padding-inline-start: 2rem" placeholder=placeholder
-    x-mask=mask type=kind %} {% endif %}
+    {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme style="padding-inline-start: 2rem" placeholder=placeholder x-mask=mask type=kind %}
   </div>
   {% else %}
   <!--  -->
-  {% if "cols" in field.field.widget.attrs %} {% render_field field autocomplete="true"
-  autofocus=autofocus class=base_theme placeholder=placeholder x-mask=mask x-autosize="" rows="1" %}
-  {% else %} {% render_field field autocomplete="true" autofocus=autofocus class=base_theme
-  placeholder=placeholder x-mask=mask type=kind %} {% endif %} {% endif %}
+  {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme placeholder=placeholder x-mask=mask type=kind %}
+  <!--  -->
+  {% endif %}
   <!--  -->
   {% if field.errors %}
   <div class="pl-0.5 text-red-500 my-1 text-sm">

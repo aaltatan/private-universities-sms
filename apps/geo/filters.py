@@ -9,7 +9,7 @@ from apps.core.filters import (
 )
 
 from . import models
-from .constants import cities, governorates
+from .constants import cities, governorates, nationalities
 
 
 class BaseGovernoratesFilter(filters.FilterSet):
@@ -68,3 +68,31 @@ class CityFilter(FilterComboboxMixin, FilterSearchMixin, BaseCitiesFilter):
         field_name="governorate__name",
         label=_("governorate"),
     )
+
+
+class BaseNationalityFilter(filters.FilterSet):
+    name = filters.CharFilter(
+        lookup_expr="icontains",
+        label=_("name").title(),
+    )
+    is_local = filters.ChoiceFilter(
+        label=_("locality").title(),
+        choices=models.Nationality.IS_LOCAL_CHOICES,
+    )
+    description = filters.CharFilter(
+        lookup_expr="icontains",
+        label=_("description").title(),
+    )
+
+    class Meta:
+        model = models.Nationality
+        fields = ("name", "is_local", "description")
+
+
+class APINationalityFilter(BaseNationalityFilter):
+    pass
+
+
+class NationalityFilter(FilterSearchMixin, BaseNationalityFilter):
+    q = filters.CharFilter(method="search")
+    ordering = get_ordering_filter(nationalities.ORDERING_FIELDS)

@@ -34,3 +34,17 @@ class CityResource(BaseResource):
     class Meta:
         model = models.City
         fields = ("id", "name", "governorate", "description", "slug")
+
+
+class NationalityResource(BaseResource):
+    is_local = fields.Field(
+        attribute="is_local",
+        column_name=_("is local").title(),
+    )
+
+    def dehydrate_is_local(self, value: bool):
+        return _("yes").title() if value else _("no").title()
+
+    class Meta:
+        model = models.Nationality
+        fields = ("id", "name", "is_local", "description", "slug")

@@ -34,47 +34,66 @@ def pagination_test_cases(request: pytest.FixtureRequest):
 @pytest.fixture(
     scope="package",
     params=[
-        ("?q=حماه", 11, ("City 001", "City 002"), ("City 011", "City 012")),
+        (
+            "?q=حماه",
+            11,
+            "name",
+            ("City 001", "City 002"),
+            ("City 011", "City 012"),
+        ),
         (
             "?q=id < 11",
             10,
+            "name",
             ("City 001", "City 002"),
             ("City 011", "City 012"),
         ),
         (
             "?governorate=محافظة حماه&governorate=محافظة حمص&per_page=50",
             21,
+            "name",
             ("City 011", "City 012", "City 001", "City 002"),
             ("City 090", "City 091"),
         ),
         (
             "?q=حماه محافظة",
             11,
+            "name",
             ("City 001", "City 002"),
             ("City 011", "City 012"),
         ),
         (
             '?q=governorate.name ~ "حماه"',
             11,
+            "name",
             ("City 001", "City 002"),
             ("City 011", "City 012"),
         ),
         (
             "?q=حم&per_page=20",
             21,
+            "name",
             ("City 011", "City 012", "City 001", "City 002"),
             ("City 090", "City 091"),
         ),
-        ("?q=حمص", 10, ("City 011", "City 012"), ("City 001", "City 002")),
+        (
+            "?q=حمص",
+            10,
+            "name",
+            ("City 011", "City 012"),
+            ("City 001", "City 002"),
+        ),
         (
             "?q=2&per_page=20",
             19,
+            "name",
             ("City 002", "City 012", "City 020", "City 021"),
             ("City 001", "City 011"),
         ),
         (
             '?q=name endswith "0"',
             10,
+            "name",
             ("City 010", "City 020", "City 030", "City 040"),
             ("City 001", "City 011"),
         ),
@@ -201,7 +220,8 @@ def export_test_cases(request: pytest.FixtureRequest):
             },
             [
                 "This field is required.",
-            ] * 2,
+            ]
+            * 2,
         ),
     ],
 )

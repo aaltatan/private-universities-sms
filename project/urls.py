@@ -55,6 +55,10 @@ urlpatterns = [
         "cities/",
         include("apps.geo.urls.cities"),
     ),
+    path(
+        "nationalities/",
+        include("apps.geo.urls.nationalities"),
+    ),
 ]
 
 if settings.DEBUG:

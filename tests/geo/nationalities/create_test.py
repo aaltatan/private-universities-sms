@@ -2,6 +2,7 @@ import json
 
 import pytest
 from django.contrib import messages
+from django.contrib.messages import get_messages
 from django.test import Client
 from django.utils.text import slugify
 from rest_framework import status
@@ -20,7 +21,7 @@ def test_create_page(
     templates: dict[str, str],
     subapp_label: str,
 ):
-    response = admin_client.get(urls["create"])
+    response = admin_client.get(urls['create'])
     parser = HTMLParser(response.content)
 
     h1 = parser.css_first("form h1").text(strip=True)
@@ -29,60 +30,20 @@ def test_create_page(
     name_input_required_star = form.css_first(
         "div[role='group']:has(input[name='name']) span[aria-label='required field']"
     )
-    governorate_input = form.css_first("input[name='governorate']")
-    governorate_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='governorate']) span[aria-label='required field']"
-    )
-    create_governorate_btn = form.css_first(
-        "div[role='group']:has(input[name='governorate']) div[aria-label='create nested object']"
-    )
+    is_local_select = form.css_first("select[name='is_local']")
     description_input = form.css_first("textarea[name='description']")
 
     assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create"], response)
 
-    assert h1 == "add new city"
+    assert h1 == "add new nationality"
     assert form.attributes["hx-post"] == urls["create"]
     assert form.attributes["id"] == f"{subapp_label}-form"
-
+    
     assert name_input is not None
-    assert governorate_input is not None
-    assert description_input is not None
-
-    assert create_governorate_btn is not None
+    assert is_local_select is not None
     assert name_input_required_star is not None
-    assert governorate_input_required_star is not None
-
-
-@pytest.mark.django_db
-def test_add_nested_object_appearance_if_user_has_no_add_governorates_perm(
-    client: Client,
-    urls: dict[str, str],
-    templates: dict[str, str],
-    subapp_label: str,
-):
-    client.login(
-        username=f"{subapp_label}_user_with_view_add_perm",
-        password="password",
-    )
-    response = client.get(urls["create"])
-    parser = HTMLParser(response.content)
-
-    form = parser.css_first("main form")
-
-    governorate_input = form.css_first("input[name='governorate']")
-    governorate_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='governorate']) span[aria-label='required field']"
-    )
-    create_governorate_btn = form.css_first(
-        "div[role='group']:has(input[name='governorate']) div[aria-label='create nested object']"
-    )
-
-    assert is_template_used(templates["create"], response)
-    assert response.status_code == status.HTTP_200_OK
-    assert governorate_input is not None
-    assert governorate_input_required_star is not None
-    assert create_governorate_btn is None
+    assert description_input is not None
 
 
 @pytest.mark.django_db
@@ -98,11 +59,12 @@ def test_create_objects(
     for idx in range(10_000, 10_000 + batch_size):
         response = api_client.post(
             path=urls["api"],
-            data={"name": f"City {idx}", "governorate": 1},
+            data={"name": f"Nationality {idx}"},
             headers=admin_headers,
         )
         assert response.status_code == status.HTTP_201_CREATED
-        assert response.json()["name"] == f"City {idx}"
+        assert response.json()["name"] == f"Nationality {idx}"
+        assert response.json()["is_local"] is False
 
     response: Response = api_client.get(
         path=urls["api"],
@@ -142,7 +104,7 @@ def test_create_new_object_with_save_and_add_another_btn(
 
     assert last_obj.pk == objects_count + 1
     assert last_obj.name == data["name"]
-    assert last_obj.governorate.name == data["governorate"]
+    assert last_obj.is_local
     assert last_obj.description == data["description"]
     assert last_obj.slug == slugify(data["name"], allow_unicode=True)
 
@@ -179,9 +141,7 @@ def test_create_with_redirect_from_modal(
 
     response = admin_client.post(url, data, headers=headers)
     location: dict = json.loads(response.headers.get("Hx-Location", {}))
-    messages_list = list(
-        messages.get_messages(request=response.wsgi_request),
-    )
+    messages_list = list(get_messages(request=response.wsgi_request))
     success_message = f"{clean_data_sample['name']} has been created successfully"
 
     assert response.status_code == status.HTTP_201_CREATED

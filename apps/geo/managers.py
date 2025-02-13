@@ -2,7 +2,7 @@ from django.db import models
 
 from apps.core.utils import annotate_search
 
-from .constants import cities, governorates
+from .constants import cities, governorates, nationalities
 
 
 class GovernorateManager(models.Manager):
@@ -25,5 +25,16 @@ class CityManager(models.Manager):
             .select_related("governorate")
             .annotate(
                 search=annotate_search(cities.SEARCH_FIELDS),
+            )
+        )
+
+
+class NationalityManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .annotate(
+                search=annotate_search(nationalities.SEARCH_FIELDS),
             )
         )

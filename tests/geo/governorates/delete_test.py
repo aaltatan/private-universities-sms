@@ -28,6 +28,7 @@ def test_delete_object_not_deletable(
     mocker: pytest_mock.MockerFixture,
     app_label: str,
     subapp_label: str,
+    counts: dict[str, int],
 ):
     mocker.patch(
         f"apps.{app_label}.views.{subapp_label}.DeleteView.deleter", new=CustomDeleter
@@ -42,7 +43,7 @@ def test_delete_object_not_deletable(
     assert response.status_code == 200
     assert messages_list[0].level == messages.ERROR
     assert messages_list[0].message == "error obj message"
-    assert model.objects.count() == 304
+    assert model.objects.count() == counts['objects']
 
 
 @pytest.mark.django_db
@@ -54,6 +55,7 @@ def test_api_delete_object_not_deletable(
     mocker: pytest_mock.MockerFixture,
     app_label: str,
     subapp_label: str,
+    counts: dict[str, int],
 ):
     mocker.patch(
         f"apps.{app_label}.views.{subapp_label}.APIViewSet.deleter", new=CustomDeleter
@@ -64,7 +66,7 @@ def test_api_delete_object_not_deletable(
     response = api_client.delete(delete_url, headers=admin_headers)
 
     assert response.status_code == 400
-    assert model.objects.count() == 304
+    assert model.objects.count() == counts['objects']
     assert response.json()["details"] == "error obj message"
 
 
@@ -77,6 +79,7 @@ def test_api_delete_objects_not_deletable(
     mocker: pytest_mock.MockerFixture,
     app_label: str,
     subapp_label: str,
+    counts: dict[str, int],
 ):
     mocker.patch(
         f"apps.{app_label}.views.{subapp_label}.APIViewSet.deleter", new=CustomDeleter
@@ -92,7 +95,7 @@ def test_api_delete_objects_not_deletable(
     )
 
     assert response.status_code == 400
-    assert model.objects.count() == 304
+    assert model.objects.count() == counts['objects']
     assert response.json()["details"] == "error qs message"
 
 
@@ -105,6 +108,7 @@ def test_delete_objects_not_deletable(
     mocker: pytest_mock.MockerFixture,
     app_label: str,
     subapp_label: str,
+    counts: dict[str, int],
 ):
     mocker.patch(
         f"apps.{app_label}.views.{subapp_label}.ListView.deleter", new=CustomDeleter
@@ -128,4 +132,4 @@ def test_delete_objects_not_deletable(
     assert response.status_code == 200
     assert messages_list[0].level == messages.ERROR
     assert messages_list[0].message == "error qs message"
-    assert model.objects.count() == 304
+    assert model.objects.count() == counts['objects']

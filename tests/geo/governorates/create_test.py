@@ -19,10 +19,10 @@ def test_create_page(
     admin_client: Client,
     model: type[Model],
     templates: dict[str, str],
+    urls: dict[str, str],
     subapp_label: str,
 ):
-    obj = model.objects.first()
-    response = admin_client.get(obj.get_update_url())
+    response = admin_client.get(urls['create'])
     parser = HTMLParser(response.content)
 
     h1 = parser.css_first("form h1").text(strip=True)
@@ -34,10 +34,10 @@ def test_create_page(
     description_input = form.css_first("textarea[name='description']")
 
     assert response.status_code == status.HTTP_200_OK
-    assert is_template_used(templates["update"], response)
+    assert is_template_used(templates["create"], response)
 
-    assert h1 == f"update {obj.name}"
-    assert form.attributes["hx-post"] == obj.get_update_url()
+    assert h1 == "add new governorate"
+    assert form.attributes["hx-post"] == urls["create"]
     assert form.attributes["id"] == f"{subapp_label}-form"
     
     assert name_input is not None

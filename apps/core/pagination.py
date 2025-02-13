@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.paginator import InvalidPage
+from django.core.paginator import EmptyPage, PageNotAnInteger
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -74,8 +74,10 @@ class CorePagination(PageNumberPagination):
 
         try:
             self.page = paginator.page(page_number)
-        except InvalidPage:
+        except PageNotAnInteger:
             self.page = paginator.page(1)
+        except EmptyPage:
+            self.page = paginator.page(paginator.num_pages)
 
         if paginator.num_pages > 1 and self.template is not None:
             # The browsable API should display pagination controls.

@@ -2,17 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-
-/* text input */
+/* inputs */
 .text-input {
   @apply w-full rounded-md border border-neutral-300 p-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:dark:bg-neutral-900 dark:border-neutral-800 dark:focus-visible:outline-white aria-[invalid]:!border-red-500 bg-transparent;
 }
 
-/* checkbox */
+.select-input {
+  @apply w-full bg-white dark:bg-black rounded-md border border-neutral-300 p-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:dark:bg-neutral-900 dark:border-neutral-800 dark:focus-visible:outline-white aria-[invalid]:!border-red-500 bg-transparent;
+}
 
 .checkbox-input {
   @apply relative size-4 cursor-pointer appearance-none overflow-hidden rounded border border-neutral-400 bg-white before:absolute before:inset-0 checked:border-black checked:before:bg-black focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-neutral-800 checked:focus:outline-black active:outline-offset-0 dark:border-neutral-700 dark:bg-neutral-900 dark:checked:border-white dark:checked:before:bg-white dark:focus:outline-neutral-300 dark:checked:focus:outline-white;
 }
+
 .checkbox-icon {
   @apply pointer-events-none invisible absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 text-neutral-100 peer-checked:visible dark:text-black;
 }

@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 from ..validators import four_char_length_validator
 
@@ -14,7 +15,12 @@ class AbstractUniqueNameModel(models.Model):
         unique=True,
         validators=[four_char_length_validator],
     )
-    description = models.TextField(default="", blank=True, null=True)
+    description = models.TextField(
+        default="",
+        blank=True,
+        null=True,
+        verbose_name=_("description"),
+    )
     slug = models.SlugField(
         max_length=255,
         unique=True,

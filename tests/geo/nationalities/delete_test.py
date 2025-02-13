@@ -6,18 +6,18 @@ from rest_framework.test import APIClient
 
 from apps.core.models import AbstractUniqueNameModel as Model
 from apps.core.utils import Deleter
-from apps.geo.models import City
+from apps.geo.models import Nationality
 
 
-class CustomDeleter(Deleter[City]):
+class CustomDeleter(Deleter[Nationality]):
     error_obj_msg = "error obj message"
     error_qs_msg = "error qs message"
 
-    def check_obj_deleting_possibility(self, obj: City) -> bool:
-        return False
+    def check_obj_deleting_possibility(self, obj: Nationality) -> bool:
+        return obj.pk not in [1, 2]
 
-    def check_queryset_deleting_possibility(self, qs: City) -> bool:
-        return False
+    def check_queryset_deleting_possibility(self, qs) -> bool:
+        return not qs.filter(pk__in=[1, 2]).exists()
 
 
 @pytest.mark.django_db
@@ -28,12 +28,13 @@ def test_delete_object_not_deletable(
     mocker: pytest_mock.MockerFixture,
     app_label: str,
     subapp_label: str,
+    counts: dict[str, int],
 ):
     mocker.patch(
         f"apps.{app_label}.views.{subapp_label}.DeleteView.deleter", new=CustomDeleter
     )
 
-    delete_url = model.objects.first().get_delete_url()
+    delete_url = model.objects.order_by("id").first().get_delete_url()
     response = admin_client.post(delete_url, headers=headers_modal_GET)
     messages_list = list(
         messages.get_messages(request=response.wsgi_request),
@@ -42,7 +43,7 @@ def test_delete_object_not_deletable(
     assert response.status_code == 200
     assert messages_list[0].level == messages.ERROR
     assert messages_list[0].message == "error obj message"
-    assert model.objects.count() == 101
+    assert model.objects.count() == counts['objects']
 
 
 @pytest.mark.django_db

@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.test import Client
 from rest_framework import status
 from rest_framework.response import Response
@@ -98,24 +100,29 @@ class CommonQuerystringTests:
     def test_filters(
         admin_client: Client,
         urls: dict[str, str],
-        filters_test_cases: tuple[str, int, tuple[tuple[str, int]]],
+        filters_test_cases: tuple[str, int, str, tuple[Any, ...], tuple[Any, ...]],
     ):
         (
             querystring,
             results_count,
-            exists_names,
-            not_exists_names,
+            required_field,
+            exists_values,
+            not_exists_values,
         ) = filters_test_cases
         url: str = urls["index"] + querystring
         response = admin_client.get(url)
 
         assert response.status_code == 200
 
-        for name in exists_names:
-            assert name in response.content.decode()
+        field_values_list = [
+            getattr(n, required_field) for n in response.context["page"].object_list
+        ]
 
-        for name in not_exists_names:
-            assert name not in response.content.decode()
+        for value in exists_values:
+            assert value in field_values_list
+
+        for value in not_exists_values:
+            assert value not in field_values_list
 
         assert response.context["page"].paginator.count == results_count
 
@@ -124,11 +131,12 @@ class CommonQuerystringTests:
         api_client: APIClient,
         urls: dict[str, str],
         admin_headers: dict[str, str],
-        filters_test_cases: tuple[str, int, tuple[tuple[str, bool]]],
+        filters_test_cases: tuple[str, int, str, tuple[Any, ...], tuple[Any, ...]],
     ):
         (
             querystring,
             results_count,
+            required_field,
             exists_names,
             not_exists_names,
         ) = filters_test_cases
@@ -138,14 +146,16 @@ class CommonQuerystringTests:
             headers=admin_headers,
             format="json",
         )
-        names = [item["name"] for item in response.json()["results"]]
-        names = ", ".join(names)
+        field_values_list = [
+            item[required_field] for item in response.json()["results"]
+        ]
+        field_values_list = ", ".join(field_values_list)
 
-        for name in exists_names:
-            assert name in names
+        for value in exists_names:
+            assert value in field_values_list
 
-        for name in not_exists_names:
-            assert name not in names
+        for value in not_exists_names:
+            assert value not in field_values_list
 
         assert response.status_code == status.HTTP_200_OK
         assert response.json()["meta"]["results_count"] == results_count

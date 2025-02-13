@@ -61,6 +61,10 @@ class CommonUpdateTests:
             "form ul[aria-label='errors list'] span[aria-label='error']",
         )
 
+        print(f'{errors=}')
+        print(f'{[e.text(strip=True) for e in errors_el]=}')
+        print('#' * 100)
+
         for error in errors:
             assert error in [e.text(strip=True) for e in errors_el]
 
