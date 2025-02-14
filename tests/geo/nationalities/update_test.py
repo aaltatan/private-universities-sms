@@ -79,6 +79,7 @@ def test_update_form_with_clean_data(
     assert obj.name == name
     assert obj.is_local
     assert obj.description == description
+    assert model.objects.filter(is_local=True).count() == 1
 
 
 @pytest.mark.django_db
@@ -128,6 +129,7 @@ def test_update_with_redirect_from_modal(
     assert obj.name == name
     assert obj.is_local
     assert obj.description == description
+    assert model.objects.filter(is_local=True).count() == 1
 
 
 @pytest.mark.django_db
@@ -174,6 +176,7 @@ def test_update_without_redirect_from_modal(
     assert obj.name == name
     assert obj.is_local
     assert obj.description == description
+    assert model.objects.filter(is_local=True).count() == 1
 
 
 @pytest.mark.django_db

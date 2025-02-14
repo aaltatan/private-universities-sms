@@ -108,6 +108,7 @@ def test_create_new_object_with_save_and_add_another_btn(
     assert last_obj.description == data["description"]
     assert last_obj.slug == slugify(data["name"], allow_unicode=True)
 
+    assert model.objects.filter(is_local=True).count() == 1
     assert qs.count() == objects_count + 1
 
 
@@ -159,7 +160,8 @@ def test_create_with_redirect_from_modal(
     location: dict = json.loads(
         response.headers.get("Hx-Location", {}),
     )
-
+    
+    assert model.objects.filter(is_local=True).count() == 1
     assert response.status_code == status.HTTP_201_CREATED
     assert model.objects.count() == objects_count + 2
     assert location.get("target") == target
