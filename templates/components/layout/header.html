@@ -100,7 +100,11 @@
             <c-layout.context-menu.item icon="wrench-screwdriver" href="/admin" target="_blank">
               {% translate 'admin'|title %}
             </c-layout.context-menu.item>
-            <c-layout.context-menu.item icon="arrow-top-right-on-square" href="/api" target="_blank">
+            <c-layout.context-menu.item
+              icon="arrow-top-right-on-square"
+              href="/api"
+              target="_blank"
+            >
               Api Documentation
             </c-layout.context-menu.item>
             {% if debug %}
@@ -115,8 +119,14 @@
               color="danger"
               icon="arrow-left-start-on-rectangle"
               href="#"
+              title="{% translate 'logout'|title %}"
+              @click="$el.querySelector('form').submit()"
+              @keyup.enter="$el.querySelector('form').submit()"
             >
-              {% translate 'logout'|title %}
+              <form class="w-full" method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <span>{% translate 'logout'|title %}</span>
+              </form>
             </c-layout.context-menu.item>
           </c-layout.context-menu.section>
         </c-layout.context-menu.menu>
