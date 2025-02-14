@@ -1,0 +1,42 @@
+[
+  {
+    "model": "geo.nationality",
+    "pk": 1,
+    "fields": {
+      "name": "السورية",
+      "description": "",
+      "slug": "السورية",
+      "is_local": true
+    }
+  },
+  {
+    "model": "geo.nationality",
+    "pk": 2,
+    "fields": {
+      "name": "المصرية",
+      "description": "",
+      "slug": "المصرية",
+      "is_local": false
+    }
+  },
+  {
+    "model": "geo.nationality",
+    "pk": 3,
+    "fields": {
+      "name": "اللبنانية",
+      "description": "",
+      "slug": "اللبنانية",
+      "is_local": false
+    }
+  },
+  {
+    "model": "geo.nationality",
+    "pk": 4,
+    "fields": {
+      "name": "اليمنية",
+      "description": "",
+      "slug": "اليمنية",
+      "is_local": false
+    }
+  }
+]

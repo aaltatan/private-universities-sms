@@ -1,0 +1,20 @@
+[
+  {
+    "model": "org.jobtype",
+    "pk": 1,
+    "fields": {
+      "name": "عضو هيئة تعليمية",
+      "description": "أعضاء الهيئة التدريسية والفنية",
+      "slug": "عضو-هيئة-تعليمية"
+    }
+  },
+  {
+    "model": "org.jobtype",
+    "pk": 2,
+    "fields": {
+      "name": "عضو هيئة ادارية",
+      "description": "",
+      "slug": "عضو-هيئة-ادارية"
+    }
+  }
+]

@@ -1,0 +1,101 @@
+[
+  {
+    "model": "org.group",
+    "pk": 1,
+    "fields": {
+      "name": "عضو هيئة ادارية",
+      "description": "",
+      "slug": "عضو-هيئة-ادارية"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 2,
+    "fields": {
+      "name": "عضو هيئة فنية",
+      "description": "",
+      "slug": "عضو-هيئة-فنية"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 3,
+    "fields": {
+      "name": "عضو هيئة تدريسية",
+      "description": "",
+      "slug": "عضو-هيئة-تدريسية"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 4,
+    "fields": {
+      "name": "عضو هيئة تعليمية",
+      "description": "",
+      "slug": "عضو-هيئة-تعليمية"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 5,
+    "fields": {
+      "name": "عامل ادارية",
+      "description": "",
+      "slug": "عامل-ادارية"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 6,
+    "fields": {
+      "name": "تغطية مقرر",
+      "description": "",
+      "slug": "تغطية-مقرر"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 7,
+    "fields": {
+      "name": "تحت التجربة",
+      "description": "",
+      "slug": "تحت-التجربة"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 8,
+    "fields": {
+      "name": "متدرب",
+      "description": "",
+      "slug": "متدرب"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 9,
+    "fields": {
+      "name": "فصل ثاني فقط",
+      "description": "",
+      "slug": "فصل-ثاني-فقط"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 10,
+    "fields": {
+      "name": "فصل أول فقط",
+      "description": "",
+      "slug": "فصل-أول-فقط"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 11,
+    "fields": {
+      "name": "فصل صيفي فقط",
+      "description": "",
+      "slug": "فصل-صيفي-فقط"
+    }
+  }
+]
