@@ -65,6 +65,10 @@ urlpatterns = [
         "job-types/",
         include("apps.org.urls.job_types"),
     ),
+    path(
+        "job-subtypes/",
+        include("apps.org.urls.job_subtypes"),
+    ),
 ]
 
 if settings.DEBUG:

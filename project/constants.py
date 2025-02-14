@@ -45,6 +45,12 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                 "icon": "briefcase",
                 "perm": "geo.view_jobtype",
             },
+            {
+                "href": reverse("job_subtypes:index"),
+                "text": _("job subtypes").title(),
+                "icon": "briefcase",
+                "perm": "geo.view_jobsubtype",
+            },
         ],
     }
     data["sidebar_links"] = [

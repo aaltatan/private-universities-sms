@@ -13,6 +13,7 @@ class JobTypeManager(models.Manager):
         return (
             super()
             .get_queryset()
+            .prefetch_related("job_subtypes")
             .annotate(
                 search=annotate_search(job_types.SEARCH_FIELDS),
             )

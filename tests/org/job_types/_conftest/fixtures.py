@@ -42,7 +42,7 @@ def model() -> type[Model]:
 
 @pytest.fixture
 def api_keys() -> list[str]:
-    return ["id", "name", "description"]
+    return ["id", "name", "description", "job_subtypes"]
 
 
 @pytest.fixture
@@ -120,10 +120,7 @@ def create_objects(django_db_setup, django_db_blocker):
 
         for idx in range(1, 301):
             string = str(idx).rjust(3, "0")
-            JobType.objects.create(
-                name=f"City {string}",
-                description=string,
-            )
+            JobType.objects.create(name=f"City {string}", description=string)
         yield
         JobType.objects.all().delete()
         reset_sequence(JobType)
