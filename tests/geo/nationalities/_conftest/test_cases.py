@@ -33,6 +33,13 @@ def pagination_test_cases(request: pytest.FixtureRequest):
             ("Nationality 003", "Nationality 050"),
         ),
         (
+            "?name=099 Nationality",
+            1,
+            "name",
+            ("Nationality 099",),
+            ("Nationality 003", "Nationality 050"),
+        ),
+        (
             "?q=id > 2",
             98,
             "name",

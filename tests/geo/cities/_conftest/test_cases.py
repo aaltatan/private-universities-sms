@@ -42,6 +42,13 @@ def pagination_test_cases(request: pytest.FixtureRequest):
             ("City 011", "City 012"),
         ),
         (
+            "?name=001 City",
+            1,
+            "name",
+            ("City 001",),
+            ("City 011", "City 012", "City 002"),
+        ),
+        (
             "?q=id < 11",
             10,
             "name",

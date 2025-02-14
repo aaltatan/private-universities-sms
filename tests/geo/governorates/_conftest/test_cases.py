@@ -37,6 +37,13 @@ def pagination_test_cases(request: pytest.FixtureRequest):
             ("محافظة ادلب", "محافظة المنيا"),
         ),
         (
+            "?name=حم محاف",
+            2,
+            "name",
+            ("محافظة حماه", "محافظة حمص"),
+            ("محافظة ادلب", "محافظة المنيا"),
+        ),
+        (
             "?q=meta",
             2,
             "name",
