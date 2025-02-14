@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.core.filters import (
     FilterComboboxMixin,
     FilterSearchMixin,
+    FilterTextMixin,
     get_combobox_choices_filter,
     get_ordering_filter,
 )
@@ -12,14 +13,14 @@ from . import models
 from .constants import cities, governorates, nationalities
 
 
-class BaseGovernoratesFilter(filters.FilterSet):
+class BaseGovernoratesFilter(FilterTextMixin, filters.FilterSet):
     name = filters.CharFilter(
-        lookup_expr="icontains",
         label=_("name").title(),
+        method="filter_text",
     )
     description = filters.CharFilter(
-        lookup_expr="icontains",
         label=_("description").title(),
+        method="filter_text",
     )
 
     class Meta:
@@ -36,14 +37,14 @@ class GovernorateFilter(FilterSearchMixin, BaseGovernoratesFilter):
     ordering = get_ordering_filter(governorates.ORDERING_FIELDS)
 
 
-class BaseCitiesFilter(filters.FilterSet):
+class BaseCitiesFilter(FilterTextMixin, filters.FilterSet):
     name = filters.CharFilter(
-        lookup_expr="icontains",
         label=_("name").title(),
+        method="filter_text",
     )
     description = filters.CharFilter(
-        lookup_expr="icontains",
         label=_("description").title(),
+        method="filter_text",
     )
 
     class Meta:
@@ -70,18 +71,18 @@ class CityFilter(FilterComboboxMixin, FilterSearchMixin, BaseCitiesFilter):
     )
 
 
-class BaseNationalityFilter(filters.FilterSet):
+class BaseNationalityFilter(FilterTextMixin, filters.FilterSet):
     name = filters.CharFilter(
-        lookup_expr="icontains",
         label=_("name").title(),
+        method="filter_text",
+    )
+    description = filters.CharFilter(
+        label=_("description").title(),
+        method="filter_text",
     )
     is_local = filters.ChoiceFilter(
         label=_("locality").title(),
         choices=models.Nationality.IS_LOCAL_CHOICES,
-    )
-    description = filters.CharFilter(
-        lookup_expr="icontains",
-        label=_("description").title(),
     )
 
     class Meta:

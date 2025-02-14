@@ -7,6 +7,19 @@ from .utils import get_djangoql_query, get_keywords_query
 from .widgets import ComboboxWidget, OrderingWidget
 
 
+class FilterTextMixin:
+    """
+    A mixin that adds a text filter to a model.
+    """
+
+    def filter_text(self, qs, name, value):
+        if not value:
+            return qs
+
+        query = get_keywords_query(value)
+        return qs.filter(query)
+
+
 class FilterComboboxMixin:
     """
     A mixin that add a filter_combobox to a model.
