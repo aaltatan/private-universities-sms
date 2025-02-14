@@ -1,23 +1,9 @@
 from django.utils.translation import gettext as _
+from import_export import fields
 
-from import_export import resources, fields
+from apps.core.resources import BaseResource
 
 from . import models
-
-
-class BaseResource(resources.ModelResource):
-    name = fields.Field(
-        attribute="name",
-        column_name=_("name").title(),
-    )
-    description = fields.Field(
-        attribute="description",
-        column_name=_("description").title(),
-    )
-    slug = fields.Field(
-        attribute="slug",
-        column_name=_("slug").title(),
-    )
 
 
 class GovernorateResource(BaseResource):

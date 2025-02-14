@@ -39,6 +39,12 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                 "icon": "globe-europe-africa",
                 "perm": "geo.view_nationality",
             },
+            {
+                "href": reverse("job_types:index"),
+                "text": _("job types").title(),
+                "icon": "briefcase",
+                "perm": "geo.view_jobtype",
+            },
         ],
     }
     data["sidebar_links"] = [

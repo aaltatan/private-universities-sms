@@ -47,6 +47,7 @@ urlpatterns = [
         "home/",
         include("apps.core.urls"),
     ),
+    # geo
     path(
         "governorates/",
         include("apps.geo.urls.governorates"),
@@ -58,6 +59,11 @@ urlpatterns = [
     path(
         "nationalities/",
         include("apps.geo.urls.nationalities"),
+    ),
+    # org
+    path(
+        "job-types/",
+        include("apps.org.urls.job_types"),
     ),
 ]
 

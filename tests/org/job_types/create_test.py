@@ -17,7 +17,6 @@ from tests.utils import is_template_used
 @pytest.mark.django_db
 def test_create_page(
     admin_client: Client,
-    model: type[Model],
     templates: dict[str, str],
     urls: dict[str, str],
     subapp_label: str,
@@ -36,7 +35,7 @@ def test_create_page(
     assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create"], response)
 
-    assert h1 == "add new governorate"
+    assert h1 == "add new job type"
     assert form.attributes["hx-post"] == urls["create"]
     assert form.attributes["id"] == f"{subapp_label}-form"
     

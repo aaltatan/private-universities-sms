@@ -24,7 +24,7 @@ def test_update_page(
     response = admin_client.get(obj.get_update_url())
     parser = HTMLParser(response.content)
 
-    h1 = parser.css_first("form h1").text(strip=True)
+    h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
     name_input_required_star = form.css_first(
@@ -42,7 +42,7 @@ def test_update_page(
 
     assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["update"], response)
-    assert h1 == f"update {obj.name}"
+    assert h1 == f"update {obj.name}".lower()
     assert form.attributes["hx-post"] == obj.get_update_url()
     assert form.attributes["id"] == f"{subapp_label}-form"
 

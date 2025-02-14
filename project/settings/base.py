@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     # local apps
     "apps.core",
     "apps.geo",
+    "apps.org",
 ]
 
 MIDDLEWARE = [

@@ -24,7 +24,7 @@ def test_create_page(
     response = admin_client.get(urls['create'])
     parser = HTMLParser(response.content)
 
-    h1 = parser.css_first("form h1").text(strip=True)
+    h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
     name_input_required_star = form.css_first(
