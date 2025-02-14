@@ -164,6 +164,7 @@
           <c-slot name="header"> {% translate 'filters'|title %} </c-slot>
           <c-slot name="body">
             <c-inputs.text :field="filter.form.name" />
+            <c-inputs.text :field="filter.form.job_type" />
             <c-inputs.text :field="filter.form.description" />
           </c-slot>
           <c-slot name="footer">

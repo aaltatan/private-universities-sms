@@ -8,4 +8,4 @@ ORDERING_FIELDS: dict[str, str] = {
     "description": _("description").title(),
 }
 
-SEARCH_FIELDS: tuple[str] = ("name", "job_type", "description")
+SEARCH_FIELDS: tuple[str] = ("name", "job_type__name", "description")

@@ -189,7 +189,5 @@ class CommonCreateTests:
         response: Response = api_client.post(
             path=urls["api"], data=data, headers=admin_headers
         )
-        print(f'{response.json()=}')
-        print('#' * 100)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.json() == error
