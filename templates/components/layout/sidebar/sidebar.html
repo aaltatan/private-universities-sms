@@ -19,7 +19,7 @@
   ></div>
 
   <nav
-    class="fixed z-40 flex h-svh w-60 shrink-0 flex-col border-e border-neutral-300 p-4 transition-transform duration-300 dark:border-neutral-800 dark:bg-black bg-white"
+    class="fixed z-40 flex h-svh w-60 shrink-0 flex-col border-e border-neutral-300 p-2 transition-transform duration-300 dark:border-neutral-800 dark:bg-black bg-white"
     :class="{
       'ltr:translate-x-0': sidebarOpened,
       'rtl:translate-x-60 ltr:-translate-x-60': !sidebarOpened,
@@ -44,13 +44,13 @@
       placeholder="Alt ="
     />
 
-    <div class="flex flex-col gap-2 overflow-y-auto pb-6">
+    <div class="flex flex-col gap-2 overflow-y-auto pt-2 pb-6 px-2">
       {% for link in sidebar_links %}
       <a
         :href="'{{ link.href }}' + (sidebarLinksQuerystring['{{ link.href }}'] || '')"
         aria-hidden="false"
         id="sidebar-link-{{ forloop.counter }}"
-        class="{% active_link link.href %} aria-hidden:hidden flex items-center rounded-md gap-2 p-2 text-sm underline-offset-2 focus-visible:underline text-neutral-700 font-medium hover:text-black dark:text-neutral-300 dark:hover:text-white focus:outline-none [&.active]:bg-neutral-200/60 [&.active]:dark:bg-neutral-900 hover:!bg-neutral-200/60 hover:dark:!bg-neutral-900"
+        class="{% active_link link.href %} aria-hidden:hidden flex items-center rounded-md gap-2 p-2 text-sm underline-offset-2 text-neutral-700 font-medium hover:text-black dark:text-neutral-300 dark:hover:text-white focus:outline-none [&.active]:bg-neutral-200/60 [&.active]:dark:bg-neutral-900 hover:!bg-neutral-200/60 hover:dark:!bg-neutral-900 focus:ring-2 dark:ring-white ring-black"
       >
         {% heroicon_outline link.icon %}
         <span>{{ link.text }}</span>
