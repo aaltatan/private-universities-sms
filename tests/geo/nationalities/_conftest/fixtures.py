@@ -4,11 +4,11 @@ from django.db.models import Model
 from django.urls import reverse
 
 from apps.core.models import User
+from apps.core.utils import Deleter
 from apps.geo.models import Nationality
 from tests.utils import reset_sequence
 
 from .factories import NationalityFactory
-
 
 APP_LABEL = "geo"
 SUBAPP_LABEL = "nationalities"
@@ -90,6 +90,21 @@ def clean_data_sample() -> dict[str, str]:
         "is_local": True,
         "description": "دمشق",
     }
+
+
+@pytest.fixture(scope="package")
+def custom_deleter():
+    class CustomDeleter(Deleter[Nationality]):
+        error_obj_msg = "error obj message"
+        error_qs_msg = "error qs message"
+
+        def check_obj_deleting_possibility(self, obj: Nationality) -> bool:
+            return obj.pk not in [1, 2]
+
+        def check_queryset_deleting_possibility(self, qs) -> bool:
+            return not qs.filter(pk__in=[1, 2]).exists()
+
+    return CustomDeleter
 
 
 @pytest.fixture(scope="package", autouse=True)

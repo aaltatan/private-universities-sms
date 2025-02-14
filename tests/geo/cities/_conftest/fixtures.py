@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from apps.core.models import User
 from apps.geo.models import Governorate, City
+from apps.core.utils import Deleter
 from tests.utils import reset_sequence
 
 from .factories import GovernorateFactory, CityFactory
@@ -95,6 +96,21 @@ def clean_data_sample() -> dict[str, str]:
         "governorate": "محافظة حماه",
         "description": "حماه",
     }
+
+
+@pytest.fixture(scope="package")
+def custom_deleter():
+    class CustomDeleter(Deleter[City]):
+        error_obj_msg = "error obj message"
+        error_qs_msg = "error qs message"
+
+        def check_obj_deleting_possibility(self, obj: City) -> bool:
+            return False
+
+        def check_queryset_deleting_possibility(self, qs: City) -> bool:
+            return False
+
+    return CustomDeleter
 
 
 @pytest.fixture(scope="package", autouse=True)

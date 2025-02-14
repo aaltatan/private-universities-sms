@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.test import APIClient
 
 from apps.core.models import AbstractUniqueNameModel as Model
+from apps.core.utils import Deleter
 
 
 class CommonDeleteTests:
@@ -173,3 +174,122 @@ class CommonDeleteTests:
                 data={"ids": [1, 2, 3, 4, 500, 501]},
                 headers=admin_headers,
             )
+
+    @staticmethod
+    def test_delete_object_not_deletable(
+        admin_client: Client,
+        model: type[Model],
+        headers_modal_GET: dict[str, str],
+        mocker: pytest_mock.MockerFixture,
+        app_label: str,
+        subapp_label: str,
+        counts: dict[str, int],
+        custom_deleter: type[Deleter],
+    ):
+        mocker.patch(
+            f"apps.{app_label}.views.{subapp_label}.DeleteView.deleter",
+            new=custom_deleter,
+        )
+
+        delete_url = model.objects.order_by("id").first().get_delete_url()
+        response = admin_client.post(delete_url, headers=headers_modal_GET)
+        messages_list = list(
+            messages.get_messages(request=response.wsgi_request),
+        )
+
+        assert response.status_code == 200
+        assert messages_list[0].level == messages.ERROR
+        assert messages_list[0].message == "error obj message"
+        assert model.objects.count() == counts["objects"]
+
+    @staticmethod
+    def test_api_delete_object_not_deletable(
+        api_client: APIClient,
+        admin_headers: dict[str, str],
+        urls: dict[str, str],
+        model: type[Model],
+        mocker: pytest_mock.MockerFixture,
+        app_label: str,
+        subapp_label: str,
+        counts: dict[str, int],
+        custom_deleter: type[Deleter],
+    ):
+        mocker.patch(
+            f"apps.{app_label}.views.{subapp_label}.APIViewSet.deleter",
+            new=custom_deleter,
+        )
+
+        delete_url = f"{urls['api']}1/"
+
+        response = api_client.delete(delete_url, headers=admin_headers)
+
+        assert response.status_code == 400
+        assert model.objects.count() == counts["objects"]
+        assert response.json()["details"] == "error obj message"
+
+    @staticmethod
+    def test_api_delete_objects_not_deletable(
+        api_client: APIClient,
+        admin_headers: dict[str, str],
+        urls: dict[str, str],
+        model: type[Model],
+        mocker: pytest_mock.MockerFixture,
+        app_label: str,
+        subapp_label: str,
+        counts: dict[str, int],
+        custom_deleter: type[Deleter],
+    ):
+        mocker.patch(
+            f"apps.{app_label}.views.{subapp_label}.APIViewSet.deleter",
+            new=custom_deleter,
+        )
+
+        delete_url = f"{urls['api']}bulk-delete/"
+        payload = {"ids": [1, 2, 3, 4, 500, 501]}
+
+        response = api_client.post(
+            delete_url,
+            headers=admin_headers,
+            data=payload,
+        )
+
+        assert response.status_code == 400
+        assert model.objects.count() == counts["objects"]
+        assert response.json()["details"] == "error qs message"
+
+    @staticmethod
+    def test_delete_objects_not_deletable(
+        admin_client: Client,
+        model: type[Model],
+        urls: dict[str, str],
+        headers_modal_GET: dict[str, str],
+        mocker: pytest_mock.MockerFixture,
+        app_label: str,
+        subapp_label: str,
+        counts: dict[str, int],
+        custom_deleter: type[Deleter],
+    ):
+        mocker.patch(
+            f"apps.{app_label}.views.{subapp_label}.ListView.deleter",
+            new=custom_deleter,
+        )
+
+        payload = {
+            "action-check": list(range(1, 10)),
+            "kind": "action",
+            "name": "delete",
+        }
+
+        response = admin_client.post(
+            urls["index"],
+            headers=headers_modal_GET,
+            data=payload,
+        )
+        messages_list = list(
+            messages.get_messages(request=response.wsgi_request),
+        )
+
+        assert response.status_code == 200
+        assert messages_list[0].level == messages.ERROR
+        assert messages_list[0].message == "error qs message"
+        assert model.objects.count() == counts["objects"]
