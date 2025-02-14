@@ -5,6 +5,7 @@ from apps.geo.views.cities import APIViewSet as CityAPIViewSet
 from apps.geo.views.nationalities import APIViewSet as NationalityAPIViewSet
 from apps.org.views.job_types import APIViewSet as JobTypeAPIViewSet
 from apps.org.views.job_subtypes import APIViewSet as JobSubtypeAPIViewSet
+from apps.org.views.groups import APIViewSet as GroupAPIViewSet
 
 
 router = routers.DefaultRouter()
@@ -14,3 +15,4 @@ router.register(r"cities", CityAPIViewSet)
 router.register(r"nationalities", NationalityAPIViewSet)
 router.register(r"job-types", JobTypeAPIViewSet)
 router.register(r"job-subtypes", JobSubtypeAPIViewSet)
+router.register(r"groups", GroupAPIViewSet)

@@ -43,13 +43,19 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                 "href": reverse("job_types:index"),
                 "text": _("job types").title(),
                 "icon": "briefcase",
-                "perm": "geo.view_jobtype",
+                "perm": "org.view_jobtype",
             },
             {
                 "href": reverse("job_subtypes:index"),
                 "text": _("job subtypes").title(),
                 "icon": "briefcase",
-                "perm": "geo.view_jobsubtype",
+                "perm": "org.view_jobsubtype",
+            },
+            {
+                "href": reverse("groups:index"),
+                "text": _("groups").title(),
+                "icon": "user-group",
+                "perm": "org.view_group",
             },
         ],
     }

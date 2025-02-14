@@ -20,3 +20,8 @@ class JobSubtypeResource(BaseResource):
     class Meta:
         model = models.JobSubtype
         fields = ("id", "name", "job_type", "description", "slug")
+
+
+class GroupResource(BaseResource):
+    class Meta:
+        model = models.Group

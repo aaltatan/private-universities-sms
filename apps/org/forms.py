@@ -40,3 +40,17 @@ class JobSubtypeForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class GroupForm(forms.ModelForm):
+    class Meta:
+        model = models.Group
+        fields = ("name", "description")
+        widgets = {
+            "description": forms.Textarea(
+                attrs={
+                    "rows": 1,
+                    "x-autosize": "",
+                }
+            ),
+        }

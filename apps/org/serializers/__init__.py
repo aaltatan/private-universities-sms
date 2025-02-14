@@ -1,3 +1,4 @@
+from .group import GroupActivitySerializer, GroupSerializer
 from .job_subtype import (
     CreateUpdateJobSubtypeSerializer,
     JobSubtypeActivitySerializer,
@@ -11,4 +12,6 @@ __all__ = [
     "JobSubtypeSerializer",
     "JobSubtypeActivitySerializer",
     "CreateUpdateJobSubtypeSerializer",
+    "GroupSerializer",
+    "GroupActivitySerializer",
 ]
