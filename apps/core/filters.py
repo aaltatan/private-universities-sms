@@ -3,7 +3,7 @@ from typing import Any, Mapping
 import django_filters as filters
 from django.db.models import Model, Q, QuerySet
 
-from .utils import get_djangoql_query, get_keywords_query
+from .utils import get_djangoql_query, get_keywords_query, is_table_exists
 from .widgets import ComboboxWidget, OrderingWidget
 
 
@@ -87,8 +87,12 @@ def get_combobox_choices_filter(
     if choices is not None:
         kwargs["choices"] = choices
     else:
-        values_list = model.objects.values_list(field_name, flat=True)
-        values_list = sorted([(f, f) for f in set(values_list)])
-        kwargs["choices"] = values_list
+        table_exists = is_table_exists(table_name=model._meta.db_table)
+        if not table_exists:
+            kwargs["choices"] = []
+        else:
+            values_list = model.objects.values_list(field_name, flat=True)
+            values_list = sorted([(f, f) for f in set(values_list)])
+            kwargs["choices"] = values_list
 
     return filters.MultipleChoiceFilter(**kwargs)
