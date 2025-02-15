@@ -4,6 +4,7 @@ from typing import Any, Callable, Sequence
 
 from django.db.models import Q, QuerySet
 from django.http import Http404, HttpRequest, HttpResponse
+from rest_framework.response import Response
 
 from .constants import PERMISSION
 from .utils import get_keywords_query
@@ -147,3 +148,34 @@ class ActivityRequestParser:
 
     def asdict(self) -> dict[str, str]:
         return asdict(self)
+
+
+@dataclass
+class ReportSchema:
+    title: str
+    report: list[dict[str, Any]] | dict = field(default=...)
+    headers: list[str] = field(default_factory=list)
+
+    def asdict(self) -> dict:
+        return {
+            "title": self.title,
+            "headers": self.headers,
+            "report": self.report,
+        }
+
+    def get_response(self, status_code: int = 200) -> Response:
+        return Response(self.asdict(), status=status_code)
+
+    def __post_init__(self):
+        if not self.headers:
+            if isinstance(self.report, dict):
+                self.headers = list(self.report.keys())
+            elif isinstance(self.report, list):
+                if len(self.report) > 0:
+                    self.headers = list(self.report[0].keys())
+                else:
+                    self.headers = []
+            else:
+                raise NotImplementedError(
+                    "data must be an instance of list or dict",
+                )
