@@ -55,13 +55,13 @@ def pagination_test_cases(request: pytest.FixtureRequest):
             ("City 001", "City 002"),
             ("City 011", "City 012"),
         ),
-        # (
-        #     "?job_type=محافظة+حمص&per_page=50",
-        #     10,
-        #     "name",
-        #     ("City 011", "City 012"),
-        #     ("City 090", "City 091"),
-        # ),
+        (
+            "?job_type=محافظة حمص&job_type=محافظة حماه&per_page=50",
+            21,
+            "name",
+            ("City 011", "City 012"),
+            ("City 090", "City 091"),
+        ),
         (
             "?q=حماه محافظة",
             11,
