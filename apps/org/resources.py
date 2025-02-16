@@ -25,3 +25,9 @@ class JobSubtypeResource(BaseResource):
 class GroupResource(BaseResource):
     class Meta:
         model = models.Group
+
+
+class CostCenterResource(BaseResource):
+    class Meta:
+        model = models.CostCenter
+        fields = ("id", "name", "accounting_id", "description", "slug")

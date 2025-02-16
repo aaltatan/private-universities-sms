@@ -1,0 +1,72 @@
+[
+  {
+    "model": "org.costcenter",
+    "pk": 1,
+    "fields": {
+      "name": "رئاسة الجامعة",
+      "description": "",
+      "slug": "رئاسة-الجامعة",
+      "accounting_id": "1"
+    }
+  },
+  {
+    "model": "org.costcenter",
+    "pk": 2,
+    "fields": {
+      "name": "كلية هندسة العمارة والتخطيط العمراني",
+      "description": "",
+      "slug": "كلية-هندسة-العمارة-والتخطيط-العمراني",
+      "accounting_id": "2"
+    }
+  },
+  {
+    "model": "org.costcenter",
+    "pk": 3,
+    "fields": {
+      "name": "كلية الهندسة",
+      "description": "",
+      "slug": "كلية-الهندسة",
+      "accounting_id": "3"
+    }
+  },
+  {
+    "model": "org.costcenter",
+    "pk": 4,
+    "fields": {
+      "name": "كلية العلوم الادارية والمالية",
+      "description": "",
+      "slug": "كلية-العلوم-الادارية-والمالية",
+      "accounting_id": "4"
+    }
+  },
+  {
+    "model": "org.costcenter",
+    "pk": 5,
+    "fields": {
+      "name": "كلية طب الأسنان",
+      "description": "",
+      "slug": "كلية-طب-الأسنان",
+      "accounting_id": "5"
+    }
+  },
+  {
+    "model": "org.costcenter",
+    "pk": 6,
+    "fields": {
+      "name": "كلية الصيدلة",
+      "description": "",
+      "slug": "كلية-الصيدلة",
+      "accounting_id": "6"
+    }
+  },
+  {
+    "model": "org.costcenter",
+    "pk": 7,
+    "fields": {
+      "name": "كلية الهندسة المدنية",
+      "description": "",
+      "slug": "كلية-الهندسة-المدنية",
+      "accounting_id": "7"
+    }
+  }
+]

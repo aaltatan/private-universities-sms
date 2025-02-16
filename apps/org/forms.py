@@ -54,3 +54,17 @@ class GroupForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class CostCenterForm(forms.ModelForm):
+    class Meta:
+        model = models.CostCenter
+        fields = ("name", "accounting_id", "description")
+        widgets = {
+            "description": forms.Textarea(
+                attrs={
+                    "rows": 1,
+                    "x-autosize": "",
+                }
+            ),
+        }

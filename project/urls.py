@@ -73,6 +73,10 @@ urlpatterns = [
         "groups/",
         include("apps.org.urls.groups"),
     ),
+    path(
+        "cost-centers/",
+        include("apps.org.urls.cost_centers"),
+    ),
 ]
 
 if settings.DEBUG:

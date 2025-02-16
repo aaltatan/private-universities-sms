@@ -6,7 +6,6 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 
 
-
 def constants(request: HttpRequest) -> dict[str, Any]:
     data = {
         "project_name": "Salaries Management System",
@@ -56,6 +55,12 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                 "text": _("groups").title(),
                 "icon": "user-group",
                 "perm": "org.view_group",
+            },
+            {
+                "href": reverse("cost_centers:index"),
+                "text": _("cost centers").title(),
+                "icon": "building-office-2",
+                "perm": "org.view_costcenter",
             },
         ],
     }
