@@ -1,4 +1,4 @@
-from django.urls import path, re_path
+from django.urls import path
 from django.utils.translation import gettext as _
 
 from ..views import governorates as views
@@ -8,8 +8,8 @@ app_name = "governorates"
 
 
 urlpatterns = [
-    re_path(
-        route=r"(reports/(?P<report_name>[a-z\-]+)/)?",
+    path(
+        route="",
         view=views.ListView.as_view(),
         name="index",
         kwargs={"title": _("governorates")},

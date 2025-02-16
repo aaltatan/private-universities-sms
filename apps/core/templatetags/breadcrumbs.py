@@ -8,21 +8,26 @@ from django.urls import Resolver404, resolve, ResolverMatch
 
 @dataclass
 class Path:
-    path: InitVar[ResolverMatch]
-    href: str = field(init=False, default="")
-    text: str = field(init=False, default="")
+    resolver: InitVar[ResolverMatch]
+    path: str = field(init=False, default="")
+    title: str = field(init=False, default="")
 
-    def __post_init__(self, path: ResolverMatch):
-        self.href = path.route
-        self.text = path.kwargs.get("title")
+    def __post_init__(self, resolver: ResolverMatch):
+        self.path = resolver.route
+        title = resolver.kwargs.get("title")
 
-        if path.url_name == "update":
-            slug: str = path.kwargs.get("slug", "")
-            self.href = path.route.replace("<str:slug>", slug)
+        if title is None:
+            raise ValueError(
+                f"title is required in <{resolver.app_name}:{resolver.view_name}>",
+            )
 
-            self.text = slug.replace("-", " ").title()
+        self.title = title
 
-        self.href = f"/{self.href}"
+        if "slug" in resolver.route:
+            slug: str = resolver.kwargs.get("slug", "")
+            self.title += " " + slug.replace("-", " ").title()
+
+        self.path = f"/{self.path}"
 
     def model_dump(self) -> dict[str, str]:
         return asdict(self)
@@ -48,5 +53,5 @@ def get_breadcrumbs(context):
             breadcrumbs.append(Path(path).model_dump())
         except Resolver404:
             pass
-    
+
     return breadcrumbs

@@ -50,8 +50,6 @@ class ListMixin(ABC):
         """
         Handles GET requests and returns a rendered template.
         """
-        print(kwargs)
-        print('#' * 100)
         if request.GET.get("redirected"):
             return self.get_export_response(request)
 
