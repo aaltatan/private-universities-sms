@@ -1,9 +1,10 @@
 from django.db import models
+from django.db.models import QuerySet
 from django.db.models.signals import pre_save
 from django.utils.translation import gettext as _
 
 from apps.core.models import AbstractUniqueNameModel
-from apps.core.schemas import ReportSchema
+from apps.core.schemas import Report
 from apps.core.signals import slugify_name
 from apps.core.utils import annotate_search
 
@@ -11,21 +12,24 @@ from ..constants import job_types as constants
 
 
 class JobTypeManager(models.Manager):
-    def get_report_job_types_count(self, include_zeros=False) -> ReportSchema:
+    def get_report_job_types_count(
+        self,
+        include_zeros: bool = False,
+        qs: QuerySet | None = None,
+    ) -> Report:
         """
         Returns a queryset of job subtypes with the number of job types in each.
         """
-        report = (
-            self.get_queryset()
-            .values("name")
-            .annotate(
-                counts=models.Count("job_subtypes"),
-            )
+        if qs is None:
+            qs = self.get_queryset()
+
+        report = qs.values("name").annotate(
+            counts=models.Count("job_subtypes"),
         )
         if not include_zeros:
             report = report.filter(counts__gt=0)
 
-        report_schema = ReportSchema(
+        report_schema = Report(
             title=_("job subtypes count"),
             headers=[_("name"), _("count")],
             report=list(report),

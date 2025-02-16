@@ -4,6 +4,9 @@ from django.views.generic.list import MultipleObjectMixin
 from django_filters import rest_framework as django_filters
 from rest_framework import filters as rest_filters
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 from apps.core import filter_backends, mixins
 from apps.core.schemas import Action
@@ -30,6 +33,17 @@ class APIViewSet(
     ordering_fields = constants.ORDERING_FIELDS
     search_fields = constants.SEARCH_FIELDS
     deleter = Deleter
+
+    @action(detail=False, methods=["get"], url_path="counts-report")
+    def report_cities_count(self, request: Request) -> Response:
+        """
+        Returns a report of the number of cities in each governorate.
+        """
+        Model: models.Governorate = self.get_model_class()
+        queryset = self.filter_queryset(queryset=self.get_queryset())
+        report = Model.objects.get_report_cities_count(qs=queryset)
+
+        return report.get_api_response()
 
 
 class ListView(

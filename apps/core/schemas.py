@@ -151,7 +151,7 @@ class ActivityRequestParser:
 
 
 @dataclass
-class ReportSchema:
+class Report:
     title: str
     report: list[dict[str, Any]] | dict = field(default=...)
     headers: list[str] = field(default_factory=list)
@@ -162,8 +162,8 @@ class ReportSchema:
             "headers": self.headers,
             "report": self.report,
         }
-
-    def get_response(self, status_code: int = 200) -> Response:
+    
+    def get_api_response(self, status_code: int = 200) -> Response:
         return Response(self.asdict(), status=status_code)
 
     def __post_init__(self):
