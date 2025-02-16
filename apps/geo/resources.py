@@ -9,6 +9,7 @@ from . import models
 class GovernorateResource(BaseResource):
     class Meta:
         model = models.Governorate
+        fields = ("serial", "name", "description", "slug")
 
 
 class CityResource(BaseResource):
@@ -19,7 +20,7 @@ class CityResource(BaseResource):
 
     class Meta:
         model = models.City
-        fields = ("id", "name", "governorate", "description", "slug")
+        fields = ("serial", "name", "governorate", "description", "slug")
 
 
 class NationalityResource(BaseResource):
@@ -33,4 +34,4 @@ class NationalityResource(BaseResource):
 
     class Meta:
         model = models.Nationality
-        fields = ("id", "name", "is_local", "description", "slug")
+        fields = ("serial", "name", "is_local", "description", "slug")

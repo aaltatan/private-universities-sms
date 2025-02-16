@@ -36,8 +36,8 @@
           <c-layout.context-menu.item
             icon="table-cells"
             href="#"
-            hx-get="{{ index_url }}?export=true&extension=xlsx"
-            hx-include="[aria-included=true]"
+            hx-get="{{ index_url }}{% querystring %}"
+            hx-vals='{"export": true, "extension": "xlsx"}'
             aria-label="export table as xlsx"
           >
             {% translate 'excel file'|title %}
@@ -45,8 +45,8 @@
           <c-layout.context-menu.item
             icon="document-text"
             href="#"
-            hx-get="{{ index_url }}?export=true&extension=csv"
-            hx-include="[aria-included=true]"
+            hx-get="{{ index_url }}{% querystring %}"
+            hx-vals='{"export": true, "extension": "csv"}'
             aria-label="export table as csv"
           >
             CSV
@@ -54,8 +54,8 @@
           <c-layout.context-menu.item
             icon="document"
             href="#"
-            hx-get="{{ index_url }}?export=true&extension=json"
-            hx-include="[aria-included=true]"
+            hx-get="{{ index_url }}{% querystring %}"
+            hx-vals='{"export": true, "extension": "json"}'
             aria-label="export table as json"
           >
             JSON

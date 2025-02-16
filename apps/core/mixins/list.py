@@ -118,6 +118,14 @@ class ListMixin(ABC):
         """
         Returns the export response.
         """
+        if (
+            getattr(self.resource_class, "_serials") is None
+            or "serial" not in self.resource_class.fields
+        ):
+            raise ValueError(
+                "resource_class must have _serials attribute and serial field(SerialResourceMixin)",
+            )
+
         content_types = {
             "csv": "text/csv",
             "json": "application/json",
@@ -126,6 +134,7 @@ class ListMixin(ABC):
         extension = request.GET.get("extension", "xlsx").lower()
 
         qs = self.get_queryset()
+        self.resource_class._serials = []
         dataset: Dataset = self.resource_class().export(qs)
 
         now: str = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
