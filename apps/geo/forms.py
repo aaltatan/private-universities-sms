@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext as _
 
-from apps.core.widgets import get_autocomplete_field
+from apps.core.widgets import get_autocomplete_field, get_textarea_widget
 
 from . import models
 
@@ -11,12 +11,7 @@ class GovernorateForm(forms.ModelForm):
         model = models.Governorate
         fields = ("name", "description")
         widgets = {
-            "description": forms.Textarea(
-                attrs={
-                    "rows": 1,
-                    "x-autosize": "",
-                }
-            ),
+            "description": get_textarea_widget(),
         }
 
 
@@ -34,17 +29,11 @@ class CityForm(forms.ModelForm):
         model = models.City
         fields = ("name", "governorate", "description")
         widgets = {
-            "description": forms.Textarea(
-                attrs={
-                    "rows": 1,
-                    "x-autosize": "",
-                }
-            ),
+            "description": get_textarea_widget(),
         }
 
 
 class NationalityForm(forms.ModelForm):
-
     is_local = forms.ChoiceField(
         choices=models.Nationality.IS_LOCAL_CHOICES,
         label=_("locality"),
@@ -55,10 +44,5 @@ class NationalityForm(forms.ModelForm):
         model = models.Nationality
         fields = ("name", "is_local", "description")
         widgets = {
-            "description": forms.Textarea(
-                attrs={
-                    "rows": 1,
-                    "x-autosize": "",
-                }
-            ),
+            "description": get_textarea_widget(),
         }

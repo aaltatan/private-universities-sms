@@ -1,10 +1,10 @@
 from urllib.parse import urlencode
 
 from django.db.models import QuerySet
-from django.forms.widgets import SelectMultiple, TextInput
+from django.forms import ModelChoiceField
+from django.forms.widgets import SelectMultiple, Textarea, TextInput
 from django.template.loader import render_to_string
-
-from .fields import CustomModelChoiceField
+from django.utils.translation import gettext_lazy as _
 
 
 class RenderMixin:
@@ -40,6 +40,14 @@ class OrderingWidget(RenderMixin, SelectMultiple):
     template_name = "widgets/ordering.html"
 
 
+class CustomModelChoiceField(ModelChoiceField):
+    """A custom ModelChoiceField."""
+
+    default_error_messages = {
+        "invalid_choice": _("this choice is not valid"),
+    }
+
+
 def get_autocomplete_field(
     queryset: QuerySet,
     to_field_name: str = "pk",
@@ -53,4 +61,23 @@ def get_autocomplete_field(
         queryset=queryset,
         to_field_name=to_field_name,
         widget=AutocompleteWidget({"querystring": urlencode(kwargs)}),
+    )
+
+
+def get_textarea_widget(rows: int = 1) -> Textarea:
+    """Get textarea field with x-autosize attribute."""
+    return Textarea(
+        attrs={
+            "rows": rows,
+            "x-autosize": "",
+        },
+    )
+
+
+def get_numeric_widget(x_mask: str = "9999999999") -> TextInput:
+    """Get numeric field with x-mask attribute."""
+    return TextInput(
+        attrs={
+            "x-mask": x_mask,
+        },
     )

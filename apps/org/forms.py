@@ -1,6 +1,10 @@
 from django import forms
 
-from apps.core.widgets import get_autocomplete_field
+from apps.core.widgets import (
+    get_autocomplete_field,
+    get_numeric_widget,
+    get_textarea_widget,
+)
 
 from . import models
 
@@ -10,12 +14,7 @@ class JobTypeForm(forms.ModelForm):
         model = models.JobType
         fields = ("name", "description")
         widgets = {
-            "description": forms.Textarea(
-                attrs={
-                    "rows": 1,
-                    "x-autosize": "",
-                }
-            ),
+            "description": get_textarea_widget(),
         }
 
 
@@ -33,12 +32,7 @@ class JobSubtypeForm(forms.ModelForm):
         model = models.JobSubtype
         fields = ("name", "job_type", "description")
         widgets = {
-            "description": forms.Textarea(
-                attrs={
-                    "rows": 1,
-                    "x-autosize": "",
-                }
-            ),
+            "description": get_textarea_widget(),
         }
 
 
@@ -47,12 +41,7 @@ class GroupForm(forms.ModelForm):
         model = models.Group
         fields = ("name", "description")
         widgets = {
-            "description": forms.Textarea(
-                attrs={
-                    "rows": 1,
-                    "x-autosize": "",
-                }
-            ),
+            "description": get_textarea_widget(),
         }
 
 
@@ -61,10 +50,6 @@ class CostCenterForm(forms.ModelForm):
         model = models.CostCenter
         fields = ("name", "accounting_id", "description")
         widgets = {
-            "description": forms.Textarea(
-                attrs={
-                    "rows": 1,
-                    "x-autosize": "",
-                }
-            ),
+            "accounting_id": get_numeric_widget(),
+            "description": get_textarea_widget(),
         }
