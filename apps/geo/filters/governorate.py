@@ -8,10 +8,10 @@ from apps.core.filters import (
 )
 
 from .. import models
-from ..constants import job_types as constants
+from ..constants import governorates as constants
 
 
-class BaseJobTypeFilter(FilterTextMixin, filters.FilterSet):
+class BaseGovernoratesFilter(FilterTextMixin, filters.FilterSet):
     name = filters.CharFilter(
         label=_("name").title(),
         method="filter_text",
@@ -22,14 +22,14 @@ class BaseJobTypeFilter(FilterTextMixin, filters.FilterSet):
     )
 
     class Meta:
-        model = models.JobType
+        model = models.Governorate
         fields = ("name", "description")
 
 
-class APIJobTypeFilter(BaseJobTypeFilter):
+class APIGovernoratesFilter(BaseGovernoratesFilter):
     pass
 
 
-class JobTypeFilter(FilterSearchMixin, BaseJobTypeFilter):
+class GovernorateFilter(FilterSearchMixin, BaseGovernoratesFilter):
     q = filters.CharFilter(method="search")
     ordering = get_ordering_filter(constants.ORDERING_FIELDS)

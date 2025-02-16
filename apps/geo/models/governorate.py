@@ -7,27 +7,27 @@ from apps.core.schemas import ReportSchema
 from apps.core.signals import slugify_name
 from apps.core.utils import annotate_search
 
-from ..constants import job_types as constants
+from ..constants import governorates as constants
 
 
-class JobTypeManager(models.Manager):
-    def get_report_job_types_count(self, include_zeros=False) -> ReportSchema:
+class GovernorateManager(models.Manager):
+    def get_report_cities_count(self, include_zeros=False) -> ReportSchema:
         """
-        Returns a queryset of job subtypes with the number of job types in each.
+        Returns a queryset of governorates with the number of cities in each.
         """
         report = (
             self.get_queryset()
             .values("name")
             .annotate(
-                counts=models.Count("job_subtypes"),
+                counts=models.Count("cities"),
             )
         )
         if not include_zeros:
             report = report.filter(counts__gt=0)
 
         report_schema = ReportSchema(
-            title=_("job subtypes count"),
-            headers=[_("name"), _("count")],
+            title=_("governorates count"),
+            headers=[_("name"), _("counts")],
             report=list(report),
         )
 
@@ -37,23 +37,22 @@ class JobTypeManager(models.Manager):
         return (
             super()
             .get_queryset()
-            .prefetch_related("job_subtypes")
+            .prefetch_related("cities")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
             )
         )
 
 
-class JobType(AbstractUniqueNameModel):
-    objects: JobTypeManager = JobTypeManager()
+class Governorate(AbstractUniqueNameModel):
+    objects: GovernorateManager = GovernorateManager()
 
     class Meta:
         ordering = ("name",)
-        verbose_name_plural = "job_types"
         permissions = (
-            ("export_jobtype", "Can export job_type"),
-            ("view_activity_jobtype", "Can view job_type activity"),
+            ("export_governorate", "Can export governorate"),
+            ("view_activity_governorate", "Can view governorate activity"),
         )
 
 
-pre_save.connect(slugify_name, sender=JobType)
+pre_save.connect(slugify_name, sender=Governorate)

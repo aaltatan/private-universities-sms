@@ -4,36 +4,19 @@ from django.utils.translation import gettext as _
 
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.signals import slugify_name
+from apps.core.utils import annotate_search
 
-from . import managers
-
-
-class Governorate(AbstractUniqueNameModel):
-    objects = managers.GovernorateManager()
-
-    class Meta:
-        ordering = ("name",)
-        permissions = (
-            ("export_governorate", "Can export governorate"),
-            ("view_activity_governorate", "Can view governorate activity"),
-        )
+from ..constants import nationalities as constants
 
 
-class City(AbstractUniqueNameModel):
-    governorate = models.ForeignKey(
-        Governorate,
-        on_delete=models.PROTECT,
-        related_name="cities",
-    )
-
-    objects = managers.CityManager()
-
-    class Meta:
-        ordering = ("name",)
-        verbose_name_plural = "cities"
-        permissions = (
-            ("export_city", "Can export city"),
-            ("view_activity_city", "Can view city activity"),
+class NationalityManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .annotate(
+                search=annotate_search(constants.SEARCH_FIELDS),
+            )
         )
 
 
@@ -48,7 +31,7 @@ class Nationality(AbstractUniqueNameModel):
         help_text=_("is it local or foreign"),
     )
 
-    objects = managers.NationalityManager()
+    objects: NationalityManager = NationalityManager()
 
     def save(self, *args, **kwargs):
         Model = self.__class__
@@ -73,6 +56,4 @@ class Nationality(AbstractUniqueNameModel):
         )
 
 
-pre_save.connect(slugify_name, sender=City)
-pre_save.connect(slugify_name, sender=Governorate)
 pre_save.connect(slugify_name, sender=Nationality)

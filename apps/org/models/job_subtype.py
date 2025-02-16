@@ -5,7 +5,7 @@ from apps.core.models import AbstractUniqueNameModel
 from apps.core.signals import slugify_name
 from apps.core.utils import annotate_search
 
-from ..constants import job_subtypes
+from ..constants import job_subtypes as constants
 from .job_type import JobType
 
 
@@ -16,7 +16,7 @@ class JobSubtypeManager(models.Manager):
             .get_queryset()
             .select_related("job_type")
             .annotate(
-                search=annotate_search(job_subtypes.SEARCH_FIELDS),
+                search=annotate_search(constants.SEARCH_FIELDS),
             )
         )
 
@@ -28,7 +28,7 @@ class JobSubtype(AbstractUniqueNameModel):
         related_name="job_subtypes",
     )
 
-    objects = JobSubtypeManager()
+    objects: JobSubtypeManager = JobSubtypeManager()
 
     class Meta:
         ordering = (

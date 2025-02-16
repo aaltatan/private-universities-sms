@@ -8,7 +8,7 @@ from apps.core.filters import (
 )
 
 from .. import models
-from ..constants import groups
+from ..constants import groups as constants
 
 
 class BaseGroupFilter(FilterTextMixin, filters.FilterSet):
@@ -32,4 +32,4 @@ class APIGroupFilter(BaseGroupFilter):
 
 class GroupFilter(FilterSearchMixin, BaseGroupFilter):
     q = filters.CharFilter(method="search")
-    ordering = get_ordering_filter(groups.ORDERING_FIELDS)
+    ordering = get_ordering_filter(constants.ORDERING_FIELDS)

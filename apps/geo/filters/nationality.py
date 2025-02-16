@@ -8,10 +8,10 @@ from apps.core.filters import (
 )
 
 from .. import models
-from ..constants import job_types as constants
+from ..constants import nationalities as constants
 
 
-class BaseJobTypeFilter(FilterTextMixin, filters.FilterSet):
+class BaseNationalityFilter(FilterTextMixin, filters.FilterSet):
     name = filters.CharFilter(
         label=_("name").title(),
         method="filter_text",
@@ -20,16 +20,20 @@ class BaseJobTypeFilter(FilterTextMixin, filters.FilterSet):
         label=_("description").title(),
         method="filter_text",
     )
+    is_local = filters.ChoiceFilter(
+        label=_("locality").title(),
+        choices=models.Nationality.IS_LOCAL_CHOICES,
+    )
 
     class Meta:
-        model = models.JobType
-        fields = ("name", "description")
+        model = models.Nationality
+        fields = ("name", "is_local", "description")
 
 
-class APIJobTypeFilter(BaseJobTypeFilter):
+class APINationalityFilter(BaseNationalityFilter):
     pass
 
 
-class JobTypeFilter(FilterSearchMixin, BaseJobTypeFilter):
+class NationalityFilter(FilterSearchMixin, BaseNationalityFilter):
     q = filters.CharFilter(method="search")
     ordering = get_ordering_filter(constants.ORDERING_FIELDS)

@@ -5,7 +5,7 @@ from apps.core.models import AbstractUniqueNameModel
 from apps.core.signals import slugify_name
 from apps.core.utils import annotate_search
 
-from ..constants import groups
+from ..constants import groups as constants
 
 
 class GroupManager(models.Manager):
@@ -14,13 +14,13 @@ class GroupManager(models.Manager):
             super()
             .get_queryset()
             .annotate(
-                search=annotate_search(groups.SEARCH_FIELDS),
+                search=annotate_search(constants.SEARCH_FIELDS),
             )
         )
 
 
 class Group(AbstractUniqueNameModel):
-    objects = GroupManager()
+    objects: GroupManager = GroupManager()
 
     class Meta:
         ordering = ("name",)

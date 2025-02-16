@@ -10,7 +10,7 @@ from apps.core.filters import (
 )
 
 from .. import models
-from ..constants import job_subtypes
+from ..constants import job_subtypes as constants
 
 
 class BaseJobSubtypeFilter(FilterTextMixin, filters.FilterSet):
@@ -43,7 +43,7 @@ class JobSubtypeFilter(
     BaseJobSubtypeFilter,
 ):
     q = filters.CharFilter(method="search")
-    ordering = get_ordering_filter(job_subtypes.ORDERING_FIELDS)
+    ordering = get_ordering_filter(constants.ORDERING_FIELDS)
     job_type = get_combobox_choices_filter(
         model=models.JobSubtype,
         field_name="job_type__name",
