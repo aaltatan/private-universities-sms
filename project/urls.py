@@ -77,6 +77,10 @@ urlpatterns = [
         "cost-centers/",
         include("apps.org.urls.cost_centers"),
     ),
+    path(
+        "positions/",
+        include("apps.org.urls.positions"),
+    ),
 ]
 
 if settings.DEBUG:

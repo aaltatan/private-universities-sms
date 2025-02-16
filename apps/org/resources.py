@@ -33,3 +33,9 @@ class CostCenterResource(BaseResource):
     class Meta:
         model = models.CostCenter
         fields = ("serial", "name", "accounting_id", "description", "slug")
+
+
+class PositionResource(BaseResource):
+    class Meta:
+        model = models.Position
+        fields = ("serial", "name", "order", "description", "slug")

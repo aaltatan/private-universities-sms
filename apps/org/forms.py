@@ -53,3 +53,13 @@ class CostCenterForm(forms.ModelForm):
             "accounting_id": get_numeric_widget(),
             "description": get_textarea_widget(),
         }
+
+
+class PositionForm(forms.ModelForm):
+    class Meta:
+        model = models.Position
+        fields = ("name", "order", "description")
+        widgets = {
+            "order": get_numeric_widget(),
+            "description": get_textarea_widget(),
+        }

@@ -6,6 +6,7 @@ from .job_subtype import (
     JobSubtypeSerializer,
 )
 from .job_type import JobTypeActivitySerializer, JobTypeSerializer
+from .position import PositionActivitySerializer, PositionSerializer
 
 __all__ = [
     "CostCenterSerializer",
@@ -17,4 +18,6 @@ __all__ = [
     "CreateUpdateJobSubtypeSerializer",
     "GroupSerializer",
     "GroupActivitySerializer",
+    "PositionActivitySerializer",
+    "PositionSerializer",
 ]

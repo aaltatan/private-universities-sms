@@ -1,0 +1,152 @@
+[
+  {
+    "model": "org.position",
+    "pk": 1,
+    "fields": {
+      "name": "رئيس الجامعة",
+      "description": "",
+      "slug": "رئيس-الجامعة",
+      "order": 1
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 2,
+    "fields": {
+      "name": "نائب رئيس الجامعة للشؤون العلمية",
+      "description": "",
+      "slug": "نائب-رئيس-الجامعة-للشؤون-العلمية",
+      "order": 2
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 3,
+    "fields": {
+      "name": "نائب رئيس الجامعة للشؤون الادارية",
+      "description": "",
+      "slug": "نائب-رئيس-الجامعة-للشؤون-الادارية",
+      "order": 2
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 4,
+    "fields": {
+      "name": "عميد كلية",
+      "description": "",
+      "slug": "عميد-كلية",
+      "order": 3
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 5,
+    "fields": {
+      "name": "مدير",
+      "description": "",
+      "slug": "مدير",
+      "order": 3
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 6,
+    "fields": {
+      "name": "نائب عميد كلية",
+      "description": "",
+      "slug": "نائب-عميد-كلية",
+      "order": 4
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 7,
+    "fields": {
+      "name": "نائب مدير",
+      "description": "",
+      "slug": "نائب-مدير",
+      "order": 4
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 8,
+    "fields": {
+      "name": "رئيس قسم أكاديمي",
+      "description": "",
+      "slug": "رئيس-قسم-أكاديمي",
+      "order": 5
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 9,
+    "fields": {
+      "name": "رئيس قسم إداري",
+      "description": "",
+      "slug": "رئيس-قسم-إداري",
+      "order": 5
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 10,
+    "fields": {
+      "name": "عضو هيئة تدريسية",
+      "description": "",
+      "slug": "عضو-هيئة-تدريسية",
+      "order": 6
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 11,
+    "fields": {
+      "name": "عضو هيئة فنية",
+      "description": "",
+      "slug": "عضو-هيئة-فنية",
+      "order": 7
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 12,
+    "fields": {
+      "name": "موظف إداري",
+      "description": "",
+      "slug": "موظف-إداري",
+      "order": 7
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 13,
+    "fields": {
+      "name": "عامل إداري",
+      "description": "",
+      "slug": "عامل-إداري",
+      "order": 8
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 14,
+    "fields": {
+      "name": "متدرب",
+      "description": "",
+      "slug": "متدرب",
+      "order": 9
+    }
+  },
+  {
+    "model": "org.position",
+    "pk": 15,
+    "fields": {
+      "name": "رئيس مجلس الأمناء",
+      "description": "",
+      "slug": "رئيس-مجلس-الأمناء",
+      "order": 2
+    }
+  }
+]
