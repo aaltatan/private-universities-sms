@@ -9,7 +9,7 @@ from . import models
 class JobTypeResource(BaseResource):
     class Meta:
         model = models.JobType
-        fields = ("serial", "name", "description")
+        fields = ("serial", "name", "description", "slug")
 
 
 class JobSubtypeResource(BaseResource):
@@ -20,13 +20,13 @@ class JobSubtypeResource(BaseResource):
 
     class Meta:
         model = models.JobSubtype
-        fields = ("serial", "name", "job_type", "description", "slug",)
+        fields = ("serial", "name", "job_type", "description", "slug")
 
 
 class GroupResource(BaseResource):
     class Meta:
         model = models.Group
-        fields = ("serial", "name", "description")
+        fields = ("serial", "name", "description", "slug")
 
 
 class CostCenterResource(BaseResource):
