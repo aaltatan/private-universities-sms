@@ -48,7 +48,7 @@ class CommonUpdateTests:
     ):
         data, errors = dirty_data_test_cases
         obj = model.objects.first()
-        url = obj.get_update_url() + "?page=1&per_page=10&ordering=-Id"
+        url = obj.get_update_url() + "?page=1&per_page=10&ordering=-id"
 
         headers = {
             **headers_modal_GET,

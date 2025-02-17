@@ -7,12 +7,17 @@ from django.utils.translation import gettext as _
 from ..widgets import ComboboxWidget, OrderingWidget, get_text_widget
 
 
-def get_ordering_filter(fields: Mapping[str, str]) -> filters.OrderingFilter:
+class CustomOrderingFilter(filters.OrderingFilter):
+    descending_fmt = _("%s (desc)")
+
+
+def get_ordering_filter(fields: Mapping[str, str]) -> CustomOrderingFilter:
     """
     Returns an OrderingFilter.
     """
-    return filters.OrderingFilter(
-        fields=list(fields.items()),
+    return CustomOrderingFilter(
+        fields=list(fields.keys()),
+        field_labels=fields,
         widget=OrderingWidget,
     )
 

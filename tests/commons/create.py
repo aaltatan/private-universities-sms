@@ -145,7 +145,7 @@ class CommonCreateTests:
     ) -> None:
         objects_count = counts["objects"]
         data, errors = dirty_data_test_cases
-        url = urls["create"] + "?per_page=10&ordering=-Name"
+        url = urls["create"] + "?per_page=10&ordering=-name"
         headers = {
             **headers_modal_GET,
             "target": "#modal-container",

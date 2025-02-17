@@ -62,10 +62,10 @@ def filters_test_cases(request: pytest.FixtureRequest):
 @pytest.fixture(
     scope="package",
     params=[
-        ("?ordering=Id", (1, 2, 10)),
-        ("?ordering=-Id", (100, 99, 91)),
-        ("?ordering=-Locality", (99, 1, 9)),
-        ("?ordering=Locality", (1, 2, 10)),
+        ("?ordering=id", (1, 2, 10)),
+        ("?ordering=-id", (100, 99, 91)),
+        ("?ordering=-is_local", (99, 1, 9)),
+        ("?ordering=is_local", (1, 2, 10)),
     ],
 )
 def order_test_cases(request: pytest.FixtureRequest):

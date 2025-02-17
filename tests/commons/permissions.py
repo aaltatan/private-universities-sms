@@ -143,6 +143,7 @@ class CommonPermissionsTests:
 
         parser = HTMLParser(response.content)
 
+        tds_id = parser.css("span[aria-label='object id']")
         tds_name = parser.css("td[data-header='name']")
         tds_name_href = parser.css("td[data-header='name'] a")
         delete_context_menu_btns = parser.css("table li[role='menuitem']")
@@ -151,7 +152,8 @@ class CommonPermissionsTests:
         assert response.status_code == status.HTTP_200_OK
         assert len(tds_name_href) == 0
 
-        for pk, td in enumerate(tds_name, 1):
+        for pk, td in zip(tds_id, tds_name):
+            pk = int(pk.attributes["data-id"])
             update_url = model.objects.get(pk=pk).name
             assert update_url == td.text(strip=True)
 

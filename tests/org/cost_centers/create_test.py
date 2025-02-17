@@ -126,7 +126,7 @@ def test_create_with_redirect_from_modal(
     counts: dict[str, int],
 ) -> None:
     objects_count = counts["objects"]
-    url = urls["create"] + "?per_page=10&ordering=-Name"
+    url = urls["create"] + "?per_page=10&ordering=-name"
     headers = {
         **headers_modal_GET,
         "target": "#modal-container",
@@ -150,7 +150,7 @@ def test_create_with_redirect_from_modal(
     assert response.status_code == status.HTTP_201_CREATED
     assert model.objects.count() == objects_count + 1
     assert location.get("target") == target
-    assert location.get("path") == urls["index"] + "?per_page=10&ordering=-Name"
+    assert location.get("path") == urls["index"] + "?per_page=10&ordering=-name"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == success_message
 
@@ -167,4 +167,4 @@ def test_create_with_redirect_from_modal(
     assert response.status_code == status.HTTP_201_CREATED
     assert model.objects.count() == objects_count + 2
     assert location.get("target") == target
-    assert location.get("path") == urls["index"] + "?per_page=10&ordering=-Name"
+    assert location.get("path") == urls["index"] + "?per_page=10&ordering=-name"

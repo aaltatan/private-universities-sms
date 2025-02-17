@@ -35,7 +35,7 @@
           x-bind:class="{
             'bg-neutral-900/5 dark:bg-neutral-50/5': option.checked,
           }"
-          x-text="option.name"
+          x-text="option.name[0].toUpperCase() + option.name.substring(1)"
           @click="handleChange(option)"
           @keydown.enter="handleChange(option)"
         />

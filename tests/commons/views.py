@@ -325,12 +325,14 @@ class CommonViewsTests:
         response = admin_client.get(urls["index"])
         parser = HTMLParser(response.content)
         tds_name = parser.css("td[data-header='name'] a")
+        tds_id = parser.css("span[aria-label='object id']")
         context_menu_btns = parser.css("table li[role='menuitem']")
 
         assert response.status_code == status.HTTP_200_OK
         assert len(tds_name) == 10
         assert len(context_menu_btns) == 20
 
-        for pk, td in enumerate(tds_name, 1):
+        for pk, td in zip(tds_id, tds_name):
+            pk = int(pk.attributes["data-id"])
             update_url = model.objects.get(pk=pk).get_update_url()
             assert update_url == td.attributes["href"]

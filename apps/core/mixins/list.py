@@ -189,7 +189,7 @@ class ListMixin(ABC):
         Returns the queryset.
         """
         model = self.get_model_class()
-        qs = model.objects.all().order_by("id")
+        qs = model.objects.all()
 
         request: HttpRequest = self.request
 

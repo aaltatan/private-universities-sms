@@ -94,12 +94,12 @@ def filters_test_cases(request: pytest.FixtureRequest):
 @pytest.fixture(
     scope="package",
     params=[
-        ("?ordering=Id", (1, 2, 10)),
-        ("?page=21&ordering=Id", (201, 202, 210)),
-        ("?page=1&ordering=-Id", (304, 303, 295)),
-        ("?ordering=Name", (5, 6, 14)),
-        ("?ordering=Description", (5, 6, 14)),
-        ("?page=21&ordering=Name", (205, 206, 214)),
+        ("?ordering=id", (1, 2, 10)),
+        ("?page=21&ordering=id", (201, 202, 210)),
+        ("?page=1&ordering=-id", (304, 303, 295)),
+        ("?ordering=name", (5, 6, 14)),
+        ("?ordering=description", (5, 6, 14)),
+        ("?page=21&ordering=name", (205, 206, 214)),
     ],
 )
 def order_test_cases(request: pytest.FixtureRequest):

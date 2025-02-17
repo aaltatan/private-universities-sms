@@ -55,7 +55,7 @@ def test_update_form_with_clean_data(
     clean_data_sample: dict[str, str],
     counts: dict[str, int],
 ):
-    querystring = "?page=1&per_page=10&ordering=-Id"
+    querystring = "?page=1&per_page=10&ordering=-id"
     obj = model.objects.get(id=1)
     url = obj.get_update_url() + querystring
 
@@ -88,7 +88,7 @@ def test_update_with_redirect_from_modal(
     counts: dict[str, int],
 ) -> None:
     obj = model.objects.get(id=1)
-    url = obj.get_update_url() + "?per_page=10&ordering=-Id"
+    url = obj.get_update_url() + "?per_page=10&ordering=-id"
 
     headers = {
         **headers_modal_GET,
@@ -113,7 +113,7 @@ def test_update_with_redirect_from_modal(
     description = clean_data_sample["description"]
 
     assert location.get("target") == f"#{subapp_label}-table"
-    assert location.get("path") == urls["index"] + "?per_page=10&ordering=-Id"
+    assert location.get("path") == urls["index"] + "?per_page=10&ordering=-id"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"
     assert model.objects.count() == counts["objects"]
@@ -134,7 +134,7 @@ def test_update_without_redirect_from_modal(
     counts: dict[str, int],
 ) -> None:
     obj = model.objects.get(id=4)
-    url = obj.get_update_url() + "?per_page=10&ordering=-Id"
+    url = obj.get_update_url() + "?per_page=10&ordering=-id"
 
     headers = {
         **headers_modal_GET,
