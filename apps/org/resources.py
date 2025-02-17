@@ -30,12 +30,22 @@ class GroupResource(BaseResource):
 
 
 class CostCenterResource(BaseResource):
+    accounting_id = fields.Field(
+        attribute="accounting_id",
+        column_name=_("accounting id").title(),
+    )
+
     class Meta:
         model = models.CostCenter
         fields = ("serial", "name", "accounting_id", "description", "slug")
 
 
 class PositionResource(BaseResource):
+    order = fields.Field(
+        attribute="order",
+        column_name=_("order").title(),
+    )
+
     class Meta:
         model = models.Position
         fields = ("serial", "name", "order", "description", "slug")
