@@ -12,7 +12,7 @@ class FilterTextMixin:
         if not value:
             return qs
 
-        query = get_keywords_query(value)
+        query = get_keywords_query(value, field_name=name)
         return qs.filter(query)
 
 

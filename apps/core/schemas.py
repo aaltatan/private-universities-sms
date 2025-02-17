@@ -124,11 +124,18 @@ class AutocompleteRequestParser:
 
         self.term = self.request.GET.get("term", "")
 
-    def get_keyword_query(self, value: str, join: str = "and", type: str = "word") -> Q:
+    def get_keyword_query(
+        self,
+        value: str,
+        join: str = "and",
+        type: str = "word",
+    ) -> Q:
         """
         Returns a search query.
         """
-        return get_keywords_query(value, join, type)
+        return get_keywords_query(
+            value=value, field_name=self.field_name, join=join, type=type
+        )
 
 
 @dataclass

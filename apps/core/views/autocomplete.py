@@ -1,3 +1,4 @@
+from django.core.exceptions import FieldError
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
@@ -32,20 +33,18 @@ class AutocompleteView(View):
 
         Model = self.get_model_class(parser=parser)
 
-        default_queryset = Model.objects.filter(
-            parser.get_keyword_query(parser.term),
-        )
+        try:
+            default_queryset = Model.objects.filter(
+                parser.get_keyword_query(parser.term),
+            )
+        except FieldError as e:
+            return HttpResponse(str(e), status=400)
+
         qs = get_djangoql_query(
             qs_to_filter=Model.objects.all(),
             djangoql_query=parser.term,
             default_queryset=default_queryset,
         )
-
-        if (
-            getattr(Model, parser.field_name, None) is None
-            and parser.field_name not in qs.query.annotations
-        ):
-            return HttpResponse(f"field {parser.field_name} does not exist", status=400)
 
         context = {
             "object_list": qs,
