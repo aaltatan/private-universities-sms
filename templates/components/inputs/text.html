@@ -13,7 +13,6 @@
   icon="plus"
   icon_size="20"
   kind="text"
-  placeholder=""
   autofocus="false"
 />
 
@@ -53,11 +52,11 @@
     <span class="absolute start-2 top-1/2 -translate-y-1/2">
       {% heroicon_outline icon size=icon_size class="text-neutral-500" %}
     </span>
-    {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme style="padding-inline-start: 2rem" placeholder=placeholder type=kind %}
+    {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme style="padding-inline-start: 2rem" type=kind %}
   </div>
   {% else %}
   <!--  -->
-  {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme placeholder=placeholder type=kind %}
+  {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme type=kind %}
   <!--  -->
   {% endif %}
   <!--  -->

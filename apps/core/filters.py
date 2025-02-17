@@ -2,9 +2,10 @@ from typing import Any, Mapping
 
 import django_filters as filters
 from django.db.models import Model, Q, QuerySet
+from django.utils.translation import gettext as _
 
 from .utils import get_djangoql_query, get_keywords_query
-from .widgets import ComboboxWidget, OrderingWidget
+from .widgets import ComboboxWidget, OrderingWidget, get_text_widget
 
 
 class FilterTextMixin:
@@ -94,3 +95,44 @@ def get_combobox_choices_filter(
         )
 
     return filters.MultipleChoiceFilter(**kwargs)
+
+
+def get_text_filter(
+    label: str,
+    method_name: str = "filter_text",
+    **widget_attributes: dict[str, str],
+) -> filters.CharFilter:
+    if "placeholder" not in widget_attributes:
+        widget_attributes.setdefault("placeholder", label)
+
+    return filters.CharFilter(
+        label=label,
+        method=method_name,
+        widget=get_text_widget(**widget_attributes),
+    )
+
+
+def get_number_from_to_filters(
+    field_name: str,
+    from_attributes: dict[str, str] = {},
+    to_attributes: dict[str, str] = {},
+) -> tuple[filters.NumberFilter, filters.NumberFilter]:
+    """Get number range fields."""
+
+    from_attributes.setdefault("placeholder", _("from").title())
+    from_attributes.setdefault("x-mask", "9999999999")
+    to_attributes.setdefault("placeholder", _("to").title())
+    to_attributes.setdefault("x-mask", "9999999999")
+
+    from_ = filters.NumberFilter(
+        field_name=field_name,
+        lookup_expr="gte",
+        widget=get_text_widget(**from_attributes),
+    )
+    to = filters.NumberFilter(
+        field_name=field_name,
+        lookup_expr="lte",
+        widget=get_text_widget(**to_attributes),
+    )
+
+    return from_, to

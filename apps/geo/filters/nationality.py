@@ -5,6 +5,7 @@ from apps.core.filters import (
     FilterSearchMixin,
     FilterTextMixin,
     get_ordering_filter,
+    get_text_filter,
 )
 
 from .. import models
@@ -12,14 +13,8 @@ from ..constants import nationalities as constants
 
 
 class BaseNationalityFilter(FilterTextMixin, filters.FilterSet):
-    name = filters.CharFilter(
-        label=_("name").title(),
-        method="filter_text",
-    )
-    description = filters.CharFilter(
-        label=_("description").title(),
-        method="filter_text",
-    )
+    name = get_text_filter(label=_("name").title())
+    description = get_text_filter(label=_("description").title())
     is_local = filters.ChoiceFilter(
         label=_("locality").title(),
         choices=models.Nationality.IS_LOCAL_CHOICES,

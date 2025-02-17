@@ -7,6 +7,7 @@ from apps.core.filters import (
     FilterTextMixin,
     get_combobox_choices_filter,
     get_ordering_filter,
+    get_text_filter,
 )
 
 from .. import models
@@ -14,14 +15,8 @@ from ..constants import cities as constants
 
 
 class BaseCitiesFilter(FilterTextMixin, filters.FilterSet):
-    name = filters.CharFilter(
-        label=_("name").title(),
-        method="filter_text",
-    )
-    description = filters.CharFilter(
-        label=_("description").title(),
-        method="filter_text",
-    )
+    name = get_text_filter(label=_("name").title())
+    description = get_text_filter(label=_("description").title())
 
     class Meta:
         model = models.City

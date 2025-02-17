@@ -1,10 +1,12 @@
 import django_filters as filters
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as _
 
 from apps.core.filters import (
     FilterSearchMixin,
     FilterTextMixin,
+    get_number_from_to_filters,
     get_ordering_filter,
+    get_text_filter,
 )
 
 from .. import models
@@ -12,18 +14,13 @@ from ..constants import positions as constants
 
 
 class BasePositionFilter(FilterTextMixin, filters.FilterSet):
-    name = filters.CharFilter(
-        label=_("name").title(),
-        method="filter_text",
-    )
-    description = filters.CharFilter(
-        label=_("description").title(),
-        method="filter_text",
-    )
+    name = get_text_filter(label=_("name").title())
+    description = get_text_filter(label=_("description").title())
+    order_from, order_to = get_number_from_to_filters(field_name="order")
 
     class Meta:
         model = models.Position
-        fields = ("name", "order", "description")
+        fields = ("name", "order_from", "order_to", "description")
 
 
 class APIPositionFilter(BasePositionFilter):

@@ -1,7 +1,8 @@
 from django import forms
 from django.utils.translation import gettext as _
 
-from apps.core.widgets import get_autocomplete_field, get_textarea_widget
+from apps.core.widgets import get_textarea_widget
+from apps.core.fields import get_autocomplete_field
 
 from . import models
 
