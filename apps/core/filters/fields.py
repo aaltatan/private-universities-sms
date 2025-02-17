@@ -1,56 +1,10 @@
 from typing import Any, Mapping
 
 import django_filters as filters
-from django.db.models import Model, Q, QuerySet
+from django.db.models import Model
 from django.utils.translation import gettext as _
 
-from .utils import get_djangoql_query, get_keywords_query
-from .widgets import ComboboxWidget, OrderingWidget, get_text_widget
-
-
-class FilterTextMixin:
-    """
-    A mixin that adds a text filter to a model.
-    """
-
-    def filter_text(self, qs, name, value):
-        if not value:
-            return qs
-
-        query = get_keywords_query(value)
-        return qs.filter(query)
-
-
-class FilterComboboxMixin:
-    """
-    A mixin that add a filter_combobox to a model.
-    """
-
-    def filter_combobox(self, qs, name, value):
-        if not value:
-            return qs
-
-        stmt = Q(**{f"{name}__in": value})
-
-        return qs.filter(stmt).distinct()
-
-
-class FilterSearchMixin:
-    """
-    A mixin that adds a search filter to a model.
-    """
-
-    def search(
-        self,
-        queryset: QuerySet,
-        name: str,
-        value: str,
-    ) -> QuerySet:
-        """
-        Searches the queryset for the given name and value.
-        """
-        default_queryset = queryset.filter(get_keywords_query(value))
-        return get_djangoql_query(queryset, value, default_queryset)
+from ..widgets import ComboboxWidget, OrderingWidget, get_text_widget
 
 
 def get_ordering_filter(fields: Mapping[str, str]) -> filters.OrderingFilter:
@@ -99,17 +53,24 @@ def get_combobox_choices_filter(
 
 def get_text_filter(
     label: str,
+    exact: bool = False,
     method_name: str = "filter_text",
     **widget_attributes: dict[str, str],
 ) -> filters.CharFilter:
     if "placeholder" not in widget_attributes:
         widget_attributes.setdefault("placeholder", label)
 
-    return filters.CharFilter(
-        label=label,
-        method=method_name,
-        widget=get_text_widget(**widget_attributes),
-    )
+    kwargs = {
+        "label": label,
+        "widget": get_text_widget(**widget_attributes),
+    }
+
+    if exact:
+        kwargs["lookup_expr"] = "exact"
+    else:
+        kwargs["method"] = method_name
+
+    return filters.CharFilter(**kwargs)
 
 
 def get_number_from_to_filters(
