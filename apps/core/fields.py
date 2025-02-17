@@ -18,14 +18,23 @@ class CustomModelChoiceField(ModelChoiceField):
 def get_autocomplete_field(
     queryset: QuerySet,
     to_field_name: str = "pk",
+    attributes: dict[str, str] = {},
     **kwargs: dict[str, str],
 ) -> CustomModelChoiceField:
     """Get autocomplete field."""
+
+    if "placeholder" not in attributes:
+        attributes["placeholder"] = _("search")
 
     kwargs.setdefault("label_field_name", to_field_name)
 
     return CustomModelChoiceField(
         queryset=queryset,
         to_field_name=to_field_name,
-        widget=AutocompleteWidget({"querystring": urlencode(kwargs)}),
+        widget=AutocompleteWidget(
+            {
+                "querystring": urlencode(kwargs),
+                **attributes,
+            }
+        ),
     )

@@ -1,7 +1,12 @@
 from django import forms
+from django.utils.translation import gettext as _
 
-from apps.core.widgets import get_numeric_widget, get_textarea_widget
 from apps.core.fields import get_autocomplete_field
+from apps.core.widgets import (
+    get_numeric_widget,
+    get_text_widget,
+    get_textarea_widget,
+)
 
 from . import models
 
@@ -11,6 +16,7 @@ class JobTypeForm(forms.ModelForm):
         model = models.JobType
         fields = ("name", "description")
         widgets = {
+            "name": get_text_widget(placeholder=_("job type name")),
             "description": get_textarea_widget(),
         }
 
@@ -19,6 +25,7 @@ class JobSubtypeForm(forms.ModelForm):
     job_type = get_autocomplete_field(
         queryset=models.JobType.objects.all(),
         to_field_name="name",
+        attributes={"placeholder": _("search job types")},
         app_label="org",
         model_name="JobType",
         object_name="jobtype",
@@ -29,6 +36,7 @@ class JobSubtypeForm(forms.ModelForm):
         model = models.JobSubtype
         fields = ("name", "job_type", "description")
         widgets = {
+            "name": get_text_widget(placeholder=_("job subtype name")),
             "description": get_textarea_widget(),
         }
 
@@ -38,6 +46,7 @@ class GroupForm(forms.ModelForm):
         model = models.Group
         fields = ("name", "description")
         widgets = {
+            "name": get_text_widget(placeholder=_("group name")),
             "description": get_textarea_widget(),
         }
 
@@ -47,6 +56,7 @@ class CostCenterForm(forms.ModelForm):
         model = models.CostCenter
         fields = ("name", "accounting_id", "description")
         widgets = {
+            "name": get_text_widget(placeholder=_("cost center name")),
             "accounting_id": get_numeric_widget(),
             "description": get_textarea_widget(),
         }
@@ -57,6 +67,7 @@ class PositionForm(forms.ModelForm):
         model = models.Position
         fields = ("name", "order", "description")
         widgets = {
+            "name": get_text_widget(placeholder=_("position name")),
             "order": get_numeric_widget(),
             "description": get_textarea_widget(),
         }

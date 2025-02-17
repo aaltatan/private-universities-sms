@@ -1,5 +1,6 @@
 from django.forms.widgets import SelectMultiple, Textarea, TextInput
 from django.template.loader import render_to_string
+from django.utils.translation import gettext as _
 
 
 class RenderMixin:
@@ -35,13 +36,17 @@ class OrderingWidget(RenderMixin, SelectMultiple):
     template_name = "widgets/ordering.html"
 
 
-def get_textarea_widget(rows: int = 1) -> Textarea:
+def get_textarea_widget(
+    rows: int = 1,
+    **attributes: dict[str, str],
+) -> Textarea:
     """Get textarea field with x-autosize attribute."""
+
+    if "placeholder" not in attributes:
+        attributes.setdefault("placeholder", _("some description"))
+
     return Textarea(
-        attrs={
-            "rows": rows,
-            "x-autosize": "",
-        },
+        attrs={"rows": rows, "x-autosize": "", **attributes},
     )
 
 
