@@ -50,11 +50,15 @@ def get_textarea_widget(
     )
 
 
-def get_numeric_widget(x_mask: str = "9999999999") -> TextInput:
+def get_numeric_widget(
+    x_mask: str = "9999999999",
+    **attributes: dict[str, str],
+) -> TextInput:
     """Get numeric field with x-mask attribute."""
     return TextInput(
         attrs={
             "x-mask": x_mask,
+            **attributes,
         },
     )
 

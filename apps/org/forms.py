@@ -57,7 +57,9 @@ class CostCenterForm(forms.ModelForm):
         fields = ("name", "accounting_id", "description")
         widgets = {
             "name": get_text_widget(placeholder=_("cost center name")),
-            "accounting_id": get_numeric_widget(),
+            "accounting_id": get_numeric_widget(
+                placeholder=_("cost center id"),
+            ),
             "description": get_textarea_widget(),
         }
 
@@ -68,6 +70,8 @@ class PositionForm(forms.ModelForm):
         fields = ("name", "order", "description")
         widgets = {
             "name": get_text_widget(placeholder=_("position name")),
-            "order": get_numeric_widget(),
+            "order": get_numeric_widget(
+                placeholder=_("position order"),
+            ),
             "description": get_textarea_widget(),
         }
