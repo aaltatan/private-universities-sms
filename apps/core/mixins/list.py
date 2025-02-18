@@ -126,6 +126,17 @@ class ListMixin(ABC):
                 "resource_class must have _serials attribute and serial field(SerialResourceMixin)",
             )
 
+        app_label = self.get_app_label()
+        verbose_name_plural = self.get_verbose_name_plural()
+        object_name = self.get_object_name()
+
+        required_perm = f"{app_label}.export_{object_name}"
+
+        if not request.user.has_perm(required_perm):
+            return HttpResponseForbidden(
+                "You don't have permission to export this data"
+            )
+
         content_types = {
             "csv": "text/csv",
             "json": "application/json",
@@ -138,7 +149,7 @@ class ListMixin(ABC):
         dataset: Dataset = self.resource_class().export(qs)
 
         now: str = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        filename: str = f"{self.get_verbose_name_plural().title()}-{now}"
+        filename: str = f"{verbose_name_plural.title()}-{now}"
 
         dataset.title = filename
 

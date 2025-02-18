@@ -5,6 +5,22 @@ from django.test import Client
 
 class CommonExportTests:
     @staticmethod
+    def test_export_response_without_permission(
+        client: Client,
+        urls: dict[str, str],
+        headers_modal_GET: dict[str, str],
+        subapp_label: str,
+    ) -> None:
+        client.login(
+            username=f"{subapp_label}_user_with_view_perm_only",
+            password="password",
+        )
+        url = urls["index"] + "?export=true&extension=xlsx&redirected=true"
+        response = client.get(url, headers=headers_modal_GET)
+
+        assert response.status_code == 403
+
+    @staticmethod
     def test_export_response(
         admin_client: Client,
         urls: dict[str, str],
