@@ -47,13 +47,13 @@
     <div class="flex flex-col gap-2 overflow-y-auto scroll pt-2 pb-6 px-2">
       {% for link in sidebar_links %}
       <a
-        :href="'{{ link.href }}' + (sidebarLinksQuerystring['{{ link.href }}'] || '')"
+        :href="'{{ link.path }}' + (sidebarLinksQuerystring['{{ link.path }}'] || '')"
         aria-hidden="false"
         id="sidebar-link-{{ forloop.counter }}"
-        class="{% active_link link.href %} aria-hidden:hidden flex items-center rounded-md gap-2 p-2 text-sm underline-offset-2 text-neutral-700 font-medium hover:text-black dark:text-neutral-300 dark:hover:text-white focus:outline-none [&.active]:bg-neutral-200/60 [&.active]:dark:bg-neutral-900 hover:!bg-neutral-200/60 hover:dark:!bg-neutral-900 focus:ring-2 dark:ring-white ring-black"
+        class="{% active_link link.path %} aria-hidden:hidden flex items-center rounded-md gap-2 p-2 text-sm underline-offset-2 text-neutral-700 font-medium hover:text-black dark:text-neutral-300 dark:hover:text-white focus:outline-none [&.active]:bg-neutral-200/60 [&.active]:dark:bg-neutral-900 hover:!bg-neutral-200/60 hover:dark:!bg-neutral-900 focus:ring-2 dark:ring-white ring-black"
       >
         {% heroicon_outline link.icon %}
-        <span>{{ link.text }}</span>
+        <span class="capitalize">{{ link.text }}</span>
       </a>
       {% endfor %}
     </div>

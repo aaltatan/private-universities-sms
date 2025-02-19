@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_save
+from django.utils.translation import gettext as _
 
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.signals import slugify_name
@@ -23,6 +24,8 @@ class Group(AbstractUniqueNameModel):
     objects: GroupManager = GroupManager()
 
     class Meta:
+        icon = "user-group"
+        title = _("groups")
         ordering = ("name",)
         permissions = (
             ("export_group", "Can export group"),

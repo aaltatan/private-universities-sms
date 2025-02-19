@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_save
+from django.utils.translation import gettext as _
 
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.signals import slugify_name
@@ -31,6 +32,8 @@ class JobSubtype(AbstractUniqueNameModel):
     objects: JobSubtypeManager = JobSubtypeManager()
 
     class Meta:
+        icon = "briefcase"
+        title = _("job subtypes")
         ordering = (
             "job_type__name",
             "name",

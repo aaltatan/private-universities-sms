@@ -30,14 +30,12 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 
 # Application definition
 
-INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    # 3rd party apps
+LOCAL_APPS = [
+    "apps.geo",
+    "apps.org",
+]
+
+THIRTY_PARTY_APPS = [
     "django_cotton",
     "django_extensions",
     "django_filters",
@@ -49,11 +47,19 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "rest_framework",
     "rest_framework_simplejwt",
-    # local apps
-    "apps.core",
-    "apps.geo",
-    "apps.org",
 ]
+
+CORE_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "apps.core",
+]
+
+INSTALLED_APPS = CORE_APPS + THIRTY_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.gzip.GZipMiddleware",

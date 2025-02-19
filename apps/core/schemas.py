@@ -2,12 +2,22 @@ import json
 from dataclasses import InitVar, asdict, dataclass, field
 from typing import Any, Callable, Sequence
 
-from django.db.models import Q, QuerySet
+from django.db.models import QuerySet
 from django.http import Http404, HttpRequest, HttpResponse
 from rest_framework.response import Response
 
 from .constants import PERMISSION
-from .utils import get_keywords_query
+
+
+@dataclass
+class AppLink:
+    icon: str
+    text: str
+    path: str
+    perm: str | None = None
+
+    def asdict(self) -> dict[str, str]:
+        return asdict(self)
 
 
 @dataclass
@@ -123,19 +133,6 @@ class AutocompleteRequestParser:
         self.label_field_name = self.request.GET.get("label_field_name", "pk")
 
         self.term = self.request.GET.get("term", "")
-
-    def get_keyword_query(
-        self,
-        value: str,
-        join: str = "and",
-        type: str = "word",
-    ) -> Q:
-        """
-        Returns a search query.
-        """
-        return get_keywords_query(
-            value=value, field_name=self.field_name, join=join, type=type
-        )
 
 
 @dataclass

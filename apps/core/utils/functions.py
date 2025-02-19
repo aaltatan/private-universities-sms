@@ -1,5 +1,54 @@
 import re
 
+from django.apps import apps
+from django.conf import settings
+from django.db.models import Model
+from django.urls import reverse
+from django.http import HttpRequest
+
+from apps.core.schemas import AppLink
+
+
+def get_apps_links(
+    request: HttpRequest,
+    specific_app_label: str | None = None,
+    additional_links: list[AppLink] = [],
+) -> list[AppLink]:
+    local_apps = settings.LOCAL_APPS
+    local_apps = [app.replace("apps.", "") for app in local_apps]
+
+    models = apps.all_models
+    models: dict[str, dict[str, Model]] = {
+        app: model for app, model in models.items() if app in local_apps
+    }
+
+    app_links: list[AppLink] = []
+
+    for app_label, sub_app in models.items():
+        for object_name, model in sub_app.items():
+            app_link = AppLink(
+                icon=getattr(model._meta, "icon", "star"),
+                text=getattr(model._meta, "title", "some app"),
+                path=reverse(f"{model._meta.verbose_name_plural}:index"),
+                perm=f"{app_label}.view_{object_name}",
+            )
+
+            if specific_app_label is None:
+                app_links.append(app_link)
+            else:
+                if app_label == specific_app_label:
+                    app_links.append(app_link)
+
+    app_links = [*additional_links, *app_links]
+
+    app_links = [
+        app_link
+        for app_link in app_links
+        if app_link.perm is None or request.user.has_perm(app_link.perm)
+    ]
+
+    return app_links
+
 
 def increase_slug_by_one(slug: str) -> str:
     """

@@ -1,11 +1,11 @@
 <ul class="p-2 flex flex-col gap-2">
-  {% for text, url in urls %}
-  <li class="flex items-center gap-2">
-    {% heroicon_outline "chevron-right" size="20" %}
+  {% for link in links %}
+  <li class="flex items-center gap-2 text-neutral-700 dark:text-neutral-300 hover:text-black hover:dark:text-white duration-75">
+    {% heroicon_outline link.icon size="20" %}
     <a
-      class="text-neutral-300 dark:text-neutral-800 capitalize hover:underline"
-      :href="'{{ url }}' + (sidebarLinksQuerystring['{{ url }}'] || '')"
-      >{{ text }}</a
+      class="capitalize hover:underline"
+      :href="'{{ link.path }}' + (sidebarLinksQuerystring['{{ link.path }}'] || '')"
+      >{{ link.text }}</a
     >
   </li>
   {% endfor %}

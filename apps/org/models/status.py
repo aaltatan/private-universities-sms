@@ -34,6 +34,8 @@ class Status(AbstractUniqueNameModel):
     objects: StatusManager = StatusManager()
 
     class Meta:
+        icon = "check-circle"
+        title = _("statuses")
         ordering = ("is_payable", "name")
         verbose_name_plural = _("statuses")
         permissions = (

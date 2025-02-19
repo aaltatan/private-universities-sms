@@ -48,6 +48,8 @@ class Nationality(AbstractUniqueNameModel):
         return super().save(*args, **kwargs)
 
     class Meta:
+        icon = "globe-europe-africa"
+        title = _("nationalities")
         ordering = ("name",)
         verbose_name_plural = "nationalities"
         permissions = (

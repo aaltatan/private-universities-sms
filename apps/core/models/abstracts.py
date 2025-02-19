@@ -1,8 +1,11 @@
 from django.db import models
+from django.db.models import options
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from ..validators import four_char_length_validator
+
+options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("icon", "title")
 
 
 class AbstractUniqueNameModel(models.Model):

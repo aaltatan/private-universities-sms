@@ -48,6 +48,8 @@ class Governorate(AbstractUniqueNameModel):
     objects: GovernorateManager = GovernorateManager()
 
     class Meta:
+        title = _("governorates")
+        icon = "home-modern"
         ordering = ("name",)
         permissions = (
             ("export_governorate", "Can export governorate"),

@@ -48,6 +48,8 @@ class JobType(AbstractUniqueNameModel):
     objects: JobTypeManager = JobTypeManager()
 
     class Meta:
+        icon = "briefcase"
+        title = _("job types")
         ordering = ("name",)
         verbose_name_plural = "job_types"
         permissions = (

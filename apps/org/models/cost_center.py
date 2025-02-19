@@ -33,6 +33,8 @@ class CostCenter(AbstractUniqueNameModel):
     objects: CostCenterManager = CostCenterManager()
 
     class Meta:
+        icon = "building-office-2"
+        title = _("cost centers")
         ordering = ("accounting_id", "name")
         verbose_name_plural = "cost_centers"
         permissions = (

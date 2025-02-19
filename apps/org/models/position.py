@@ -30,6 +30,8 @@ class Position(AbstractUniqueNameModel):
     objects: PositionManager = PositionManager()
 
     class Meta:
+        icon = "chevron-double-up"
+        title = _("positions")
         ordering = ("order", "name")
         permissions = (
             ("export_position", "Can export position"),
