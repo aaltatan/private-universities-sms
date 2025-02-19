@@ -88,7 +88,7 @@
           {% if obj.is_payable %}
           <c-badge theme="primary"> {% translate 'payable'|title %} </c-badge>
           {% else %}
-          <c-badge> {% translate 'foreign'|title %} </c-badge>
+          <c-badge> {% translate 'not payable'|title %} </c-badge>
           {% endif %}
         </c-table.td>
         <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
