@@ -16,13 +16,13 @@ from apps.org.views.statuses import APIViewSet as StatusAPIViewSet
 router = routers.DefaultRouter()
 
 # geo
-router.register(r"governorates", GovernorateAPIViewSet)
-router.register(r"cities", CityAPIViewSet)
-router.register(r"nationalities", NationalityAPIViewSet)
+router.register(r"geo/governorates", GovernorateAPIViewSet)
+router.register(r"geo/cities", CityAPIViewSet)
+router.register(r"geo/nationalities", NationalityAPIViewSet)
 # org
-router.register(r"job-types", JobTypeAPIViewSet)
-router.register(r"job-subtypes", JobSubtypeAPIViewSet)
-router.register(r"groups", GroupAPIViewSet)
-router.register(r"cost-centers", CostCenterAPIViewSet)
-router.register(r"positions", PositionAPIViewSet)
-router.register(r"statuses", StatusAPIViewSet)
+router.register(r"org/job-types", JobTypeAPIViewSet)
+router.register(r"org/job-subtypes", JobSubtypeAPIViewSet)
+router.register(r"org/groups", GroupAPIViewSet)
+router.register(r"org/cost-centers", CostCenterAPIViewSet)
+router.register(r"org/positions", PositionAPIViewSet)
+router.register(r"org/statuses", StatusAPIViewSet)

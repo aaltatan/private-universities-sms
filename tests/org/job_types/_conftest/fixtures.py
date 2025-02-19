@@ -61,7 +61,7 @@ def counts() -> dict[str, int]:
 @pytest.fixture
 def urls() -> dict[str, str]:
     return {
-        "api": f"/api/{SUBAPP_LABEL.replace('_', '-')}/",
+        "api": f"/api/{APP_LABEL}/{SUBAPP_LABEL.replace('_', '-')}/",
         "index": reverse(f"{SUBAPP_LABEL}:index"),
         "create": reverse(f"{SUBAPP_LABEL}:create"),
     }
@@ -70,14 +70,14 @@ def urls() -> dict[str, str]:
 @pytest.fixture
 def templates() -> dict[str, str]:
     return {
-        "index": f"apps/{SUBAPP_LABEL}/index.html",
-        "create": f"apps/{SUBAPP_LABEL}/create.html",
-        "update": f"apps/{SUBAPP_LABEL}/update.html",
-        "table": f"components/{SUBAPP_LABEL}/table.html",
-        "create_form": f"components/{SUBAPP_LABEL}/create.html",
-        "update_form": f"components/{SUBAPP_LABEL}/update.html",
-        "create_modal_form": f"components/{SUBAPP_LABEL}/modal-create.html",
-        "update_modal_form": f"components/{SUBAPP_LABEL}/modal-update.html",
+        "index": f"apps/{APP_LABEL}/{SUBAPP_LABEL}/index.html",
+        "create": f"apps/{APP_LABEL}/{SUBAPP_LABEL}/create.html",
+        "update": f"apps/{APP_LABEL}/{SUBAPP_LABEL}/update.html",
+        "table": f"components/{APP_LABEL}/{SUBAPP_LABEL}/table.html",
+        "create_form": f"components/{APP_LABEL}/{SUBAPP_LABEL}/create.html",
+        "update_form": f"components/{APP_LABEL}/{SUBAPP_LABEL}/update.html",
+        "create_modal_form": f"components/{APP_LABEL}/{SUBAPP_LABEL}/modal-create.html",
+        "update_modal_form": f"components/{APP_LABEL}/{SUBAPP_LABEL}/modal-update.html",
         "delete_modal": "components/blocks/modals/delete.html",
     }
 

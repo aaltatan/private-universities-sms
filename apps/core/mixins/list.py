@@ -179,9 +179,10 @@ class ListMixin(ABC):
         if getattr(self, "template_name", None):
             return self.template_name
 
-        verbose_name_plural: str = self.get_verbose_name_plural()
+        verbose_name_plural = self.get_verbose_name_plural()
+        app_label = self.get_app_label()
 
-        return f"apps/{verbose_name_plural}/index.html"
+        return f"apps/{app_label}/{verbose_name_plural}/index.html"
 
     def get_table_template_name(self) -> str:
         """
@@ -189,11 +190,12 @@ class ListMixin(ABC):
         Notes: you can use the table_template_name attribute to override the default table template name.
         """
         verbose_name_plural = self.get_verbose_name_plural()
+        app_label = self.get_app_label()
 
         if getattr(self, "table_template_name", None):
             return self.table_template_name
 
-        return f"components/{verbose_name_plural}/table.html"
+        return f"components/{app_label}/{verbose_name_plural}/table.html"
 
     def get_queryset(self) -> QuerySet:
         """

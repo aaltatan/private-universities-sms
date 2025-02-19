@@ -1,14 +1,16 @@
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
-
+from django.urls import include, path
+from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
-from .router import router
+from apps.geo.views import IndexView as GeoIndexView
+from apps.org.views import IndexView as OrgIndexView
 
+from .router import router
 
 urlpatterns = [
     path(
@@ -44,46 +46,68 @@ urlpatterns = [
     ),
     # apps
     path(
-        "home/",
+        "",
         include("apps.core.urls"),
     ),
-    # geo
     path(
-        "governorates/",
-        include("apps.geo.urls.governorates"),
+        "geo/",
+        include(
+            [
+                path(
+                    "",
+                    GeoIndexView.as_view(),
+                    kwargs={"title": _("geographical")},
+                ),
+                path(
+                    "governorates/",
+                    include("apps.geo.urls.governorates"),
+                ),
+                path(
+                    "cities/",
+                    include("apps.geo.urls.cities"),
+                ),
+                path(
+                    "nationalities/",
+                    include("apps.geo.urls.nationalities"),
+                ),
+            ]
+        ),
     ),
     path(
-        "cities/",
-        include("apps.geo.urls.cities"),
-    ),
-    path(
-        "nationalities/",
-        include("apps.geo.urls.nationalities"),
-    ),
-    # org
-    path(
-        "job-types/",
-        include("apps.org.urls.job_types"),
-    ),
-    path(
-        "job-subtypes/",
-        include("apps.org.urls.job_subtypes"),
-    ),
-    path(
-        "groups/",
-        include("apps.org.urls.groups"),
-    ),
-    path(
-        "cost-centers/",
-        include("apps.org.urls.cost_centers"),
-    ),
-    path(
-        "positions/",
-        include("apps.org.urls.positions"),
-    ),
-    path(
-        "statuses/",
-        include("apps.org.urls.statuses"),
+        "org/",
+        include(
+            [
+                path(
+                    "",
+                    OrgIndexView.as_view(),
+                    kwargs={"title": _("organization")},
+                ),
+                path(
+                    "job-types/",
+                    include("apps.org.urls.job_types"),
+                ),
+                path(
+                    "job-subtypes/",
+                    include("apps.org.urls.job_subtypes"),
+                ),
+                path(
+                    "groups/",
+                    include("apps.org.urls.groups"),
+                ),
+                path(
+                    "cost-centers/",
+                    include("apps.org.urls.cost_centers"),
+                ),
+                path(
+                    "positions/",
+                    include("apps.org.urls.positions"),
+                ),
+                path(
+                    "statuses/",
+                    include("apps.org.urls.statuses"),
+                ),
+            ]
+        ),
     ),
 ]
 

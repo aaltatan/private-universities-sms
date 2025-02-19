@@ -32,7 +32,7 @@ class CommonMixinTests:
         app_label: str,
         subapp_label: str,
     ):
-        template_name: str = f"apps/{subapp_label}/index.html"
+        template_name: str = f"apps/{app_label}/{subapp_label}/index.html"
         mocker.patch(
             f"apps.{app_label}.views.{subapp_label}.ListView.template_name",
             new=template_name,
@@ -52,7 +52,7 @@ class CommonMixinTests:
         app_label: str,
         subapp_label: str,
     ):
-        template_name: str = f"components/{subapp_label}/table.html"
+        template_name: str = f"components/{app_label}/{subapp_label}/table.html"
         mocker.patch(
             f"apps.{app_label}.views.{subapp_label}.ListView.table_template_name",
             new=template_name,

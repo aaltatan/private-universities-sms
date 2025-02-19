@@ -15,7 +15,10 @@
   {% for breadcrumb in breadcrumbs %}
   <li class="flex items-center gap-1">
     {% if not forloop.last %}
-    <a href="{{ breadcrumb.path }}{% querystring %}" class="{{ theme }}">
+    <a 
+    :href="'{{ breadcrumb.path }}' + (sidebarLinksQuerystring['{{ breadcrumb.path }}'] || '')"
+    class="{{ theme }}"
+    >
       {{ breadcrumb.title }}
     </a>
     {% heroicon_outline "chevron-right" size="16" class="rtl:-rotate-180 block" %}

@@ -1,0 +1,12 @@
+<ul class="p-2 flex flex-col gap-2">
+  {% for text, url in urls %}
+  <li class="flex items-center gap-2">
+    {% heroicon_outline "chevron-right" size="20" %}
+    <a
+      class="text-neutral-300 dark:text-neutral-800 capitalize hover:underline"
+      :href="'{{ url }}' + (sidebarLinksQuerystring['{{ url }}'] || '')"
+      >{{ text }}</a
+    >
+  </li>
+  {% endfor %}
+</ul>

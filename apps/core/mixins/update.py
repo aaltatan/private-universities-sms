@@ -174,31 +174,36 @@ class UpdateMixin(ABC):
         if getattr(self, "template_name", None):
             return self.template_name
 
-        return f"apps/{self.get_verbose_name_plural()}/update.html"
+        verbose_name_plural = self.get_verbose_name_plural()
+        app_label = self.get_app_label()
+
+        return f"apps/{app_label}/{verbose_name_plural}/update.html"
 
     def get_form_template_name(self) -> str:
         """
         Returns the form template name.
         Notes: you can use the *form_template_name* attribute to override the default form template name.
         """
-        app_label = self.get_verbose_name_plural()
+        verbose_name_plural = self.get_verbose_name_plural()
+        app_label = self.get_app_label()
 
         if getattr(self, "form_template_name", None):
             return self.form_template_name
 
-        return f"components/{app_label}/update.html"
+        return f"components/{app_label}/{verbose_name_plural}/update.html"
 
     def get_form_modal_template_name(self) -> str:
         """
         Returns the form modal template name.
         Notes: you can use the *form_modal_template_name* attribute to override the default form modal template name.
         """
-        app_label = self.get_verbose_name_plural()
+        verbose_name_plural = self.get_verbose_name_plural()
+        app_label = self.get_app_label()
 
         if getattr(self, "form_modal_template_name", None):
             return self.form_modal_template_name
 
-        return f"components/{app_label}/modal-update.html"
+        return f"components/{app_label}/{verbose_name_plural}/modal-update.html"
 
     def get_verbose_name_plural(self) -> str:
         """
@@ -206,6 +211,13 @@ class UpdateMixin(ABC):
         """
         model = self.get_model_class()
         return model._meta.verbose_name_plural
+
+    def get_app_label(self) -> str:
+        """
+        Returns the app label using the model.
+        """
+        model = self.get_model_class()
+        return model._meta.app_label
 
     def get_app_urls(self) -> dict[str, str]:
         """

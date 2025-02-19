@@ -16,7 +16,7 @@ def constants(request: HttpRequest) -> dict[str, Any]:
         },
         "sidebar_links": [
             {
-                "href": reverse("core:index"),
+                "href": reverse("core:dashboard"),
                 "text": _("dashboard").title(),
                 "icon": "chart-bar",
             },
@@ -30,7 +30,7 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                 "href": reverse("cities:index"),
                 "text": _("cities").title(),
                 "icon": "home-modern",
-                "perm": "geo.view_cities",
+                "perm": "geo.view_city",
             },
             {
                 "href": reverse("nationalities:index"),

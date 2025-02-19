@@ -12,6 +12,12 @@ urlpatterns = [
         kwargs={"title": _("home")},
     ),
     path(
+        "dashboard/",
+        views.dashboard,
+        name="dashboard",
+        kwargs={"title": _("dashboard")},
+    ),
+    path(
         "messages/",
         views.messages,
         name="messages",

@@ -16,7 +16,7 @@ def model() -> Governorate:
 @pytest.fixture
 def urls() -> dict[str, str]:
     return {
-        "api": "/api/governorates/",
+        "api": "/api/geo/governorates/",
         "autocomplete": reverse("core:autocomplete"),
         "index": reverse("governorates:index"),
         "create": reverse("governorates:create"),
