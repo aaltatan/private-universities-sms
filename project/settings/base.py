@@ -172,6 +172,15 @@ LOGOUT_REDIRECT_URL = "/accounts/login/"
 COTTON_DIR = "components"
 COTTON_SNAKE_CASED_NAMES = False
 
+# Custom settings
+MAX_PAGE_SIZE = 100
+
+PER_PAGE = 50
+
+MESSAGES_TIMEOUT = 7
+
+PER_PAGE_ARRAY = [10, 25, 50, 100]
+
 # Django Rest Framework settings
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "apps.core.pagination.CorePagination",
@@ -183,13 +192,5 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "SEARCH_PARAM": "q",
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "PAGE_SIZE": 10,
 }
-
-# Custom settings
-MAX_PAGE_SIZE = 100
-
-PER_PAGE = 50
-
-MESSAGES_TIMEOUT = 7
-
-PER_PAGE_ARRAY = [10, 20, 50, 100]

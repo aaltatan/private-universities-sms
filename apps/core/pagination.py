@@ -7,7 +7,6 @@ from rest_framework.utils.urls import replace_query_param
 
 
 class CorePagination(PageNumberPagination):
-    page_size = settings.PER_PAGE
     page_size_query_param = "per_page"
     max_page_size = settings.MAX_PAGE_SIZE
 
