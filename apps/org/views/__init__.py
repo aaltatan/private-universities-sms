@@ -11,12 +11,12 @@ class IndexView(IndexMixin, MultiplePermissionsRequiredMixin, TemplateView):
     app_title = "org"
     data = (
         (
-            _("job types"),
+            _("job subtypes"),
             "jobtype",
             reverse_lazy("job_subtypes:index"),
         ),
         (
-            _("job subtypes"),
+            _("job types"),
             "jobsubtype",
             reverse_lazy("job_types:index"),
         ),
