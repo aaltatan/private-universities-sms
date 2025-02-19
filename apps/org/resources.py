@@ -49,3 +49,17 @@ class PositionResource(BaseResource):
     class Meta:
         model = models.Position
         fields = ("serial", "name", "order", "description", "slug")
+
+
+class StatusResource(BaseResource):
+    is_payable = fields.Field(
+        attribute="is_payable",
+        column_name=_("is payable").title(),
+    )
+
+    def dehydrate_is_payable(self, value: bool):
+        return _("yes").title() if value else _("no").title()
+
+    class Meta:
+        model = models.Status
+        fields = ("serial", "name", "is_payable", "description", "slug")

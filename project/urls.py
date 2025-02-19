@@ -81,6 +81,10 @@ urlpatterns = [
         "positions/",
         include("apps.org.urls.positions"),
     ),
+    path(
+        "statuses/",
+        include("apps.org.urls.statuses"),
+    ),
 ]
 
 if settings.DEBUG:

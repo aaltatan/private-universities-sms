@@ -39,7 +39,7 @@ class CityForm(forms.ModelForm):
 
 class NationalityForm(forms.ModelForm):
     is_local = forms.ChoiceField(
-        choices=models.Nationality.IS_LOCAL_CHOICES,
+        choices=models.Nationality.LocalityChoices,
         label=_("locality"),
         help_text=_("is it local or foreign"),
     )

@@ -21,7 +21,7 @@ class NationalityManager(models.Manager):
 
 
 class Nationality(AbstractUniqueNameModel):
-    class IS_LOCAL_CHOICES(models.TextChoices):
+    class LocalityChoices(models.TextChoices):
         LOCAL = True, _("local").title()
         FOREIGN = False, _("foreign").title()
 

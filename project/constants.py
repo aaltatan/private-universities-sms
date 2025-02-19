@@ -68,6 +68,12 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                 "icon": "chevron-double-up",
                 "perm": "org.view_position",
             },
+            {
+                "href": reverse("statuses:index"),
+                "text": _("statuses").title(),
+                "icon": "check-circle",
+                "perm": "org.view_status",
+            },
         ],
     }
     data["sidebar_links"] = [

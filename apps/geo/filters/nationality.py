@@ -14,7 +14,7 @@ from ..constants import nationalities as constants
 class BaseNationalityFilter(BaseNameDescriptionFilter):
     is_local = filters.ChoiceFilter(
         label=_("locality").title(),
-        choices=models.Nationality.IS_LOCAL_CHOICES,
+        choices=models.Nationality.LocalityChoices,
     )
 
     class Meta:
