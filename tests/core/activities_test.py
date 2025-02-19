@@ -13,6 +13,22 @@ from tests.utils import is_template_used
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize(
+    "payload",
+    [
+        "?app_label=xx&model=governorate",
+        "?app_label=geo&model=xx",
+        "?&model=governorate",
+        "?app_label=geo",
+    ]
+)
+def test_activities_with_no_wrong_payload(admin_client: Client, payload: str):
+    path = reverse("core:activities", args=[1])
+    response = admin_client.get(path + payload)
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
 def test_activities_with_no_permissions(client: Client):
     client.login(
         username="user_with_no_perm",

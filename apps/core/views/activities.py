@@ -20,6 +20,9 @@ def activities(
     parser = ActivityRequestParser(request=request)
     content_type = ContentType.objects.filter(**parser.asdict()).first()
 
+    if not content_type:
+        raise Http404()
+
     Model = content_type.model_class()
 
     verbose_name_plural = Model._meta.verbose_name_plural
