@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 
 from django.test import Client
 
@@ -19,6 +20,41 @@ class CommonExportTests:
         response = client.get(url, headers=headers_modal_GET)
 
         assert response.status_code == 403
+
+    @staticmethod
+    def test_export_all_columns_are_in_title_case(
+        admin_client: Client,
+        urls: dict[str, str],
+        headers_modal_GET: dict[str, str],
+    ) -> None:
+        url = urls["index"] + "?export=true&extension=json&redirected=true&q=id < 2"
+        response = admin_client.get(url, headers=headers_modal_GET)
+
+        data: list[dict[str, Any]] = response.json()
+        item = data[0]
+
+        for key, _ in item.items():
+            if key != "#":
+                assert key.lower() != key
+                assert key.upper() != key
+                assert key.title() == key
+
+        assert response.status_code == 200
+
+    @staticmethod
+    def test_export_serial(
+        admin_client: Client,
+        urls: dict[str, str],
+        headers_modal_GET: dict[str, str],
+    ) -> None:
+        url = urls["index"] + "?export=true&extension=json&redirected=true"
+        response = admin_client.get(url, headers=headers_modal_GET)
+
+        data: list[dict[str, Any]] = response.json()
+
+        assert response.status_code == 200
+        for idx, item in enumerate(data, 1):
+            assert item["#"] == idx
 
     @staticmethod
     def test_export_response(
