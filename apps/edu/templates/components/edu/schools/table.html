@@ -79,7 +79,7 @@
             hx-indicator="#modal-spinner"
             @click="showModal"
             class="hover:underline cursor-pointer"
-            aria-label="edit object"
+            aria-label="object details"
           >
             {{ obj.name }}
           </a>
@@ -157,8 +157,8 @@
               <c-layout.context-menu.item
                 icon="pencil"
                 href="{{ obj.get_update_url }}{% querystring %}"
-                aria-label="object activities"
-              >
+                aria-label="edit object"
+            >
                 {% translate 'edit' %}
               </c-layout.context-menu.item>
               {% endif %}

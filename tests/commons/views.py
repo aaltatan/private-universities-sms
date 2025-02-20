@@ -330,9 +330,9 @@ class CommonViewsTests:
 
         assert response.status_code == status.HTTP_200_OK
         assert len(tds_name) == 10
-        assert len(context_menu_btns) == 20
+        assert len(context_menu_btns) == 30
 
         for pk, td in zip(tds_id, tds_name):
             pk = int(pk.attributes["data-id"])
-            update_url = model.objects.get(pk=pk).get_update_url()
-            assert update_url == td.attributes["href"]
+            absolute_url = model.objects.get(pk=pk).get_absolute_url()
+            assert absolute_url == td.attributes["hx-get"]

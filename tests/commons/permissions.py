@@ -145,12 +145,16 @@ class CommonPermissionsTests:
 
         tds_id = parser.css("span[aria-label='object id']")
         tds_name = parser.css("td[data-header='name']")
-        tds_name_href = parser.css("td[data-header='name'] a")
-        delete_context_menu_btns = parser.css("table li[role='menuitem']")
+        activities_context_menu_btns = parser.css(
+            "a[aria-label='object activities']"
+        )
+        edit_context_menu_btns = parser.css("a[aria-label='edit object']")
+        delete_context_menu_btns = parser.css("a[aria-label='delete object']")
         update_response = client.get(model.objects.first().get_update_url())
 
         assert response.status_code == status.HTTP_200_OK
-        assert len(tds_name_href) == 0
+        assert len(edit_context_menu_btns) == 0
+        assert len(activities_context_menu_btns) == 0
 
         for pk, td in zip(tds_id, tds_name):
             pk = int(pk.attributes["data-id"])
