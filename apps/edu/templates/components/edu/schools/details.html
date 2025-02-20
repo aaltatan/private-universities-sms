@@ -1,0 +1,87 @@
+{% load i18n %}
+
+<c-layout.modal.container width="xl">
+  <c-layout.modal.body :close_padding="buttons_padding">
+    <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
+    <c-slot name="body">
+      <c-table.container height="sm">
+        <c-table.table>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'name'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.name }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'nationality'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.nationality.name }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'governmental?'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.is_governmental|yesno|title }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'virtual?'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.is_virtual|yesno|title }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'website'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.website|default_if_none:"" }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'email'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.email|default_if_none:"" }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'phone'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.phone|default_if_none:"" }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'description'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.description }}
+            </c-table.td>
+          </c-table.tr>
+        </c-table.table>
+      </c-table.container>
+    </c-slot>
+    <c-slot name="footer">
+      <c-button
+        theme="outline"
+        title="{% translate 'close'|title %}"
+        @click="hideModal"
+        :hide_icon="True"
+      >
+        {% translate 'close'|title %}
+      </c-button>
+    </c-slot>
+  </c-layout.modal.body>
+</c-layout.modal.container>

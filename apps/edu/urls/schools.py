@@ -15,6 +15,12 @@ urlpatterns = [
         kwargs={"title": _("schools")},
     ),
     path(
+        route="details/<str:slug>/",
+        view=views.DetailsView.as_view(),
+        name="details",
+        kwargs={"title": ""},
+    ),
+    path(
         route="create/",
         view=views.CreateView.as_view(),
         name="create",

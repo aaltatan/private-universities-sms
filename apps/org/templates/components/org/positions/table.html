@@ -70,19 +70,17 @@
       <c-table.tr>
         <c-table.td-check :show_checkbox="can_delete" :obj="obj" idx="{{ forloop.counter }}" />
         <c-table.td data-header="{% translate 'name' %}">
-          {% if can_update %}
           <a
-            href="{{ obj.get_update_url }}{% querystring %}"
+            href="#"
+            hx-get="{{ obj.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
             class="hover:underline cursor-pointer"
             aria-label="edit object"
           >
             {{ obj.name }}
           </a>
-          {% else %}
-          <!--  -->
-          {{ obj.name }}
-          <!--  -->
-          {% endif %}
         </c-table.td>
         <c-table.td data-header="{% translate 'order' %}"> {{ obj.order }} </c-table.td>
         <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
@@ -109,6 +107,16 @@
               </c-layout.context-menu.item>
               {% endif %}
             </c-layout.context-menu.section>
+            {% endif %}
+            <!--  -->
+            {% if can_update %}
+            <c-layout.context-menu.item
+              icon="pencil"
+              href="{{ obj.get_update_url }}{% querystring %}"
+              aria-label="edit object"
+            >
+              {% translate 'edit' %}
+            </c-layout.context-menu.item>
             {% endif %}
             <!--  -->
             {% if can_delete %}

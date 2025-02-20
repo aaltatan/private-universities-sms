@@ -60,9 +60,7 @@
   <form hx-post="{{ index_url }}" id="{{ form_table_id }}">
     <c-table.table>
       <c-table.tr header="True">
-        <c-table.th>
-          {% if can_delete %}<c-table.check-all />{% endif %}
-        </c-table.th>
+        <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'name' %}</c-table.th>
         <c-table.th>{% translate 'accounting id' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
@@ -72,21 +70,21 @@
       <c-table.tr>
         <c-table.td-check :show_checkbox="can_delete" :obj="obj" idx="{{ forloop.counter }}" />
         <c-table.td data-header="{% translate 'name' %}">
-          {% if can_update %}
           <a
-            href="{{ obj.get_update_url }}{% querystring %}"
+            href="#"
+            hx-get="{{ obj.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
             class="hover:underline cursor-pointer"
             aria-label="edit object"
           >
             {{ obj.name }}
           </a>
-          {% else %}
-          <!--  -->
-          {{ obj.name }}
-          <!--  -->
-          {% endif %}
         </c-table.td>
-        <c-table.td data-header="{% translate 'accounting id' %}"> {{ obj.accounting_id }} </c-table.td>
+        <c-table.td data-header="{% translate 'accounting id' %}">
+          {{ obj.accounting_id }}
+        </c-table.td>
         <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
         <c-table.td fixed="True">
           {% if can_update or can_delete or can_view_activity %}
@@ -106,8 +104,18 @@
                 hx-indicator="#modal-spinner"
                 @click="showModal"
                 aria-label="object activities"
-                >
+              >
                 {% translate 'activities' %}
+              </c-layout.context-menu.item>
+              {% endif %}
+              <!--  -->
+              {% if can_update %}
+              <c-layout.context-menu.item
+                icon="pencil"
+                href="{{ obj.get_update_url }}{% querystring %}"
+                aria-label="edit object"
+              >
+                {% translate 'edit' %}
               </c-layout.context-menu.item>
               {% endif %}
             </c-layout.context-menu.section>
