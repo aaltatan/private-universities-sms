@@ -11,6 +11,8 @@ from apps.org.views.groups import APIViewSet as GroupAPIViewSet
 from apps.org.views.cost_centers import APIViewSet as CostCenterAPIViewSet
 from apps.org.views.positions import APIViewSet as PositionAPIViewSet
 from apps.org.views.statuses import APIViewSet as StatusAPIViewSet
+# edu
+from apps.edu.views.schools import APIViewSet as SchoolAPIViewSet
 
 
 router = routers.DefaultRouter()
@@ -26,3 +28,5 @@ router.register(r"org/groups", GroupAPIViewSet)
 router.register(r"org/cost-centers", CostCenterAPIViewSet)
 router.register(r"org/positions", PositionAPIViewSet)
 router.register(r"org/statuses", StatusAPIViewSet)
+# edu
+router.register(r"edu/schools", SchoolAPIViewSet)

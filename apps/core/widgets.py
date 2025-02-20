@@ -43,7 +43,12 @@ def get_textarea_widget(
     """Get textarea field with x-autosize attribute."""
 
     if "placeholder" not in attributes:
-        attributes.setdefault("placeholder", _("some description"))
+        attributes.setdefault(
+            "placeholder",
+            _("some description").title(),
+        )
+    else:
+        attributes["placeholder"] = attributes["placeholder"].title()
 
     return Textarea(
         attrs={"rows": rows, "x-autosize": "", **attributes},
@@ -55,6 +60,8 @@ def get_numeric_widget(
     **attributes: dict[str, str],
 ) -> TextInput:
     """Get numeric field with x-mask attribute."""
+    if "placeholder" in attributes:
+        attributes["placeholder"] = attributes["placeholder"].title()
     return TextInput(
         attrs={
             "x-mask": x_mask,
@@ -65,4 +72,29 @@ def get_numeric_widget(
 
 def get_text_widget(**attributes: dict[str, str]) -> TextInput:
     """Get text field."""
+    if "placeholder" in attributes:
+        attributes["placeholder"] = attributes["placeholder"].title()
     return TextInput(attrs=attributes)
+
+
+def get_email_widget(**attributes: dict[str, str]) -> TextInput:
+    """Get email field."""
+    if "placeholder" not in attributes:
+        attributes.setdefault("placeholder", _("some-email@example.com"))
+    return TextInput(
+        attrs={
+            "type": "email",
+            **attributes,
+        },
+    )
+
+
+def get_url_widget(**attributes: dict[str, str]) -> TextInput:
+    """Get url field."""
+    if "placeholder" not in attributes:
+        attributes.setdefault("placeholder", _("https://example.com"))
+    return TextInput(
+        attrs={
+            **attributes,
+        },
+    )

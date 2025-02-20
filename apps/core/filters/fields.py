@@ -1,10 +1,17 @@
-from typing import Any, Mapping
+from typing import Any, Literal, Mapping, Callable
 
 import django_filters as filters
 from django.db.models import Model
+from django.forms import TextInput
 from django.utils.translation import gettext as _
 
-from ..widgets import ComboboxWidget, OrderingWidget, get_text_widget
+from ..widgets import (
+    ComboboxWidget,
+    OrderingWidget,
+    get_email_widget,
+    get_text_widget,
+    get_url_widget,
+)
 
 
 class CustomOrderingFilter(filters.OrderingFilter):
@@ -60,14 +67,23 @@ def get_text_filter(
     label: str,
     exact: bool = False,
     method_name: str = "filter_text",
+    widget_type: Literal["text", "email", "url"] = "text",
     **widget_attributes: dict[str, str],
 ) -> filters.CharFilter:
     if "placeholder" not in widget_attributes:
         widget_attributes.setdefault("placeholder", label)
 
+    widgets: dict[str, Callable[..., TextInput]] = {
+        "text": get_text_widget,
+        "email": get_email_widget,
+        "url": get_url_widget,
+    }
+
     kwargs = {
         "label": label,
-        "widget": get_text_widget(**widget_attributes),
+        "widget": widgets.get(widget_type, get_text_widget)(
+            **widget_attributes,
+        ),
     }
 
     if exact:

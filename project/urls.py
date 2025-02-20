@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from apps.edu.views import IndexView as EduIndexView
 from apps.geo.views import IndexView as GeoIndexView
 from apps.org.views import IndexView as OrgIndexView
 
@@ -105,6 +106,22 @@ urlpatterns = [
                 path(
                     "statuses/",
                     include("apps.org.urls.statuses"),
+                ),
+            ]
+        ),
+    ),
+    path(
+        "edu/",
+        include(
+            [
+                path(
+                    "",
+                    EduIndexView.as_view(),
+                    kwargs={"title": _("education")},
+                ),
+                path(
+                    "schools/",
+                    include("apps.edu.urls.schools"),
                 ),
             ]
         ),

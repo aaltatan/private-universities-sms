@@ -24,7 +24,9 @@ def get_autocomplete_field(
     """Get autocomplete field."""
 
     if "placeholder" not in attributes:
-        attributes["placeholder"] = _("search")
+        attributes["placeholder"] = _("search").title()
+    else:
+        attributes["placeholder"] = attributes["placeholder"].title()
 
     kwargs.setdefault("label_field_name", to_field_name)
 

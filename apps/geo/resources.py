@@ -29,8 +29,8 @@ class NationalityResource(BaseResource):
         column_name=_("is local").title(),
     )
 
-    def dehydrate_is_local(self, value: bool):
-        return _("yes").title() if value else _("no").title()
+    def dehydrate_is_local(self, obj: models.Nationality):
+        return self._dehydrate_boolean(obj.is_local)
 
     class Meta:
         model = models.Nationality

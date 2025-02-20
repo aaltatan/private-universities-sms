@@ -57,8 +57,8 @@ class StatusResource(BaseResource):
         column_name=_("is payable").title(),
     )
 
-    def dehydrate_is_payable(self, value: bool):
-        return _("yes").title() if value else _("no").title()
+    def dehydrate_is_payable(self, obj: models.Status):
+        return self._dehydrate_boolean(obj.is_payable)
 
     class Meta:
         model = models.Status

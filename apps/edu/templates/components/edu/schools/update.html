@@ -1,0 +1,32 @@
+{% load i18n %}
+
+<c-forms.update
+  form_title="{% translate 'update' %} {{ form.instance }}"
+  url="{{ update_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-inputs.text :field="form.name" />
+  {% if perms.nationalities.can_create %}
+  <c-inputs.text :field="form.nationality" :has_add="True">
+    <c-button
+      rounded="full"
+      theme="outline"
+      padding="sm"
+      size="20"
+      hx-get="{% url 'nationalities:create' %}"
+      hx-target="#modal-container"
+      hx-headers='{"modal": true, "target": "#no-content"}'
+      @click.prevent="showModal"
+    />
+  </c-inputs.text>
+  {% else %}
+  <c-inputs.text :field="form.nationality" />
+  {% endif %}
+  <c-inputs.text theme="select" :field="form.is_governmental" />
+  <c-inputs.text theme="select" :field="form.is_virtual" />
+  <c-inputs.text :field="form.website" />
+  <c-inputs.text :field="form.email" />
+  <c-inputs.text :field="form.phone" />
+  <c-inputs.text :field="form.description" />
+</c-forms.update>

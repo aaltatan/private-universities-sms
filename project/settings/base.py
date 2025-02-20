@@ -33,6 +33,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 LOCAL_APPS = [
     "apps.geo",
     "apps.org",
+    "apps.edu",
 ]
 
 THIRTY_PARTY_APPS = [

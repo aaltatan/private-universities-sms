@@ -19,6 +19,7 @@ class BaseResource(SerialResourceMixin, resources.ModelResource):
     """
     Fields name, description, slug
     """
+
     serial = fields.Field(
         column_name="#",
         dehydrate_method="dehydrate_serial",
@@ -35,3 +36,6 @@ class BaseResource(SerialResourceMixin, resources.ModelResource):
         attribute="slug",
         column_name=_("slug").title(),
     )
+
+    def _dehydrate_boolean(self, is_true: bool = True):
+        return _("yes").title() if is_true else _("no").title()
