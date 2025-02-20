@@ -44,7 +44,7 @@ class ListView(
     MultipleObjectMixin,
     View,
 ):
-    permission_required = "geo.view_sSchool"
+    permission_required = "geo.view_school"
     filter_class = filters.SchoolFilter
     resource_class = resources.SchoolResource
     activity_serializer = serializers.SchoolActivitySerializer
@@ -57,23 +57,23 @@ class ListView(
                 method=self.bulk_delete,
                 template="components/blocks/modals/bulk-delete.html",
                 kwargs=("new_value",),
-                permissions=("geo.delete_sSchool",),
+                permissions=("geo.delete_school",),
             ),
         }
 
 
 class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
-    permission_required = "geo.add_sSchool"
+    permission_required = "geo.add_school"
     form_class = forms.SchoolForm
 
 
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
-    permission_required = "geo.change_sSchool"
+    permission_required = "geo.change_school"
     form_class = forms.SchoolForm
     activity_serializer = serializers.SchoolActivitySerializer
 
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
-    permission_required = "geo.delete_sSchool"
+    permission_required = "geo.delete_school"
     deleter = Deleter
     activity_serializer = serializers.SchoolActivitySerializer
