@@ -317,6 +317,34 @@ class CommonViewsTests:
 
     @staticmethod
     @pytest.mark.django_db
+    def test_response_details_page(
+        admin_client: Client,
+        model: type[Model],
+        app_label: str,
+        subapp_label: str,
+    ) -> None:
+        absolute_url = model.objects.first().get_absolute_url()
+        response = admin_client.get(absolute_url)
+
+        template = f"components/{app_label}/{subapp_label}/details.html"
+
+        assert response.status_code == status.HTTP_200_OK
+        assert is_template_used(template, response)
+
+    @staticmethod
+    @pytest.mark.django_db
+    def test_response_details_page_without_perms(
+        client: Client,
+        model: type[Model],
+    ) -> None:
+        client.login(username="user_with_no_perm", password="password")
+        absolute_url = model.objects.first().get_absolute_url()
+        response = client.get(absolute_url)
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    @staticmethod
+    @pytest.mark.django_db
     def test_response_index_page_has_update_links_for_authorized_user(
         admin_client: Client,
         urls: dict[str, str],
@@ -327,6 +355,9 @@ class CommonViewsTests:
         tds_name = parser.css("td[data-header='name'] a")
         tds_id = parser.css("span[aria-label='object id']")
         context_menu_btns = parser.css("table li[role='menuitem']")
+        delete_btns = parser.css("a[aria-label='delete object']")
+        edit_btns = parser.css("a[aria-label='edit object']")
+        activities_btns = parser.css("a[aria-label='object activities']")
 
         assert response.status_code == status.HTTP_200_OK
         assert len(tds_name) == 10
@@ -336,3 +367,18 @@ class CommonViewsTests:
             pk = int(pk.attributes["data-id"])
             absolute_url = model.objects.get(pk=pk).get_absolute_url()
             assert absolute_url == td.attributes["hx-get"]
+
+        for pk, btn in zip(tds_id, delete_btns):
+            pk = int(pk.attributes["data-id"])
+            delete_url = model.objects.get(pk=pk).get_delete_url()
+            assert delete_url == btn.attributes["hx-get"]
+
+        for pk, btn in zip(tds_id, edit_btns):
+            pk = int(pk.attributes["data-id"])
+            update_url = model.objects.get(pk=pk).get_update_url()
+            assert update_url == btn.attributes["href"]
+
+        for pk, btn in zip(tds_id, activities_btns):
+            pk = int(pk.attributes["data-id"])
+            update_url = model.objects.get(pk=pk).get_activities_url()
+            assert update_url == btn.attributes["hx-get"]
