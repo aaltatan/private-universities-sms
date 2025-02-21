@@ -1,0 +1,26 @@
+<input 
+x-mask="9999-99-99"
+x-data="date"
+@keydown.Alt.Down.prevent="handleDateInputAltKeyDown($el, 'up')"
+@keydown.Alt.Up.prevent="handleDateInputAltKeyDown($el, 'down')"
+@keydown.Shift.Down.prevent="handleDateInputShiftKeyDown($el, 'up')"
+@keydown.Shift.Up.prevent="handleDateInputShiftKeyDown($el, 'down')"
+@keydown.Down.prevent="handleDateInputKeyDown($el, 'up')"
+@keydown.Up.prevent="handleDateInputKeyDown($el, 'down')"
+@dblclick="handleDateInputDblClick"
+{% if fill_onfocus %}
+@focus="handleDateInputFocus"
+{% endif %}
+minlength="10"
+type="{{ widget.type }}" 
+name="{{ widget.name }}"
+{% if widget.value != None %} 
+  value="{{ widget.value|stringformat:'s' }}"
+{% endif %}
+{% for name, value in widget.attrs.items %}
+  {% if value is not False %} 
+    {{ name }}
+    {% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}
+  {% endif %}
+{% endfor %}
+>

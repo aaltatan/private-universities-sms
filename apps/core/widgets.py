@@ -1,4 +1,9 @@
-from django.forms.widgets import SelectMultiple, Textarea, TextInput
+from django.forms.widgets import (
+    DateInput,
+    SelectMultiple,
+    Textarea,
+    TextInput,
+)
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 
@@ -9,6 +14,19 @@ class RenderMixin:
     def render(self, name, value, attrs=..., renderer=...):
         context = self.get_context(name, value, attrs)
         return render_to_string(self.template_name, context)
+
+
+class DateWidget(DateInput):
+    template_name = "widgets/date.html"
+
+    def __init__(self, attrs=None, format=None, fill_onfocus: bool = True):
+        self.fill_onfocus = fill_onfocus
+        super().__init__(attrs, format)
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context["fill_onfocus"] = self.fill_onfocus
+        return context
 
 
 class AutocompleteWidget(RenderMixin, TextInput):
@@ -98,3 +116,11 @@ def get_url_widget(**attributes: dict[str, str]) -> TextInput:
             **attributes,
         },
     )
+
+
+def get_date_widget(
+    fill_onfocus: bool = True,
+    **attributes: dict[str, str],
+) -> DateWidget:
+    """Get date field."""
+    return DateWidget(fill_onfocus=fill_onfocus, attrs=attributes)
