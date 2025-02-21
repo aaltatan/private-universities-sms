@@ -213,6 +213,7 @@ def test_update_object(
     urls: dict[str, str],
     admin_headers: dict[str, str],
     model: type[Model],
+    nationality_model: type[Model],
 ):
     response: Response = api_client.put(
         path=f"{urls['api']}1/",
@@ -227,9 +228,65 @@ def test_update_object(
         follow=True,
     )
     first = model.objects.get(id=1)
+    nationality = nationality_model.objects.get(pk=1)
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["name"] == "Hamah"
     assert response.json()["description"] == "some description"
     assert first.name == "Hamah"
+    assert first.is_governmental is True
+    assert first.is_virtual is True
+    assert first.nationality.name == nationality.name
     assert first.description == "some description"
+
+
+@pytest.mark.django_db
+def test_patch_object(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+):
+    response: Response = api_client.patch(
+        path=f"{urls['api']}1/",
+        data={
+            "description": "new description",
+        },
+        headers=admin_headers,
+        follow=True,
+    )
+    first = model.objects.get(id=1)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["name"] == first.name
+    assert response.json()["description"] == "new description"
+    assert response.json()["is_governmental"] is first.is_governmental
+    assert response.json()["is_virtual"] is first.is_virtual
+    assert response.json()["nationality"] == first.nationality.pk
+    assert first.description == "new description"
+
+
+@pytest.mark.django_db
+def test_patch_object_2(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+):
+    response: Response = api_client.patch(
+        path=f"{urls['api']}1/",
+        data={
+            "nationality": 7,
+        },
+        headers=admin_headers,
+        follow=True,
+    )
+    first = model.objects.get(id=1)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["name"] == first.name
+    assert response.json()["description"] == first.description
+    assert response.json()["is_governmental"] is first.is_governmental
+    assert response.json()["is_virtual"] is first.is_virtual
+    assert response.json()["nationality"] == 7
+    assert first.nationality.name == "Nationality 007"

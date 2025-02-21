@@ -201,9 +201,27 @@ def test_update_object(
     first = model.objects.get(id=1)
 
     assert response.status_code == status.HTTP_200_OK
-    assert response.json()["name"] == "Hamah"
-    assert response.json()["accounting_id"] == "541241"
-    assert response.json()["description"] == "some description"
-    assert first.name == "Hamah"
-    assert first.accounting_id == "541241"
-    assert first.description == "some description"
+    assert response.json()["name"] == first.name == "Hamah"
+    assert response.json()["accounting_id"] == first.accounting_id == "541241"
+    assert response.json()["description"] == first.description == "some description"
+
+
+@pytest.mark.django_db
+def test_patch_object(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+):
+    response: Response = api_client.patch(
+        path=f"{urls['api']}1/",
+        data={"accounting_id": "541241"},
+        headers=admin_headers,
+        follow=True,
+    )
+    first = model.objects.get(id=1)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["name"] == first.name
+    assert response.json()["accounting_id"] == first.accounting_id == "541241"
+    assert response.json()["description"] == first.description

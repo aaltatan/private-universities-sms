@@ -244,3 +244,24 @@ def test_update_object(
     assert first.name == "Hamah"
     assert first.governorate.name == "محافظة دمشق"
     assert first.description == "some description"
+
+
+@pytest.mark.django_db
+def test_patch_object(
+    api_client: APIClient,
+    urls: dict[str, str],
+    admin_headers: dict[str, str],
+    model: type[Model],
+):
+    response: Response = api_client.patch(
+        path=f"{urls['api']}1/",
+        data={"name": "some new name"},
+        headers=admin_headers,
+        follow=True,
+    )
+    first = model.objects.get(id=1)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["name"] == first.name == "some new name"
+    assert response.json()["description"] == first.description
+    assert response.json()["governorate"] == first.governorate.id

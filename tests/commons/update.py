@@ -70,6 +70,23 @@ class CommonUpdateTests:
         assert model.objects.count() == counts["objects"]
 
     @staticmethod
+    def test_patch_object_without_permissions(
+        api_client: APIClient,
+        urls: dict[str, str],
+        user_headers: dict[str, str],
+        model: type[Model],
+    ):
+        response: Response = api_client.patch(
+            path=f"{urls['api']}1/",
+            data={
+                "name": "Hamah",
+            },
+            headers=user_headers,
+            follow=True,
+        )
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    @staticmethod
     def test_update_object_with_dirty_data(
         api_client: APIClient,
         urls: dict[str, str],
