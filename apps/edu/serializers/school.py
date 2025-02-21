@@ -7,17 +7,20 @@ from .. import models
 
 
 class SchoolSerializer(serializers.ModelSerializer):
+    class KindSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = models.SchoolKind
+            fields = ("id", "name", "is_governmental", "is_virtual", "description")
+
     nationality = NationalitySerializer(read_only=True)
-    is_governmental = serializers.BooleanField(required=False)
-    is_virtual = serializers.BooleanField(required=False)
+    kind = KindSerializer(read_only=True)
 
     class Meta:
         model = models.School
         fields = (
             "id",
             "name",
-            "is_governmental",
-            "is_virtual",
+            "kind",
             "nationality",
             "website",
             "email",
@@ -27,6 +30,9 @@ class SchoolSerializer(serializers.ModelSerializer):
 
 
 class CreateUpdateSchoolSerializer(serializers.ModelSerializer):
+    kind = serializers.PrimaryKeyRelatedField(
+        queryset=models.SchoolKind.objects.all(),
+    )
     nationality = serializers.PrimaryKeyRelatedField(
         queryset=Nationality.objects.all(),
     )
@@ -35,8 +41,7 @@ class CreateUpdateSchoolSerializer(serializers.ModelSerializer):
         model = models.School
         fields = (
             "name",
-            "is_governmental",
-            "is_virtual",
+            "kind",
             "nationality",
             "website",
             "email",
@@ -46,6 +51,7 @@ class CreateUpdateSchoolSerializer(serializers.ModelSerializer):
 
 
 class SchoolActivitySerializer(serializers.ModelSerializer):
+    kind = serializers.CharField(source="nationality.name")
     nationality = serializers.CharField(source="nationality.name")
 
     class Meta:
@@ -53,8 +59,7 @@ class SchoolActivitySerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
-            "is_governmental",
-            "is_virtual",
+            "kind",
             "nationality",
             "website",
             "email",

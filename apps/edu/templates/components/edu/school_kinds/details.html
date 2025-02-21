@@ -10,48 +10,22 @@
             <c-table.td data-header="{% translate 'name'|title %}">
               {% translate 'name'|title %}
             </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.name }} </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'governmental?'|title %}
+            </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.name }}
+              {{ object.is_governmental|yesno|title }}
             </c-table.td>
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'nationality'|title %}
+              {% translate 'virtual?'|title %}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.nationality.name }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'kind'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.kind.name }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'website'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.website|default_if_none:"" }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'email'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.email|default_if_none:"" }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'phone'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.phone|default_if_none:"" }}
+              {{ object.is_virtual|yesno|title }}
             </c-table.td>
           </c-table.tr>
           <c-table.tr>

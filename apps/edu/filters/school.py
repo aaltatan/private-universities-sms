@@ -1,4 +1,3 @@
-import django_filters as filters
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.filters import (
@@ -15,22 +14,14 @@ from ..constants import schools as constants
 
 
 class BaseSchoolFilter(BaseNameDescriptionFilter):
-    is_governmental = filters.ChoiceFilter(
-        label=_("is governmental").title(),
-        choices=models.School.OwnershipChoices,
-    )
-    is_virtual = filters.ChoiceFilter(
-        label=_("is virtual").title(),
-        choices=models.School.VirtualChoices,
-    )
     website = get_text_filter(
         label=_("website").title(),
-        widget_type='url',
+        widget_type="url",
         placeholder=_("https://example.com"),
     )
     email = get_text_filter(
         label=_("email").title(),
-        widget_type='email',
+        widget_type="email",
         placeholder=_("some-email@example.com"),
     )
     phone = get_text_filter(
@@ -42,9 +33,8 @@ class BaseSchoolFilter(BaseNameDescriptionFilter):
         model = models.School
         fields = (
             "name",
+            "kind",
             "nationality",
-            "is_governmental",
-            "is_virtual",
             "website",
             "email",
             "phone",
@@ -53,6 +43,12 @@ class BaseSchoolFilter(BaseNameDescriptionFilter):
 
 
 class APISchoolFilter(FilterComboboxMixin, BaseSchoolFilter):
+    kind = get_combobox_choices_filter(
+        model=models.School,
+        field_name="kind__name",
+        label=_("kind"),
+        api_filter=True,
+    )
     nationality = get_combobox_choices_filter(
         model=models.School,
         field_name="nationality__name",
@@ -67,6 +63,11 @@ class SchoolFilter(
     BaseSchoolFilter,
 ):
     ordering = get_ordering_filter(constants.ORDERING_FIELDS)
+    kind = get_combobox_choices_filter(
+        model=models.School,
+        field_name="kind__name",
+        label=_("kind"),
+    )
     nationality = get_combobox_choices_filter(
         model=models.School,
         field_name="nationality__name",

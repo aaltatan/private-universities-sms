@@ -120,8 +120,16 @@ urlpatterns = [
                     kwargs={"title": _("education")},
                 ),
                 path(
+                    "school-kinds/",
+                    include("apps.edu.urls.school_kinds"),
+                ),
+                path(
                     "schools/",
                     include("apps.edu.urls.schools"),
+                ),
+                path(
+                    "specializations/",
+                    include("apps.edu.urls.specializations"),
                 ),
             ]
         ),

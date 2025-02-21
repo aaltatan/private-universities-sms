@@ -18,26 +18,22 @@ class SchoolForm(forms.ModelForm):
         object_name="nationality",
         field_name="search",
     )
-    is_governmental = forms.ChoiceField(
-        choices=models.School.OwnershipChoices,
-        label=_("is governmental"),
-        initial=models.School.OwnershipChoices.GOVERNMENTAL,
-        help_text=_("is it governmental or private"),
-    )
-    is_virtual = forms.ChoiceField(
-        choices=models.School.VirtualChoices,
-        label=_("is virtual"),
-        initial=models.School.VirtualChoices.ORDINARY,
-        help_text=_("is it virtual or ordinary"),
+    kind = get_autocomplete_field(
+        queryset=models.SchoolKind.objects.all(),
+        to_field_name="name",
+        attributes={"placeholder": _("search school kinds")},
+        app_label="edu",
+        model_name="Schoolkind",
+        object_name="schoolkind",
+        field_name="search",
     )
 
     class Meta:
         model = models.School
         fields = (
             "name",
+            "kind",
             "nationality",
-            "is_governmental",
-            "is_virtual",
             "website",
             "email",
             "phone",
@@ -51,4 +47,53 @@ class SchoolForm(forms.ModelForm):
             "phone": widgets.get_text_widget(
                 placeholder=_("phone number").title(),
             ),
+        }
+
+
+class SchoolKindForm(forms.ModelForm):
+    is_governmental = forms.ChoiceField(
+        choices=models.SchoolKind.OwnershipChoices,
+        label=_("is governmental"),
+        initial=models.SchoolKind.OwnershipChoices.GOVERNMENTAL,
+        help_text=_("is it governmental or private"),
+    )
+    is_virtual = forms.ChoiceField(
+        choices=models.SchoolKind.VirtualChoices,
+        label=_("is virtual"),
+        initial=models.SchoolKind.VirtualChoices.ORDINARY,
+        help_text=_("is it virtual or ordinary"),
+    )
+
+    class Meta:
+        model = models.SchoolKind
+        fields = (
+            "name",
+            "is_governmental",
+            "is_virtual",
+            "description",
+        )
+        widgets = {
+            "name": widgets.get_text_widget(placeholder=_("school kind name")),
+            "description": widgets.get_textarea_widget(),
+        }
+
+
+class SpecializationForm(forms.ModelForm):
+    is_specialist = forms.ChoiceField(
+        choices=models.Specialization.SpecialistChoices,
+        label=_("is governmental"),
+        initial=models.Specialization.SpecialistChoices.SPECIALIST,
+        help_text=_("is it governmental or private"),
+    )
+
+    class Meta:
+        model = models.Specialization
+        fields = (
+            "name",
+            "is_specialist",
+            "description",
+        )
+        widgets = {
+            "name": widgets.get_text_widget(placeholder=_("specialization name")),
+            "description": widgets.get_textarea_widget(),
         }

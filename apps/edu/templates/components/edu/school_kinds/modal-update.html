@@ -7,11 +7,8 @@
   :form_id="form_id"
   :form="form"
 >
-  <c-inputs.text :field="form.name" />
-  <c-inputs.text :field="form.kind" />
-  <c-inputs.text :field="form.nationality" />
-  <c-inputs.text :field="form.website" />
-  <c-inputs.text :field="form.email" />
-  <c-inputs.text :field="form.phone" />
-  <c-inputs.text :field="form.description" />
+<c-inputs.text :field="form.name" />
+<c-inputs.text theme="select" :field="form.is_governmental" />
+<c-inputs.text theme="select" :field="form.is_virtual" />
+<c-inputs.text :field="form.description" />
 </c-forms.modal-update>

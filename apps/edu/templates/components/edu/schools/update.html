@@ -7,6 +7,23 @@
   :form="form"
 >
   <c-inputs.text :field="form.name" />
+  {% if perms.schools.can_create %}
+  <c-inputs.text :field="form.kind" :has_add="True">
+    <c-button
+      rounded="full"
+      theme="outline"
+      padding="sm"
+      size="20"
+      hx-get="{% url 'school_kinds:create' %}"
+      hx-target="#modal-container"
+      hx-headers='{"modal": true, "target": "#no-content"}'
+      @click.prevent="showModal"
+    />
+  </c-inputs.text>
+  {% else %}
+  <c-inputs.text :field="form.kind" />
+  {% endif %} 
+  <!--  -->
   {% if perms.nationalities.can_create %}
   <c-inputs.text :field="form.nationality" :has_add="True">
     <c-button
@@ -23,8 +40,6 @@
   {% else %}
   <c-inputs.text :field="form.nationality" />
   {% endif %}
-  <c-inputs.text theme="select" :field="form.is_governmental" />
-  <c-inputs.text theme="select" :field="form.is_virtual" />
   <c-inputs.text :field="form.website" />
   <c-inputs.text :field="form.email" />
   <c-inputs.text :field="form.phone" />

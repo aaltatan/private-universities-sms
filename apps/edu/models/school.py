@@ -8,6 +8,7 @@ from apps.core.utils import annotate_search
 from apps.geo.models import Nationality
 
 from ..constants import schools as constants
+from .school_kind import SchoolKind
 
 
 class SchoolManager(models.Manager):
@@ -15,7 +16,7 @@ class SchoolManager(models.Manager):
         return (
             super()
             .get_queryset()
-            .select_related("nationality")
+            .select_related("nationality", "kind")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
             )
@@ -23,29 +24,17 @@ class SchoolManager(models.Manager):
 
 
 class School(AbstractUniqueNameModel):
-    class OwnershipChoices(models.TextChoices):
-        GOVERNMENTAL = True, _("governmental").title()
-        PRIVATE = False, _("private").title()
-
-    class VirtualChoices(models.TextChoices):
-        VIRTUAL = True, _("virtual").title()
-        ORDINARY = False, _("ordinary").title()
-
-    is_governmental = models.BooleanField(
-        verbose_name=_("is governmental"),
-        default=True,
-        help_text=_("is it governmental or private"),
-    )
-    is_virtual = models.BooleanField(
-        verbose_name=_("is virtual"),
-        default=False,
-        help_text=_("is it virtual or ordinary"),
-    )
     nationality = models.ForeignKey(
         Nationality,
         on_delete=models.PROTECT,
         related_name="schools",
         verbose_name=_("nationality"),
+    )
+    kind = models.ForeignKey(
+        SchoolKind,
+        on_delete=models.PROTECT,
+        related_name="schools",
+        verbose_name=_("kind"),
     )
     website = models.URLField(
         verbose_name=_("website"),

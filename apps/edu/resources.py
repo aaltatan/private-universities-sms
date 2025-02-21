@@ -7,17 +7,13 @@ from . import models
 
 
 class SchoolResource(BaseResource):
+    kind = fields.Field(
+        attribute="kind__name",
+        column_name=_("kind").title(),
+    )
     nationality = fields.Field(
         attribute="nationality__name",
         column_name=_("nationality").title(),
-    )
-    is_governmental = fields.Field(
-        attribute="is_governmental",
-        column_name=_("governmental?").title(),
-    )
-    is_virtual = fields.Field(
-        attribute="is_virtual",
-        column_name=_("virtual?").title(),
     )
     website = fields.Field(
         attribute="website",
@@ -32,6 +28,31 @@ class SchoolResource(BaseResource):
         column_name=_("email").title(),
     )
 
+    class Meta:
+        model = models.School
+        fields = (
+            "serial",
+            "name",
+            "kind",
+            "nationality",
+            "website",
+            "email",
+            "phone",
+            "description",
+            "slug",
+        )
+
+
+class SchoolKindResource(BaseResource):
+    is_governmental = fields.Field(
+        attribute="is_governmental",
+        column_name=_("governmental?").title(),
+    )
+    is_virtual = fields.Field(
+        attribute="is_virtual",
+        column_name=_("virtual?").title(),
+    )
+
     def dehydrate_is_governmental(self, obj: models.School) -> str:
         return self._dehydrate_boolean(obj.is_governmental)
 
@@ -39,16 +60,26 @@ class SchoolResource(BaseResource):
         return self._dehydrate_boolean(obj.is_virtual)
 
     class Meta:
-        model = models.School
+        model = models.SchoolKind
         fields = (
             "serial",
             "name",
-            "nationality",
             "is_governmental",
             "is_virtual",
-            "website",
-            "email",
-            "phone",
             "description",
             "slug",
         )
+
+
+class SpecializationResource(BaseResource):
+    is_specialist = fields.Field(
+        attribute="is_specialist",
+        column_name=_("specialist?").title(),
+    )
+
+    def dehydrate_is_specialist(self, obj: models.Specialization) -> str:
+        return self._dehydrate_boolean(obj.is_specialist)
+
+    class Meta:
+        model = models.Specialization
+        fields = ("serial", "name", "is_specialist", "description", "slug")

@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<c-forms.modal-create
+  form_title="{% translate 'add new specialization'|title %}"
+  request_headers='{"modal": true, "target": "{{ request_parser.target }}", "dont-redirect": true}'
+  url="{{ create_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+<c-inputs.text :field="form.name" />
+<c-inputs.text theme="select" :field="form.is_specialist" />
+<c-inputs.text :field="form.description" />
+</c-forms.modal-create>

@@ -34,7 +34,7 @@
       icon="adjustments-horizontal"
       size="20"
       @click="openOverlaySidebar"
-      data-fields="name,description,kind,nationality,website,email,phone"
+      data-fields="name,description,is_specialist"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -62,8 +62,7 @@
       <c-table.tr header="True">
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'name' %}</c-table.th>
-        <c-table.th>{% translate 'kind' %}</c-table.th>
-        <c-table.th>{% translate 'nationality' %}</c-table.th>
+        <c-table.th>{% translate 'is governmental' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
       </c-table.tr>
@@ -83,42 +82,11 @@
             {{ obj.name }}
           </a>
         </c-table.td>
-        <c-table.td data-header="{% translate 'kind' %}">
-          {% if perms.schools.can_change %}
-          <a
-            hx-get="{{ obj.kind.get_update_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            hx-headers='{"modal": true, "target": "#{{ table_id }}"}'
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="edit nationality object"
-          >
-            {{ obj.kind }}
-          </a>
+        <c-table.td data-header="{% translate 'is governmental' %}">
+          {% if obj.is_specialist %}
+          <c-badge theme="primary"> {% translate 'specialist'|title %} </c-badge>
           {% else %}
-          <!--  -->
-          {{ obj.kind }}
-          <!--  -->
-          {% endif %}
-        </c-table.td>
-        <c-table.td data-header="{% translate 'nationality' %}">
-          {% if perms.nationalities.can_change %}
-          <a
-            hx-get="{{ obj.nationality.get_update_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            hx-headers='{"modal": true, "target": "#{{ table_id }}"}'
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="edit nationality object"
-          >
-            {{ obj.nationality }}
-          </a>
-          {% else %}
-          <!--  -->
-          {{ obj.nationality }}
-          <!--  -->
+          <c-badge> {% translate 'supporter'|title %} </c-badge>
           {% endif %}
         </c-table.td>
         <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
@@ -186,11 +154,7 @@
           <c-slot name="header"> {% translate 'filters'|title %} </c-slot>
           <c-slot name="body">
             <c-inputs.text :field="filter.form.name" />
-            <c-inputs.text :field="filter.form.kind" />
-            <c-inputs.text :field="filter.form.nationality" />
-            <c-inputs.text :field="filter.form.website" />
-            <c-inputs.text :field="filter.form.phone" />
-            <c-inputs.text :field="filter.form.email" />
+            <c-inputs.text theme="select" :field="filter.form.is_specialist" />
             <c-inputs.text :field="filter.form.description" />
           </c-slot>
           <c-slot name="footer">

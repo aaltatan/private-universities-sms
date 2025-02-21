@@ -4,6 +4,7 @@ from rest_framework import routers
 from apps.geo.views.governorates import APIViewSet as GovernorateAPIViewSet
 from apps.geo.views.cities import APIViewSet as CityAPIViewSet
 from apps.geo.views.nationalities import APIViewSet as NationalityAPIViewSet
+
 # org
 from apps.org.views.job_types import APIViewSet as JobTypeAPIViewSet
 from apps.org.views.job_subtypes import APIViewSet as JobSubtypeAPIViewSet
@@ -11,8 +12,11 @@ from apps.org.views.groups import APIViewSet as GroupAPIViewSet
 from apps.org.views.cost_centers import APIViewSet as CostCenterAPIViewSet
 from apps.org.views.positions import APIViewSet as PositionAPIViewSet
 from apps.org.views.statuses import APIViewSet as StatusAPIViewSet
+
 # edu
+from apps.edu.views.school_kind import APIViewSet as SchoolKindAPIViewSet
 from apps.edu.views.schools import APIViewSet as SchoolAPIViewSet
+from apps.edu.views.specializations import APIViewSet as SpecializationAPIViewSet
 
 
 router = routers.DefaultRouter()
@@ -29,4 +33,6 @@ router.register(r"org/cost-centers", CostCenterAPIViewSet)
 router.register(r"org/positions", PositionAPIViewSet)
 router.register(r"org/statuses", StatusAPIViewSet)
 # edu
+router.register(r"edu/school-kinds", SchoolKindAPIViewSet)
 router.register(r"edu/schools", SchoolAPIViewSet)
+router.register(r"edu/specializations", SpecializationAPIViewSet)
