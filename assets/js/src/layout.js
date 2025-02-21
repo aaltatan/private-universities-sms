@@ -24,6 +24,11 @@ export function theme() {
   return {
     dark: Alpine.$persist(true).as("dark"),
     toggleDark() {
+      if (this.dark) {
+        document.documentElement.style.backgroundColor = "#ffffff";
+      } else {
+        document.documentElement.style.backgroundColor = "#000000";
+      }
       this.dark = !this.dark;
     },
   };
