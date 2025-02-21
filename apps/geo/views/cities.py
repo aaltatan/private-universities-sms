@@ -32,7 +32,7 @@ class APIViewSet(
     deleter = Deleter
 
     def get_serializer_class(self):
-        if self.action in ("create", "update"):
+        if self.action in ("create", "update", "partial_update"):
             return serializers.CreateUpdateCitySerializer
         return serializers.CitySerializer
 

@@ -33,6 +33,16 @@ class CreateUpdateSchoolSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.School
+        fields = (
+            "name",
+            "is_governmental",
+            "is_virtual",
+            "nationality",
+            "website",
+            "email",
+            "phone",
+            "description",
+        )
 
 
 class SchoolActivitySerializer(serializers.ModelSerializer):

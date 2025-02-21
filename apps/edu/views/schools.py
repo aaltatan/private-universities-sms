@@ -32,7 +32,7 @@ class APIViewSet(
     deleter = Deleter
 
     def get_serializer_class(self):
-        if self.action in ("create", "update"):
+        if self.action in ("create", "update", "partial_update"):
             return serializers.CreateUpdateSchoolSerializer
         return serializers.SchoolSerializer
 
@@ -44,7 +44,7 @@ class ListView(
     MultipleObjectMixin,
     View,
 ):
-    permission_required = "geo.view_school"
+    permission_required = "edu.view_school"
     filter_class = filters.SchoolFilter
     resource_class = resources.SchoolResource
     activity_serializer = serializers.SchoolActivitySerializer
@@ -57,28 +57,28 @@ class ListView(
                 method=self.bulk_delete,
                 template="components/blocks/modals/bulk-delete.html",
                 kwargs=("new_value",),
-                permissions=("geo.delete_school",),
+                permissions=("edu.delete_school",),
             ),
         }
 
 
 class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
-    permission_required = "geo.view_school"
+    permission_required = "edu.view_school"
     model = models.School
 
 
 class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
-    permission_required = "geo.add_school"
+    permission_required = "edu.add_school"
     form_class = forms.SchoolForm
 
 
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
-    permission_required = "geo.change_school"
+    permission_required = "edu.change_school"
     form_class = forms.SchoolForm
     activity_serializer = serializers.SchoolActivitySerializer
 
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
-    permission_required = "geo.delete_school"
+    permission_required = "edu.delete_school"
     deleter = Deleter
     activity_serializer = serializers.SchoolActivitySerializer
