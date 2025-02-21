@@ -84,11 +84,7 @@
         <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
         <c-table.td fixed="True">
           {% if can_update or can_delete or can_view_activity %}
-          <c-layout.context-menu.menu
-            button_padding="sm"
-            x="end-full"
-            y="{% if forloop.first %}top-0{% else %}bottom-0{% endif %}"
-          >
+          <c-layout.context-menu.menu button_padding="sm">
             {% if can_update or can_view_activity %}
             <c-layout.context-menu.section>
               {% if can_view_activity %}
