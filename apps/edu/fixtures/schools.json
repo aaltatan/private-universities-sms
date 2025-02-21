@@ -1,0 +1,137 @@
+[
+  {
+    "model": "edu.school",
+    "pk": 1,
+    "fields": {
+      "name": "الجامعة الوطنية الخاصة",
+      "description": "",
+      "slug": "الجامعة-الوطنية-الخاصة",
+      "is_governmental": false,
+      "is_virtual": false,
+      "nationality": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 2,
+    "fields": {
+      "name": "جامعة حماه",
+      "description": "",
+      "slug": "جامعة-حماه",
+      "is_governmental": true,
+      "is_virtual": false,
+      "nationality": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 3,
+    "fields": {
+      "name": "الجامعة العربية الخاصة للعلوم والتكنولوجيا",
+      "description": "",
+      "slug": "الجامعة-العربية-الخاصة-للعلوم-والتكنولوجيا",
+      "is_governmental": false,
+      "is_virtual": false,
+      "nationality": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 4,
+    "fields": {
+      "name": "الجامعة الافتراضية السورية",
+      "description": "",
+      "slug": "الجامعة-الافتراضية-السورية",
+      "is_governmental": true,
+      "is_virtual": true,
+      "nationality": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 5,
+    "fields": {
+      "name": "جامعة دمشق",
+      "description": "",
+      "slug": "جامعة-دمشق",
+      "is_governmental": true,
+      "is_virtual": false,
+      "nationality": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 6,
+    "fields": {
+      "name": "جامعة حلب",
+      "description": "",
+      "slug": "جامعة-حلب",
+      "is_governmental": true,
+      "is_virtual": false,
+      "nationality": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 7,
+    "fields": {
+      "name": "جامعة اللاذقية",
+      "description": "",
+      "slug": "جامعة-اللاذقية",
+      "is_governmental": true,
+      "is_virtual": false,
+      "nationality": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 8,
+    "fields": {
+      "name": "جامعة حمص",
+      "description": "",
+      "slug": "جامعة-حمص",
+      "is_governmental": true,
+      "is_virtual": false,
+      "nationality": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 9,
+    "fields": {
+      "name": "جامعة القلمون الخاصة",
+      "description": "",
+      "slug": "جامعة-القلمون-الخاصة",
+      "is_governmental": false,
+      "is_virtual": false,
+      "nationality": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  }
+]
