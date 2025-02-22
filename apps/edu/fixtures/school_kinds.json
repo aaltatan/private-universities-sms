@@ -1,0 +1,35 @@
+[
+  {
+    "model": "edu.schoolkind",
+    "pk": 1,
+    "fields": {
+      "name": "جامعة حكومية",
+      "description": "",
+      "slug": "جامعة-حكومية",
+      "is_governmental": true,
+      "is_virtual": false
+    }
+  },
+  {
+    "model": "edu.schoolkind",
+    "pk": 2,
+    "fields": {
+      "name": "جامعة خاصة",
+      "description": "",
+      "slug": "جامعة-خاصة",
+      "is_governmental": false,
+      "is_virtual": false
+    }
+  },
+  {
+    "model": "edu.schoolkind",
+    "pk": 3,
+    "fields": {
+      "name": "جامعة افتراضية",
+      "description": "",
+      "slug": "جامعة-افتراضية",
+      "is_governmental": true,
+      "is_virtual": true
+    }
+  }
+]

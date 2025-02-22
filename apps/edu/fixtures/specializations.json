@@ -1,0 +1,282 @@
+[
+  {
+    "model": "edu.specialization",
+    "pk": 1,
+    "fields": {
+      "name": "طب الأسنان",
+      "description": "",
+      "slug": "طب-الأسنان",
+      "is_specialist": true
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 2,
+    "fields": {
+      "name": "الهندسة المعمارية",
+      "description": "",
+      "slug": "الهندسة-المعمارية",
+      "is_specialist": true
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 3,
+    "fields": {
+      "name": "الهندسة المدنية",
+      "description": "",
+      "slug": "الهندسة-المدنية",
+      "is_specialist": true
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 4,
+    "fields": {
+      "name": "هندسة الاتصالات",
+      "description": "",
+      "slug": "هندسة-الاتصالات",
+      "is_specialist": true
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 5,
+    "fields": {
+      "name": "هندسة الحاسوب",
+      "description": "",
+      "slug": "هندسة-الحاسوب",
+      "is_specialist": true
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 6,
+    "fields": {
+      "name": "الهندسة المعلوماتية",
+      "description": "",
+      "slug": "الهندسة-المعلوماتية",
+      "is_specialist": true
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 7,
+    "fields": {
+      "name": "الصيدلة",
+      "description": "",
+      "slug": "الصيدلة",
+      "is_specialist": true
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 8,
+    "fields": {
+      "name": "ادارة الاعمال",
+      "description": "",
+      "slug": "ادارة-الاعمال",
+      "is_specialist": true
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 9,
+    "fields": {
+      "name": "المحاسبة",
+      "description": "",
+      "slug": "المحاسبة",
+      "is_specialist": true
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 10,
+    "fields": {
+      "name": "التسويق",
+      "description": "",
+      "slug": "التسويق",
+      "is_specialist": true
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 11,
+    "fields": {
+      "name": "الفنون الجميلة",
+      "description": "",
+      "slug": "الفنون-الجميلة",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 12,
+    "fields": {
+      "name": "الرياضيات",
+      "description": "",
+      "slug": "الرياضيات",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 13,
+    "fields": {
+      "name": "الهندسة الميكانيكية",
+      "description": "",
+      "slug": "الهندسة-الميكانيكية",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 14,
+    "fields": {
+      "name": "اللغة العربية",
+      "description": "",
+      "slug": "اللغة-العربية",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 15,
+    "fields": {
+      "name": "اللغة الانكليزية",
+      "description": "",
+      "slug": "اللغة-الانكليزية",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 16,
+    "fields": {
+      "name": "الهندسة الكهربائية",
+      "description": "",
+      "slug": "الهندسة-الكهربائية",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 17,
+    "fields": {
+      "name": "الفيزياء",
+      "description": "",
+      "slug": "الفيزياء",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 18,
+    "fields": {
+      "name": "الكيمياء",
+      "description": "",
+      "slug": "الكيمياء",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 19,
+    "fields": {
+      "name": "الطب البشري",
+      "description": "",
+      "slug": "الطب-البشري",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 20,
+    "fields": {
+      "name": "التمويل والمصارف",
+      "description": "",
+      "slug": "التمويل-والمصارف",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 21,
+    "fields": {
+      "name": "الحقوق",
+      "description": "",
+      "slug": "الحقوق",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 22,
+    "fields": {
+      "name": "العلوم",
+      "description": "",
+      "slug": "العلوم",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 23,
+    "fields": {
+      "name": "الكلية التطبيقية",
+      "description": "",
+      "slug": "الكلية-التطبيقية",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 24,
+    "fields": {
+      "name": "التربية",
+      "description": "",
+      "slug": "التربية",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 25,
+    "fields": {
+      "name": "التاريخ",
+      "description": "",
+      "slug": "التاريخ",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 26,
+    "fields": {
+      "name": "علم الاجتماع",
+      "description": "",
+      "slug": "علم-الاجتماع",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 27,
+    "fields": {
+      "name": "التعويضات السنية",
+      "description": "",
+      "slug": "التعويضات-السنية",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 28,
+    "fields": {
+      "name": "المراقبين الفنيين",
+      "description": "",
+      "slug": "المراقبين-الفنيين",
+      "is_specialist": false
+    }
+  }
+]

@@ -1,0 +1,114 @@
+[
+  {
+    "model": "edu.school",
+    "pk": 1,
+    "fields": {
+      "name": "جامعة حماه",
+      "description": "",
+      "slug": "جامعة-حماه",
+      "nationality": 1,
+      "kind": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 2,
+    "fields": {
+      "name": "جامعة حمص",
+      "description": "",
+      "slug": "جامعة-حمص",
+      "nationality": 1,
+      "kind": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 3,
+    "fields": {
+      "name": "جامعة حلب",
+      "description": "",
+      "slug": "جامعة-حلب",
+      "nationality": 1,
+      "kind": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 4,
+    "fields": {
+      "name": "جامعة اللاذقية",
+      "description": "",
+      "slug": "جامعة-اللاذقية",
+      "nationality": 1,
+      "kind": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 5,
+    "fields": {
+      "name": "جامعة دمشق",
+      "description": "",
+      "slug": "جامعة-دمشق",
+      "nationality": 1,
+      "kind": 1,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 6,
+    "fields": {
+      "name": "الجامعة الوطنية الخاصة",
+      "description": "",
+      "slug": "الجامعة-الوطنية-الخاصة",
+      "nationality": 1,
+      "kind": 2,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 7,
+    "fields": {
+      "name": "الجامعة العربية الخاصة للعلوم والتكنولوجيا",
+      "description": "",
+      "slug": "الجامعة-العربية-الخاصة-للعلوم-والتكنولوجيا",
+      "nationality": 1,
+      "kind": 2,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 8,
+    "fields": {
+      "name": "جامعة القلمون الخاصة",
+      "description": "",
+      "slug": "جامعة-القلمون-الخاصة",
+      "nationality": 1,
+      "kind": 2,
+      "website": null,
+      "email": null,
+      "phone": null
+    }
+  }
+]
