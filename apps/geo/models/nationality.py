@@ -14,6 +14,7 @@ class NationalityManager(models.Manager):
         return (
             super()
             .get_queryset()
+            .prefetch_related("schools")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
             )

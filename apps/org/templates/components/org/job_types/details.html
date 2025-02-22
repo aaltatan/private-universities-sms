@@ -22,6 +22,22 @@
           </c-table.tr>
         </c-table.table>
       </c-table.container>
+      <!-- job types table -->
+      {% if object.job_subtypes.all %}
+      <c-separator> {% translate 'job subtypes'|title %} </c-separator>
+      <c-table.container height="sm">
+        <c-table.table>
+          {% for job_subtype in object.job_subtypes.all %}
+          <c-table.tr>
+            <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ job_subtype }}
+            </c-table.td>
+          </c-table.tr>
+          {% endfor %}
+        </c-table.table>
+      </c-table.container>
+      {% endif %}
     </c-slot>
     <c-slot name="footer">
       <c-button

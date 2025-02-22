@@ -22,6 +22,20 @@
           </c-table.tr>
         </c-table.table>
       </c-table.container>
+      <!-- cities table -->
+      {% if object.cities.all %}
+      <c-separator> {% translate 'cities'|title %} </c-separator>
+      <c-table.container height="sm">
+        <c-table.table>
+          {% for city in object.cities.all %}
+          <c-table.tr>
+            <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}"> {{ city }} </c-table.td>
+          </c-table.tr>
+          {% endfor %}
+        </c-table.table>
+      </c-table.container>
+      {% endif %}
     </c-slot>
     <c-slot name="footer">
       <c-button

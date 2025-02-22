@@ -30,6 +30,26 @@
           </c-table.tr>
         </c-table.table>
       </c-table.container>
+      <!-- schools table -->
+      {% if object.schools.all %}
+      <c-separator> {% translate 'schools'|title %} </c-separator>
+      <c-table.container height="sm">
+        <c-table.table>
+          <c-table.tr header="True">
+            <c-table.td data-header="#" />
+            <c-table.td>{% translate 'name'|title %}</c-table.td>
+            <c-table.td>{% translate 'kind'|title %}</c-table.td>
+          </c-table.tr>
+          {% for school in object.schools.all %}
+          <c-table.tr>
+            <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
+            <c-table.td data-header="{% translate 'name'|title %}"> {{ school }} </c-table.td>
+            <c-table.td data-header="{% translate 'kind'|title %}"> {{ school.kind }} </c-table.td>
+          </c-table.tr>
+          {% endfor %}
+        </c-table.table>
+      </c-table.container>
+      {% endif %}
     </c-slot>
     <c-slot name="footer">
       <c-button
