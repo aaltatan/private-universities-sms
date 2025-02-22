@@ -109,6 +109,13 @@
               >
                 {% translate 'edit' %}
               </c-layout.context-menu.item>
+              <c-layout.context-menu.item
+                icon="pencil"
+                href="{% url 'governorates:cities' slug=obj.slug %}{% querystring %}"
+                aria-label="edit nested objects"
+              >
+                {% translate 'edit cities' %}
+              </c-layout.context-menu.item>
               {% endif %}
             </c-layout.context-menu.section>
             {% endif %}

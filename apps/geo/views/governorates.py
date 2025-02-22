@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views.generic import View, DetailView
+from django.views.generic import DetailView, View
 from django.views.generic.list import MultipleObjectMixin
 from django_filters import rest_framework as django_filters
 from rest_framework import filters as rest_filters
@@ -9,7 +9,7 @@ from apps.core import filter_backends, mixins
 from apps.core.schemas import Action
 from apps.core.utils import Deleter
 
-from .. import filters, forms, models, resources, serializers
+from .. import filters, forms, formsets, models, resources, serializers
 from ..constants import governorates as constants
 
 
@@ -71,6 +71,15 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "geo.change_governorate"
     form_class = forms.GovernorateForm
     activity_serializer = serializers.GovernorateActivitySerializer
+
+
+class CitiesInlineView(mixins.InlineMixin, View):
+    model = models.Governorate
+    formset = formsets.CityFormset
+    verbose_name_plural = "cities"
+
+    def get_queryset(self):
+        return self.obj.cities.all().order_by("id")
 
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):

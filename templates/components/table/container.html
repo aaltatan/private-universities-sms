@@ -4,7 +4,9 @@
   :heights="{
     'sm': 'max-h-[50vh] sm:max-h-[65vh]',
     'base': 'max-h-[55vh] sm:max-h-[70vh]',
+    'none': 'overflow-hidden',
   }"
+  :overflow="True"
   height="base"
 />
 
@@ -14,7 +16,7 @@
   </div>
 
   <div
-    class="relative overflow-auto w-full overflow-x-auto rounded-md border border-neutral-300 dark:border-neutral-800 scroll overflow-y-scroll {{ heights|get_item:height }}"
+    class="relative {% if overflow %}overflow-auto{% endif %} w-full rounded-md border border-neutral-300 dark:border-neutral-800 scroll {{ heights|get_item:height }}"
   >
     <div
       id="table-spinner"

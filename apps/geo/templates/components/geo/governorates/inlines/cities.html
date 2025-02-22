@@ -1,0 +1,45 @@
+{% load i18n %}
+
+<form
+  id="city-{{ object.pk }}-formset"
+  hx-post="{% url 'governorates:cities' slug=object.slug %}"
+  hx-target="#city-{{ object.pk }}-formset"
+  x-trap="true"
+  x-data="{
+    lrTimeout: null,
+    init() {
+      let lr = document.querySelector(`tr:last-child input:not([type='hidden'])`);
+      self.lrTimeout = setTimeout(() => {
+        lr.focus();
+      }, 50);
+    },
+    destroy() {
+      clearTimeout(self.lrTimeout);
+    }
+  }"
+>
+  <div>{{ formset.management_form }}</div>
+  <!--  -->
+  {{ formset.non_form_errors }}
+  <!--  -->
+  <c-table.container :overflow="False" height="none">
+    <c-table.table>
+      <c-table.tr header="True">
+        <c-table.th> {% translate 'name' %} </c-table.th>
+        <c-table.th> {% translate 'delete' %} </c-table.th>
+      </c-table.tr>
+      {% for form in formset.forms %}
+      <c-table.tr :striped="False">
+        <c-table.td data-header="{% translate 'name' %}">
+          {{ form.id }}
+          <c-inputs.text :show_label="False" :field="form.name" />
+        </c-table.td>
+        <c-table.td data-header="{% translate 'delete' %}"> {{ form.DELETE }} </c-table.td>
+      </c-table.tr>
+      {% endfor %}
+    </c-table.table>
+  </c-table.container>
+  <div class="flex items-center gap-2 my-2">
+    <c-button theme="primary" type="submit"> {% translate 'save' %} </c-button>
+  </div>
+</form>

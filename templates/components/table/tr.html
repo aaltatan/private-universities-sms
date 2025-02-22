@@ -1,18 +1,20 @@
-<c-vars :header="False" />
+<c-vars :header="False" :striped="True" />
 
 <tr
   class="{% if not header %}
   hover:ring-1
   ring-neutral-400
   dark:ring-neutral-600
-  even:bg-white 
-  even:has-checked:!bg-neutral-200 
-  even:dark:bg-neutral-950 
-  even:dark:has-checked:!bg-neutral-700 
-  odd:bg-neutral-100 
-  odd:has-checked:!bg-neutral-300 
-  odd:dark:bg-black 
-  odd:dark:has-checked:!bg-neutral-800 
+  {% if striped %}
+    even:bg-white 
+    even:has-checked:!bg-neutral-200 
+    even:dark:bg-neutral-950 
+    even:dark:has-checked:!bg-neutral-700 
+    odd:bg-neutral-100 
+    odd:has-checked:!bg-neutral-300 
+    odd:dark:bg-black 
+    odd:dark:has-checked:!bg-neutral-800 
+  {% endif %}
   {% endif %}"
 >
   {{ slot }}

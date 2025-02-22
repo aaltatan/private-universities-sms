@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.utils.translation import gettext as _
 
 from ..views import governorates as views
@@ -13,6 +13,19 @@ urlpatterns = [
         view=views.ListView.as_view(),
         name="index",
         kwargs={"title": _("governorates")},
+    ),
+    path(
+        route="inlines/",
+        view=include(
+            [
+                path(
+                    "cities/<str:slug>/",
+                    views.CitiesInlineView.as_view(),
+                    name="cities",
+                    kwargs={"title": _("cities").title()},
+                ),
+            ],
+        ),
     ),
     path(
         route="details/<str:slug>/",
