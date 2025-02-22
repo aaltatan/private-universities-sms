@@ -1,0 +1,134 @@
+[
+  {
+    "model": "edu.degree",
+    "pk": 1,
+    "fields": {
+      "name": "أستاذ",
+      "description": "",
+      "slug": "أستاذ",
+      "order": 1,
+      "is_academic": true
+    }
+  },
+  {
+    "model": "edu.degree",
+    "pk": 2,
+    "fields": {
+      "name": "استاذ مساعد",
+      "description": "",
+      "slug": "استاذ-مساعد",
+      "order": 2,
+      "is_academic": true
+    }
+  },
+  {
+    "model": "edu.degree",
+    "pk": 3,
+    "fields": {
+      "name": "مدرس",
+      "description": "",
+      "slug": "مدرس",
+      "order": 3,
+      "is_academic": true
+    }
+  },
+  {
+    "model": "edu.degree",
+    "pk": 4,
+    "fields": {
+      "name": "ماجستير نظري",
+      "description": "",
+      "slug": "ماجستير-نظري",
+      "order": 4,
+      "is_academic": true
+    }
+  },
+  {
+    "model": "edu.degree",
+    "pk": 5,
+    "fields": {
+      "name": "ماجستير تطبيقي",
+      "description": "",
+      "slug": "ماجستير-تطبيقي",
+      "order": 4,
+      "is_academic": false
+    }
+  },
+  {
+    "model": "edu.degree",
+    "pk": 6,
+    "fields": {
+      "name": "ماجستير تأهيل وتخصص",
+      "description": "",
+      "slug": "ماجستير-تأهيل-وتخصص",
+      "order": 4,
+      "is_academic": false
+    }
+  },
+  {
+    "model": "edu.degree",
+    "pk": 7,
+    "fields": {
+      "name": "دكتوراه تأهيل وتخصص",
+      "description": "",
+      "slug": "دكتوراه-تأهيل-وتخصص",
+      "order": 3,
+      "is_academic": false
+    }
+  },
+  {
+    "model": "edu.degree",
+    "pk": 8,
+    "fields": {
+      "name": "إجازة جامعية",
+      "description": "",
+      "slug": "إجازة-جامعية",
+      "order": 5,
+      "is_academic": false
+    }
+  },
+  {
+    "model": "edu.degree",
+    "pk": 9,
+    "fields": {
+      "name": "معهد",
+      "description": "",
+      "slug": "معهد",
+      "order": 6,
+      "is_academic": false
+    }
+  },
+  {
+    "model": "edu.degree",
+    "pk": 10,
+    "fields": {
+      "name": "تعليم ثانوي",
+      "description": "",
+      "slug": "تعليم-ثانوي",
+      "order": 7,
+      "is_academic": false
+    }
+  },
+  {
+    "model": "edu.degree",
+    "pk": 11,
+    "fields": {
+      "name": "تعليم أساسي",
+      "description": "",
+      "slug": "تعليم-أساسي",
+      "order": 8,
+      "is_academic": false
+    }
+  },
+  {
+    "model": "edu.degree",
+    "pk": 12,
+    "fields": {
+      "name": "دكتوراه غير معادل نظري",
+      "description": "",
+      "slug": "دكتوراه-غير-معادل-نظري",
+      "order": 4,
+      "is_academic": false
+    }
+  }
+]
