@@ -62,7 +62,7 @@
       <c-table.tr header="True">
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'name' %}</c-table.th>
-        <c-table.th>{% translate 'is governmental' %}</c-table.th>
+        <c-table.th>{% translate 'is specialist' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
       </c-table.tr>
@@ -82,7 +82,7 @@
             {{ obj.name }}
           </a>
         </c-table.td>
-        <c-table.td data-header="{% translate 'is governmental' %}">
+        <c-table.td data-header="{% translate 'is specialist' %}">
           {% if obj.is_specialist %}
           <c-badge theme="primary"> {% translate 'specialist'|title %} </c-badge>
           {% else %}
