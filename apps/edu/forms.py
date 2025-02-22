@@ -88,12 +88,25 @@ class SpecializationForm(forms.ModelForm):
 
     class Meta:
         model = models.Specialization
-        fields = (
-            "name",
-            "is_specialist",
-            "description",
-        )
+        fields = ("name", "is_specialist", "description")
         widgets = {
             "name": widgets.get_text_widget(placeholder=_("specialization name")),
+            "description": widgets.get_textarea_widget(),
+        }
+
+
+class DegreeForm(forms.ModelForm):
+    is_academic = forms.ChoiceField(
+        choices=models.Degree.AcademicChoices,
+        label=_("is academic"),
+        initial=models.Degree.AcademicChoices.ACADEMIC,
+        help_text=_("is it academic or applied"),
+    )
+
+    class Meta:
+        model = models.Degree
+        fields = ("name", "order", "is_academic", "description")
+        widgets = {
+            "name": widgets.get_text_widget(placeholder=_("degree name")),
             "description": widgets.get_textarea_widget(),
         }

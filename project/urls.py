@@ -131,6 +131,10 @@ urlpatterns = [
                     "specializations/",
                     include("apps.edu.urls.specializations"),
                 ),
+                path(
+                    "degrees/",
+                    include("apps.edu.urls.degrees"),
+                ),
             ]
         ),
     ),

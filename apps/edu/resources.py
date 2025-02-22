@@ -83,3 +83,17 @@ class SpecializationResource(BaseResource):
     class Meta:
         model = models.Specialization
         fields = ("serial", "name", "is_specialist", "description", "slug")
+
+
+class DegreeResource(BaseResource):
+    is_academic = fields.Field(
+        attribute="is_academic",
+        column_name=_("academic?").title(),
+    )
+
+    def dehydrate_is_academic(self, obj: models.Degree) -> str:
+        return self._dehydrate_boolean(obj.is_academic)
+
+    class Meta:
+        model = models.Degree
+        fields = ("serial", "name", "is_academic", "description", "slug")

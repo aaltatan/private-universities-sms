@@ -17,6 +17,7 @@ from apps.org.views.statuses import APIViewSet as StatusAPIViewSet
 from apps.edu.views.school_kind import APIViewSet as SchoolKindAPIViewSet
 from apps.edu.views.schools import APIViewSet as SchoolAPIViewSet
 from apps.edu.views.specializations import APIViewSet as SpecializationAPIViewSet
+from apps.edu.views.degrees import APIViewSet as DegreeAPIViewSet
 
 
 router = routers.DefaultRouter()
@@ -36,3 +37,4 @@ router.register(r"org/statuses", StatusAPIViewSet)
 router.register(r"edu/school-kinds", SchoolKindAPIViewSet)
 router.register(r"edu/schools", SchoolAPIViewSet)
 router.register(r"edu/specializations", SpecializationAPIViewSet)
+router.register(r"edu/degrees", DegreeAPIViewSet)
