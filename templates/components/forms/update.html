@@ -13,6 +13,7 @@
 
 <form
   hx-post="{{ url }}"
+  hx-target="#{{ form_id }}"
   id="{{ form_id }}"
   class="{{ widths|get_item:width }} mx-auto"
   x-trap="true"

@@ -26,33 +26,41 @@
     {% endfor %}
   </c-error.wrapper>
   <!--  -->
-  <c-table.container :overflow="False" height="none">
+  <c-table.container>
     <c-table.table>
       <c-table.tr header="True">
         <c-table.th> # </c-table.th>
         <c-table.th> {% translate 'name' %} </c-table.th>
+        <c-table.th> {% translate 'description' %} </c-table.th>
+        {% if perms.geo.delete_city %}
         <c-table.th> {% translate 'delete' %} </c-table.th>
+        {% endif %}
       </c-table.tr>
       {% for form in formset.forms %}
       <c-table.tr>
-        <c-table.td data-header="{% translate 'serial' %}"> {{ forloop.counter }} </c-table.td>
+        <c-table.td :fixed="True" data-header="{% translate 'serial' %}"> {{ forloop.counter }} </c-table.td>
         <c-table.td data-header="{% translate 'name' %}">
           {{ form.id }}
           <c-inputs.text :show_help="False" :show_label="False" :field="form.name" />
         </c-table.td>
-        <c-table.td data-header="{% translate 'delete' %}">
+        <c-table.td data-header="{% translate 'description' %}">
+          <c-inputs.text :show_help="False" :show_label="False" :field="form.description" />
+        </c-table.td>
+        {% if perms.geo.delete_city %}
+        <c-table.td :fixed="True" data-header="{% translate 'delete' %}">
           <div class="relative flex items-center justify-center">
             {% render_field form.DELETE class="checkbox-input peer" %}
             <!--  -->
             {% heroicon_outline "check" class="checkbox-icon" %}
           </div>
         </c-table.td>
+        {% endif %}
       </c-table.tr>
       {% endfor %}
     </c-table.table>
   </c-table.container>
   <div class="flex items-center justify-center gap-2 my-2">
-    <c-button theme="primary" type="submit"> {% translate 'save' %} </c-button>
+    <c-button icon="bookmark" theme="primary" type="submit"> {% translate 'update' %} </c-button>
     <c-button
       kind="a"
       theme="outline"

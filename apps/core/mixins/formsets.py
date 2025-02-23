@@ -1,22 +1,39 @@
 from abc import ABC, abstractmethod
+from typing import Iterable
 
 from django.contrib import messages
 from django.db.models import Model
+from django.forms import ModelForm
+from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext as _
-from django.forms.models import BaseInlineFormSet
 
 
-class InlineMixin(ABC):
+class FormsetMixin(ABC):
     @property
     @abstractmethod
-    def formset(self) -> type[BaseInlineFormSet]:
+    def parent_model(self) -> type[Model]:
         pass
 
     @property
     @abstractmethod
     def model(self) -> type[Model]:
+        pass
+
+    @property
+    @abstractmethod
+    def form_class(self) -> type[ModelForm]:
+        pass
+
+    @property
+    @abstractmethod
+    def fields(self) -> Iterable[str]:
+        pass
+
+    @property
+    @abstractmethod
+    def can_delete_permission(self) -> str:
         pass
 
     @property
@@ -32,10 +49,14 @@ class InlineMixin(ABC):
     error_message: str | None = None
     template_name: str | None = None
     form_template_name: str | None = None
+    custom_formset_class: BaseInlineFormSet | None = None
+    extra: int = 1
+    max_num: int = 200
 
     def get(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
-        self.obj = get_object_or_404(self.model, slug=slug)
-        formset = self.formset(
+        self.obj = get_object_or_404(self.parent_model, slug=slug)
+        Formset = self.get_formset_class()
+        formset = Formset(
             instance=self.obj,
             queryset=self.get_queryset(),
         )
@@ -50,13 +71,14 @@ class InlineMixin(ABC):
         return render(request, template_name, context)
 
     def post(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
-        self.obj = get_object_or_404(self.model, slug=slug)
-        formset = self.formset(request.POST, instance=self.obj)
+        self.obj = get_object_or_404(self.parent_model, slug=slug)
+        Formset = self.get_formset_class()
+        formset = Formset(request.POST, instance=self.obj)
 
         if formset.is_valid():
             formset.save()
             messages.success(request, self.get_success_message())
-            formset = self.formset(
+            formset = Formset(
                 instance=self.obj,
                 queryset=self.get_queryset(),
             )
@@ -71,6 +93,25 @@ class InlineMixin(ABC):
 
         return response
 
+    def get_formset_class(self) -> type[BaseInlineFormSet]:
+        kwargs = {
+            "parent_model": self.parent_model,
+            "model": self.model,
+            "form": self.form_class,
+            "extra": self.extra,
+            "can_delete": False,
+            "fields": self.fields,
+            "max_num": self.max_num,
+        }
+
+        if self.request.user.has_perm(self.can_delete_permission):
+            kwargs["can_delete"] = True
+
+        if self.custom_formset_class:
+            kwargs["formset"] = self.custom_formset_class
+
+        return inlineformset_factory(**kwargs)
+
     def get_success_message(self) -> str:
         if self.success_message:
             return self.success_message
@@ -84,10 +125,10 @@ class InlineMixin(ABC):
         return _("error while updating objects")
 
     def get_verbose_name_plural(self) -> str:
-        return self.model._meta.verbose_name_plural
+        return self.parent_model._meta.verbose_name_plural
 
     def get_app_label(self) -> str:
-        return self.model._meta.app_label
+        return self.parent_model._meta.app_label
 
     def get_template_name(self) -> str:
         if self.template_name:

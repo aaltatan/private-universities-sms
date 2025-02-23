@@ -5,13 +5,14 @@ from typing import Any
 from django.contrib import messages
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
-from django.forms import ModelForm
+from django.forms import BaseInlineFormSet, ModelForm
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from rest_framework.serializers import ModelSerializer
 
+from ..inline import InlineFormsetFactory
 from ..models import Activity
 from ..schemas import RequestParser
 from ..utils import get_differences
@@ -32,6 +33,11 @@ class UpdateMixin(ABC):
     def activity_serializer(self) -> type[ModelSerializer]:
         pass
 
+    template_name: str | None = None
+    form_template_name: str | None = None
+    form_modal_template_name: str | None = None
+    inlines: dict[str, InlineFormsetFactory] | None = None
+
     def get(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
         """
         Handles GET requests and returns a rendered template.
@@ -44,6 +50,14 @@ class UpdateMixin(ABC):
         )
         template_name = self.get_template_name()
         context = self.get_context_data()
+
+        if self.inlines:
+            for app_label, inline in self.inlines.items():
+                key = f"{app_label}_formset"
+                Formset = inline().get_formset_class(
+                    request=request, parent_model=self.get_model_class()
+                )
+                context[key] = Formset(instance=self.obj)
 
         if request.htmx:
             if request_parser.is_modal_request:
@@ -65,16 +79,25 @@ class UpdateMixin(ABC):
 
         form = self.form_class(request.POST, instance=self.obj)
 
+        formsets = []
+        for inline in self.inlines.values():
+            Formset = inline().get_formset_class(
+                request=request, parent_model=self.get_model_class()
+            )
+            formset = Formset(request.POST, instance=self.obj)
+            formsets.append(formset)
+
         request_parser = RequestParser(
             request=request,
             index_url=self.get_app_urls()["index_url"],
         )
-        if form.is_valid():
+        if form.is_valid() and all(formset.is_valid() for formset in formsets):
             return self.get_form_valid_response(
                 request=request,
                 form=form,
                 request_parser=request_parser,
                 from_data=from_data,
+                formsets=formsets,
             )
 
         return self.get_form_invalid_response(
@@ -89,11 +112,14 @@ class UpdateMixin(ABC):
         form: type[ModelForm],
         request_parser: RequestParser,
         from_data: dict | list,
+        formsets: list[BaseInlineFormSet],
     ) -> HttpResponse:
         """
         Returns the form valid response.
         """
         obj = form.save()
+        for formset in formsets:
+            formset.save()
 
         to_data: dict | list = self.activity_serializer(obj).data
         differences = get_differences(from_data, to_data)
@@ -121,7 +147,19 @@ class UpdateMixin(ABC):
             if request_parser.is_modal_request:
                 response["Hx-Location"] = request_parser.hx_location
             else:
-                response["Hx-Redirect"] = request_parser.index_url
+                template_name = self.get_form_template_name()
+
+                additional_context = {}
+                for app_label, inline in self.inlines.items():
+                    key = f"{app_label}_formset"
+                    Formset = inline().get_formset_class(
+                        request=request, parent_model=self.get_model_class()
+                    )
+                    formset = Formset(instance=obj)
+                    additional_context[key] = formset
+
+                context = self.get_context_data(**additional_context)
+                response = render(request, template_name, context)
 
         response["Hx-Trigger"] = "messages"
 
@@ -145,7 +183,18 @@ class UpdateMixin(ABC):
         Returns the form invalid response.
         """
         template_name = self.get_form_template_name()
-        context = self.get_context_data()
+
+        additional_context = {}
+
+        for app_label, inline in self.inlines.items():
+            key = f"{app_label}_formset"
+            Formset = inline().get_formset_class(
+                request=request, parent_model=self.get_model_class()
+            )
+            formset = Formset(request.POST, instance=self.obj)
+            additional_context[key] = formset
+
+        context = self.get_context_data(**additional_context)
         context["form"] = form
 
         if request_parser.is_modal_request:
@@ -248,5 +297,6 @@ class UpdateMixin(ABC):
             "form": form,
             **self.get_app_urls(),
             **self.get_html_ids(),
+            **kwargs,
         }
         return context

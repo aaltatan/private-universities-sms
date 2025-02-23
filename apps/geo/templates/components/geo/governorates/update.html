@@ -1,11 +1,57 @@
-{% load i18n %}
+{% load i18n widget_tweaks %}
 
 <c-forms.update
   form_title="{% translate 'update' %} {{ form.instance }}"
   url="{{ update_url }}{% querystring %}"
   :form_id="form_id"
   :form="form"
+  width="xl"
 >
-  <c-inputs.text :field="form.name" />
-  <c-inputs.text :field="form.description" />
+  <div class="grid grid-cols-2 gap-2">
+    <c-inputs.text :field="form.name" />
+    <c-inputs.text :field="form.description" />
+  </div>
+  <div>
+    <div>{{ cities_formset.management_form }}</div>
+    <c-error.wrapper>
+      {% for error in cities_formset.non_form_errors %}
+      <c-error.error>{{ error }}</c-error.error>
+      {% endfor %}
+    </c-error.wrapper>
+    <c-table.container height="xs">
+      <c-table.table>
+        <c-table.tr header="True">
+          <c-table.th> # </c-table.th>
+          <c-table.th> {% translate 'name' %} </c-table.th>
+          <c-table.th> {% translate 'description' %} </c-table.th>
+          {% if perms.geo.delete_city %}
+          <c-table.th> {% translate 'delete' %} </c-table.th>
+          {% endif %}
+        </c-table.tr>
+        {% for form in cities_formset.forms %}
+        <c-table.tr>
+          <c-table.td :fixed="True" data-header="{% translate 'serial' %}">
+            {{ forloop.counter }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'name' %}">
+            {{ form.id }}
+            <c-inputs.text :show_help="False" :show_label="False" :field="form.name" />
+          </c-table.td>
+          <c-table.td data-header="{% translate 'description' %}">
+            <c-inputs.text :show_help="False" :show_label="False" :field="form.description" />
+          </c-table.td>
+          {% if perms.geo.delete_city %}
+          <c-table.td :fixed="True" data-header="{% translate 'delete' %}">
+            <div class="relative flex items-center justify-center">
+              {% render_field form.DELETE class="checkbox-input peer" %}
+              <!--  -->
+              {% heroicon_outline "check" class="checkbox-icon" %}
+            </div>
+          </c-table.td>
+          {% endif %}
+        </c-table.tr>
+        {% endfor %}
+      </c-table.table>
+    </c-table.container>
+  </div>
 </c-forms.update>

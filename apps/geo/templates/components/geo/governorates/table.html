@@ -109,14 +109,19 @@
               >
                 {% translate 'edit' %}
               </c-layout.context-menu.item>
+              {% endif %}
+            </c-layout.context-menu.section>
+            {% endif %}
+            <!--  -->
+            {% if perms.geo.change_city %}
+            <c-layout.context-menu.section>
               <c-layout.context-menu.item
-                icon="pencil"
+                icon="numbered-list"
                 href="{% url 'governorates:cities' slug=obj.slug %}{% querystring %}"
                 aria-label="edit nested objects"
               >
                 {% translate 'edit cities' %}
               </c-layout.context-menu.item>
-              {% endif %}
             </c-layout.context-menu.section>
             {% endif %}
             <!--  -->

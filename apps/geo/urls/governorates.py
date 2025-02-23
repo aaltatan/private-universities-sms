@@ -20,7 +20,7 @@ urlpatterns = [
             [
                 path(
                     "cities/<str:slug>/",
-                    views.CitiesInlineView.as_view(),
+                    views.CitiesFormsetView.as_view(),
                     name="cities",
                     kwargs={"title": _("cities").title()},
                 ),
