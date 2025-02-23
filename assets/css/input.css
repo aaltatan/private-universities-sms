@@ -2,9 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  .checkbox-input::before {
+    content: "";
+  }
+}
 /* inputs */
 .text-input {
-  @apply w-full rounded-md border border-neutral-300 p-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:dark:bg-neutral-900 dark:border-neutral-800 dark:focus-visible:outline-white aria-[invalid]:!border-red-500 bg-transparent;
+  @apply w-full bg-white dark:bg-black rounded-md border border-neutral-300 p-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:dark:bg-neutral-900 dark:border-neutral-800 dark:focus-visible:outline-white aria-[invalid]:!border-red-500;
 }
 
 .select-input {

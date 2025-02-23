@@ -23,7 +23,10 @@
   {% if has_add or show_label %}
   <div class="flex items-center gap-1">
     {% if show_label %}
-    <label for="{{ field.id_for_label }}" class="flex w-fit items-center gap-1 pl-0.5 text-sm capitalize">
+    <label
+      for="{{ field.id_for_label }}"
+      class="flex w-fit items-center gap-1 pl-0.5 text-sm capitalize"
+    >
       {{ field.label }}:
       <span
         class="text-[red] hidden"
@@ -35,7 +38,7 @@
     </label>
     {% endif %}
     <!--  -->
-    {% if has_add %} 
+    {% if has_add %}
     <div aria-label="create nested object">{{ slot }}</div>
     {% endif %}
   </div>
@@ -52,24 +55,21 @@
     <span class="absolute start-2 top-1/2 -translate-y-1/2">
       {% heroicon_outline icon size=icon_size class="text-neutral-500" %}
     </span>
-    {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme style="padding-inline-start: 2rem" type=kind %}
+    {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme
+    style="padding-inline-start: 2rem" type=kind %}
   </div>
   {% else %}
   <!--  -->
-  {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme type=kind %}
+  {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme
+  type=kind %}
   <!--  -->
   {% endif %}
   <!--  -->
   {% if field.errors %}
-  <div class="pl-0.5 text-red-500 my-1 text-sm">
-    <ul aria-label="errors list">
-      {% for error in field.errors %}
-      <li class="flex items-center gap-1 ps-1">
-        <span>{% heroicon_outline "x-mark" size="16" %}</span>
-        <span aria-label="error">{{ error }}</span>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
+  <c-error.wrapper>
+    {% for error in field.errors %}
+    <c-error.error>{{ error }}</c-error.error>
+    {% endfor %}
+  </c-error.wrapper>
   {% endif %}
 </div>

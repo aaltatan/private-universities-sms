@@ -41,7 +41,11 @@ class InlineMixin(ABC):
         )
 
         context = self.get_context_data(formset=formset)
+
         template_name = self.get_template_name()
+
+        if request.htmx:
+            template_name = self.get_form_template_name()
 
         return render(request, template_name, context)
 
@@ -106,5 +110,6 @@ class InlineMixin(ABC):
     def get_context_data(self, **kwargs) -> dict[str, str]:
         return {
             "object": self.obj,
+            "form_id": f"{self.verbose_name_plural}",
             **kwargs,
         }

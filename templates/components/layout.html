@@ -4,6 +4,18 @@
 <!--  -->
 {% get_breadcrumbs as breadcrumbs %}
 
+<c-vars 
+  :containers="{
+    'base': '',
+    'sm': 'max-w-sm mx-auto',
+    'lg': 'max-w-lg mx-auto',
+    'xl': 'max-w-xl mx-auto',
+    '2xl': 'max-w-2xl mx-auto',
+    '3xl': 'max-w-3xl mx-auto',
+  }"
+  container="base"
+/>
+
 <!DOCTYPE html>
 <html lang="en" :class="{'dark': dark}" class="scroll" x-data="theme">
   <head>
@@ -35,7 +47,9 @@
         }"
         class="py-2 max-md:px-2"
       >
-        {{ slot }}
+        <div class="{{ containers|get_item:container }}">
+          {{ slot }}
+        </div>
       </main>
     </c-layout.sidebar.sidebar>
   </body>
