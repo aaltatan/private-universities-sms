@@ -14,31 +14,19 @@
   icon="success"
 />
 
-<ul
-  class="fixed end-4 bottom-4 z-50 w-64 space-y-2 bg-white dark:bg-neutral-900 rounded-md shadow-md dark:shadow-none text-neutral-600 dark:text-neutral-300"
-  :class="!$el.innerHTML.trim().replace(' ', '') && '!hidden'"
-  id="messages-container"
-  hx-get="{% url 'core:messages' %}"
-  hx-trigger="messages from:body"
-  x-show="open"
-  x-transition:enter="transition ease-out duration-150"
-  x-transition:enter-start="opacity-0 ltr:-translate-x-4 rtl:translate-x-4"
-  x-transition:enter-end="opacity-100 translate-x-0"
-  x-transition:leave="transition ease-in duration-150"
-  x-transition:leave-start="opacity-100 translate-x-0"
-  x-transition:leave-end="opacity-0 ltr:translate-x-4 rtl:-translate-x-4"
+{% if messages %}
+<!--  -->
+{% for message in messages %}
+<li
+  class="flex items-center gap-1 w-full rounded-md p-4 text-xs ring-2 {{ ring_colors|get_item:message.tags }}"
   x-data="messages('{{ settings.messages_timeout }}000')"
+  x-show="open"
 >
-  {% if messages %}
+  {% heroicon_outline icons|get_item:message.tags size="32" class=message.tags %}
   <!--  -->
-  {% for message in messages %}
-  <li class="flex items-center gap-1 w-full rounded-md p-4 text-xs ring-2 {{ ring_colors|get_item:message.tags }}">
-    {% heroicon_outline icons|get_item:message.tags size="32" class=message.tags %}
-    <!--  -->
-    {{ message }}
-    <c-button @click="close" icon="x-mark" size="16" rounded="full" theme="outline" />
-  </li>
-  {% endfor %}
-  <!--  -->
-  {% endif %}
-</ul>
+  {{ message }}
+  <c-button @click="close" icon="x-mark" size="16" rounded="full" theme="outline" />
+</li>
+{% endfor %}
+<!--  -->
+{% endif %}
