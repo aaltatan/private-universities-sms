@@ -37,6 +37,7 @@ class UpdateMixin(ABC):
     form_template_name: str | None = None
     form_modal_template_name: str | None = None
     inlines: dict[str, InlineFormsetFactory] | None = None
+    redirect_after_update: bool = True
 
     def get(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
         """
@@ -54,10 +55,12 @@ class UpdateMixin(ABC):
         if self.inlines:
             for app_label, inline in self.inlines.items():
                 key = f"{app_label}_formset"
-                Formset = inline().get_formset_class(
-                    request=request, parent_model=self.get_model_class()
+                qs = inline.get_queryset(self.obj)
+                Formset = inline.get_formset_class(
+                    request=request,
+                    parent_model=self.get_model_class(),
                 )
-                context[key] = Formset(instance=self.obj)
+                context[key] = Formset(instance=self.obj, queryset=qs)
 
         if request.htmx:
             if request_parser.is_modal_request:
@@ -80,12 +83,18 @@ class UpdateMixin(ABC):
         form = self.form_class(request.POST, instance=self.obj)
 
         formsets = []
-        for inline in self.inlines.values():
-            Formset = inline().get_formset_class(
-                request=request, parent_model=self.get_model_class()
-            )
-            formset = Formset(request.POST, instance=self.obj)
-            formsets.append(formset)
+        if self.inlines:
+            for inline in self.inlines.values():
+                qs = inline.get_queryset(self.obj)
+                Formset = inline.get_formset_class(
+                    request=request, parent_model=self.get_model_class()
+                )
+                formset = Formset(
+                    request.POST,
+                    instance=self.obj,
+                    queryset=qs,
+                )
+                formsets.append(formset)
 
         request_parser = RequestParser(
             request=request,
@@ -147,19 +156,25 @@ class UpdateMixin(ABC):
             if request_parser.is_modal_request:
                 response["Hx-Location"] = request_parser.hx_location
             else:
-                template_name = self.get_form_template_name()
+                if self.redirect_after_update:
+                    response["Hx-Redirect"] = request_parser.index_url
+                else:
+                    template_name = self.get_form_template_name()
 
-                additional_context = {}
-                for app_label, inline in self.inlines.items():
-                    key = f"{app_label}_formset"
-                    Formset = inline().get_formset_class(
-                        request=request, parent_model=self.get_model_class()
-                    )
-                    formset = Formset(instance=obj)
-                    additional_context[key] = formset
+                    additional_context = {}
+                    if self.inlines:
+                        for app_label, inline in self.inlines.items():
+                            key = f"{app_label}_formset"
+                            qs = inline.get_queryset(obj)
+                            Formset = inline.get_formset_class(
+                                request=request,
+                                parent_model=self.get_model_class(),
+                            )
+                            formset = Formset(instance=obj, queryset=qs)
+                            additional_context[key] = formset
 
-                context = self.get_context_data(**additional_context)
-                response = render(request, template_name, context)
+                    context = self.get_context_data(**additional_context)
+                    response = render(request, template_name, context)
 
         response["Hx-Trigger"] = "messages"
 

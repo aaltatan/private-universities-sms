@@ -73,13 +73,17 @@ class CityInline(InlineFormsetFactory):
     form_class = forms.CityForm
     fields = ("name", "description")
     can_delete_permission = "geo.delete_city"
-    extra = 1
+
+    @classmethod
+    def get_queryset(cls, obj: models.Governorate):
+        return obj.cities.all().order_by("id")
 
 
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "geo.change_governorate"
     form_class = forms.GovernorateForm
     activity_serializer = serializers.GovernorateActivitySerializer
+    redirect_after_update = False
     inlines = {
         "cities": CityInline,
     }
