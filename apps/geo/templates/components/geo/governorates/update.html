@@ -5,12 +5,10 @@
   url="{{ update_url }}{% querystring %}"
   :form_id="form_id"
   :form="form"
-  width="none"
 >
-  <div class="grid grid-cols-2 gap-2">
-    <c-inputs.text :field="form.name" />
-    <c-inputs.text :field="form.description" />
-  </div>
+  <c-inputs.text :field="form.name" />
+  <c-inputs.text :field="form.description" />
+  {% comment %}
   <div>
     <div>{{ cities_formset.management_form }}</div>
     <c-error.wrapper>
@@ -54,4 +52,5 @@
       </c-table.table>
     </c-table.container>
   </div>
+  {% endcomment %}
 </c-forms.update>
