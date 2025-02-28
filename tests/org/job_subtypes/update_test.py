@@ -10,7 +10,7 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import is_template_used
+from tests.utils import is_required_star_visible, is_template_used
 
 
 @pytest.mark.django_db
@@ -27,13 +27,7 @@ def test_update_page(
     h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
-    name_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='name']) span[aria-label='required field']"
-    )
     job_type_input = form.css_first("input[name='job_type']")
-    job_type_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='job_type']) span[aria-label='required field']"
-    )
     create_job_type_btn = form.css_first(
         "div[role='group']:has(input[name='job_type']) div[aria-label='create nested object']"
     )
@@ -52,9 +46,9 @@ def test_update_page(
     assert description_input.text(strip=True) == obj.description
 
     assert required_star is not None
-    assert name_input_required_star is not None
     assert create_job_type_btn is not None
-    assert job_type_input_required_star is not None
+    assert is_required_star_visible(form, "name")
+    assert is_required_star_visible(form, "job_type")
 
 
 @pytest.mark.django_db
@@ -75,9 +69,6 @@ def test_add_nested_object_appearance_if_user_has_no_add_job_types_perm(
     form = parser.css_first("main form")
 
     job_type_input = form.css_first("input[name='job_type']")
-    job_type_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='job_type']) span[aria-label='required field']"
-    )
     create_job_type_btn = form.css_first(
         "div[role='group']:has(input[name='job_type']) div[aria-label='create nested object']"
     )
@@ -85,7 +76,7 @@ def test_add_nested_object_appearance_if_user_has_no_add_job_types_perm(
     assert is_template_used(templates["update"], response)
     assert response.status_code == status.HTTP_200_OK
     assert job_type_input is not None
-    assert job_type_input_required_star is not None
+    assert is_required_star_visible(form, "job_type")
     assert create_job_type_btn is None
 
 

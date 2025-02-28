@@ -10,7 +10,7 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import is_template_used
+from tests.utils import is_option_selected, is_required_star_visible, is_template_used
 
 
 @pytest.mark.django_db
@@ -20,20 +20,16 @@ def test_update_page(
     templates: dict[str, str],
     subapp_label: str,
 ):
-    obj = model.objects.first()
+    obj = model.objects.order_by("id").first()
     response = admin_client.get(obj.get_update_url())
     parser = HTMLParser(response.content)
 
     h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
-    name_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='name']) span[aria-label='required field']"
-    )
     is_governmental_input = form.css_first("select[name='is_governmental']")
     is_virtual_input = form.css_first("select[name='is_virtual']")
     description_input = form.css_first("textarea[name='description']")
-    required_star = form.css_first("span[aria-label='required field']")
 
     assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["update"], response)
@@ -43,16 +39,11 @@ def test_update_page(
 
     assert "required" in name_input.attributes
     assert name_input.attributes["value"] == obj.name
-    for option in is_governmental_input.css("option"):
-        if option.attributes.get("selected"):
-            assert option.text(strip=True) == "Governmental"
-    for option in is_virtual_input.css("option"):
-        if option.attributes.get("selected"):
-            assert option.text(strip=True) == "Virtual"
+    assert is_option_selected(is_governmental_input, "Governmental")
+    assert is_option_selected(is_virtual_input, "Virtual")
     assert description_input.text(strip=True) == obj.description
 
-    assert required_star is not None
-    assert name_input_required_star is not None
+    assert is_required_star_visible(form, "name")
 
 
 @pytest.mark.django_db
@@ -195,7 +186,6 @@ def test_update_object(
     urls: dict[str, str],
     admin_headers: dict[str, str],
     model: type[Model],
-    nationality_model: type[Model],
 ):
     response: Response = api_client.put(
         path=f"{urls['api']}1/",

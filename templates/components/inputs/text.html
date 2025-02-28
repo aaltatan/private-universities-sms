@@ -18,7 +18,7 @@
 
 <div
   role="group"
-  class="text-neutral-600 dark:text-neutral-300 [&:has(input[aria-invalid='true'])_label]:text-red-500 [&:has(*[required])_label_>_span]:block"
+  class="text-neutral-600 dark:text-neutral-300 [&:has(input[aria-invalid='true'])_label]:text-red-500"
 >
   {% if has_add or show_label %}
   <div class="flex items-center gap-1">
@@ -29,9 +29,10 @@
     >
       {{ field.label }}:
       <span
-        class="text-[red] hidden"
+        class="text-[red] aria-hidden:hidden"
         title="{% translate 'required field'|title %}"
         aria-label="required field"
+        aria-hidden="{% if field.field.required %}false{% else %}true{% endif %}"
       >
         *
       </span>

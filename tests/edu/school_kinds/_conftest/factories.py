@@ -7,7 +7,7 @@ class SchoolKindFactory(factory.django.DjangoModelFactory):
         django_get_or_create = ("name",)
 
     name = factory.Sequence(
-        lambda n: "School " + str(n + 1).rjust(3, "0"),
+        lambda n: "SchoolKind " + str(n + 1).rjust(3, "0"),
     )
     is_governmental = factory.Iterator([True, False])
     is_virtual = factory.Iterator([True, False])

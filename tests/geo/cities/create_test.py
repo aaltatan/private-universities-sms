@@ -3,6 +3,7 @@ import json
 import pytest
 from django.contrib import messages
 from django.test import Client
+from django.urls import reverse
 from django.utils.text import slugify
 from rest_framework import status
 from rest_framework.response import Response
@@ -10,7 +11,12 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import is_template_used
+from tests.utils import (
+    get_nested_create_btn,
+    get_nested_hx_path,
+    is_required_star_visible,
+    is_template_used,
+)
 
 
 @pytest.mark.django_db
@@ -26,16 +32,8 @@ def test_create_page(
     h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
-    name_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='name']) span[aria-label='required field']"
-    )
     governorate_input = form.css_first("input[name='governorate']")
-    governorate_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='governorate']) span[aria-label='required field']"
-    )
-    create_governorate_btn = form.css_first(
-        "div[role='group']:has(input[name='governorate']) div[aria-label='create nested object']"
-    )
+    create_governorate_btn = get_nested_create_btn(form, input_name="governorate")
     description_input = form.css_first("textarea[name='description']")
 
     assert response.status_code == status.HTTP_200_OK
@@ -50,8 +48,9 @@ def test_create_page(
     assert description_input is not None
 
     assert create_governorate_btn is not None
-    assert name_input_required_star is not None
-    assert governorate_input_required_star is not None
+    assert get_nested_hx_path(create_governorate_btn) == reverse("governorates:create")
+    assert is_required_star_visible(form, "name")
+    assert is_required_star_visible(form, "governorate")
 
 
 @pytest.mark.django_db
@@ -71,17 +70,12 @@ def test_add_nested_object_appearance_if_user_has_no_add_governorates_perm(
     form = parser.css_first("main form")
 
     governorate_input = form.css_first("input[name='governorate']")
-    governorate_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='governorate']) span[aria-label='required field']"
-    )
-    create_governorate_btn = form.css_first(
-        "div[role='group']:has(input[name='governorate']) div[aria-label='create nested object']"
-    )
+    create_governorate_btn = get_nested_create_btn(form, input_name="governorate")
 
     assert is_template_used(templates["create"], response)
     assert response.status_code == status.HTTP_200_OK
     assert governorate_input is not None
-    assert governorate_input_required_star is not None
+    assert is_required_star_visible(form, "governorate")
     assert create_governorate_btn is None
 
 

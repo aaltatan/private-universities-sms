@@ -17,7 +17,6 @@ from tests.utils import is_required_star_visible, is_template_used
 @pytest.mark.django_db
 def test_create_page(
     admin_client: Client,
-    model: type[Model],
     templates: dict[str, str],
     urls: dict[str, str],
     subapp_label: str,
@@ -27,22 +26,35 @@ def test_create_page(
 
     h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
-    name_input = form.css_first("input[name='name']")
-    order_input = form.css_first("input[name='order']")
     description_input = form.css_first("textarea[name='description']")
+    name_input = form.css_first("input[name='name']")
+    nationality_input = form.css_first("input[name='nationality']")
+    kind_input = form.css_first("input[name='kind']")
+    website_input = form.css_first("input[name='website']")
+    email_input = form.css_first("input[name='email']")
+    phone_input = form.css_first("input[name='phone']")
 
     assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create"], response)
 
-    assert h1 == "add new position"
+    assert h1 == "add new school"
     assert form.attributes["hx-post"] == urls["create"]
     assert form.attributes["id"] == f"{subapp_label}-form"
 
     assert name_input is not None
-    assert order_input is not None
-    assert is_required_star_visible(form, "name")
-    assert is_required_star_visible(form, "order")
+    assert nationality_input is not None
+    assert kind_input is not None
+    assert website_input is not None
+    assert email_input is not None
+    assert phone_input is not None
     assert description_input is not None
+
+    assert is_required_star_visible(form, "name")
+    assert is_required_star_visible(form, "nationality")
+    assert is_required_star_visible(form, "kind")
+    assert not is_required_star_visible(form, "website")
+    assert not is_required_star_visible(form, "email")
+    assert not is_required_star_visible(form, "phone")
 
 
 @pytest.mark.django_db
@@ -59,13 +71,18 @@ def test_create_objects(
         response = api_client.post(
             path=urls["api"],
             data={
-                "name": f"City {idx}",
-                "order": 1,
+                "name": f"School {idx}",
+                "nationality": 1,
+                "kind": 1,
+                "website": f"https://www.google-{idx}.com",
+                "email": f"a.altatan-{idx}@gmail.com",
+                "phone": "1234567890",
+                "description": f"School {idx}",
             },
             headers=admin_headers,
         )
         assert response.status_code == status.HTTP_201_CREATED
-        assert response.json()["name"] == f"City {idx}"
+        assert response.json()["name"] == f"School {idx}"
 
     response: Response = api_client.get(
         path=urls["api"],
@@ -105,8 +122,12 @@ def test_create_new_object_with_save_and_add_another_btn(
 
     assert last_obj.pk == objects_count + 1
     assert last_obj.name == data["name"]
-    assert last_obj.order == data["order"]
     assert last_obj.description == data["description"]
+    assert last_obj.nationality.name == data["nationality"]
+    assert last_obj.kind.name == data["kind"]
+    assert last_obj.website == data["website"]
+    assert last_obj.email == data["email"]
+    assert last_obj.phone == data["phone"]
     assert last_obj.slug == slugify(data["name"], allow_unicode=True)
 
     assert qs.count() == objects_count + 1
@@ -153,12 +174,14 @@ def test_create_with_redirect_from_modal(
     assert messages_list[0].message == success_message
 
     data = clean_data_sample.copy()
-    data["name"] = "afasfasf"
+    data["name"] = "afasfasfdas"
+    data["email"] = "afasfasfdas@gmail.com"
+    data['website'] = "https://afasfasfdas.com"
     data["save"] = "true"
 
     response = admin_client.post(url, data, headers=headers)
     location: dict = json.loads(
-        response.headers.get("Hx-Location", {}),
+        response.headers.get("Hx-Location", ""),
     )
 
     assert response.status_code == status.HTTP_201_CREATED

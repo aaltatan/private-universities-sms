@@ -29,29 +29,29 @@ def pagination_test_cases(request: pytest.FixtureRequest):
             "?is_governmental=True",
             50,
             "name",
-            [f"School 00{i}" for i in range(1, 10, 2)],
-            [f"School 00{i}" for i in range(2, 10, 2)],
+            [f"SchoolKind 00{i}" for i in range(1, 10, 2)],
+            [f"SchoolKind 00{i}" for i in range(2, 10, 2)],
         ),
         (
             "?is_virtual=True",
             50,
             "name",
-            [f"School 00{i}" for i in range(1, 10, 2)],
-            [f"School 00{i}" for i in range(2, 10, 2)],
+            [f"SchoolKind 00{i}" for i in range(1, 10, 2)],
+            [f"SchoolKind 00{i}" for i in range(2, 10, 2)],
         ),
         (
-            "?q=School 00",
+            "?q=SchoolKind 00",
             10,
             "name",
-            [f"School 00{i}" for i in range(1, 10)] + ["School 100"],
-            [f"School 0{i}" for i in range(10, 100)],
+            [f"SchoolKind 00{i}" for i in range(1, 10)] + ["SchoolKind 100"],
+            [f"SchoolKind 0{i}" for i in range(10, 100)],
         ),
         (
             "?q=id > 90",
             10,
             "name",
-            [f"School 0{i}" for i in range(91, 100)],
-            [f"School 0{i}" for i in range(10, 90)],
+            [f"SchoolKind 0{i}" for i in range(91, 100)],
+            [f"SchoolKind 0{i}" for i in range(10, 90)],
         ),
     ],
 )
@@ -131,7 +131,7 @@ def export_test_cases(request: pytest.FixtureRequest):
         ),
         (
             {
-                "name": "School 002",
+                "name": "SchoolKind 002",
                 "is_governmental": True,
                 "is_virtual": False,
                 "description": "google",
@@ -140,7 +140,7 @@ def export_test_cases(request: pytest.FixtureRequest):
         ),
         (
             {
-                "name": "School 002",
+                "name": "SchoolKind 002",
                 "is_virtual": False,
                 "description": "google",
             },
@@ -151,7 +151,7 @@ def export_test_cases(request: pytest.FixtureRequest):
         ),
         (
             {
-                "name": "School 002",
+                "name": "SchoolKind 002",
                 "is_governmental": True,
                 "description": "google",
             },
@@ -220,7 +220,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         ),
         (
             {
-                "name": "School 002",
+                "name": "SchoolKind 002",
                 "is_governmental": True,
                 "is_virtual": False,
                 "description": "google",
@@ -229,7 +229,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         ),
         (
             {
-                "name": "School 002",
+                "name": "SchoolKind 002",
                 "is_governmental": "sads",
                 "is_virtual": "dasdasd",
                 "description": "google",

@@ -10,7 +10,7 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import is_template_used
+from tests.utils import is_option_selected, is_required_star_visible, is_template_used
 
 
 @pytest.mark.django_db
@@ -27,10 +27,7 @@ def test_update_page(
     h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
-    name_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='name']) span[aria-label='required field']"
-    )
-    is_local_select_options = form.css("select[name='is_local'] option")
+    is_local_select = form.css_first("select[name='is_local']")
     description_input = form.css_first("textarea[name='description']")
     required_star = form.css_first("span[aria-label='required field']")
 
@@ -42,13 +39,12 @@ def test_update_page(
 
     assert "required" in name_input.attributes
     assert name_input.attributes["value"] == obj.name
-    for option in is_local_select_options:
-        if option.attributes.get("selected"):
-            assert option.text(strip=True) == "Foreign"
+
+    assert is_option_selected(is_local_select, "Foreign")
     assert description_input.text(strip=True) == obj.description
 
     assert required_star is not None
-    assert name_input_required_star is not None
+    assert is_required_star_visible(form, "name")
 
 
 @pytest.mark.django_db

@@ -1,7 +1,8 @@
+from typing import Literal
 from django.db import connection
 from django.http import HttpResponse
 from django.test import Client
-from selectolax.parser import HTMLParser
+from selectolax.parser import HTMLParser, Node
 
 
 def get_token_headers(client: Client, admin: bool = False) -> dict[str, str]:
@@ -51,3 +52,47 @@ def reset_sequence(model):
         cursor.execute(
             f"UPDATE sqlite_sequence SET seq = (SELECT MAX(id) FROM {table_name}) WHERE name = '{table_name}';"
         )
+
+
+def is_option_selected(
+    node: Node,
+    option_text: str,
+    child_selector: str = "option",
+    attr: str = "selected",
+) -> bool:
+    selected: bool = False
+
+    for option in node.css(child_selector):
+        if attr in option.attributes:
+            selected = option.text(strip=True) == option_text
+
+    return selected
+
+
+def is_required_star_visible(
+    form: Node,
+    input_name: str = "name",
+    *,
+    input_type: Literal["input", "select", "textarea"] = "input",
+) -> bool:
+    required_star = form.css_first(
+        f"div[role='group']:has({input_type}[name='{input_name}']) span[aria-label='required field']"
+    )
+    visible = required_star.attributes.get("aria-hidden") == "false"
+
+    return visible
+
+
+def get_nested_create_btn(
+    form: Node,
+    input_name: str = "name",
+    *,
+    input_type: Literal["input", "select", "textarea"] = "input",
+) -> Node:
+    return form.css_first(
+        f"div[role='group']:has({input_type}[name='{input_name}']) div[aria-label='create nested object']"
+    )
+
+
+def get_nested_hx_path(input: Node) -> str:
+    return input.css_first("button").attributes.get("hx-get")

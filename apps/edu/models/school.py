@@ -42,6 +42,7 @@ class School(AbstractUniqueNameModel):
         default="",
         blank=True,
         null=True,
+        unique=True,
     )
     email = models.EmailField(
         verbose_name=_("email"),
@@ -49,6 +50,7 @@ class School(AbstractUniqueNameModel):
         default="",
         blank=True,
         null=True,
+        unique=True,
     )
     phone = models.CharField(
         verbose_name=_("phone"),

@@ -53,10 +53,10 @@ class SchoolKindResource(BaseResource):
         column_name=_("virtual?").title(),
     )
 
-    def dehydrate_is_governmental(self, obj: models.School) -> str:
+    def dehydrate_is_governmental(self, obj: models.SchoolKind) -> str:
         return self._dehydrate_boolean(obj.is_governmental)
 
-    def dehydrate_is_virtual(self, obj: models.School) -> str:
+    def dehydrate_is_virtual(self, obj: models.SchoolKind) -> str:
         return self._dehydrate_boolean(obj.is_virtual)
 
     class Meta:

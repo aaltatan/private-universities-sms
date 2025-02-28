@@ -11,7 +11,7 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import is_template_used
+from tests.utils import is_required_star_visible, is_template_used
 
 
 @pytest.mark.django_db
@@ -27,9 +27,6 @@ def test_create_page(
     h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
-    name_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='name']) span[aria-label='required field']"
-    )
     is_payable_select = form.css_first("select[name='is_payable']")
     description_input = form.css_first("textarea[name='description']")
 
@@ -42,7 +39,7 @@ def test_create_page(
     
     assert name_input is not None
     assert is_payable_select is not None
-    assert name_input_required_star is not None
+    assert is_required_star_visible(form, "name")
     assert description_input is not None
 
 
