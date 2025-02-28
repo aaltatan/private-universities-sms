@@ -201,13 +201,14 @@ class UpdateMixin(ABC):
 
         additional_context = {}
 
-        for app_label, inline in self.inlines.items():
-            key = f"{app_label}_formset"
-            Formset = inline().get_formset_class(
-                request=request, parent_model=self.get_model_class()
-            )
-            formset = Formset(request.POST, instance=self.obj)
-            additional_context[key] = formset
+        if self.inlines:
+            for app_label, inline in self.inlines.items():
+                key = f"{app_label}_formset"
+                Formset = inline().get_formset_class(
+                    request=request, parent_model=self.get_model_class()
+                )
+                formset = Formset(request.POST, instance=self.obj)
+                additional_context[key] = formset
 
         context = self.get_context_data(**additional_context)
         context["form"] = form

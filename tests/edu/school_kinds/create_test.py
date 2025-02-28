@@ -31,32 +31,20 @@ def test_create_page(
     name_input_required_star = form.css_first(
         "div[role='group']:has(input[name='name']) span[aria-label='required field']"
     )
-    nationality_input = form.css_first("input[name='nationality']")
-    nationality_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='nationality']) span[aria-label='required field']"
-    )
     is_governmental_input = form.css_first("select[name='is_governmental']")
     is_virtual_input = form.css_first("select[name='is_virtual']")
-    website_input = form.css_first("input[name='website']")
-    phone_input = form.css_first("input[name='phone']")
-    email_input = form.css_first("input[name='email']")
 
     assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create"], response)
 
-    assert h1 == "add new school"
+    assert h1 == "add new school kind"
     assert form.attributes["hx-post"] == urls["create"]
     assert form.attributes["id"] == f"{subapp_label}-form"
 
     assert name_input is not None
     assert name_input_required_star is not None
-    assert nationality_input is not None
-    assert nationality_input_required_star is not None
     assert is_governmental_input is not None
     assert is_virtual_input is not None
-    assert website_input is not None
-    assert phone_input is not None
-    assert email_input is not None
     assert description_input is not None
 
 
@@ -75,7 +63,6 @@ def test_create_objects(
             path=urls["api"],
             data={
                 "name": f"School {idx}",
-                "nationality": 1,
                 "is_governmental": True,
                 "is_virtual": False,
                 "description": f"School {idx}",

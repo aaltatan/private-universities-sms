@@ -14,7 +14,7 @@ from apps.org.views.positions import APIViewSet as PositionAPIViewSet
 from apps.org.views.statuses import APIViewSet as StatusAPIViewSet
 
 # edu
-from apps.edu.views.school_kind import APIViewSet as SchoolKindAPIViewSet
+from apps.edu.views.school_kinds import APIViewSet as SchoolKindAPIViewSet
 from apps.edu.views.schools import APIViewSet as SchoolAPIViewSet
 from apps.edu.views.specializations import APIViewSet as SpecializationAPIViewSet
 from apps.edu.views.degrees import APIViewSet as DegreeAPIViewSet

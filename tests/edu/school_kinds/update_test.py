@@ -30,15 +30,8 @@ def test_update_page(
     name_input_required_star = form.css_first(
         "div[role='group']:has(input[name='name']) span[aria-label='required field']"
     )
-    nationality_input = form.css_first("input[name='nationality']")
-    nationality_input_required_star = form.css_first(
-        "div[role='group']:has(input[name='nationality']) span[aria-label='required field']"
-    )
     is_governmental_input = form.css_first("select[name='is_governmental']")
     is_virtual_input = form.css_first("select[name='is_virtual']")
-    website_input = form.css_first("input[name='website']")
-    phone_input = form.css_first("input[name='phone']")
-    email_input = form.css_first("input[name='email']")
     description_input = form.css_first("textarea[name='description']")
     required_star = form.css_first("span[aria-label='required field']")
 
@@ -50,21 +43,16 @@ def test_update_page(
 
     assert "required" in name_input.attributes
     assert name_input.attributes["value"] == obj.name
-    assert nationality_input.attributes["value"] == str(obj.nationality.id)
     for option in is_governmental_input.css("option"):
         if option.attributes.get("selected"):
             assert option.text(strip=True) == "Governmental"
     for option in is_virtual_input.css("option"):
         if option.attributes.get("selected"):
             assert option.text(strip=True) == "Virtual"
-    assert website_input.attributes["value"] == obj.website
-    assert phone_input.attributes["value"] == obj.phone
-    assert email_input.attributes["value"] == obj.email
     assert description_input.text(strip=True) == obj.description
 
     assert required_star is not None
     assert name_input_required_star is not None
-    assert nationality_input_required_star is not None
 
 
 @pytest.mark.django_db
@@ -84,7 +72,6 @@ def test_update_form_with_clean_data(
         get_messages(request=response.wsgi_request),
     )
     name = clean_data_sample["name"]
-    nationality = clean_data_sample["nationality"]
     is_governmental = clean_data_sample["is_governmental"]
     is_virtual = clean_data_sample["is_virtual"]
     description = clean_data_sample["description"]
@@ -96,7 +83,6 @@ def test_update_form_with_clean_data(
     assert response.headers.get("Hx-redirect") == urls["index"] + querystring
     assert model.objects.count() == counts["objects"]
     assert obj.name == name
-    assert obj.nationality.name == nationality
     assert obj.is_governmental == is_governmental
     assert obj.is_virtual == is_virtual
     assert obj.description == description
@@ -136,7 +122,6 @@ def test_update_with_redirect_from_modal(
         get_messages(request=response.wsgi_request),
     )
     name = clean_data_sample["name"]
-    nationality = clean_data_sample["nationality"]
     is_governmental = clean_data_sample["is_governmental"]
     is_virtual = clean_data_sample["is_virtual"]
     description = clean_data_sample["description"]
@@ -150,7 +135,6 @@ def test_update_with_redirect_from_modal(
     obj = model.objects.get(id=1)
 
     assert obj.name == name
-    assert obj.nationality.name == nationality
     assert obj.is_governmental == is_governmental
     assert obj.is_virtual == is_virtual
     assert obj.description == description
@@ -185,7 +169,6 @@ def test_update_without_redirect_from_modal(
     response = admin_client.post(url, clean_data_sample, headers=headers)
     messages_list = list(get_messages(request=response.wsgi_request))
     name = clean_data_sample["name"]
-    nationality = clean_data_sample["nationality"]
     is_governmental = clean_data_sample["is_governmental"]
     is_virtual = clean_data_sample["is_virtual"]
     description = clean_data_sample["description"]
@@ -201,7 +184,6 @@ def test_update_without_redirect_from_modal(
     obj = model.objects.get(id=4)
 
     assert obj.name == name
-    assert obj.nationality.name == nationality
     assert obj.is_governmental == is_governmental
     assert obj.is_virtual == is_virtual
     assert obj.description == description
@@ -219,7 +201,6 @@ def test_update_object(
         path=f"{urls['api']}1/",
         data={
             "name": "Hamah",
-            "nationality": 1,
             "is_governmental": True,
             "is_virtual": True,
             "description": "some description",
@@ -228,7 +209,6 @@ def test_update_object(
         follow=True,
     )
     first = model.objects.get(id=1)
-    nationality = nationality_model.objects.get(pk=1)
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["name"] == "Hamah"
@@ -236,7 +216,6 @@ def test_update_object(
     assert first.name == "Hamah"
     assert first.is_governmental is True
     assert first.is_virtual is True
-    assert first.nationality.name == nationality.name
     assert first.description == "some description"
 
 
@@ -262,31 +241,4 @@ def test_patch_object(
     assert response.json()["description"] == "new description"
     assert response.json()["is_governmental"] is first.is_governmental
     assert response.json()["is_virtual"] is first.is_virtual
-    assert response.json()["nationality"] == first.nationality.pk
     assert first.description == "new description"
-
-
-@pytest.mark.django_db
-def test_patch_object_2(
-    api_client: APIClient,
-    urls: dict[str, str],
-    admin_headers: dict[str, str],
-    model: type[Model],
-):
-    response: Response = api_client.patch(
-        path=f"{urls['api']}1/",
-        data={
-            "nationality": 7,
-        },
-        headers=admin_headers,
-        follow=True,
-    )
-    first = model.objects.get(id=1)
-
-    assert response.status_code == status.HTTP_200_OK
-    assert response.json()["name"] == first.name
-    assert response.json()["description"] == first.description
-    assert response.json()["is_governmental"] is first.is_governmental
-    assert response.json()["is_virtual"] is first.is_virtual
-    assert response.json()["nationality"] == 7
-    assert first.nationality.name == "Nationality 007"

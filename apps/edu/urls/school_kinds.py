@@ -1,7 +1,7 @@
 from django.urls import path
 from django.utils.translation import gettext as _
 
-from ..views import school_kind as views
+from ..views import school_kinds as views
 
 
 app_name = "school_kinds"

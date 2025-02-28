@@ -53,13 +53,6 @@ def pagination_test_cases(request: pytest.FixtureRequest):
             [f"School 0{i}" for i in range(91, 100)],
             [f"School 0{i}" for i in range(10, 90)],
         ),
-        (
-            "?nationality=Nationality 002&nationality=Nationality 003&ordering=id&per_page=20",
-            20,
-            "name",
-            [f"School 0{idx}" for idx in range(11, 30)],
-            [f"School 00{idx}" for idx in range(1, 10)],
-        ),
     ],
 )
 def filters_test_cases(request: pytest.FixtureRequest):
@@ -79,76 +72,13 @@ def order_test_cases(request: pytest.FixtureRequest):
 @pytest.fixture(
     scope="package",
     params=[
-        (
-            "x",
-            1,
-            False,
-            False,
-            "a.altatan@gmail.com",
-            "https://www.google.com",
-            "1234567890",
-            "dasdasd",
-        ),
-        (
-            "xx",
-            1,
-            False,
-            False,
-            "a.altatan@gmail.com",
-            "https://www.google.com",
-            "1234567890",
-            "dasdasd",
-        ),
-        (
-            "xxx",
-            1,
-            False,
-            False,
-            "a.altatan@gmail.com",
-            "https://www.google.com",
-            "1234567890",
-            "dasdasd",
-        ),
-        (
-            "dasdasd",
-            1,
-            "dasd",
-            False,
-            "a.altatan@gmail.com",
-            "https://www.google.com",
-            "1234567890",
-            "dasdasd",
-        ),
-        (
-            "dasdasd",
-            1,
-            True,
-            "dasdasd",
-            "a.altatan@gmail.com",
-            "https://www.google.com",
-            "1234567890",
-            "dasdasd",
-        ),
-        (
-            "dasdasd",
-            1,
-            True,
-            "dasdasd",
-            "a.altatan",
-            "https://www.google.com",
-            "1234567890",
-            "dasdasd",
-        ),
-        (
-            "dasdasd",
-            1,
-            True,
-            "dasdasd",
-            "a.altatan@gmail.com",
-            "httcom",
-            "1234567890",
-            "dasdasd",
-        ),
+        ("x", False, False, "dasdasd"),
+        ("xx", False, False, "dasdasd"),
+        ("xxx", False, False, "dasdasd"),
+        ("dasdasd", "dasd", False, "dasdasd"),
+        ("dasdasd", True, "dasdasd", "dasdasd"),
+        ("dasdasd", True, "dasdasd", "dasdasd"),
+        ("dasdasd", True, "dasdasd", "dasdasd"),
     ],
 )
 def models_dirty_data_test_cases(request: pytest.FixtureRequest):
@@ -173,7 +103,6 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Ha",
-                "nationality": "Nationality 001",
                 "is_governmental": True,
                 "is_virtual": False,
                 "description": "google",
@@ -183,7 +112,6 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "",
-                "nationality": "Nationality 001",
                 "is_governmental": True,
                 "is_virtual": False,
                 "description": "",
@@ -193,7 +121,6 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "a" * 265,
-                "nationality": "Nationality 001",
                 "is_governmental": True,
                 "is_virtual": False,
                 "description": "",
@@ -205,51 +132,37 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "School 002",
-                "nationality": "Nationality 001",
                 "is_governmental": True,
                 "is_virtual": False,
                 "description": "google",
             },
-            ["School with this Name already exists."],
+            ["School kind with this Name already exists."],
         ),
         (
             {
                 "name": "School 002",
-                "nationality": "Nationality 001",
                 "is_virtual": False,
                 "description": "google",
             },
             [
-                "School with this Name already exists.",
+                "School kind with this Name already exists.",
                 "This field is required.",
             ],
         ),
         (
             {
                 "name": "School 002",
-                "nationality": "Nationality 001",
                 "is_governmental": True,
                 "description": "google",
             },
             [
-                "School with this Name already exists.",
+                "School kind with this Name already exists.",
                 "This field is required.",
             ],
         ),
         (
             {
                 "name": "Schoolxx 002",
-                "nationality": "xxx",
-                "is_governmental": True,
-                "is_virtual": True,
-                "description": "google",
-            },
-            ["this choice is not valid"],
-        ),
-        (
-            {
-                "name": "Schoolxx 002",
-                "nationality": "Nationality 001",
                 "is_governmental": "dasd",
                 "is_virtual": True,
                 "description": "google",
@@ -261,40 +174,12 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Schoolxx 002",
-                "nationality": "Nationality 001",
                 "is_governmental": False,
                 "is_virtual": "dasd",
                 "description": "google",
             },
             [
                 "Select a valid choice. dasd is not one of the available choices.",
-            ],
-        ),
-        (
-            {
-                "name": "Schoolxx 002",
-                "nationality": "Nationality 001",
-                "is_governmental": False,
-                "is_virtual": False,
-                "description": "google",
-                "email": "a.altatan"
-            },
-            [
-                "Enter a valid email address.",
-            ],
-        ),
-        (
-            {
-                "name": "Schoolxx 002",
-                "nationality": "Nationality 001",
-                "is_governmental": False,
-                "is_virtual": False,
-                "description": "google",
-                "email": "a.altatan@gmail.com",
-                "website": "dasdasd",
-            },
-            [
-                "Enter a valid URL.",
             ],
         ),
     ],
@@ -309,7 +194,6 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Ha",
-                "nationality": 1,
                 "is_governmental": True,
                 "is_virtual": False,
                 "description": "google",
@@ -319,7 +203,6 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "",
-                "nationality": 1,
                 "is_governmental": True,
                 "is_virtual": False,
                 "description": "",
@@ -329,7 +212,6 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "a" * 265,
-                "nationality": 1,
                 "is_governmental": True,
                 "is_virtual": False,
                 "description": "",
@@ -339,55 +221,23 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "School 002",
-                "nationality": 1,
                 "is_governmental": True,
                 "is_virtual": False,
                 "description": "google",
             },
-            {"name": ["school with this name already exists."]},
+            {"name": ["school kind with this name already exists."]},
         ),
         (
             {
                 "name": "School 002",
-                "nationality": 1,
                 "is_governmental": "sads",
                 "is_virtual": "dasdasd",
                 "description": "google",
             },
             {
-                "name": ["school with this name already exists."],
+                "name": ["school kind with this name already exists."],
                 "is_governmental": ["Must be a valid boolean."],
                 "is_virtual": ["Must be a valid boolean."],
-            },
-        ),
-        (
-            {
-                "name": "School 002xx",
-                "nationality": 1141412,
-            },
-            {
-                "nationality": ['Invalid pk "1141412" - object does not exist.'],
-            },
-        ),
-        (
-            {
-                "name": "School 002xx",
-                "nationality": 1,
-                "email": "dasdasd"
-            },
-            {
-                "email": ['Enter a valid email address.'],
-            },
-        ),
-        (
-            {
-                "name": "School 002xx",
-                "nationality": 1,
-                "email": "a.altatan@gmail.com",
-                "website": "dasdasd"
-            },
-            {
-                "website": ['Enter a valid URL.'],
             },
         ),
     ],

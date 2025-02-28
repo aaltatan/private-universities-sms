@@ -5,16 +5,15 @@ from django.urls import reverse
 
 from apps.core.models import User
 from apps.core.utils import Deleter
-from apps.edu.models import School
-from apps.geo.models import Nationality
+from apps.edu.models import SchoolKind
 from tests.utils import reset_sequence
 
-from .factories import NationalityFactory, SchoolFactory
+from .factories import SchoolKindFactory
 
 APP_LABEL = "edu"
-SUBAPP_LABEL = "schools"
-MODEL_NAME = "School"
-OBJECT_NAME = "school"
+SUBAPP_LABEL = "school_kinds"
+MODEL_NAME = "SchoolKind"
+OBJECT_NAME = "schoolkind"
 
 
 @pytest.fixture
@@ -39,12 +38,7 @@ def subapp_label() -> str:
 
 @pytest.fixture
 def model() -> type[Model]:
-    return School
-
-
-@pytest.fixture
-def nationality_model() -> type[Model]:
-    return Nationality
+    return SchoolKind
 
 
 @pytest.fixture
@@ -54,24 +48,14 @@ def api_keys() -> list[str]:
         "name",
         "is_governmental",
         "is_virtual",
-        "nationality",
-        "website",
-        "email",
-        "phone",
+        "schools",
         "description",
     ]
 
 
 @pytest.fixture
 def index_columns() -> list[str]:
-    return [
-        "name",
-        "nationality",
-        "is governmental",
-        "is virtual",
-        "description",
-        "options",
-    ]
+    return ["name", "is governmental", "is virtual", "description", "options"]
 
 
 @pytest.fixture
@@ -85,7 +69,7 @@ def counts() -> dict[str, int]:
 @pytest.fixture
 def urls() -> dict[str, str]:
     return {
-        "api": f"/api/{APP_LABEL}/{SUBAPP_LABEL}/",
+        "api": f"/api/{APP_LABEL}/{SUBAPP_LABEL.replace('_', '-')}/",
         "index": reverse(f"{SUBAPP_LABEL}:index"),
         "create": reverse(f"{SUBAPP_LABEL}:create"),
     }
@@ -109,8 +93,7 @@ def templates() -> dict[str, str]:
 @pytest.fixture
 def clean_data_sample() -> dict[str, str]:
     return {
-        "name": "الجامعة الوطنية الخاصة",
-        "nationality": "Nationality 001",
+        "name": "جامعة خاصة",
         "is_governmental": True,
         "is_virtual": False,
         "description": "الجامعة الوطنية الخاصة",
@@ -119,11 +102,11 @@ def clean_data_sample() -> dict[str, str]:
 
 @pytest.fixture(scope="package")
 def custom_deleter():
-    class CustomDeleter(Deleter[School]):
+    class CustomDeleter(Deleter[SchoolKind]):
         error_obj_msg = "error obj message"
         error_qs_msg = "error qs message"
 
-        def check_obj_deleting_possibility(self, obj: School) -> bool:
+        def check_obj_deleting_possibility(self, obj: SchoolKind) -> bool:
             return obj.pk not in [1, 2]
 
         def check_queryset_deleting_possibility(self, qs) -> bool:
@@ -135,17 +118,10 @@ def custom_deleter():
 @pytest.fixture(scope="package", autouse=True)
 def create_objects(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
-        nationalities = NationalityFactory.create_batch(10)
-
-        for nationality in nationalities:
-            SchoolFactory.create_batch(10, nationality=nationality)
-
+        SchoolKindFactory.create_batch(100)
         yield
-
-        School.objects.all().delete()
-        Nationality.objects.all().delete()
-        reset_sequence(School)
-        reset_sequence(Nationality)
+        SchoolKind.objects.all().delete()
+        reset_sequence(SchoolKind)
 
 
 @pytest.fixture(autouse=True, scope="package")
