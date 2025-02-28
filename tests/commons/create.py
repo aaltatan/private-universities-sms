@@ -111,6 +111,7 @@ class CommonCreateTests:
     ) -> None:
         objects_count = counts["objects"]
         data, errors = dirty_data_test_cases
+        data["save"] = "true"
         response = admin_client.get(urls["create"])
 
         assert response.status_code == status.HTTP_200_OK
@@ -145,6 +146,7 @@ class CommonCreateTests:
     ) -> None:
         objects_count = counts["objects"]
         data, errors = dirty_data_test_cases
+        data["save"] = "true"
         url = urls["create"] + "?per_page=10&ordering=-name"
         headers = {
             **headers_modal_GET,

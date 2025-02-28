@@ -169,13 +169,17 @@ def test_update_activity(
         "name": "hamah",
         "description": "google",
     }
+    edited_payload = {
+        **payload,
+        "update": "true",
+    }
     response = admin_client.post(
         path=reverse(
             viewname="governorates:update",
             kwargs={"slug": "محافظة-حماه"},
         ),
         headers={"hx-request": "true"},
-        data=payload,
+        data=edited_payload,
     )
 
     qs = model.objects.all()

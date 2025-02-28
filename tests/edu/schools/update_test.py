@@ -139,6 +139,7 @@ def test_update_form_with_clean_data(
     obj = model.objects.get(id=1)
     url = obj.get_update_url() + querystring
 
+    clean_data_sample["update"] = "true"
     response = admin_client.post(url, clean_data_sample)
     messages_list = list(
         get_messages(request=response.wsgi_request),
@@ -191,6 +192,7 @@ def test_update_with_redirect_from_modal(
     assert is_template_used(templates["update_modal_form"], response)
 
     headers["target"] = f"#{subapp_label}-table"
+    clean_data_sample["update"] = "true"
     response = admin_client.post(url, clean_data_sample, headers=headers)
 
     location: dict = json.loads(
@@ -250,6 +252,7 @@ def test_update_without_redirect_from_modal(
     assert "Hx-Retarget" not in response.headers
 
     headers = {**headers, "target": "#no-content"}
+    clean_data_sample["update"] = "true"
     response = admin_client.post(url, clean_data_sample, headers=headers)
     messages_list = list(get_messages(request=response.wsgi_request))
     name = clean_data_sample["name"]

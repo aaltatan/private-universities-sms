@@ -58,6 +58,7 @@ def test_update_form_with_clean_data(
     querystring = "?page=1&per_page=10&ordering=-id"
     obj = model.objects.get(id=1)
     url = obj.get_update_url() + querystring
+    clean_data_sample["update"] = "true"
 
     response = admin_client.post(url, clean_data_sample)
     messages_list = list(
@@ -101,6 +102,8 @@ def test_update_with_redirect_from_modal(
 
     assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["update_modal_form"], response)
+
+    clean_data_sample["update"] = "true"
 
     headers["target"] = f"#{subapp_label}-table"
     response = admin_client.post(url, clean_data_sample, headers=headers)
@@ -152,6 +155,8 @@ def test_update_without_redirect_from_modal(
     assert is_template_used(templates["update_modal_form"], response)
     assert "Hx-Location" not in response.headers
     assert "Hx-Retarget" not in response.headers
+    
+    clean_data_sample["update"] = "true"
 
     headers = {**headers, "target": "#no-content"}
     response = admin_client.post(url, clean_data_sample, headers=headers)

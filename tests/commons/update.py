@@ -20,6 +20,7 @@ class CommonUpdateTests:
         counts: dict[str, int],
     ):
         data, errors = dirty_data_test_cases
+        data["update"] = "true"
         obj = model.objects.first()
         url = obj.get_update_url()
 
@@ -47,6 +48,7 @@ class CommonUpdateTests:
         counts: dict[str, int],
     ):
         data, errors = dirty_data_test_cases
+        data["update"] = "true"
         obj = model.objects.first()
         url = obj.get_update_url() + "?page=1&per_page=10&ordering=-id"
 
