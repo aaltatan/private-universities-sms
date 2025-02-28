@@ -14,9 +14,11 @@ class SchoolFactory(factory.django.DjangoModelFactory):
     )
     nationality = factory.SubFactory(NationalityFactory)
     kind = factory.SubFactory(SchoolKindFactory)
-    email = factory.Faker("email")
+    email = factory.Sequence(
+        lambda n: f"a.altatan-{n + 1}@gmail.com",
+    )
     website = factory.Sequence(
-        lambda n: f"https://google-{n}.com" + str(n + 1).rjust(3, "0"),
+        lambda n: f"https://google-{n + 1}.com",
     )
     phone = factory.Faker("phone_number")
     description = factory.Faker("text")

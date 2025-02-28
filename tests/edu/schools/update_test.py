@@ -4,13 +4,19 @@ import pytest
 from django.contrib import messages
 from django.contrib.messages import get_messages
 from django.test import Client
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import is_template_used, is_required_star_visible
+from tests.utils import (
+    get_nested_create_btn,
+    get_nested_hx_path,
+    is_required_star_visible,
+    is_template_used,
+)
 
 
 @pytest.mark.django_db
@@ -34,6 +40,8 @@ def test_update_page(
     phone_input = form.css_first("input[name='phone']")
     description_input = form.css_first("textarea[name='description']")
     required_star = form.css_first("span[aria-label='required field']")
+    nationality_create_btn = get_nested_create_btn(form, input_name="nationality")
+    kind_create_btn = get_nested_create_btn(form, input_name="kind")
 
     assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["update"], response)
@@ -57,6 +65,66 @@ def test_update_page(
     assert not is_required_star_visible(form, "website")
     assert not is_required_star_visible(form, "email")
     assert not is_required_star_visible(form, "phone")
+
+    assert nationality_create_btn is not None
+    assert kind_create_btn is not None
+    assert get_nested_hx_path(nationality_create_btn) == reverse("nationalities:create")
+    assert get_nested_hx_path(kind_create_btn) == reverse("school_kinds:create")
+
+
+@pytest.mark.django_db
+def test_update_page_without_perms_for_creating_nested_objects(
+    client: Client,
+    model: type[Model],
+    templates: dict[str, str],
+    subapp_label: str,
+):
+    client.login(
+        username=f"{subapp_label}_user_with_view_change_perm",
+        password="password",
+    )
+    obj = model.objects.first()
+    response = client.get(obj.get_update_url())
+    parser = HTMLParser(response.content)
+
+    h1 = parser.css_first("form h1").text(strip=True).lower()
+    form = parser.css_first("main form")
+    name_input = form.css_first("input[name='name']")
+    nationality_input = form.css_first("input[name='nationality']")
+    kind_input = form.css_first("input[name='kind']")
+    website_input = form.css_first("input[name='website']")
+    email_input = form.css_first("input[name='email']")
+    phone_input = form.css_first("input[name='phone']")
+    description_input = form.css_first("textarea[name='description']")
+    required_star = form.css_first("span[aria-label='required field']")
+    nationality_create_btn = get_nested_create_btn(form, input_name="nationality")
+    kind_create_btn = get_nested_create_btn(form, input_name="kind")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert is_template_used(templates["update"], response)
+    assert h1 == f"update {obj.name}".lower()
+    assert form.attributes["hx-post"] == obj.get_update_url()
+    assert form.attributes["id"] == f"{subapp_label}-form"
+
+    assert "required" in name_input.attributes
+    assert name_input.attributes["value"] == obj.name
+    assert description_input.text(strip=True) == obj.description
+    assert nationality_input.attributes["value"] == str(obj.nationality.pk)
+    assert kind_input.attributes["value"] == str(obj.kind.pk)
+    assert website_input.attributes["value"] == obj.website
+    assert email_input.attributes["value"] == obj.email
+    assert phone_input.attributes["value"] == obj.phone
+
+    assert required_star is not None
+    assert is_required_star_visible(form, "name")
+    assert is_required_star_visible(form, "nationality")
+    assert is_required_star_visible(form, "kind")
+    assert not is_required_star_visible(form, "website")
+    assert not is_required_star_visible(form, "email")
+    assert not is_required_star_visible(form, "phone")
+
+    assert nationality_create_btn is None
+    assert kind_create_btn is None
 
 
 @pytest.mark.django_db
