@@ -89,20 +89,6 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     }
 
 
-class CitiesFormsetView(PermissionRequiredMixin, mixins.FormsetMixin, View):
-    parent_model = models.Governorate
-    model = models.City
-    form_class = forms.CityForm
-    fields = ("name", "description")
-    can_delete_permission = "geo.delete_city"
-    verbose_name_plural = "cities"
-    permission_required = "geo.change_city"
-    extra = 200
-
-    def get_queryset(self):
-        return self.obj.cities.all().order_by("id")
-
-
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
     permission_required = "geo.delete_governorate"
     deleter = Deleter

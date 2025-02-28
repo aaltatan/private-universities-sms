@@ -1,8 +1,7 @@
-from django.urls import path, include
+from django.urls import path
 from django.utils.translation import gettext as _
 
 from ..views import governorates as views
-
 
 app_name = "governorates"
 
@@ -13,19 +12,6 @@ urlpatterns = [
         view=views.ListView.as_view(),
         name="index",
         kwargs={"title": _("governorates")},
-    ),
-    path(
-        route="inlines/",
-        view=include(
-            [
-                path(
-                    "cities/<str:slug>/",
-                    views.CitiesFormsetView.as_view(),
-                    name="cities",
-                    kwargs={"title": _("cities").title()},
-                ),
-            ],
-        ),
     ),
     path(
         route="details/<str:slug>/",

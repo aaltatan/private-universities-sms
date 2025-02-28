@@ -4,7 +4,6 @@ from .create import CreateMixin
 from .delete import DeleteMixin
 from .details import DetailsMixin
 from .index import IndexMixin
-from .formsets import FormsetMixin
 from .list import ListMixin
 from .update import UpdateMixin
 from .utils import CustomDjangoQLSearchMixin
@@ -20,5 +19,4 @@ __all__ = [
     "BulkDeleteAPIMixin",
     "APIMixin",
     "IndexMixin",
-    "FormsetMixin",
 ]
