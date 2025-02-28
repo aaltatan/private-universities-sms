@@ -25,12 +25,18 @@ class CreateMixin(ABC):
     def form_class(self) -> type[ModelForm]:
         pass
 
+    model: type[Model] | None = None
+    template_name: str | None = None
+    form_modal_template_name: str | None = None
+    form_template_name: str | None = None
+
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
         Handles GET requests and returns a rendered template.
         """
         request_parser = RequestParser(
             request=request,
+            action="create",
             index_url=self.get_app_urls()["index_url"],
         )
         template_name = self.get_template_name()
@@ -52,6 +58,7 @@ class CreateMixin(ABC):
         form = self.form_class(request.POST)
         request_parser = RequestParser(
             request=request,
+            action="create",
             index_url=self.get_app_urls()["index_url"],
         )
 
@@ -118,13 +125,13 @@ class CreateMixin(ABC):
         if request_parser.target == "#no-content":
             response["Hx-Reswap"] = "innerHTML"
 
-        if request.POST.get("save"):
+        if request_parser.save:
             if not request_parser.dont_redirect:
                 if request_parser.is_modal_request:
                     response["Hx-Location"] = request_parser.hx_location
                 else:
                     response["Hx-Redirect"] = request_parser.index_url
-        elif request.POST.get("save_and_add_another"):
+        elif request_parser.save_and_add_another:
             context = self.get_context_data()
             response = render(
                 request=request,
@@ -132,8 +139,6 @@ class CreateMixin(ABC):
                 context=context,
                 status=201,
             )
-        else:
-            raise ValueError("save or save_and_add_another is required")
 
         response["Hx-Trigger"] = "messages"
 
@@ -151,7 +156,7 @@ class CreateMixin(ABC):
         """
         Returns the model class.
         """
-        if getattr(self, "model", None):
+        if self.model:
             return self.model
 
         return self.form_class.Meta.model
@@ -161,7 +166,7 @@ class CreateMixin(ABC):
         Returns the template name.
         Notes: you can use the *template_name* attribute to override the default template name.
         """
-        if getattr(self, "template_name", None):
+        if self.template_name:
             return self.template_name
 
         verbose_name_plural = self.get_verbose_name_plural()
@@ -175,7 +180,7 @@ class CreateMixin(ABC):
         Notes: you can use the *form_modal_template_name* attribute to override the default form modal template name.
         """
 
-        if getattr(self, "form_modal_template_name", None):
+        if self.form_template_name:
             return self.form_modal_template_name
 
         verbose_name_plural = self.get_verbose_name_plural()
@@ -188,11 +193,11 @@ class CreateMixin(ABC):
         Returns the form template name.
         Notes: you can use the *form_template_name* attribute to override the default form template name.
         """
+        if self.form_modal_template_name:
+            return self.form_template_name
+
         verbose_name_plural = self.get_verbose_name_plural()
         app_label = self.get_app_label()
-
-        if getattr(self, "form_template_name", None):
-            return self.form_template_name
 
         return f"components/{app_label}/{verbose_name_plural}/create.html"
 

@@ -1,6 +1,6 @@
 import json
 from dataclasses import InitVar, asdict, dataclass, field
-from typing import Any, Callable, Sequence
+from typing import Any, Callable, Literal, Sequence
 
 from django.db.models import QuerySet
 from django.http import Http404, HttpRequest, HttpResponse
@@ -72,13 +72,46 @@ class RequestParser:
 
     request: InitVar[HttpRequest]
     index_url: str
+    action: Literal["create", "update"]
     is_modal_request: bool = field(init=False)
     next_url: str = field(init=False, default="")
     target: str = field(init=False, default="")
     dont_redirect: bool = field(init=False)
     hx_location: str = field(init=False)
+    save: bool = field(init=False, default=False)
+    save_and_add_another: bool = field(init=False, default=False)
+    update: bool = field(init=False, default=False)
+    update_and_continue_editing: bool = field(init=False, default=False)
 
     def __post_init__(self, request: HttpRequest):
+        if request.method == "POST":
+            if self.action == "create":
+                self.save = request.POST.get("save") is not None
+                self.save_and_add_another = (
+                    request.POST.get("save_and_add_another") is not None
+                )
+                if self.save and self.save_and_add_another:
+                    raise ValueError(
+                        "save and save_and_add_another are mutually exclusive"
+                    )
+                if not self.save and not self.save_and_add_another:
+                    raise ValueError(
+                        "save or save_and_add_another is required",
+                    )
+            elif self.action == "update":
+                self.update = request.POST.get("update") is not None
+                self.update_and_continue_editing = (
+                    request.POST.get("update_and_continue_editing") is not None
+                )
+                if self.update and self.update_and_continue_editing:
+                    raise ValueError(
+                        "update and update_and_continue_editing are mutually exclusive"
+                    )
+                if not self.update and not self.update_and_continue_editing:
+                    raise ValueError(
+                        "update or update_and_continue_editing is required",
+                    )
+
         self.is_modal_request = request.headers.get("modal") is not None
 
         self.target = request.headers.get("target")

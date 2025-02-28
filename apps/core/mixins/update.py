@@ -47,6 +47,7 @@ class UpdateMixin(ABC):
 
         request_parser = RequestParser(
             request=request,
+            action="update",
             index_url=self.get_app_urls()["index_url"],
         )
         template_name = self.get_template_name()
@@ -98,6 +99,7 @@ class UpdateMixin(ABC):
 
         request_parser = RequestParser(
             request=request,
+            action="update",
             index_url=self.get_app_urls()["index_url"],
         )
         if form.is_valid() and all(formset.is_valid() for formset in formsets):
@@ -156,9 +158,9 @@ class UpdateMixin(ABC):
             if request_parser.is_modal_request:
                 response["Hx-Location"] = request_parser.hx_location
             else:
-                if self.redirect_after_update:
+                if request_parser.update:
                     response["Hx-Redirect"] = request_parser.index_url
-                else:
+                elif request_parser.update_and_continue_editing:
                     template_name = self.get_form_template_name()
 
                     additional_context = {}
