@@ -3,6 +3,7 @@
   id="messages-container"
   hx-get="{% url 'core:messages' %}"
   hx-trigger="messages from:body"
+  hx-preserve="true"
   hx-swap="beforeend"
   x-ref="messagesWrapper"
   x-transition:enter="transition ease-out duration-150"
