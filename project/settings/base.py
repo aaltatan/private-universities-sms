@@ -48,6 +48,7 @@ THIRTY_PARTY_APPS = [
     "widget_tweaks",
     "rest_framework",
     "rest_framework_simplejwt",
+    "mptt",
 ]
 
 CORE_APPS = [

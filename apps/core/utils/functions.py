@@ -3,7 +3,7 @@ import re
 from django.apps import apps
 from django.conf import settings
 from django.db.models import Model
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.http import HttpRequest
 
 from apps.core.schemas import AppLink
@@ -30,7 +30,7 @@ def get_apps_links(
             app_link = AppLink(
                 icon=getattr(model._meta, "icon", "star"),
                 text=getattr(model._meta, "title", "some app"),
-                path=reverse(
+                path=reverse_lazy(
                     f"{model._meta.verbose_name_plural}:{view_name}",
                 ),
                 perm=f"{app_label}.view_{object_name}",

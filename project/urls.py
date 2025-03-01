@@ -107,6 +107,10 @@ urlpatterns = [
                     "statuses/",
                     include("apps.org.urls.statuses"),
                 ),
+                path(
+                    "departments/",
+                    include("apps.org.urls.departments"),
+                ),
             ]
         ),
     ),

@@ -348,6 +348,30 @@ xlsx = [
 ]
 
 [[package]]
+name = "django-js-asset"
+version = "3.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/99/b4/b2876bb954caa8f8802578271fce4b84c4b55e1bc6fb3d7d393c2cd28371/django_js_asset-3.1.0.tar.gz", hash = "sha256:b8855d9983174ea162c8fb2bfcb3c9ff559f373226554f196170c93f07597c3d", size = 9388 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/2c/ac508ecaf59f17b771555218608ce61fafbb7655d6011faa208e487e42e6/django_js_asset-3.1.0-py3-none-any.whl", hash = "sha256:2f71e1e3df9c33fdccd2d41a50214a649cce64a832b42e1df26a79135fd3e8bd", size = 5953 },
+]
+
+[[package]]
+name = "django-mptt"
+version = "0.16.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django-js-asset" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/06/58/11dcda841c5570cecab15d52362096e36bf61c0a7013df903e9747bc6a6c/django_mptt-0.16.0.tar.gz", hash = "sha256:56c9606bf0b329b5f5afd55dd8bfd073612ea1d5999b10903b09de62bee84c8e", size = 69886 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/45/27/61a39b0d716e52be2df7d9fed6e35fe10eb3faaf207cdfaac3f9f68ecb1a/django_mptt-0.16.0-py3-none-any.whl", hash = "sha256:8716849ba3318d94e2e100ed0923a05c1ffdf8195f8472b690dbaf737d2af3b5", size = 115934 },
+]
+
+[[package]]
 name = "django-silk"
 version = "5.3.2"
 source = { registry = "https://pypi.org/simple" }
@@ -680,6 +704,7 @@ dependencies = [
     { name = "django-filter" },
     { name = "django-htmx" },
     { name = "django-import-export", extra = ["xlsx"] },
+    { name = "django-mptt" },
     { name = "django-silk" },
     { name = "django-widget-tweaks" },
     { name = "djangoql" },
@@ -715,6 +740,7 @@ requires-dist = [
     { name = "django-filter", specifier = ">=24.3" },
     { name = "django-htmx", specifier = ">=1.21.0" },
     { name = "django-import-export", extras = ["xlsx"], specifier = ">=4.3.3" },
+    { name = "django-mptt", specifier = ">=0.16.0" },
     { name = "django-silk", specifier = ">=5.3.2" },
     { name = "django-widget-tweaks", specifier = ">=1.5.0" },
     { name = "djangoql", specifier = ">=0.18.1" },

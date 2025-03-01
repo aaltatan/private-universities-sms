@@ -74,3 +74,25 @@ class StatusResource(BaseResource):
     class Meta:
         model = models.Status
         fields = ("serial", "name", "is_payable", "description", "slug")
+
+
+class DepartmentResource(BaseResource):
+    parent = fields.Field(
+        attribute="parent__name",
+        column_name=_("parent").title(),
+    )
+    cost_center = fields.Field(
+        attribute="cost_center__name",
+        column_name=_("cost center").title(),
+    )
+
+    class Meta:
+        model = models.Department
+        fields = (
+            "serial",
+            "name",
+            "parent",
+            "cost_center",
+            "description",
+            "slug",
+        )

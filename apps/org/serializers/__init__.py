@@ -1,4 +1,5 @@
 from .cost_center import CostCenterActivitySerializer, CostCenterSerializer
+from .department import DepartmentActivitySerializer, DepartmentSerializer
 from .group import GroupActivitySerializer, GroupSerializer
 from .job_subtype import (
     CreateUpdateJobSubtypeSerializer,
@@ -12,6 +13,8 @@ from .status import StatusActivitySerializer, StatusSerializer
 __all__ = [
     "CostCenterSerializer",
     "CostCenterActivitySerializer",
+    "DepartmentSerializer",
+    "DepartmentActivitySerializer",
     "JobTypeSerializer",
     "JobTypeActivitySerializer",
     "JobSubtypeSerializer",

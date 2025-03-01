@@ -1,7 +1,6 @@
-from django.urls import reverse
+from apps.org.models import Department
 
 
 def run():
-    url = reverse("governorates:cities", kwargs={"slug": "محافظة-حماه"})
-
-    print(url)
+    for department in Department.objects.all():
+        print(department)

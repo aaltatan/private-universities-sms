@@ -91,3 +91,32 @@ class StatusForm(forms.ModelForm):
             "name": get_text_widget(placeholder=_("status name")),
             "description": get_textarea_widget(),
         }
+
+
+class DepartmentForm(forms.ModelForm):
+    parent = get_autocomplete_field(
+        queryset=models.Department.objects.all(),
+        to_field_name="name",
+        attributes={"placeholder": _("search parents")},
+        app_label="org",
+        model_name="Department",
+        object_name="department",
+        field_name="search",
+    )
+    cost_center = get_autocomplete_field(
+        queryset=models.CostCenter.objects.all(),
+        to_field_name="name",
+        attributes={"placeholder": _("search cost centers")},
+        app_label="org",
+        model_name="CostCenter",
+        object_name="costcenter",
+        field_name="search",
+    )
+
+    class Meta:
+        model = models.Department
+        fields = ("name", "parent", "cost_center", "description")
+        widgets = {
+            "name": get_text_widget(placeholder=_("job subtype name")),
+            "description": get_textarea_widget(),
+        }
