@@ -42,12 +42,12 @@ def model() -> type[Model]:
 
 @pytest.fixture
 def api_keys() -> list[str]:
-    return ["id", "name", "description", "job_subtypes"]
+    return ["id", "name", "description", "job_subtypes", "job_subtypes_count"]
 
 
 @pytest.fixture
 def index_columns() -> list[str]:
-    return ["name", "description", "options"]
+    return ["name", "job subtypes count", "description", "options"]
 
 
 @pytest.fixture

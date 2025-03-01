@@ -22,14 +22,6 @@ class JobTypeSerializer(serializers.ModelSerializer):
             "job_subtypes_count",
         )
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation["job_subtypes"] = {
-            "count": representation.pop("job_subtypes_count"),
-            "results": representation.pop("job_subtypes"),
-        }
-        return representation
-
 
 class JobTypeActivitySerializer(serializers.ModelSerializer):
     class Meta:

@@ -16,14 +16,6 @@ class GovernorateSerializer(serializers.ModelSerializer):
         model = models.Governorate
         fields = ("id", "name", "description", "cities", "cities_count")
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation["cities"] = {
-            "count": representation.pop("cities_count"),
-            "results": representation.pop("cities"),
-        }
-        return representation
-
 
 class GovernorateActivitySerializer(serializers.ModelSerializer):
     class Meta:

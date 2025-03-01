@@ -34,14 +34,6 @@ class SchoolKindSerializer(serializers.ModelSerializer):
             "schools_count",
         )
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation["schools"] = {
-            "count": representation.pop("schools_count"),
-            "results": representation.pop("schools"),
-        }
-        return representation
-
 
 class SchoolKindActivitySerializer(serializers.ModelSerializer):
     class Meta:
