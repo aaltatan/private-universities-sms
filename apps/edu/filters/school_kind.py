@@ -5,6 +5,7 @@ from apps.core.filters import (
     BaseNameDescriptionFilter,
     BaseQSearchFilter,
     get_ordering_filter,
+    get_number_from_to_filters,
 )
 
 from .. import models
@@ -20,12 +21,15 @@ class BaseSchoolKindFilter(BaseNameDescriptionFilter):
         label=_("is virtual").title(),
         choices=models.SchoolKind.VirtualChoices,
     )
+    schools_count_from, schools_count_to = get_number_from_to_filters("schools_count")
 
     class Meta:
         model = models.SchoolKind
         fields = (
             "name",
             "is_governmental",
+            "schools_count_from",
+            "schools_count_to",
             "is_virtual",
             "description",
         )

@@ -17,10 +17,10 @@ class SchoolKindSerializer(serializers.ModelSerializer):
                 "description",
             )
 
-
     is_governmental = serializers.BooleanField()
     is_virtual = serializers.BooleanField()
     schools = SchoolSerializer(many=True, read_only=True)
+    schools_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = models.SchoolKind
@@ -31,11 +31,19 @@ class SchoolKindSerializer(serializers.ModelSerializer):
             "is_virtual",
             "description",
             "schools",
+            "schools_count",
         )
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation["schools"] = {
+            "count": representation.pop("schools_count"),
+            "results": representation.pop("schools"),
+        }
+        return representation
 
 
 class SchoolKindActivitySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = models.SchoolKind
         fields = (

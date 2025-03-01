@@ -17,6 +17,7 @@ class SchoolKindManager(models.Manager):
             .prefetch_related("schools")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
+                schools_count=models.Count("schools"),
             )
         )
 

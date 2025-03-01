@@ -7,9 +7,20 @@ from . import models
 
 
 class JobTypeResource(BaseResource):
+    job_subtypes_count = fields.Field(
+        attribute="job_subtypes_count",
+        column_name=_("job subtypes count").title(),
+    )
+
     class Meta:
         model = models.JobType
-        fields = ("serial", "name", "description", "slug")
+        fields = (
+            "serial",
+            "name",
+            "job_subtypes_count",
+            "description",
+            "slug",
+        )
 
 
 class JobSubtypeResource(BaseResource):

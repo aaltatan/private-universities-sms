@@ -151,7 +151,7 @@ class ListMixin(ABC):
         now: str = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         filename: str = f"{verbose_name_plural.title()}-{now}"
 
-        dataset.title = filename
+        dataset.title = verbose_name_plural.replace("_", " ").title()
 
         response = HttpResponse(
             getattr(dataset, extension),

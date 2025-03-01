@@ -52,6 +52,10 @@ class SchoolKindResource(BaseResource):
         attribute="is_virtual",
         column_name=_("virtual?").title(),
     )
+    schools_count = fields.Field(
+        attribute="schools_count",
+        column_name=_("schools count").title(),
+    )
 
     def dehydrate_is_governmental(self, obj: models.SchoolKind) -> str:
         return self._dehydrate_boolean(obj.is_governmental)
@@ -66,6 +70,7 @@ class SchoolKindResource(BaseResource):
             "name",
             "is_governmental",
             "is_virtual",
+            "schools_count",
             "description",
             "slug",
         )

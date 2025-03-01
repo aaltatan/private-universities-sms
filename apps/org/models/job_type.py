@@ -40,6 +40,7 @@ class JobTypeManager(models.Manager):
             .prefetch_related("job_subtypes")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
+                job_subtypes_count=models.Count("job_subtypes"),
             )
         )
 

@@ -34,7 +34,7 @@
       icon="adjustments-horizontal"
       size="20"
       @click="openOverlaySidebar"
-      data-fields="name,description,is_governmental,is_virtual"
+      data-fields="name,description,schools_count_from,schools_count_to,is_governmental,is_virtual"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -64,6 +64,7 @@
         <c-table.th>{% translate 'name' %}</c-table.th>
         <c-table.th>{% translate 'is governmental' %}</c-table.th>
         <c-table.th>{% translate 'is virtual' %}</c-table.th>
+        <c-table.th>{% translate 'schools count' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
       </c-table.tr>
@@ -108,6 +109,9 @@
             <!--  -->
             {% endif %}
           </c-badge>
+        </c-table.td>
+        <c-table.td data-header="{% translate 'schools count' %}">
+          {{ obj.schools_count }}
         </c-table.td>
         <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
         <c-table.td fixed="True">
@@ -176,6 +180,10 @@
             <c-inputs.text :field="filter.form.name" />
             <c-inputs.text theme="select" :field="filter.form.is_governmental" />
             <c-inputs.text theme="select" :field="filter.form.is_virtual" />
+            <c-inputs.range-wrapper title="{% translate 'schools count'|title %}">
+              <c-inputs.text :show_label="False" :field="filter.form.schools_count_from" />
+              <c-inputs.text :show_label="False" :field="filter.form.schools_count_to" />
+            </c-inputs.range-wrapper>
             <c-inputs.text :field="filter.form.description" />
           </c-slot>
           <c-slot name="footer">

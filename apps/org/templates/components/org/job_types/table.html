@@ -34,7 +34,7 @@
       icon="adjustments-horizontal"
       size="20"
       @click="openOverlaySidebar"
-      data-fields="name,description"
+      data-fields="name,job_subtypes_count_from,job_subtypes_count_to,description"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -62,6 +62,7 @@
       <c-table.tr header="True">
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'name' %}</c-table.th>
+        <c-table.th>{% translate 'job subtypes count' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
       </c-table.tr>
@@ -80,6 +81,9 @@
           >
             {{ obj.name }}
           </a>
+        </c-table.td>
+        <c-table.td data-header="{% translate 'job subtypes count' %}">
+          {{ obj.job_subtypes_count }}
         </c-table.td>
         <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
         <c-table.td fixed="True">
@@ -146,6 +150,10 @@
           <c-slot name="header"> {% translate 'filters'|title %} </c-slot>
           <c-slot name="body">
             <c-inputs.text :field="filter.form.name" />
+            <c-inputs.range-wrapper title="{% translate 'job subtypes count'|title %}">
+              <c-inputs.text :show_label="False" :field="filter.form.job_subtypes_count_from" />
+              <c-inputs.text :show_label="False" :field="filter.form.job_subtypes_count_to" />
+            </c-inputs.range-wrapper>
             <c-inputs.text :field="filter.form.description" />
           </c-slot>
           <c-slot name="footer">
