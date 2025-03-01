@@ -1,6 +1,7 @@
 import json
 
 import pytest
+import pytest_mock
 from django.test import Client
 from django.urls import reverse
 from rest_framework import status
@@ -20,7 +21,7 @@ from tests.utils import is_template_used
         "?app_label=geo&model=xx",
         "?&model=governorate",
         "?app_label=geo",
-    ]
+    ],
 )
 def test_activities_with_no_wrong_payload(admin_client: Client, payload: str):
     path = reverse("core:activities", args=[1])
@@ -163,8 +164,10 @@ def test_update_activity(
     admin_client: Client,
     templates: dict[str, str],
     model: Model,
+    mocker: pytest_mock.MockerFixture,
     activity_model,
 ):
+    mocker.patch("apps.geo.views.governorates.UpdateView.inlines", new=None)
     payload = {
         "name": "hamah",
         "description": "google",
