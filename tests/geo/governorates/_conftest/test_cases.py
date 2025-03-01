@@ -160,7 +160,7 @@ def models_data_test_cases(request: pytest.FixtureRequest):
             ["Ensure this value has at most 255 characters (it has 265)."],
         ),
         (
-            {"name": "محافظة حماه", "description": "google"},
+            {"name": "محافظة حمص", "description": "google"},
             ["Governorate with this Name already exists."],
         ),
     ],
