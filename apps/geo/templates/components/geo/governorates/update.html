@@ -8,8 +8,8 @@
 >
   <c-inputs.text :field="form.name" />
   <c-inputs.text :field="form.description" />
-  {% comment %}
   <div>
+    {% if cities_formset.forms %}
     <div>{{ cities_formset.management_form }}</div>
     <c-error.wrapper>
       {% for error in cities_formset.non_form_errors %}
@@ -51,6 +51,6 @@
         {% endfor %}
       </c-table.table>
     </c-table.container>
+    {% endif %}
   </div>
-  {% endcomment %}
 </c-forms.update>

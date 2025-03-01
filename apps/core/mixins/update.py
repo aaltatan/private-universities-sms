@@ -37,7 +37,6 @@ class UpdateMixin(ABC):
     form_template_name: str | None = None
     form_modal_template_name: str | None = None
     inlines: dict[str, InlineFormsetFactory] | None = None
-    redirect_after_update: bool = True
 
     def get(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
         """
@@ -50,18 +49,10 @@ class UpdateMixin(ABC):
             action="update",
             index_url=self.get_app_urls()["index_url"],
         )
-        template_name = self.get_template_name()
-        context = self.get_context_data()
 
-        if self.inlines:
-            for app_label, inline in self.inlines.items():
-                key = f"{app_label}_formset"
-                qs = inline.get_queryset(self.obj)
-                Formset = inline.get_formset_class(
-                    request=request,
-                    parent_model=self.get_model_class(),
-                )
-                context[key] = Formset(instance=self.obj, queryset=qs)
+        template_name = self.get_template_name()
+        formsets_context = self.get_formsets_context(self.obj)
+        context = self.get_context_data(**formsets_context)
 
         if request.htmx:
             if request_parser.is_modal_request:
@@ -162,20 +153,8 @@ class UpdateMixin(ABC):
                     response["Hx-Redirect"] = request_parser.index_url
                 elif request_parser.update_and_continue_editing:
                     template_name = self.get_form_template_name()
-
-                    additional_context = {}
-                    if self.inlines:
-                        for app_label, inline in self.inlines.items():
-                            key = f"{app_label}_formset"
-                            qs = inline.get_queryset(obj)
-                            Formset = inline.get_formset_class(
-                                request=request,
-                                parent_model=self.get_model_class(),
-                            )
-                            formset = Formset(instance=obj, queryset=qs)
-                            additional_context[key] = formset
-
-                    context = self.get_context_data(**additional_context)
+                    formsets_context = self.get_formsets_context(obj)
+                    context = self.get_context_data(**formsets_context)
                     response = render(request, template_name, context)
 
         response["Hx-Trigger"] = "messages"
@@ -201,18 +180,8 @@ class UpdateMixin(ABC):
         """
         template_name = self.get_form_template_name()
 
-        additional_context = {}
-
-        if self.inlines:
-            for app_label, inline in self.inlines.items():
-                key = f"{app_label}_formset"
-                Formset = inline().get_formset_class(
-                    request=request, parent_model=self.get_model_class()
-                )
-                formset = Formset(request.POST, instance=self.obj)
-                additional_context[key] = formset
-
-        context = self.get_context_data(**additional_context)
+        formset_context = self.get_formsets_context(self.obj, include_data=True)
+        context = self.get_context_data(**formset_context)
         context["form"] = form
 
         if request_parser.is_modal_request:
@@ -223,6 +192,39 @@ class UpdateMixin(ABC):
         else:
             response = render(request, template_name, context)
         return response
+
+    def get_formsets_context(
+        self, obj: Model, include_data: bool = False
+    ) -> dict[str, BaseInlineFormSet]:
+        context = {}
+
+        if self.inlines:
+            for app_label, inline in self.inlines.items():
+                key = f"{app_label}_formset"
+
+                extra: int | None = None
+
+                delete_permission = f"{inline.app_label}.delete_{inline.object_name}"
+                change_permission = f"{inline.app_label}.change_{inline.object_name}"
+
+                if not self.request.user.has_perm(delete_permission):
+                    extra = 0
+
+                Formset = inline.get_formset_class(
+                    request=self.request,
+                    parent_model=self.get_model_class(),
+                    extra=extra,
+                )
+
+                kwargs = {"instance": obj, "queryset": inline.get_queryset(obj)}
+
+                if include_data:
+                    kwargs["data"] = self.request.POST
+
+                if self.request.user.has_perm(change_permission):
+                    context[key] = Formset(**kwargs)
+
+        return context
 
     def get_model_class(self) -> type[Model]:
         """
