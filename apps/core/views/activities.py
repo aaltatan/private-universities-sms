@@ -25,10 +25,10 @@ def activities(
 
     Model = content_type.model_class()
 
-    verbose_name_plural = Model._meta.verbose_name_plural
+    app_label = Model._meta.app_label
     object_name = Model._meta.object_name.lower()
 
-    required_permission = f"{verbose_name_plural}.view_activity_{object_name}"
+    required_permission = f"{app_label}.view_activity_{object_name}"
 
     if not request.user.has_perm(required_permission):
         return HttpResponseForbidden(
