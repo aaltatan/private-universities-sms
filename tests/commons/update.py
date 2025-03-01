@@ -72,11 +72,30 @@ class CommonUpdateTests:
         assert model.objects.count() == counts["objects"]
 
     @staticmethod
+    def test_update_object_with_update_and_continue_editing(
+        admin_client: Client,
+        model: type[Model],
+        clean_data_sample: dict[str, str],
+        templates: dict[str, str],
+    ):
+        querystring = "?page=1&per_page=10&ordering=-id"
+        obj = model.objects.get(id=1)
+        url = obj.get_update_url() + querystring
+        clean_data_sample["update_and_continue_editing"] = "true"
+
+        response = admin_client.post(url, clean_data_sample)
+
+        assert response.status_code == status.HTTP_200_OK
+        assert is_template_used(
+            template_name=templates["update_form"],
+            response=response,
+        )
+
+    @staticmethod
     def test_patch_object_without_permissions(
         api_client: APIClient,
         urls: dict[str, str],
         user_headers: dict[str, str],
-        model: type[Model],
     ):
         response: Response = api_client.patch(
             path=f"{urls['api']}1/",
