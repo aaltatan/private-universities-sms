@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<c-layout page_title="{% translate 'Forbidden' %}">
+  <section>
+    <div class="container flex items-center p-2 mx-auto">
+      <div>
+        <p class="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+          {% translate '403 error' %}
+        </p>
+        <h1
+          class="mt-3 text-2xl font-semibold text-neutral-800 dark:text-white md:text-3xl first-letter:uppercase"
+        >
+          {% translate 'you can’t access this page' %}
+        </h1>
+        <p class="mt-4 text-neutral-500 dark:text-neutral-400 first-letter:uppercase">
+          {% translate "sorry, the page you are looking for you don't have permission to access." %}
+        </p>
+      </div>
+    </div>
+  </section>
+</c-layout>
