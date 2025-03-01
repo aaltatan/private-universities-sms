@@ -76,7 +76,8 @@ class UpdateMixin(ABC):
 
         formsets = []
         if self.inlines:
-            for inline in self.inlines.values():
+            for inline_class in self.inlines.values():
+                inline: InlineFormsetFactory = inline_class()
                 qs = inline.get_queryset(self.obj)
                 Formset = inline.get_formset_class(
                     request=request, parent_model=self.get_model_class()
@@ -199,15 +200,17 @@ class UpdateMixin(ABC):
         context = {}
 
         if self.inlines:
-            for app_label, inline in self.inlines.items():
+            for app_label, inline_class in self.inlines.items():
                 key = f"{app_label}_formset"
 
                 extra: int | None = None
 
-                delete_permission = f"{inline.app_label}.delete_{inline.object_name}"
+                inline: InlineFormsetFactory = inline_class()
+
+                add_permission = f"{inline.app_label}.add_{inline.object_name}"
                 change_permission = f"{inline.app_label}.change_{inline.object_name}"
 
-                if not self.request.user.has_perm(delete_permission):
+                if not self.request.user.has_perm(add_permission):
                     extra = 0
 
                 Formset = inline.get_formset_class(

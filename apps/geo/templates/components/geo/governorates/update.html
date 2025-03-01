@@ -1,15 +1,19 @@
 {% load i18n widget_tweaks %}
 
+<!--  -->
+{% if cities_formset.forms %}
 <c-forms.update
   form_title="{% translate 'update' %} {{ form.instance }}"
   url="{{ update_url }}{% querystring %}"
   :form_id="form_id"
   :form="form"
+  width="xl"
 >
-  <c-inputs.text :field="form.name" />
-  <c-inputs.text :field="form.description" />
+  <div class="grid grid-cols-2 gap-2">
+    <c-inputs.text :field="form.name" />
+    <c-inputs.text :field="form.description" />
+  </div>
   <div>
-    {% if cities_formset.forms %}
     <div>{{ cities_formset.management_form }}</div>
     <c-error.wrapper>
       {% for error in cities_formset.non_form_errors %}
@@ -51,6 +55,16 @@
         {% endfor %}
       </c-table.table>
     </c-table.container>
-    {% endif %}
   </div>
 </c-forms.update>
+{% else %}
+<c-forms.update
+  form_title="{% translate 'update' %} {{ form.instance }}"
+  url="{{ update_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-inputs.text :field="form.name" />
+  <c-inputs.text :field="form.description" />
+</c-forms.update>
+{% endif %}

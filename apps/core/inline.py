@@ -28,20 +28,19 @@ class InlineFormsetFactory(ABC):
     max_num: int = 1000
 
     @property
-    def app_label(cls) -> str:
-        return cls.model._meta.app_label
+    def app_label(self) -> str:
+        return self.model._meta.app_label
 
     @property
-    def object_name(cls) -> str:
-        return cls.model._meta.object_name.lower()
+    def object_name(self) -> str:
+        return self.model._meta.object_name.lower()
 
-    @classmethod
-    def get_queryset(cls, obj: Model):
+    @abstractmethod
+    def get_queryset(self, obj: Model):
         pass
 
-    @classmethod
     def get_formset_class(
-        cls,
+        self,
         request: HttpRequest,
         parent_model: Model,
         extra: int | None = None,
@@ -49,17 +48,17 @@ class InlineFormsetFactory(ABC):
     ) -> type[BaseInlineFormSet]:
         kwargs = {
             "parent_model": parent_model,
-            "model": cls.model,
-            "form": cls.form_class,
-            "extra": extra and cls.extra,
-            "fields": cls.fields,
-            "max_num": max_num and cls.max_num,
+            "model": self.model,
+            "form": self.form_class,
+            "extra": extra if extra is not None else self.extra,
+            "fields": self.fields,
+            "max_num": max_num if max_num is not None else self.max_num,
             "can_delete": request.user.has_perm(
-                f"{cls.app_label}.delete_{cls.object_name}",
+                f"{self.app_label}.delete_{self.object_name}",
             ),
         }
 
-        if cls.custom_formset_class:
-            kwargs["formset"] = cls.custom_formset_class
+        if self.custom_formset_class:
+            kwargs["formset"] = self.custom_formset_class
 
         return inlineformset_factory(**kwargs)
