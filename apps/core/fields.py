@@ -1,3 +1,4 @@
+from typing import Any
 from urllib.parse import urlencode
 
 from django.db.models import QuerySet
@@ -18,15 +19,16 @@ class CustomModelChoiceField(ModelChoiceField):
 def get_autocomplete_field(
     queryset: QuerySet,
     to_field_name: str = "pk",
-    attributes: dict[str, str] = {},
+    widget_attributes: dict[str, str] = {},
+    field_attributes: dict[str, Any] = {},
     **kwargs: dict[str, str],
 ) -> CustomModelChoiceField:
     """Get autocomplete field."""
 
-    if "placeholder" not in attributes:
-        attributes["placeholder"] = _("search").title()
+    if "placeholder" not in widget_attributes:
+        widget_attributes["placeholder"] = _("search").title()
     else:
-        attributes["placeholder"] = attributes["placeholder"].title()
+        widget_attributes["placeholder"] = widget_attributes["placeholder"].title()
 
     kwargs.setdefault("label_field_name", to_field_name)
 
@@ -36,7 +38,8 @@ def get_autocomplete_field(
         widget=AutocompleteWidget(
             {
                 "querystring": urlencode(kwargs),
-                **attributes,
+                **widget_attributes,
             }
         ),
+        **field_attributes,
     )

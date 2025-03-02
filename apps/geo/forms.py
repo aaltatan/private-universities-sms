@@ -21,7 +21,7 @@ class CityForm(forms.ModelForm):
     governorate = get_autocomplete_field(
         queryset=models.Governorate.objects.all(),
         to_field_name="name",
-        attributes={"placeholder": _("search governorates")},
+        widget_attributes={"placeholder": _("search governorates")},
         app_label="geo",
         model_name="Governorate",
         object_name="governorate",

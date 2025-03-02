@@ -12,7 +12,7 @@ class SchoolForm(forms.ModelForm):
     nationality = get_autocomplete_field(
         queryset=Nationality.objects.all(),
         to_field_name="name",
-        attributes={"placeholder": _("search nationalities")},
+        widget_attributes={"placeholder": _("search nationalities")},
         app_label="geo",
         model_name="Nationality",
         object_name="nationality",
@@ -21,7 +21,7 @@ class SchoolForm(forms.ModelForm):
     kind = get_autocomplete_field(
         queryset=models.SchoolKind.objects.all(),
         to_field_name="name",
-        attributes={"placeholder": _("search school kinds")},
+        widget_attributes={"placeholder": _("search school kinds")},
         app_label="edu",
         model_name="Schoolkind",
         object_name="schoolkind",

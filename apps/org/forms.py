@@ -25,7 +25,7 @@ class JobSubtypeForm(forms.ModelForm):
     job_type = get_autocomplete_field(
         queryset=models.JobType.objects.all(),
         to_field_name="name",
-        attributes={"placeholder": _("search job types")},
+        widget_attributes={"placeholder": _("search job types")},
         app_label="org",
         model_name="JobType",
         object_name="jobtype",
@@ -97,7 +97,7 @@ class DepartmentForm(forms.ModelForm):
     parent = get_autocomplete_field(
         queryset=models.Department.objects.all(),
         to_field_name="name",
-        attributes={"placeholder": _("search parents")},
+        widget_attributes={"placeholder": _("search parents")},
         app_label="org",
         model_name="Department",
         object_name="department",
@@ -106,7 +106,7 @@ class DepartmentForm(forms.ModelForm):
     cost_center = get_autocomplete_field(
         queryset=models.CostCenter.objects.all(),
         to_field_name="name",
-        attributes={"placeholder": _("search cost centers")},
+        widget_attributes={"placeholder": _("search cost centers")},
         app_label="org",
         model_name="CostCenter",
         object_name="costcenter",
