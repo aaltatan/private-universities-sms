@@ -98,6 +98,7 @@ class DepartmentForm(forms.ModelForm):
         queryset=models.Department.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search parents")},
+        field_attributes={"required": False},
         app_label="org",
         model_name="Department",
         object_name="department",
