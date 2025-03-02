@@ -31,12 +31,12 @@
     x-data="layout({ title: '{{ page_title }}' || '{{ project_name }}' })"
     x-cloak
   >
-    <c-layout.modal.container />
-    <c-layout.messages-wrapper>
+    <c-layout.modal />
+    <c-layout.messages.wrapper>
       <c-layout.messages />
-    </c-layout.messages-wrapper>
+    </c-layout.messages.wrapper>
     <span class="hidden" id="no-content"></span>
-    <c-layout.sidebar.sidebar>
+    <c-layout.sidebar>
       <c-layout.header />
       <div class="mt-2 text-center sm:hidden">
         <c-layout.breadcrumbs :breadcrumbs="breadcrumbs" />
@@ -53,6 +53,6 @@
           {{ slot }}
         </div>
       </main>
-    </c-layout.sidebar.sidebar>
+    </c-layout.sidebar>
   </body>
 </html>

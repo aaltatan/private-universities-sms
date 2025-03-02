@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<c-table.container  :id="id">
+<c-table  :id="id">
   <c-slot name="header">
     <span class="hidden" x-data="sidebarLinks"></span>
     <div class="min-w-64 max-sm:w-full">{{ search }}</div>
@@ -8,7 +8,7 @@
       <!-- actions menu -->
       {% if actions %}
       <c-table.actions-container>
-        <c-layout.context-menu.menu button_rounded="md" button_theme="default" button_icon="bolt">
+        <c-layout.contextmenu button_rounded="md" button_theme="default" button_icon="bolt">
           <c-slot name="button_text">
             <span>{% translate 'actions'|title %}</span>
             <span x-text="`(${selectedItems})`"></span>
@@ -16,7 +16,7 @@
           <!-- actions slot -->
           {{ actions }}
           <!------------------>
-        </c-layout.context-menu.menu>
+        </c-layout.contextmenu>
       </c-table.actions-container>
       {% endif %}
 
@@ -26,14 +26,14 @@
 
       <!-- export menu -->
       {% if can_export %}
-      <c-layout.context-menu.menu
+      <c-layout.contextmenu
         button_rounded="md"
         button_theme="default"
         button_icon="arrow-down-tray"
         button_title="{% translate 'export'|title %}"
       >
-        <c-layout.context-menu.section>
-          <c-layout.context-menu.item
+        <c-layout.contextmenu.section>
+          <c-layout.contextmenu.item
             icon="table-cells"
             href="#"
             hx-get="{{ index_url }}{% querystring %}"
@@ -41,8 +41,8 @@
             aria-label="export table as xlsx"
           >
             {% translate 'excel file'|title %}
-          </c-layout.context-menu.item>
-          <c-layout.context-menu.item
+          </c-layout.contextmenu.item>
+          <c-layout.contextmenu.item
             icon="document-text"
             href="#"
             hx-get="{{ index_url }}{% querystring %}"
@@ -50,8 +50,8 @@
             aria-label="export table as csv"
           >
             CSV
-          </c-layout.context-menu.item>
-          <c-layout.context-menu.item
+          </c-layout.contextmenu.item>
+          <c-layout.contextmenu.item
             icon="document"
             href="#"
             hx-get="{{ index_url }}{% querystring %}"
@@ -59,9 +59,9 @@
             aria-label="export table as json"
           >
             JSON
-          </c-layout.context-menu.item>
-        </c-layout.context-menu.section>
-      </c-layout.context-menu.menu>
+          </c-layout.contextmenu.item>
+        </c-layout.contextmenu.section>
+      </c-layout.contextmenu>
       {% endif %}
 
       <!-- reset button -->
@@ -83,4 +83,4 @@
   <c-slot name="pagination">
     <c-table.pagination />
   </c-slot>
-</c-table.container>
+</c-table>

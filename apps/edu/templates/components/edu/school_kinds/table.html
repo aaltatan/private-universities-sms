@@ -42,8 +42,8 @@
 
   {% if can_delete %}
   <c-slot name="actions">
-    <c-layout.context-menu.section>
-      <c-layout.context-menu.item color="danger" icon="trash">
+    <c-layout.contextmenu.section>
+      <c-layout.contextmenu.item color="danger" icon="trash">
         <c-table.action-button
           action_name="delete"
           value="{% translate 'delete' %}"
@@ -52,8 +52,8 @@
           hx-indicator="#modal-spinner"
           aria-label="delete all objects"
         />
-      </c-layout.context-menu.item>
-    </c-layout.context-menu.section>
+      </c-layout.contextmenu.item>
+    </c-layout.contextmenu.section>
   </c-slot>
   {% endif %}
 
@@ -116,11 +116,11 @@
         <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
         <c-table.td fixed="True">
           {% if can_update or can_delete or can_view_activity %}
-          <c-layout.context-menu.menu button_padding="sm">
+          <c-layout.contextmenu button_padding="sm">
             {% if can_update or can_view_activity %}
-            <c-layout.context-menu.section>
+            <c-layout.contextmenu.section>
               {% if can_view_activity %}
-              <c-layout.context-menu.item
+              <c-layout.contextmenu.item
                 icon="clock"
                 href="#"
                 hx-get="{{ obj.get_activities_url }}"
@@ -130,24 +130,24 @@
                 aria-label="object activities"
               >
                 {% translate 'activities' %}
-              </c-layout.context-menu.item>
+              </c-layout.contextmenu.item>
               {% endif %}
               <!--  -->
               {% if can_update %}
-              <c-layout.context-menu.item
+              <c-layout.contextmenu.item
                 icon="pencil"
                 href="{{ obj.get_update_url }}{% querystring %}"
                 aria-label="edit object"
               >
                 {% translate 'edit' %}
-              </c-layout.context-menu.item>
+              </c-layout.contextmenu.item>
               {% endif %}
-            </c-layout.context-menu.section>
+            </c-layout.contextmenu.section>
             {% endif %}
             <!--  -->
             {% if can_delete %}
-            <c-layout.context-menu.section>
-              <c-layout.context-menu.item
+            <c-layout.contextmenu.section>
+              <c-layout.contextmenu.item
                 color="danger"
                 icon="trash"
                 href="#"
@@ -158,10 +158,10 @@
                 aria-label="delete object"
               >
                 {% translate 'delete' %}
-              </c-layout.context-menu.item>
-            </c-layout.context-menu.section>
+              </c-layout.contextmenu.item>
+            </c-layout.contextmenu.section>
             {% endif %}
-          </c-layout.context-menu.menu>
+          </c-layout.contextmenu>
           {% endif %}
         </c-table.td>
       </c-table.tr>

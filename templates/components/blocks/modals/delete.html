@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<c-layout.modal.container>
+<c-layout.modal>
   <form hx-post="{{ obj.get_delete_url }}{% querystring %}" hx-target="#{{ table_id }}">
     <c-layout.modal.body>
       <c-slot name="header">
@@ -24,4 +24,4 @@
       </c-slot>
     </c-layout.modal.body>
   </form>
-</c-layout.modal.container>
+</c-layout.modal>

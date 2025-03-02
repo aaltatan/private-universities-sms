@@ -2,12 +2,12 @@
 
 <c-vars form_title="update" buttons_padding="md" />
 
-<c-layout.modal.container>
+<c-layout.modal>
   <form
     hx-post="{{ url }}"
     hx-target="#no-content"
     hx-swap="innerHTML"
-    hx-headers='{{ request_headers }}'
+    hx-headers="{{ request_headers }}"
     hx-indicator="find span[role=spinner]"
     hx-disabled-elt="#update-button"
     id="{{ form_id }}"
@@ -27,19 +27,15 @@
       </c-slot>
       <c-slot name="footer">
         <c-button
+          kind="input"
           theme="primary"
+          width="full"
           type="submit"
           name="update"
-          spinner="True"
-          icon="arrow-path"
-          id="update-button"
-          :padding="buttons_padding"
-          value="{% translate 'update' %}"
+          value="update"
           title="{% translate 'update'|title %}"
-        >
-          {% translate 'update'|title %}
-        </c-button>
+        />
       </c-slot>
     </c-layout.modal.body>
   </form>
-</c-layout.modal.container>
+</c-layout.modal>

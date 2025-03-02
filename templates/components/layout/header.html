@@ -88,7 +88,7 @@
         </form>
       </li>
       <li>
-        <c-layout.context-menu.menu
+        <c-layout.contextmenu
           button_rounded="md"
           :button_size="icons_size"
           button_theme="default"
@@ -96,26 +96,26 @@
           button_title="{% translate 'user menu'|title %}"
         >
           {% if user.is_superuser %}
-          <c-layout.context-menu.section>
-            <c-layout.context-menu.item icon="wrench-screwdriver" href="/admin" target="_blank">
+          <c-layout.contextmenu.section>
+            <c-layout.contextmenu.item icon="wrench-screwdriver" href="/admin" target="_blank">
               {% translate 'admin'|title %}
-            </c-layout.context-menu.item>
-            <c-layout.context-menu.item
+            </c-layout.contextmenu.item>
+            <c-layout.contextmenu.item
               icon="arrow-top-right-on-square"
               href="/api"
               target="_blank"
             >
               Api Documentation
-            </c-layout.context-menu.item>
+            </c-layout.contextmenu.item>
             {% if debug %}
-            <c-layout.context-menu.item icon="adjustments-horizontal" href="/silk" target="_blank">
+            <c-layout.contextmenu.item icon="adjustments-horizontal" href="/silk" target="_blank">
               Silk
-            </c-layout.context-menu.item>
+            </c-layout.contextmenu.item>
             {% endif %}
-          </c-layout.context-menu.section>
+          </c-layout.contextmenu.section>
           {% endif %}
-          <c-layout.context-menu.section>
-            <c-layout.context-menu.item
+          <c-layout.contextmenu.section>
+            <c-layout.contextmenu.item
               color="danger"
               icon="arrow-left-start-on-rectangle"
               href="#"
@@ -127,9 +127,9 @@
                 {% csrf_token %}
                 <span>{% translate 'logout'|title %}</span>
               </form>
-            </c-layout.context-menu.item>
-          </c-layout.context-menu.section>
-        </c-layout.context-menu.menu>
+            </c-layout.contextmenu.item>
+          </c-layout.contextmenu.section>
+        </c-layout.contextmenu>
       </li>
     </ul>
   </nav>

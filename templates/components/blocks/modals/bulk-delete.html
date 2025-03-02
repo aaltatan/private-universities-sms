@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<c-layout.modal.container>
+<c-layout.modal>
   <form 
     hx-post="{{ index_url }}{% querystring %}" 
     hx-target="#{{ table_id }}"
@@ -37,4 +37,4 @@
       </c-slot>
     </c-layout.modal.body>
   </form>
-</c-layout.modal.container>
+</c-layout.modal>

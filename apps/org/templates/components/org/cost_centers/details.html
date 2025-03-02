@@ -1,10 +1,10 @@
 {% load i18n %}
 
-<c-layout.modal.container width="xl">
+<c-layout.modal width="xl">
   <c-layout.modal.body :close_padding="buttons_padding">
     <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
     <c-slot name="body">
-      <c-table.container height="sm">
+      <c-table height="sm">
         <c-table.table>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
@@ -29,7 +29,7 @@
             </c-table.td>
           </c-table.tr>
         </c-table.table>
-      </c-table.container>
+      </c-table>
     </c-slot>
     <c-slot name="footer">
       <c-button
@@ -42,4 +42,4 @@
       </c-button>
     </c-slot>
   </c-layout.modal.body>
-</c-layout.modal.container>
+</c-layout.modal>
