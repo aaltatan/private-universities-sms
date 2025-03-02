@@ -21,7 +21,7 @@ class BaseDepartmentFilter(BaseNameDescriptionFilter):
 class APIDepartmentFilter(FilterComboboxMixin, BaseDepartmentFilter):
     parent = get_combobox_choices_filter(
         model=models.Department,
-        field_name="parent__name",
+        field_name="parent_department",
         label=_("parent"),
         api_filter=True,
     )
@@ -41,7 +41,7 @@ class DepartmentFilter(
     ordering = get_ordering_filter(constants.ORDERING_FIELDS)
     parent = get_combobox_choices_filter(
         model=models.Department,
-        field_name="parent__name",
+        field_name="parent_department",
         label=_("parent"),
     )
     cost_center = get_combobox_choices_filter(

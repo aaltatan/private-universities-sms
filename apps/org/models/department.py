@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.functions import Coalesce
 from django.db.models.signals import pre_save
 from django.utils.translation import gettext as _
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
@@ -19,6 +20,10 @@ class DepartmentManager(TreeManager):
             .select_related("cost_center", "parent")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
+                parent_department=Coalesce(
+                    models.F("parent__name"),
+                    models.Value("-"),
+                ),
             )
         )
 
