@@ -12,7 +12,6 @@ class DepartmentAdmin(DraggableMPTTAdmin):
         "indented_title",
         "tree_id",
         "name",
-        "parent__name",
         "cost_center__name",
         "description",
     )

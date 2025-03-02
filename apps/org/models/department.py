@@ -13,6 +13,9 @@ from ..constants import departments as constants
 
 
 class DepartmentManager(TreeManager):
+    def get_children(self):
+        return self.get_queryset().filter(parent__isnull=False)
+
     def get_queryset(self):
         return (
             super()

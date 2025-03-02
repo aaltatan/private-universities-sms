@@ -11,14 +11,22 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
     cost_center = CostCenterSerializer(read_only=True)
 
+    def get_fields(self):
+        fields = super().get_fields()
+        fields["children"] = DepartmentSerializer(many=True, read_only=True)
+        return fields
+
     class Meta:
         model = models.Department
-        fields = ("id", "name", "description", "cost_center")
+        fields = ("id", "name", "cost_center", "children", "description")
 
 
 class DepartmentActivitySerializer(serializers.ModelSerializer):
     cost_center = serializers.CharField(source="cost_center.name")
-    parent = serializers.CharField(source="parent.name")
+    parent = serializers.SerializerMethodField()
+
+    def get_parent(self, obj: models.Department):
+        return obj.parent.name if obj.parent else "-"
 
     class Meta:
         model = models.Department

@@ -31,6 +31,11 @@ class APIViewSet(
     search_fields = constants.SEARCH_FIELDS
     deleter = Deleter
 
+    def get_serializer_class(self):
+        if self.action in ("create", "update", "partial_update"):
+            return serializers.CreateUpdateDepartmentSerializer
+        return super().get_serializer_class()
+
 
 class ListView(
     PermissionRequiredMixin,

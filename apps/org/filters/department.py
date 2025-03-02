@@ -1,3 +1,5 @@
+import django_filters
+from django.db.models import TextChoices
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.filters import (
@@ -13,9 +15,27 @@ from ..constants import departments as constants
 
 
 class BaseDepartmentFilter(BaseNameDescriptionFilter):
+    class DepartmentKind(TextChoices):
+        PARENT = "parent", _("parent").title()
+        CHILD = "child", _("child").title()
+
+    kind = django_filters.ChoiceFilter(
+        choices=DepartmentKind,
+        label=_("kind"),
+        method="filter_kind",
+    )
+
+    def filter_kind(self, qs, name, value):
+        if value == self.DepartmentKind.PARENT:
+            return qs.filter(children__isnull=False).distinct()
+        elif value == self.DepartmentKind.CHILD:
+            return qs.filter(children__isnull=True).distinct()
+        else:
+            return qs
+
     class Meta:
         model = models.Department
-        fields = ("name", "parent", "cost_center", "description")
+        fields = ("name", "parent", "kind", "cost_center", "description")
 
 
 class APIDepartmentFilter(FilterComboboxMixin, BaseDepartmentFilter):
