@@ -1,0 +1,11 @@
+<div class="p-2 rounded-full bg-black text-white dark:bg-white dark:text-black size-12 text-2xl flex items-center justify-center font-mono uppercase select-none">
+  {% if user.first_name %}
+  <!--  -->
+  {{ user.first_name|first }}{{ user.last_name|first }}
+  <!--  -->
+  {% else %}
+  <!--  -->
+  {{ user.username|first }}{{ user.username|last }}
+  <!--  -->
+  {% endif %}
+</div>

@@ -95,6 +95,15 @@
           button_icon="user-circle"
           button_title="{% translate 'user menu'|title %}"
         >
+          <c-layout.contextmenu.section>
+            <div class="p-2 flex items-center gap-2">
+              <c-layout.avatar />
+              <div>
+                <h1 class="text-sm tracking-tighter font-semibold">{{ user.first_name }} {{ user.last_name }}</h1>
+                <small class="text-neutral-500">@{{ user.username }}</small>
+              </div>
+            </div>
+          </c-layout.contextmenu.section>
           {% if user.is_superuser %}
           <c-layout.contextmenu.section>
             <c-layout.contextmenu.item icon="wrench-screwdriver" href="/admin" target="_blank">
