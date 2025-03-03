@@ -17,7 +17,7 @@ class DepartmentAdmin(DraggableMPTTAdmin):
     )
     list_display_links = ("indented_title", "tree_id", "name")
     search_fields = constants.SEARCH_FIELDS
-    list_per_page = 20
+    list_per_page = 200
     autocomplete_fields = ("cost_center", "parent")
     mptt_indent_field = "name"
     mptt_level_indent = 24
