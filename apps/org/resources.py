@@ -89,6 +89,10 @@ class DepartmentResource(BaseResource):
         attribute="kind",
         column_name=_("kind").title(),
     )
+    level = fields.Field(
+        attribute="level",
+        column_name=_("level").title(),
+    )
 
     def dehydrate_name(self, obj: models.Department):
         return obj.name.rjust(len(obj.name) + obj.get_level() * 4)
@@ -104,6 +108,7 @@ class DepartmentResource(BaseResource):
             "name",
             "kind",
             "parent",
+            "level",
             "cost_center",
             "description",
             "slug",

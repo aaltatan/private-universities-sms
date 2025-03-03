@@ -30,7 +30,7 @@
       icon="adjustments-horizontal"
       size="20"
       @click="openOverlaySidebar"
-      data-fields="name,parent,kind,cost_center,description"
+      data-fields="name,parent,kind,level_from,level_to,cost_center,description"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -60,6 +60,7 @@
         <c-table.th>{% translate 'name' %}</c-table.th>
         <c-table.th>{% translate 'kind' %}</c-table.th>
         <c-table.th>{% translate 'parent' %}</c-table.th>
+        <c-table.th>{% translate 'level' %}</c-table.th>
         <c-table.th>{% translate 'cost center' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
@@ -90,6 +91,7 @@
         <c-table.td data-header="{% translate 'parent' %}">
           {{ obj.parent_department }}
         </c-table.td>
+        <c-table.td data-header="{% translate 'level' %}"> {{ obj.level }} </c-table.td>
         <c-table.td data-header="{% translate 'cost center' %}">
           {% if perms.cost_centers.can_change %}
           <a
@@ -176,6 +178,10 @@
             <c-inputs.text :field="filter.form.name" />
             <c-inputs.text :field="filter.form.kind" />
             <c-inputs.text :field="filter.form.parent" />
+            <c-inputs.range-wrapper title="{% translate 'level' %}">
+              <c-inputs.text :show_label="False" :field="filter.form.level_from" />
+              <c-inputs.text :show_label="False" :field="filter.form.level_to" />
+            </c-inputs.range-wrapper>
             <c-inputs.text :field="filter.form.cost_center" />
             <c-inputs.text :field="filter.form.description" />
           </c-slot>

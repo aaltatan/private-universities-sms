@@ -22,6 +22,22 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'child?'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.is_leaf_node|yesno|title }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'level'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.level }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
               {% translate 'cost center'|title %}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">

@@ -7,8 +7,10 @@ from apps.core.filters import (
     BaseQSearchFilter,
     FilterComboboxMixin,
     get_combobox_choices_filter,
+    get_number_from_to_filters,
     get_ordering_filter,
 )
+from apps.core.widgets import ComboboxWidget
 
 from .. import models
 from ..constants import departments as constants
@@ -24,6 +26,7 @@ class BaseDepartmentFilter(BaseNameDescriptionFilter):
         label=_("kind"),
         method="filter_kind",
     )
+    level_from, level_to = get_number_from_to_filters(field_name="level")
 
     def filter_kind(self, qs, name, value):
         if value == self.DepartmentKind.PARENT:
@@ -33,17 +36,36 @@ class BaseDepartmentFilter(BaseNameDescriptionFilter):
         else:
             return qs
 
+    def filter_parent(self, qs, name, value):
+        if not value:
+            return qs
+
+        stmt = qs.none()
+        for obj in value:
+            stmt = obj.get_descendants() | stmt
+
+        return stmt
+
     class Meta:
         model = models.Department
-        fields = ("name", "parent", "kind", "cost_center", "description")
+        fields = (
+            "name",
+            "parent",
+            "kind",
+            "level_from",
+            "level_to",
+            "cost_center",
+            "description",
+        )
 
 
 class APIDepartmentFilter(FilterComboboxMixin, BaseDepartmentFilter):
-    parent = get_combobox_choices_filter(
-        model=models.Department,
-        field_name="parent_department",
+    parent = django_filters.ModelMultipleChoiceFilter(
+        queryset=models.Department.objects.all(),
+        field_name="parent",
+        lookup_expr="in",
         label=_("parent"),
-        api_filter=True,
+        method="filter_parent",
     )
     cost_center = get_combobox_choices_filter(
         model=models.Department,
@@ -59,10 +81,13 @@ class DepartmentFilter(
     BaseDepartmentFilter,
 ):
     ordering = get_ordering_filter(constants.ORDERING_FIELDS)
-    parent = get_combobox_choices_filter(
-        model=models.Department,
-        field_name="parent_department",
+    parent = django_filters.ModelMultipleChoiceFilter(
+        queryset=models.Department.objects.all(),
+        field_name="parent",
+        lookup_expr="in",
         label=_("parent"),
+        method="filter_parent",
+        widget=ComboboxWidget({"data-name": _("parent")}),
     )
     cost_center = get_combobox_choices_filter(
         model=models.Department,
