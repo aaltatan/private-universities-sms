@@ -7,7 +7,7 @@
     hx-post="{{ url }}"
     hx-target="#no-content"
     hx-swap="innerHTML"
-    hx-headers="{{ request_headers }}"
+    hx-headers='{{ request_headers }}'
     hx-indicator="find span[role=spinner]"
     hx-disabled-elt="#update-button"
     id="{{ form_id }}"
@@ -23,18 +23,25 @@
         </div>
         {% endif %}
         <!--  -->
-        <div class="space-y-2">{{ slot }}</div>
+        <div class="space-y-2">
+          <input type="hidden" name="update" value="update" />
+          {{ slot }}
+        </div>
       </c-slot>
       <c-slot name="footer">
         <c-button
-          kind="input"
           theme="primary"
-          width="full"
           type="submit"
           name="update"
-          value="update"
+          icon="arrow-path"
+          spinner="True"
+          :padding="buttons_padding"
+          id="update-button"
+          value="{% translate 'update' %}"
           title="{% translate 'update'|title %}"
-        />
+        >
+          {% translate 'update'|title %}
+        </c-button>
       </c-slot>
     </c-layout.modal.body>
   </form>
