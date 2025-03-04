@@ -30,7 +30,7 @@
       icon="adjustments-horizontal"
       size="20"
       @click="openOverlaySidebar"
-      data-fields="name,parent,kind,level_from,level_to,cost_center,description"
+      data-fields="name,cost_center,description"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -58,9 +58,7 @@
       <c-table.tr header="True">
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'name' %}</c-table.th>
-        <c-table.th>{% translate 'kind' %}</c-table.th>
-        <c-table.th>{% translate 'parent' %}</c-table.th>
-        <c-table.th>{% translate 'level' %}</c-table.th>
+        <c-table.th>{% translate 'depth' %}</c-table.th>
         <c-table.th>{% translate 'cost center' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
@@ -75,23 +73,13 @@
             hx-target="#modal-container"
             hx-indicator="#modal-spinner"
             @click="showModal"
-            class="block hover:underline cursor-pointer ms-{{ obj.level|multiply:2 }}"
+            class="block hover:underline cursor-pointer ms-{{ obj.depth|multiply:3 }}"
             aria-label="object details"
           >
             {{ obj.name }}
           </a>
         </c-table.td>
-        <c-table.td data-header="{% translate 'kind' %}">
-          {% if obj.is_leaf_node %}
-          <c-badge>{% translate 'child' %}</c-badge>
-          {% else %}
-          <c-badge theme="primary">{% translate 'parent' %}</c-badge>
-          {% endif %}
-        </c-table.td>
-        <c-table.td data-header="{% translate 'parent' %}">
-          {{ obj.parent_department }}
-        </c-table.td>
-        <c-table.td data-header="{% translate 'level' %}"> {{ obj.level }} </c-table.td>
+        <c-table.td data-header="{% translate 'depth' %}"> {{ obj.depth }} </c-table.td>
         <c-table.td data-header="{% translate 'cost center' %}">
           {% if perms.cost_centers.can_change %}
           <a
@@ -176,12 +164,6 @@
           <c-slot name="header"> {% translate 'filters'|title %} </c-slot>
           <c-slot name="body">
             <c-inputs.text :field="filter.form.name" />
-            <c-inputs.text :field="filter.form.kind" />
-            <c-inputs.text :field="filter.form.parent" />
-            <c-inputs.range-wrapper title="{% translate 'level' %}">
-              <c-inputs.text :show_label="False" :field="filter.form.level_from" />
-              <c-inputs.text :show_label="False" :field="filter.form.level_to" />
-            </c-inputs.range-wrapper>
             <c-inputs.text :field="filter.form.cost_center" />
             <c-inputs.text :field="filter.form.description" />
           </c-slot>

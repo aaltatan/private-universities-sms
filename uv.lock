@@ -348,30 +348,6 @@ xlsx = [
 ]
 
 [[package]]
-name = "django-js-asset"
-version = "3.1.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/99/b4/b2876bb954caa8f8802578271fce4b84c4b55e1bc6fb3d7d393c2cd28371/django_js_asset-3.1.0.tar.gz", hash = "sha256:b8855d9983174ea162c8fb2bfcb3c9ff559f373226554f196170c93f07597c3d", size = 9388 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a8/2c/ac508ecaf59f17b771555218608ce61fafbb7655d6011faa208e487e42e6/django_js_asset-3.1.0-py3-none-any.whl", hash = "sha256:2f71e1e3df9c33fdccd2d41a50214a649cce64a832b42e1df26a79135fd3e8bd", size = 5953 },
-]
-
-[[package]]
-name = "django-mptt"
-version = "0.16.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django-js-asset" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/06/58/11dcda841c5570cecab15d52362096e36bf61c0a7013df903e9747bc6a6c/django_mptt-0.16.0.tar.gz", hash = "sha256:56c9606bf0b329b5f5afd55dd8bfd073612ea1d5999b10903b09de62bee84c8e", size = 69886 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/45/27/61a39b0d716e52be2df7d9fed6e35fe10eb3faaf207cdfaac3f9f68ecb1a/django_mptt-0.16.0-py3-none-any.whl", hash = "sha256:8716849ba3318d94e2e100ed0923a05c1ffdf8195f8472b690dbaf737d2af3b5", size = 115934 },
-]
-
-[[package]]
 name = "django-silk"
 version = "5.3.2"
 source = { registry = "https://pypi.org/simple" }
@@ -384,6 +360,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5a/9f/ac0bf2f1bba661a9f8937bccd0b8dd93ba87b6b1ebbf3884981f5e27c2b0/django_silk-5.3.2.tar.gz", hash = "sha256:b0db54eebedb8d16f572321bd6daccac0bd3f547ae2618bb45d96fe8fc02229d", size = 4493706 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/03/4d/92872928197099aefad0a3e4a055e6c22295e7770dd7b3388a6f2909c95c/django_silk-5.3.2-py3-none-any.whl", hash = "sha256:49f1caebfda28b1707f0cfef524e0476beb82b8c5e40f5ccff7f73a6b4f6d3ac", size = 1943114 },
+]
+
+[[package]]
+name = "django-treebeard"
+version = "4.7.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/bb/24/eaccbce17355380cb3a8fe6ad92a85b76453dc1f0ecd04f48bfe8929065b/django-treebeard-4.7.1.tar.gz", hash = "sha256:846e462904b437155f76e04907ba4e48480716855f88b898df4122bdcfbd6e98", size = 294139 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/87/79/259966820614746cc4d81762edf97a53bf1e3b8e74797c010d310c6f4a8f/django_treebeard-4.7.1-py3-none-any.whl", hash = "sha256:995c7120153ab999898fe3043bbdcd8a0fc77cc106eb94de7350e9d02c885135", size = 93210 },
 ]
 
 [[package]]
@@ -704,8 +692,8 @@ dependencies = [
     { name = "django-filter" },
     { name = "django-htmx" },
     { name = "django-import-export", extra = ["xlsx"] },
-    { name = "django-mptt" },
     { name = "django-silk" },
+    { name = "django-treebeard" },
     { name = "django-widget-tweaks" },
     { name = "djangoql" },
     { name = "djangorestframework" },
@@ -740,8 +728,8 @@ requires-dist = [
     { name = "django-filter", specifier = ">=24.3" },
     { name = "django-htmx", specifier = ">=1.21.0" },
     { name = "django-import-export", extras = ["xlsx"], specifier = ">=4.3.3" },
-    { name = "django-mptt", specifier = ">=0.16.0" },
     { name = "django-silk", specifier = ">=5.3.2" },
+    { name = "django-treebeard", specifier = ">=4.7.1" },
     { name = "django-widget-tweaks", specifier = ">=1.5.0" },
     { name = "djangoql", specifier = ">=0.18.1" },
     { name = "djangorestframework", specifier = ">=3.15.2" },

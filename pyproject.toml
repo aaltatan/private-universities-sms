@@ -21,7 +21,7 @@ dependencies = [
     "djangorestframework-simplejwt[crypto]>=5.3.1",
     "python-decouple>=3.8",
     "django-silk>=5.3.2",
-    "django-mptt>=0.16.0",
+    "django-treebeard>=4.7.1",
 ]
 
 [dependency-groups]

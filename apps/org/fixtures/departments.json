@@ -1,512 +1,418 @@
 [
   {
     "model": "org.department",
-    "pk": 25,
+    "pk": 3,
     "fields": {
       "name": "رئاسة الجامعة",
       "description": "",
       "slug": "رئاسة-الجامعة",
-      "parent": null,
-      "cost_center": 1,
-      "left": 1,
-      "right": 50,
-      "tree_id": 1,
-      "level": 0
+      "path": "0007",
+      "depth": 1,
+      "numchild": 17,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 4,
+    "fields": {
+      "name": "مديرية الموارد البشرية",
+      "description": "",
+      "slug": "مديرية-الموارد-البشرية",
+      "path": "0007000Z",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 5,
+    "fields": {
+      "name": "مديرية الشؤون المالية",
+      "description": "",
+      "slug": "مديرية-الشؤون-المالية",
+      "path": "0007000Y",
+      "depth": 2,
+      "numchild": 5,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 8,
+    "fields": {
+      "name": "الصندوق",
+      "description": "",
+      "slug": "الصندوق",
+      "path": "0007000Y000A",
+      "depth": 3,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 9,
+    "fields": {
+      "name": "قسم التدقيق",
+      "description": "",
+      "slug": "قسم-التدقيق",
+      "path": "0007000Y0009",
+      "depth": 3,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 10,
+    "fields": {
+      "name": "مكتب رئيس الجامعة",
+      "description": "",
+      "slug": "مكتب-رئيس-الجامعة",
+      "path": "0007000X",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 11,
+    "fields": {
+      "name": "مكتب نائب رئيس الجامعة للشؤون العلمية",
+      "description": "",
+      "slug": "مكتب-نائب-رئيس-الجامعة-للشؤون-العلمية",
+      "path": "0007000W",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 12,
+    "fields": {
+      "name": "مكتب نائب رئيس الجامعة للشؤون الادارية",
+      "description": "",
+      "slug": "مكتب-نائب-رئيس-الجامعة-للشؤون-الادارية",
+      "path": "0007000V",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 13,
+    "fields": {
+      "name": "مكتب رئيس مجلس الأمناء",
+      "description": "",
+      "slug": "مكتب-رئيس-مجلس-الأمناء",
+      "path": "0007000U",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 14,
+    "fields": {
+      "name": "المكتب الهندسي",
+      "description": "",
+      "slug": "المكتب-الهندسي",
+      "path": "0007000T",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 15,
+    "fields": {
+      "name": "مديرية نظم المعلومات",
+      "description": "",
+      "slug": "مديرية-نظم-المعلومات",
+      "path": "0007000S",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 16,
+    "fields": {
+      "name": "مديرية الإعلام والإعلان",
+      "description": "",
+      "slug": "مديرية-الإعلام-والإعلان",
+      "path": "0007000R",
+      "depth": 2,
+      "numchild": 3,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 17,
+    "fields": {
+      "name": "الاعلام والاعلان",
+      "description": "",
+      "slug": "الاعلام-والاعلان",
+      "path": "0007000R0006",
+      "depth": 3,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 18,
+    "fields": {
+      "name": "الموقع الالكتروني",
+      "description": "",
+      "slug": "الموقع-الالكتروني",
+      "path": "0007000R0005",
+      "depth": 3,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 19,
+    "fields": {
+      "name": "العلاقات العامة",
+      "description": "",
+      "slug": "العلاقات-العامة",
+      "path": "0007000R0004",
+      "depth": 3,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 20,
+    "fields": {
+      "name": "قسم الرواتب والنفقات",
+      "description": "",
+      "slug": "قسم-الرواتب-والنفقات",
+      "path": "0007000Y0008",
+      "depth": 3,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 21,
+    "fields": {
+      "name": "محاسبة الطلبة",
+      "description": "",
+      "slug": "محاسبة-الطلبة",
+      "path": "0007000Y0007",
+      "depth": 3,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 22,
+    "fields": {
+      "name": "المستودع المركزي",
+      "description": "",
+      "slug": "المستودع-المركزي",
+      "path": "0007000Y0006",
+      "depth": 3,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 23,
+    "fields": {
+      "name": "المكتبة المركزية",
+      "description": "",
+      "slug": "المكتبة-المركزية",
+      "path": "0007000Q",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 24,
+    "fields": {
+      "name": "قسم الحراسة",
+      "description": "",
+      "slug": "قسم-الحراسة",
+      "path": "0007000P",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
+    }
+  },
+  {
+    "model": "org.department",
+    "pk": 25,
+    "fields": {
+      "name": "قسم الزراعة",
+      "description": "",
+      "slug": "قسم-الزراعة",
+      "path": "0007000O",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
     }
   },
   {
     "model": "org.department",
     "pk": 26,
     "fields": {
-      "name": "كلية هندسة العمارة والتخطيط العمراني",
+      "name": "قسم الأنشطة الطلابية",
       "description": "",
-      "slug": "كلية-هندسة-العمارة-والتخطيط-العمراني",
-      "parent": null,
-      "cost_center": 2,
-      "left": 1,
-      "right": 2,
-      "tree_id": 7,
-      "level": 0
+      "slug": "قسم-الأنشطة-الطلابية",
+      "path": "0007000N",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
     }
   },
   {
     "model": "org.department",
     "pk": 27,
     "fields": {
-      "name": "كلية الهندسة",
+      "name": "قسم الجودة والاعتمادية",
       "description": "",
-      "slug": "كلية-الهندسة",
-      "parent": null,
-      "cost_center": 3,
-      "left": 1,
-      "right": 2,
-      "tree_id": 7,
-      "level": 0
+      "slug": "قسم-الجودة-والاعتمادية",
+      "path": "0007000M",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
     }
   },
   {
     "model": "org.department",
     "pk": 28,
     "fields": {
-      "name": "كلية العلوم الإدارية والمالية",
+      "name": "مديرية شؤون الطلاب",
       "description": "",
-      "slug": "كلية-العلوم-الإدارية-والمالية",
-      "parent": null,
-      "cost_center": 4,
-      "left": 1,
-      "right": 2,
-      "tree_id": 7,
-      "level": 0
+      "slug": "مديرية-شؤون-الطلاب",
+      "path": "0007000L",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
     }
   },
   {
     "model": "org.department",
     "pk": 29,
     "fields": {
-      "name": "كلية طب الأسنان",
+      "name": "مديرية الامتحانات",
       "description": "",
-      "slug": "كلية-طب-الأسنان",
-      "parent": null,
-      "cost_center": 5,
-      "left": 1,
-      "right": 2,
-      "tree_id": 7,
-      "level": 0
+      "slug": "مديرية-الامتحانات",
+      "path": "0007000K",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
     }
   },
   {
     "model": "org.department",
     "pk": 30,
     "fields": {
-      "name": "كلية الصيدلة",
+      "name": "قسم التمريض",
       "description": "",
-      "slug": "كلية-الصيدلة",
-      "parent": null,
-      "cost_center": 6,
-      "left": 1,
-      "right": 2,
-      "tree_id": 2,
-      "level": 0
+      "slug": "قسم-التمريض",
+      "path": "0007000J",
+      "depth": 2,
+      "numchild": 0,
+      "cost_center": 1
     }
   },
   {
     "model": "org.department",
     "pk": 31,
     "fields": {
-      "name": "كلية الهندسة المدنية",
+      "name": "كلية العلوم الإدارية والمالية",
       "description": "",
-      "slug": "كلية-الهندسة-المدنية",
-      "parent": null,
-      "cost_center": 7,
-      "left": 1,
-      "right": 2,
-      "tree_id": 6,
-      "level": 0
+      "slug": "كلية-العلوم-الإدارية-والمالية",
+      "path": "0006",
+      "depth": 1,
+      "numchild": 0,
+      "cost_center": 4
     }
   },
   {
     "model": "org.department",
     "pk": 32,
     "fields": {
-      "name": "مكتب رئيس الجامعة",
+      "name": "كلية طب الأسنان",
       "description": "",
-      "slug": "مكتب-رئيس-الجامعة",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 44,
-      "right": 45,
-      "tree_id": 1,
-      "level": 1
+      "slug": "كلية-طب-الأسنان",
+      "path": "0005",
+      "depth": 1,
+      "numchild": 0,
+      "cost_center": 5
     }
   },
   {
     "model": "org.department",
     "pk": 33,
     "fields": {
-      "name": "الموارد البشرية",
+      "name": "كلية الصيدلة",
       "description": "",
-      "slug": "الموارد-البشرية",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 34,
-      "right": 35,
-      "tree_id": 1,
-      "level": 1
+      "slug": "كلية-الصيدلة",
+      "path": "0004",
+      "depth": 1,
+      "numchild": 0,
+      "cost_center": 6
     }
   },
   {
     "model": "org.department",
     "pk": 34,
     "fields": {
-      "name": "البوفيه",
+      "name": "كلية الهندسة المدنية",
       "description": "",
-      "slug": "البوفيه",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 20,
-      "right": 21,
-      "tree_id": 1,
-      "level": 1
+      "slug": "كلية-الهندسة-المدنية",
+      "path": "0003",
+      "depth": 1,
+      "numchild": 0,
+      "cost_center": 7
     }
   },
   {
     "model": "org.department",
     "pk": 35,
     "fields": {
-      "name": "مكتب نائب رئيس الجامعة للشؤون العلمية",
+      "name": "كلية هندسة العمارة والتخطيط العمراني",
       "description": "",
-      "slug": "مكتب-نائب-رئيس-الجامعة-للشؤون-العلمية",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 48,
-      "right": 49,
-      "tree_id": 1,
-      "level": 1
+      "slug": "كلية-هندسة-العمارة-والتخطيط-العمراني",
+      "path": "0002",
+      "depth": 1,
+      "numchild": 0,
+      "cost_center": 1
     }
   },
   {
     "model": "org.department",
     "pk": 36,
     "fields": {
-      "name": "مكتب نائب رئيس الجامعة للشؤون الإدارية",
+      "name": "كلية الهندسة المعلوماتية",
       "description": "",
-      "slug": "مكتب-نائب-رئيس-الجامعة-للشؤون-الإدارية",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 46,
-      "right": 47,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 37,
-    "fields": {
-      "name": "المكتب الهندسي",
-      "description": "",
-      "slug": "المكتب-الهندسي",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 30,
-      "right": 31,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 38,
-    "fields": {
-      "name": "مديرية الاعلام والاعلان",
-      "description": "",
-      "slug": "مديرية-الاعلام-والاعلان",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 18,
-      "right": 23,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 39,
-    "fields": {
-      "name": "مديرية نظم المعلومات",
-      "description": "",
-      "slug": "مديرية-نظم-المعلومات",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 40,
-      "right": 41,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 40,
-    "fields": {
-      "name": "الموقع الالكتروني",
-      "description": "",
-      "slug": "الموقع-الالكتروني",
-      "parent": 38,
-      "cost_center": 1,
-      "left": 21,
-      "right": 22,
-      "tree_id": 1,
-      "level": 2
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 41,
-    "fields": {
-      "name": "العلاقات العامة",
-      "description": "",
-      "slug": "العلاقات-العامة",
-      "parent": 38,
-      "cost_center": 1,
-      "left": 19,
-      "right": 20,
-      "tree_id": 1,
-      "level": 2
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 42,
-    "fields": {
-      "name": "الحراسة",
-      "description": "",
-      "slug": "الحراسة",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 24,
-      "right": 25,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 43,
-    "fields": {
-      "name": "الزراعة",
-      "description": "",
-      "slug": "الزراعة",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 28,
-      "right": 29,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 44,
-    "fields": {
-      "name": "الأنشطة الطلابية",
-      "description": "",
-      "slug": "الأنشطة-الطلابية",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 18,
-      "right": 19,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 45,
-    "fields": {
-      "name": "مديرية الشؤون المالية",
-      "description": "",
-      "slug": "مديرية-الشؤون-المالية",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 2,
-      "right": 17,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 46,
-    "fields": {
-      "name": "الصندوق",
-      "description": "",
-      "slug": "الصندوق",
-      "parent": 45,
-      "cost_center": 1,
-      "left": 7,
-      "right": 8,
-      "tree_id": 1,
-      "level": 2
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 47,
-    "fields": {
-      "name": "الرواتب والنفقات",
-      "description": "",
-      "slug": "الرواتب-والنفقات",
-      "parent": 45,
-      "cost_center": 1,
-      "left": 5,
-      "right": 6,
-      "tree_id": 1,
-      "level": 2
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 48,
-    "fields": {
-      "name": "التدقيق",
-      "description": "",
-      "slug": "التدقيق",
-      "parent": 45,
-      "cost_center": 1,
-      "left": 3,
-      "right": 4,
-      "tree_id": 1,
-      "level": 2
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 49,
-    "fields": {
-      "name": "محاسبة الطلبة",
-      "description": "",
-      "slug": "محاسبة-الطلبة",
-      "parent": 45,
-      "cost_center": 1,
-      "left": 11,
-      "right": 12,
-      "tree_id": 1,
-      "level": 2
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 50,
-    "fields": {
-      "name": "المستودع المركزي",
-      "description": "",
-      "slug": "المستودع-المركزي",
-      "parent": 45,
-      "cost_center": 1,
-      "left": 9,
-      "right": 10,
-      "tree_id": 1,
-      "level": 2
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 51,
-    "fields": {
-      "name": "مستودع المواد الطبية",
-      "description": "",
-      "slug": "مستودع-المواد-الطبية",
-      "parent": 45,
-      "cost_center": 1,
-      "left": 15,
-      "right": 16,
-      "tree_id": 1,
-      "level": 2
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 52,
-    "fields": {
-      "name": "مستودع المواد التالفة",
-      "description": "",
-      "slug": "مستودع-المواد-التالفة",
-      "parent": 45,
-      "cost_center": 1,
-      "left": 13,
-      "right": 14,
-      "tree_id": 1,
-      "level": 2
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 53,
-    "fields": {
-      "name": "مديرية شؤون الطلاب",
-      "description": "",
-      "slug": "مديرية-شؤون-الطلاب",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 38,
-      "right": 39,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 54,
-    "fields": {
-      "name": "مديرية الامتحانات",
-      "description": "",
-      "slug": "مديرية-الامتحانات",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 36,
-      "right": 37,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 55,
-    "fields": {
-      "name": "الديوان والنسخ",
-      "description": "",
-      "slug": "الديوان-والنسخ",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 26,
-      "right": 27,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 56,
-    "fields": {
-      "name": "المكتبة المركزية",
-      "description": "",
-      "slug": "المكتبة-المركزية",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 32,
-      "right": 33,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 57,
-    "fields": {
-      "name": "مكتب تتبع الخريجين",
-      "description": "",
-      "slug": "مكتب-تتبع-الخريجين",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 42,
-      "right": 43,
-      "tree_id": 1,
-      "level": 1
-    }
-  },
-  {
-    "model": "org.department",
-    "pk": 58,
-    "fields": {
-      "name": "الجودة والاعتمادية",
-      "description": "",
-      "slug": "الجودة-والاعتمادية",
-      "parent": 25,
-      "cost_center": 1,
-      "left": 22,
-      "right": 23,
-      "tree_id": 1,
-      "level": 1
+      "slug": "كلية-الهندسة-المعلوماتية",
+      "path": "0001",
+      "depth": 1,
+      "numchild": 0,
+      "cost_center": 3
     }
   }
 ]

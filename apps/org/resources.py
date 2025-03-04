@@ -77,38 +77,16 @@ class StatusResource(BaseResource):
 
 
 class DepartmentResource(BaseResource):
-    parent = fields.Field(
-        attribute="parent__name",
-        column_name=_("parent").title(),
-    )
     cost_center = fields.Field(
         attribute="cost_center__name",
         column_name=_("cost center").title(),
     )
-    kind = fields.Field(
-        attribute="kind",
-        column_name=_("kind").title(),
-    )
-    level = fields.Field(
-        attribute="level",
-        column_name=_("level").title(),
-    )
-
-    def dehydrate_name(self, obj: models.Department):
-        return obj.name.rjust(len(obj.name) + obj.get_level() * 4)
-
-    def dehydrate_kind(self, obj: models.Department):
-        kind = _("child") if obj.is_leaf_node() else _("parent")
-        return kind.title()
 
     class Meta:
         model = models.Department
         fields = (
             "serial",
             "name",
-            "kind",
-            "parent",
-            "level",
             "cost_center",
             "description",
             "slug",
