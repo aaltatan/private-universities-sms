@@ -51,7 +51,7 @@ class Department(AbstractUniqueNameModel, MPTTModel):
         level_attr = "level"
         left_attr = "left"
         right_attr = "right"
-        order_insertion_by = ["tree_id"]
+        order_insertion_by = ["name"]
 
     class Meta:
         icon = "rectangle-group"
