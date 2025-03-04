@@ -29,9 +29,9 @@ def get_apps_links(
         for object_name, model in sub_app.items():
             app_link = AppLink(
                 icon=getattr(model._meta, "icon", "star"),
-                text=getattr(model._meta, "title", "some app"),
+                text=getattr(model._meta, "verbose_name_plural", "some app"),
                 path=reverse_lazy(
-                    f"{model._meta.verbose_name_plural}:{view_name}",
+                    f"{model._meta.codename_plural}:{view_name}",
                 ),
                 perm=f"{app_label}.view_{object_name}",
             )

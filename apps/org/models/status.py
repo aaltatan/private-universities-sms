@@ -35,9 +35,10 @@ class Status(AbstractUniqueNameModel):
 
     class Meta:
         icon = "check-circle"
-        title = _("statuses")
         ordering = ("is_payable", "name")
-        verbose_name_plural = _("statuses")
+        codename_plural = "statuses"
+        verbose_name = _("status").title()
+        verbose_name_plural = _("statuses").title()
         permissions = (
             ("export_status", "Can export status"),
             ("view_activity_status", "Can view status activity"),

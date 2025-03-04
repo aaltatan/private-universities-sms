@@ -183,7 +183,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
                 "is_specialist": True,
                 "description": "google",
             },
-            {"name": ["specialization with this name already exists."]},
+            {"name": ["Specialization with this name already exists."]},
         ),
         (
             {

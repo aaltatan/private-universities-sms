@@ -49,9 +49,11 @@ class Governorate(AbstractUniqueNameModel):
     objects: GovernorateManager = GovernorateManager()
 
     class Meta:
-        title = _("governorates")
         icon = "home-modern"
         ordering = ("name",)
+        codename_plural = "governorates"
+        verbose_name = _("governorate").title()
+        verbose_name_plural = _("governorates").title()
         permissions = (
             ("export_governorate", "Can export governorate"),
             ("view_activity_governorate", "Can view governorate activity"),

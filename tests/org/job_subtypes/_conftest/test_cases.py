@@ -188,7 +188,7 @@ def export_test_cases(request: pytest.FixtureRequest):
                 "job_type": "محافظة حمص",
                 "description": "google",
             },
-            ["Job subtype with this Name already exists."],
+            ["Job Subtype with this Name already exists."],
         ),
         (
             {
@@ -269,7 +269,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
                 "job_type": 4,
                 "description": "google",
             },
-            {"name": ["job subtype with this name already exists."]},
+            {"name": ["Job Subtype with this name already exists."]},
         ),
         (
             {

@@ -34,9 +34,10 @@ class CostCenter(AbstractUniqueNameModel):
 
     class Meta:
         icon = "building-office-2"
-        title = _("cost centers")
         ordering = ("accounting_id", "name")
-        verbose_name_plural = "cost_centers"
+        codename_plural = "cost_centers"
+        verbose_name = _("cost center").title()
+        verbose_name_plural = _("cost centers").title()
         permissions = (
             ("export_costcenter", "Can export cost center"),
             ("view_activity_costcenter", "Can view cost center activity"),

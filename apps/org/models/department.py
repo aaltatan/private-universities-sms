@@ -55,7 +55,9 @@ class Department(AbstractUniqueNameModel, MPTTModel):
 
     class Meta:
         icon = "rectangle-group"
-        title = _("departments")
+        codename_plural = "departments"
+        verbose_name = _("department").title()
+        verbose_name_plural = _("departments").title()
         ordering = ("name",)
         permissions = (
             ("export_department", "Can export department"),

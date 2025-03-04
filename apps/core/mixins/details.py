@@ -7,7 +7,7 @@ class DetailsMixin:
     model: Model | None = None
 
     def get_verbose_name_plural(self) -> str:
-        return self.model._meta.verbose_name_plural
+        return self.model._meta.codename_plural
 
     def get_app_label(self) -> str:
         return self.model._meta.app_label

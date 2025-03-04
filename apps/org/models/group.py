@@ -25,7 +25,9 @@ class Group(AbstractUniqueNameModel):
 
     class Meta:
         icon = "user-group"
-        title = _("groups")
+        codename_plural = "groups"
+        verbose_name = _("group").title()
+        verbose_name_plural = _("groups").title()
         ordering = ("name",)
         permissions = (
             ("export_group", "Can export group"),

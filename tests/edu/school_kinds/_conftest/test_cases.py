@@ -136,7 +136,7 @@ def export_test_cases(request: pytest.FixtureRequest):
                 "is_virtual": False,
                 "description": "google",
             },
-            ["School kind with this Name already exists."],
+            ["School Kind with this Name already exists."],
         ),
         (
             {
@@ -145,7 +145,7 @@ def export_test_cases(request: pytest.FixtureRequest):
                 "description": "google",
             },
             [
-                "School kind with this Name already exists.",
+                "School Kind with this Name already exists.",
                 "This field is required.",
             ],
         ),
@@ -156,7 +156,7 @@ def export_test_cases(request: pytest.FixtureRequest):
                 "description": "google",
             },
             [
-                "School kind with this Name already exists.",
+                "School Kind with this Name already exists.",
                 "This field is required.",
             ],
         ),
@@ -225,7 +225,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
                 "is_virtual": False,
                 "description": "google",
             },
-            {"name": ["school kind with this name already exists."]},
+            {"name": ["School Kind with this name already exists."]},
         ),
         (
             {
@@ -235,7 +235,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
                 "description": "google",
             },
             {
-                "name": ["school kind with this name already exists."],
+                "name": ["School Kind with this name already exists."],
                 "is_governmental": ["Must be a valid boolean."],
                 "is_virtual": ["Must be a valid boolean."],
             },

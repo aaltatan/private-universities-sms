@@ -33,9 +33,10 @@ class City(AbstractUniqueNameModel):
 
     class Meta:
         icon = "home-modern"
-        title = _("cities")
         ordering = ("name",)
-        verbose_name_plural = "cities"
+        codename_plural = "cities"
+        verbose_name = _("city").title()
+        verbose_name_plural = _("cities").title()
         permissions = (
             ("export_city", "Can export city"),
             ("view_activity_city", "Can view city activity"),

@@ -186,7 +186,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         ),
         (
             {"name": "محافظة حماه", "description": "google"},
-            {"name": ["group with this name already exists."]},
+            {"name": ["Group with this name already exists."]},
         ),
     ],
 )

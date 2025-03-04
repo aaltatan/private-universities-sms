@@ -205,7 +205,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         ),
         (
             {"name": "محافظة حمص", "order": 1, "description": "google"},
-            {"name": ["position with this name already exists."]},
+            {"name": ["Position with this name already exists."]},
         ),
         (
             {"name": "محافظة gfasdasd", "order": "dasd", "description": "google"},

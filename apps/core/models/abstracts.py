@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 
 from ..validators import four_char_length_validator
 
-options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("icon", "title")
+options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("icon", "codename_plural")
 
 
 class AbstractUniqueNameModel(models.Model):
@@ -70,7 +70,7 @@ class AbstractUniqueNameModel(models.Model):
         )
 
     def __get_verbose_name_plural(self) -> str:
-        return self._meta.verbose_name_plural
+        return self._meta.codename_plural
 
     def __get_app_label(self) -> str:
         return self._meta.app_label

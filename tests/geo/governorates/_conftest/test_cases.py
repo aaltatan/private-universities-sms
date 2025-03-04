@@ -185,8 +185,8 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
             {"name": ["Ensure this field has no more than 255 characters."]},
         ),
         (
-            {"name": "محافظة حماه", "description": "google"},
-            {"name": ["governorate with this name already exists."]},
+            {"name": "محافظة حمص", "description": "google"},
+            {"name": ["Governorate with this name already exists."]},
         ),
     ],
 )

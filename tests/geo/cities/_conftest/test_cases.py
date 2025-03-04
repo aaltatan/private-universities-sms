@@ -269,7 +269,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
                 "governorate": 4,
                 "description": "google",
             },
-            {"name": ["city with this name already exists."]},
+            {"name": ["City with this name already exists."]},
         ),
         (
             {

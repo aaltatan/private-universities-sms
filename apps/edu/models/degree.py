@@ -40,7 +40,9 @@ class Degree(AbstractUniqueNameModel):
 
     class Meta:
         icon = "square-3-stack-3d"
-        title = _("degrees")
+        codename_plural = 'degrees'
+        verbose_name = _("degree").title()
+        verbose_name_plural = _("degrees").title()
         ordering = ("-is_academic", "order", "name")
         permissions = (
             ("export_degree", "Can export degree"),

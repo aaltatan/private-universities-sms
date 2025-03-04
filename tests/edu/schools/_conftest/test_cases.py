@@ -354,7 +354,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
                 "phone": "1234567890",
                 "description": "google",
             },
-            {"name": ["school with this name already exists."]},
+            {"name": ["School with this name already exists."]},
         ),
         (
             {
@@ -416,7 +416,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
             },
             {
                 "email": [
-                    "school with this email already exists.",
+                    "School with this email already exists.",
                 ]
             },
         ),
@@ -432,7 +432,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
             },
             {
                 "website": [
-                    "school with this website already exists.",
+                    "School with this website already exists.",
                 ]
             },
         ),

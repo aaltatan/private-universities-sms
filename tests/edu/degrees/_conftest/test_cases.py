@@ -250,7 +250,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
                 "is_academic": True,
                 "description": "google",
             },
-            {"name": ["degree with this name already exists."]},
+            {"name": ["Degree with this name already exists."]},
         ),
         (
             {

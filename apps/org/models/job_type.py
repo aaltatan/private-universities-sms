@@ -50,9 +50,10 @@ class JobType(AbstractUniqueNameModel):
 
     class Meta:
         icon = "briefcase"
-        title = _("job types")
+        codename_plural = "job_types"
+        verbose_name = _("job type").title()
+        verbose_name_plural = _("job types").title()
         ordering = ("name",)
-        verbose_name_plural = "job_types"
         permissions = (
             ("export_jobtype", "Can export job_type"),
             ("view_activity_jobtype", "Can view job_type activity"),

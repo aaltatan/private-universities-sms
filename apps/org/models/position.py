@@ -31,7 +31,9 @@ class Position(AbstractUniqueNameModel):
 
     class Meta:
         icon = "chevron-double-up"
-        title = _("positions")
+        codename_plural = "positions"
+        verbose_name = _("position").title()
+        verbose_name_plural = _("positions").title()
         ordering = ("order", "name")
         permissions = (
             ("export_position", "Can export position"),

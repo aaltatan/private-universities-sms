@@ -179,7 +179,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         ),
         (
             {"name": "Nationality 001", "description": "google"},
-            {"name": ["nationality with this name already exists."]},
+            {"name": ["Nationality with this name already exists."]},
         ),
         (
             {"name": "Nationality 3131", "is_local": "3123", "description": "google"},

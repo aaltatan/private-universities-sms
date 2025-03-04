@@ -50,9 +50,10 @@ class Nationality(AbstractUniqueNameModel):
 
     class Meta:
         icon = "globe-europe-africa"
-        title = _("nationalities")
         ordering = ("name",)
-        verbose_name_plural = "nationalities"
+        codename_plural = "nationalities"
+        verbose_name = _("nationality").title()
+        verbose_name_plural = _("nationalities").title()
         permissions = (
             ("export_nationality", "Can export nationality"),
             ("view_activity_nationality", "Can view nationality activity"),

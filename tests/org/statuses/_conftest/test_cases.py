@@ -179,7 +179,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         ),
         (
             {"name": "Status 001", "description": "google"},
-            {"name": ["status with this name already exists."]},
+            {"name": ["Status with this name already exists."]},
         ),
         (
             {"name": "Status 3131", "is_payable": "3123", "description": "google"},

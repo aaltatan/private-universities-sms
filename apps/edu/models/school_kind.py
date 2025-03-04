@@ -46,9 +46,10 @@ class SchoolKind(AbstractUniqueNameModel):
 
     class Meta:
         icon = "academic-cap"
-        title = _("schools kinds")
         ordering = ("name",)
-        verbose_name_plural = "school_kinds"
+        codename_plural = 'school_kinds'
+        verbose_name = _("school kind").title()
+        verbose_name_plural = _("school kinds").title()
         permissions = (
             ("export_schoolkind", "Can export school kind"),
             ("view_activity_schoolkind", "Can view school kind activity"),

@@ -35,7 +35,9 @@ class Specialization(AbstractUniqueNameModel):
 
     class Meta:
         icon = "rectangle-group"
-        title = _("specializations")
+        codename_plural = 'specializations'
+        verbose_name = _("specialization").title()
+        verbose_name_plural = _("specializations").title()
         ordering = ("-is_specialist", "name")
         permissions = (
             ("export_specialization", "Can export specialization"),

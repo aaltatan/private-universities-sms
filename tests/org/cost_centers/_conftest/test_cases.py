@@ -187,7 +187,7 @@ def models_data_test_cases(request: pytest.FixtureRequest):
                 "accounting_id": "758656",
                 "description": "google",
             },
-            ["Cost center with this Name already exists."],
+            ["Cost Center with this Name already exists."],
         ),
         (
             {
@@ -196,7 +196,7 @@ def models_data_test_cases(request: pytest.FixtureRequest):
                 "description": "google",
             },
             [
-                "Cost center with this Name already exists.",
+                "Cost Center with this Name already exists.",
                 "the field must be numeric.",
             ],
         ),
@@ -206,7 +206,7 @@ def models_data_test_cases(request: pytest.FixtureRequest):
                 "accounting_id": "2",
                 "description": "google",
             },
-            ["Cost center with this Cost center id already exists."],
+            ["Cost Center with this Cost center id already exists."],
         ),
     ],
 )
@@ -247,7 +247,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
                 "accounting_id": "1313",
                 "description": "google",
             },
-            {"name": ["cost center with this name already exists."]},
+            {"name": ["Cost Center with this name already exists."]},
         ),
         (
             {
@@ -257,7 +257,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
             },
             {
                 "accounting_id": [
-                    "cost center with this cost center id already exists."
+                    "Cost Center with this cost center id already exists."
                 ],
             },
         ),

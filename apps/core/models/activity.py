@@ -59,4 +59,6 @@ class Activity(models.Model):
 
     class Meta:
         ordering = ["-created_at", "kind"]
-        verbose_name_plural = "activities"
+        codename_plural = "activities"
+        verbose_name = _("activity")
+        verbose_name_plural = _("activities")

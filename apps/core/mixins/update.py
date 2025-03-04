@@ -282,7 +282,7 @@ class UpdateMixin(ABC):
         Returns the verbose name plural using the model.
         """
         model = self.get_model_class()
-        return model._meta.verbose_name_plural
+        return model._meta.codename_plural
 
     def get_app_label(self) -> str:
         """

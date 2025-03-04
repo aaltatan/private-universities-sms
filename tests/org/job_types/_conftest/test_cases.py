@@ -161,7 +161,7 @@ def models_data_test_cases(request: pytest.FixtureRequest):
         ),
         (
             {"name": "محافظة حمص", "description": "google"},
-            ["Job type with this Name already exists."],
+            ["Job Type with this Name already exists."],
         ),
     ],
 )
@@ -186,7 +186,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         ),
         (
             {"name": "محافظة حماه", "description": "google"},
-            {"name": ["job type with this name already exists."]},
+            {"name": ["Job Type with this name already exists."]},
         ),
     ],
 )
