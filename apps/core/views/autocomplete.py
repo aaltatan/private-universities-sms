@@ -1,13 +1,7 @@
-from django.core.exceptions import FieldError
-from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import FieldError
 from django.db.models import Model
-from django.http import (
-    HttpRequest,
-    HttpResponse,
-    HttpResponseForbidden,
-    JsonResponse,
-)
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 
@@ -25,11 +19,6 @@ class AutocompleteView(View):
             parser = AutocompleteRequestParser(request=request)
         except AttributeError as e:
             return HttpResponse(str(e), status=400)
-
-        has_permissions = self.has_permissions(parser)
-
-        if not has_permissions:
-            return HttpResponseForbidden()
 
         Model = self.get_model_class(parser=parser)
 
@@ -62,11 +51,6 @@ class AutocompleteView(View):
         except AttributeError as e:
             return HttpResponse(str(e), status=400)
 
-        has_permissions = self.has_permissions(parser=parser)
-
-        if not has_permissions:
-            return HttpResponseForbidden()
-
         Model = self.get_model_class(parser=parser)
 
         instance = get_object_or_404(Model, pk=pk)
@@ -75,12 +59,6 @@ class AutocompleteView(View):
             {
                 "value": getattr(instance, parser.label_field_name, None),
             }
-        )
-
-    def has_permissions(self, parser: AutocompleteRequestParser) -> bool:
-        view_perm = get_object_or_404(Permission, codename=f"view_{parser.object_name}")
-        return (
-            parser.request.user.has_perm(view_perm) and parser.request.user.is_superuser
         )
 
     def get_model_class(self, parser: AutocompleteRequestParser) -> type[Model] | None:

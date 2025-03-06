@@ -145,6 +145,7 @@ class AutocompleteRequestParser:
     field_name: str = field(init=False)
     label_field_name: str = field(init=False)
     term: str = field(init=False)
+    view_perm: str = field(init=False)
 
     def __post_init__(self):
         self.app_label = self.request.GET.get("app_label", "")
@@ -164,7 +165,7 @@ class AutocompleteRequestParser:
             raise AttributeError("field_name is required")
 
         self.label_field_name = self.request.GET.get("label_field_name", "pk")
-
+        self.view_perm = f"{self.app_label}.view_{self.object_name}"
         self.term = self.request.GET.get("term", "")
 
 
