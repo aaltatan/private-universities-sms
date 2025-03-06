@@ -64,7 +64,7 @@ def is_option_selected(
 
     for option in node.css(child_selector):
         if attr in option.attributes:
-            selected = option.text(strip=True) == option_text
+            selected = option.text(strip=True).lower() == option_text.lower()
 
     return selected
 

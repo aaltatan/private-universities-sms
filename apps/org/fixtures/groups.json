@@ -3,99 +3,460 @@
     "model": "org.group",
     "pk": 1,
     "fields": {
-      "name": "عضو هيئة ادارية",
+      "name": "مكتب رئيس الجامعة",
       "description": "",
-      "slug": "عضو-هيئة-ادارية"
+      "slug": "مكتب-رئيس-الجامعة",
+      "kind": "administrative"
     }
   },
   {
     "model": "org.group",
     "pk": 2,
     "fields": {
-      "name": "عضو هيئة فنية",
+      "name": "سكرتاريا",
       "description": "",
-      "slug": "عضو-هيئة-فنية"
+      "slug": "سكرتاريا",
+      "kind": "administrative"
     }
   },
   {
     "model": "org.group",
     "pk": 3,
     "fields": {
-      "name": "عضو هيئة تدريسية",
+      "name": "مكتب نائب رئيس الجامعة للشؤون العلمية",
       "description": "",
-      "slug": "عضو-هيئة-تدريسية"
+      "slug": "مكتب-نائب-رئيس-الجامعة-للشؤون-العلمية",
+      "kind": "administrative"
     }
   },
   {
     "model": "org.group",
     "pk": 4,
     "fields": {
-      "name": "عضو هيئة تعليمية",
+      "name": "مكتب نائب رئيس الجامعة للشؤون الإدارية",
       "description": "",
-      "slug": "عضو-هيئة-تعليمية"
+      "slug": "مكتب-نائب-رئيس-الجامعة-للشؤون-الإدارية",
+      "kind": "administrative"
     }
   },
   {
     "model": "org.group",
     "pk": 5,
     "fields": {
-      "name": "عامل ادارية",
+      "name": "مكتب رئيس مجلس الأمناء",
       "description": "",
-      "slug": "عامل-ادارية"
+      "slug": "مكتب-رئيس-مجلس-الأمناء",
+      "kind": "administrative"
     }
   },
   {
     "model": "org.group",
     "pk": 6,
     "fields": {
-      "name": "تغطية مقرر",
+      "name": "المكتب الهندسي",
       "description": "",
-      "slug": "تغطية-مقرر"
+      "slug": "المكتب-الهندسي",
+      "kind": "administrative"
     }
   },
   {
     "model": "org.group",
     "pk": 7,
     "fields": {
-      "name": "تحت التجربة",
+      "name": "مديرية الموارد البشرية",
       "description": "",
-      "slug": "تحت-التجربة"
+      "slug": "مديرية-الموارد-البشرية",
+      "kind": "administrative"
     }
   },
   {
     "model": "org.group",
     "pk": 8,
     "fields": {
-      "name": "متدرب",
+      "name": "البوفيه",
       "description": "",
-      "slug": "متدرب"
+      "slug": "البوفيه",
+      "kind": "administrative"
     }
   },
   {
     "model": "org.group",
     "pk": 9,
     "fields": {
-      "name": "فصل ثاني فقط",
+      "name": "مديرية الاعلام والاعلان",
       "description": "",
-      "slug": "فصل-ثاني-فقط"
+      "slug": "مديرية-الاعلام-والاعلان",
+      "kind": "administrative"
     }
   },
   {
     "model": "org.group",
     "pk": 10,
     "fields": {
-      "name": "فصل أول فقط",
+      "name": "الموقع الالكتروني",
       "description": "",
-      "slug": "فصل-أول-فقط"
+      "slug": "الموقع-الالكتروني",
+      "kind": "administrative"
     }
   },
   {
     "model": "org.group",
     "pk": 11,
     "fields": {
+      "name": "العلاقات العامة",
+      "description": "",
+      "slug": "العلاقات-العامة",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 12,
+    "fields": {
+      "name": "قسم التمريض",
+      "description": "",
+      "slug": "قسم-التمريض",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 13,
+    "fields": {
+      "name": "قسم الحراسة",
+      "description": "",
+      "slug": "قسم-الحراسة",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 14,
+    "fields": {
+      "name": "رئيس نوبة حرس",
+      "description": "",
+      "slug": "رئيس-نوبة-حرس",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 15,
+    "fields": {
+      "name": "الاستعلامات",
+      "description": "",
+      "slug": "الاستعلامات",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 16,
+    "fields": {
+      "name": "حارس",
+      "description": "",
+      "slug": "حارس",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 17,
+    "fields": {
+      "name": "قسم الزراعة",
+      "description": "",
+      "slug": "قسم-الزراعة",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 18,
+    "fields": {
+      "name": "مديرية نظم المعلومات",
+      "description": "",
+      "slug": "مديرية-نظم-المعلومات",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 19,
+    "fields": {
+      "name": "مديرية الشؤون المالية",
+      "description": "",
+      "slug": "مديرية-الشؤون-المالية",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 20,
+    "fields": {
+      "name": "قسم الرواتب والنفقات",
+      "description": "",
+      "slug": "قسم-الرواتب-والنفقات",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 21,
+    "fields": {
+      "name": "قسم التدقيق",
+      "description": "",
+      "slug": "قسم-التدقيق",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 22,
+    "fields": {
+      "name": "محاسبة الطلبة",
+      "description": "",
+      "slug": "محاسبة-الطلبة",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 23,
+    "fields": {
+      "name": "المستودع المركزي",
+      "description": "",
+      "slug": "المستودع-المركزي",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 24,
+    "fields": {
+      "name": "مستودع المواد الطبية",
+      "description": "",
+      "slug": "مستودع-المواد-الطبية",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 25,
+    "fields": {
+      "name": "مستودع المواد التالفة",
+      "description": "",
+      "slug": "مستودع-المواد-التالفة",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 26,
+    "fields": {
+      "name": "الصندوق المركزي",
+      "description": "",
+      "slug": "الصندوق-المركزي",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 27,
+    "fields": {
+      "name": "الجودة والاعتمادية",
+      "description": "",
+      "slug": "الجودة-والاعتمادية",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 28,
+    "fields": {
+      "name": "المشتريات",
+      "description": "",
+      "slug": "المشتريات",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 29,
+    "fields": {
+      "name": "مديرية الامتحانات",
+      "description": "",
+      "slug": "مديرية-الامتحانات",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 30,
+    "fields": {
+      "name": "مديرية شؤون الطلاب",
+      "description": "",
+      "slug": "مديرية-شؤون-الطلاب",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 34,
+    "fields": {
+      "name": "مكتبة كلية",
+      "description": "",
+      "slug": "مكتبة-كلية",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 35,
+    "fields": {
+      "name": "المكتبة المركزية",
+      "description": "",
+      "slug": "المكتبة-المركزية",
+      "kind": "administrative"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 37,
+    "fields": {
+      "name": "فصل أول فقط",
+      "description": "",
+      "slug": "فصل-أول-فقط",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 38,
+    "fields": {
+      "name": "فصل ثاني فقط",
+      "description": "",
+      "slug": "فصل-ثاني-فقط",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 39,
+    "fields": {
       "name": "فصل صيفي فقط",
       "description": "",
-      "slug": "فصل-صيفي-فقط"
+      "slug": "فصل-صيفي-فقط",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 40,
+    "fields": {
+      "name": "تغطية مقرر",
+      "description": "",
+      "slug": "تغطية-مقرر",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 41,
+    "fields": {
+      "name": "أربع ساعات",
+      "description": "",
+      "slug": "أربع-ساعات",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 42,
+    "fields": {
+      "name": "ستة ساعات",
+      "description": "",
+      "slug": "ستة-ساعات",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 43,
+    "fields": {
+      "name": "قسم التصميم العمراني",
+      "description": "",
+      "slug": "قسم-التصميم-العمراني",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 44,
+    "fields": {
+      "name": "قسم تخطيط المدن",
+      "description": "",
+      "slug": "قسم-تخطيط-المدن",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 45,
+    "fields": {
+      "name": "قسم هندسة الحاسوب",
+      "description": "",
+      "slug": "قسم-هندسة-الحاسوب",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 46,
+    "fields": {
+      "name": "قسم هندسة الاتصالات",
+      "description": "",
+      "slug": "قسم-هندسة-الاتصالات",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 47,
+    "fields": {
+      "name": "قسم الهندسة المعلوماتية",
+      "description": "",
+      "slug": "قسم-الهندسة-المعلوماتية",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 48,
+    "fields": {
+      "name": "قسم إدارة الاعمال",
+      "description": "",
+      "slug": "قسم-إدارة-الاعمال",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 49,
+    "fields": {
+      "name": "قسم التسويق",
+      "description": "",
+      "slug": "قسم-التسويق",
+      "kind": "academic"
+    }
+  },
+  {
+    "model": "org.group",
+    "pk": 50,
+    "fields": {
+      "name": "قسم المحاسبة",
+      "description": "",
+      "slug": "قسم-المحاسبة",
+      "kind": "academic"
     }
   }
 ]

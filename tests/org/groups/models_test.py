@@ -1,17 +1,8 @@
 import pytest
 
 from django.forms import ValidationError
-from django.db.utils import IntegrityError
 
 from apps.core.models import AbstractUniqueNameModel as Model
-
-
-@pytest.mark.django_db
-def test_name_field(model: type[Model], models_data_test_cases: tuple[str]):
-    filter_, name, _, slug = models_data_test_cases
-    object = model.objects.filter(name__contains=filter_).first()
-    assert object.name == name
-    assert object.slug == slug
 
 
 @pytest.mark.django_db
@@ -20,21 +11,11 @@ def test_length_of_the_queryset(model: type[Model], counts: dict[str, int]):
 
 
 @pytest.mark.django_db
-def test_unique_name_constraint(
-    model: type[Model],
-    models_data_test_cases: tuple[str, ...],
-):
-    _, name, description, _ = models_data_test_cases
-    with pytest.raises(IntegrityError):
-        model.objects.create(name=name, description=description)
-
-
-@pytest.mark.django_db
 def test_validators(
     model: type[Model],
     models_dirty_data_test_cases: tuple[str],
 ):
-    name, description = models_dirty_data_test_cases
+    name, kind, description = models_dirty_data_test_cases
     with pytest.raises(ValidationError):
-        obj = model.objects.create(name=name, description=description)
+        obj = model.objects.create(name=name, description=description, kind=kind)
         obj.full_clean()

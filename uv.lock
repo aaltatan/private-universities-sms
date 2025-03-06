@@ -363,18 +363,6 @@ wheels = [
 ]
 
 [[package]]
-name = "django-treebeard"
-version = "4.7.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/bb/24/eaccbce17355380cb3a8fe6ad92a85b76453dc1f0ecd04f48bfe8929065b/django-treebeard-4.7.1.tar.gz", hash = "sha256:846e462904b437155f76e04907ba4e48480716855f88b898df4122bdcfbd6e98", size = 294139 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/87/79/259966820614746cc4d81762edf97a53bf1e3b8e74797c010d310c6f4a8f/django_treebeard-4.7.1-py3-none-any.whl", hash = "sha256:995c7120153ab999898fe3043bbdcd8a0fc77cc106eb94de7350e9d02c885135", size = 93210 },
-]
-
-[[package]]
 name = "django-widget-tweaks"
 version = "1.5.0"
 source = { registry = "https://pypi.org/simple" }
@@ -693,7 +681,6 @@ dependencies = [
     { name = "django-htmx" },
     { name = "django-import-export", extra = ["xlsx"] },
     { name = "django-silk" },
-    { name = "django-treebeard" },
     { name = "django-widget-tweaks" },
     { name = "djangoql" },
     { name = "djangorestframework" },
@@ -729,7 +716,6 @@ requires-dist = [
     { name = "django-htmx", specifier = ">=1.21.0" },
     { name = "django-import-export", extras = ["xlsx"], specifier = ">=4.3.3" },
     { name = "django-silk", specifier = ">=5.3.2" },
-    { name = "django-treebeard", specifier = ">=4.7.1" },
     { name = "django-widget-tweaks", specifier = ">=1.5.0" },
     { name = "djangoql", specifier = ">=0.18.1" },
     { name = "djangorestframework", specifier = ">=3.15.2" },

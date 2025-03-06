@@ -35,9 +35,14 @@ class JobSubtypeResource(BaseResource):
 
 
 class GroupResource(BaseResource):
+    kind = fields.Field(
+        attribute="kind",
+        column_name=_("kind").title(),
+    )
+
     class Meta:
         model = models.Group
-        fields = ("serial", "name", "description", "slug")
+        fields = ("serial", "name", "kind", "description", "slug")
 
 
 class CostCenterResource(BaseResource):
@@ -74,20 +79,3 @@ class StatusResource(BaseResource):
     class Meta:
         model = models.Status
         fields = ("serial", "name", "is_payable", "description", "slug")
-
-
-class DepartmentResource(BaseResource):
-    cost_center = fields.Field(
-        attribute="cost_center__name",
-        column_name=_("cost center").title(),
-    )
-
-    class Meta:
-        model = models.Department
-        fields = (
-            "serial",
-            "name",
-            "cost_center",
-            "description",
-            "slug",
-        )

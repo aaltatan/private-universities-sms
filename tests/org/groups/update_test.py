@@ -10,7 +10,7 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import is_required_star_visible, is_template_used
+from tests.utils import is_option_selected, is_required_star_visible, is_template_used
 
 
 @pytest.mark.django_db
@@ -27,6 +27,7 @@ def test_update_page(
     h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
+    kind_select = form.css_first("select[name='kind']")
     description_input = form.css_first("textarea[name='description']")
     required_star = form.css_first("span[aria-label='required field']")
 
@@ -38,6 +39,7 @@ def test_update_page(
 
     assert "required" in name_input.attributes
     assert name_input.attributes["value"] == obj.name
+    assert is_option_selected(kind_select, obj.kind)
     assert description_input.text(strip=True) == obj.description
 
     assert required_star is not None
@@ -62,6 +64,7 @@ def test_update_form_with_clean_data(
         get_messages(request=response.wsgi_request),
     )
     name = clean_data_sample["name"]
+    kind = clean_data_sample["kind"]
     description = clean_data_sample["description"]
     obj = model.objects.get(id=1)
 
@@ -71,6 +74,7 @@ def test_update_form_with_clean_data(
     assert response.headers.get("Hx-redirect") == urls["index"] + querystring
     assert model.objects.count() == counts["objects"]
     assert obj.name == name
+    assert obj.kind == kind
     assert obj.description == description
 
 
@@ -109,6 +113,7 @@ def test_update_with_redirect_from_modal(
         get_messages(request=response.wsgi_request),
     )
     name = clean_data_sample["name"]
+    kind = clean_data_sample["kind"]
     description = clean_data_sample["description"]
 
     assert location.get("target") == f"#{subapp_label}-table"
@@ -120,6 +125,7 @@ def test_update_with_redirect_from_modal(
     obj = model.objects.get(id=1)
 
     assert obj.name == name
+    assert obj.kind == kind
     assert obj.description == description
 
 
@@ -153,6 +159,7 @@ def test_update_without_redirect_from_modal(
     response = admin_client.post(url, clean_data_sample, headers=headers)
     messages_list = list(get_messages(request=response.wsgi_request))
     name = clean_data_sample["name"]
+    kind = clean_data_sample["kind"]
     description = clean_data_sample["description"]
 
     assert response.headers.get("Hx-Location") is None
@@ -166,6 +173,7 @@ def test_update_without_redirect_from_modal(
     obj = model.objects.get(id=4)
 
     assert obj.name == name
+    assert obj.kind == kind
     assert obj.description == description
 
 
@@ -180,6 +188,7 @@ def test_update_object(
         path=f"{urls['api']}1/",
         data={
             "name": "Hamah",
+            "kind": "academic",
             "description": "some description",
         },
         headers=admin_headers,
@@ -189,6 +198,7 @@ def test_update_object(
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["name"] == first.name ==  "Hamah"
+    assert response.json()["kind"] == first.kind ==  "academic"
     assert response.json()["description"] == first.description == "some description"
 
 
@@ -211,4 +221,5 @@ def test_patch_object(
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["name"] == first.name
+    assert response.json()["kind"] == first.kind
     assert response.json()["description"] == first.description == "some description"

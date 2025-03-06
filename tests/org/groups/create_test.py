@@ -17,7 +17,6 @@ from tests.utils import is_required_star_visible, is_template_used
 @pytest.mark.django_db
 def test_create_page(
     admin_client: Client,
-    model: type[Model],
     templates: dict[str, str],
     urls: dict[str, str],
     subapp_label: str,
@@ -28,6 +27,7 @@ def test_create_page(
     h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
+    kind_select = form.css_first("select[name='kind']")
     description_input = form.css_first("textarea[name='description']")
 
     assert response.status_code == status.HTTP_200_OK
@@ -38,6 +38,7 @@ def test_create_page(
     assert form.attributes["id"] == f"{subapp_label}-form"
     
     assert name_input is not None
+    assert kind_select is not None
     assert is_required_star_visible(form, "name")
     assert description_input is not None
 
@@ -55,11 +56,11 @@ def test_create_objects(
     for idx in range(10_000, 10_000 + batch_size):
         response = api_client.post(
             path=urls["api"],
-            data={"name": f"City {idx}"},
+            data={"name": f"Group {idx}", "kind": "academic"},
             headers=admin_headers,
         )
         assert response.status_code == status.HTTP_201_CREATED
-        assert response.json()["name"] == f"City {idx}"
+        assert response.json()["name"] == f"Group {idx}"
 
     response: Response = api_client.get(
         path=urls["api"],
@@ -100,6 +101,7 @@ def test_create_new_object_with_save_and_add_another_btn(
     assert last_obj.pk == objects_count + 1
     assert last_obj.name == data["name"]
     assert last_obj.description == data["description"]
+    assert last_obj.kind == data["kind"]
     assert last_obj.slug == slugify(data["name"], allow_unicode=True)
 
     assert qs.count() == objects_count + 1

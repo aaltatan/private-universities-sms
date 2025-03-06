@@ -7,7 +7,7 @@ from ..constants import job_types as constants
 
 @admin.register(models.Group)
 class GroupAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ("id", "name", "slug")
+    list_display = ("id", "name", "kind", "slug")
     list_display_links = ("id", "name")
     search_fields = constants.SEARCH_FIELDS
     list_per_page = 20

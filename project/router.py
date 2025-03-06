@@ -13,7 +13,6 @@ from apps.org.views.job_types import APIViewSet as JobTypeAPIViewSet
 from apps.org.views.positions import APIViewSet as PositionAPIViewSet
 from apps.org.views.statuses import APIViewSet as StatusAPIViewSet
 from apps.org.views.cost_centers import APIViewSet as CostCenterAPIViewSet
-from apps.org.views.departments import APIViewSet as DepartmentAPIViewSet
 from apps.org.views.groups import APIViewSet as GroupAPIViewSet
 from apps.org.views.job_subtypes import APIViewSet as JobSubtypeAPIViewSet
 
@@ -31,7 +30,6 @@ router.register(r"org/groups", GroupAPIViewSet)
 router.register(r"org/cost-centers", CostCenterAPIViewSet)
 router.register(r"org/positions", PositionAPIViewSet)
 router.register(r"org/statuses", StatusAPIViewSet)
-router.register(r"org/departments", DepartmentAPIViewSet)
 # edu
 router.register(r"edu/school-kinds", SchoolKindAPIViewSet)
 router.register(r"edu/schools", SchoolAPIViewSet)

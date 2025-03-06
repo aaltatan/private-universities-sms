@@ -1,6 +1,5 @@
 from django import forms
 from django.utils.translation import gettext as _
-from treebeard.forms import movenodeform_factory
 
 from apps.core.fields import get_autocomplete_field
 from apps.core.widgets import (
@@ -45,7 +44,7 @@ class JobSubtypeForm(forms.ModelForm):
 class GroupForm(forms.ModelForm):
     class Meta:
         model = models.Group
-        fields = ("name", "description")
+        fields = ("name", "kind", "description")
         widgets = {
             "name": get_text_widget(placeholder=_("group name")),
             "description": get_textarea_widget(),
@@ -90,34 +89,5 @@ class StatusForm(forms.ModelForm):
         fields = ("name", "is_payable", "description")
         widgets = {
             "name": get_text_widget(placeholder=_("status name")),
-            "description": get_textarea_widget(),
-        }
-
-
-NodeForm = movenodeform_factory(models.Department)
-
-
-class DepartmentForm(NodeForm):
-    cost_center = get_autocomplete_field(
-        queryset=models.CostCenter.objects.all(),
-        to_field_name="name",
-        widget_attributes={"placeholder": _("search cost centers")},
-        app_label="org",
-        model_name="CostCenter",
-        object_name="costcenter",
-        field_name="search",
-    )
-
-    class Meta:
-        model = models.Department
-        fields = (
-            "name",
-            "cost_center",
-            "_position",
-            "_ref_node_id",
-            "description",
-        )
-        widgets = {
-            "name": get_text_widget(placeholder=_("job subtype name")),
             "description": get_textarea_widget(),
         }

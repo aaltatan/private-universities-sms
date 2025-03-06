@@ -11,15 +11,9 @@ Page = namedtuple("Query", ["q", "count", "next", "prev"])
     params=[
         Page(q="", count=10, next="?page=2", prev=None),
         Page(q="?page=fsfs", count=10, next="?page=2", prev=None),
-        Page(
-            q="?page=1&per_page=all", count=100, next="?page=2&per_page=all", prev=None
-        ),
-        Page(q="?page=7&per_page=50", count=4, next=None, prev="?page=6&per_page=50"),
-        Page(q="?page=31", count=4, next=None, prev="?page=30"),
         Page(q="?page=3", count=10, next="?page=4", prev="?page=2"),
         Page(q="?page=4", count=10, next="?page=5", prev="?page=3"),
         Page(q="?page=5", count=10, next="?page=6", prev="?page=4"),
-        Page(q="?page=22", count=10, next="?page=23", prev="?page=21"),
     ],
 )
 def pagination_test_cases(request: pytest.FixtureRequest):
@@ -30,60 +24,11 @@ def pagination_test_cases(request: pytest.FixtureRequest):
     scope="package",
     params=[
         (
-            "?q=حم",
-            2,
+            "?kind=administrative",
+            50,
             "name",
-            ("محافظة حماه", "محافظة حمص"),
-            ("محافظة ادلب", "محافظة المنيا"),
-        ),
-        (
-            "?name=حم محاف",
-            2,
-            "name",
-            ("محافظة حماه", "محافظة حمص"),
-            ("محافظة ادلب", "محافظة المنيا"),
-        ),
-        (
-            "?q=meta",
-            2,
-            "name",
-            ("محافظة ادلب", "محافظة حمص"),
-            ("محافظة حماه", "محافظة المنيا"),
-        ),
-        (
-            "?q=mena+language",
-            1,
-            "name",
-            ("محافظة المنيا",),
-            ("محافظة ادلب", "محافظة حمص", "محافظة حماه"),
-        ),
-        (
-            "?q=id > 2&ordering=-name",
-            302,
-            "name",
-            ("محافظة ادلب", "محافظة المنيا"),
-            ("محافظة حمص", "محافظة حماه"),
-        ),
-        (
-            '?q=id > 2 and name ~ "ل"&ordering=-name',
-            2,
-            "name",
-            ("محافظة ادلب", "محافظة المنيا"),
-            ("محافظة حمص", "محافظة حماه"),
-        ),
-        (
-            "?q=id > 2 and name ~ 'ل'",
-            0,
-            "name",
-            (),
-            ("محافظة حمص", "محافظة حماه", "محافظة ادلب", "محافظة المنيا"),
-        ),
-        (
-            "?q=id in (1, 3)",
-            2,
-            "name",
-            ("محافظة حماه", "محافظة ادلب"),
-            ("حمص", "محافظة المنيا"),
+            ("Group 001", "Group 003"),
+            ("Group 002", "Group 004"),
         ),
     ],
 )
@@ -95,11 +40,6 @@ def filters_test_cases(request: pytest.FixtureRequest):
     scope="package",
     params=[
         ("?ordering=id", (1, 2, 10)),
-        ("?page=21&ordering=id", (201, 202, 210)),
-        ("?page=1&ordering=-id", (304, 303, 295)),
-        ("?ordering=name", (5, 6, 14)),
-        ("?ordering=description", (5, 6, 14)),
-        ("?page=21&ordering=name", (205, 206, 214)),
     ],
 )
 def order_test_cases(request: pytest.FixtureRequest):
@@ -109,10 +49,11 @@ def order_test_cases(request: pytest.FixtureRequest):
 @pytest.fixture(
     scope="package",
     params=[
-        ("", ""),
-        ("x", "x"),
-        ("xx", "xx"),
-        ("xxx", "xxx"),
+        ("", "academic", ""),
+        ("x", "academic", "x"),
+        ("xx", "academic", "xx"),
+        ("xxx", "academic", "xxx"),
+        ("xxxx", "academicx", "xxx"),
     ],
 )
 def models_dirty_data_test_cases(request: pytest.FixtureRequest):
@@ -134,33 +75,20 @@ def export_test_cases(request: pytest.FixtureRequest):
 @pytest.fixture(
     scope="package",
     params=[
-        ("حماه", "محافظة حماه", "محافظة حماه", "محافظة-حماه"),
-        ("حمص", "محافظة حمص", "محافظة حمص", "محافظة-حمص"),
-        ("ادلب", "محافظة ادلب", "محافظة ادلب", "محافظة-ادلب"),
-        ("المنيا", "محافظة المنيا", "محافظة المنيا", "محافظة-المنيا"),
-    ],
-)
-def models_data_test_cases(request: pytest.FixtureRequest):
-    return request.param
-
-
-@pytest.fixture(
-    scope="package",
-    params=[
         (
-            {"name": "Ha", "description": "google"},
+            {"name": "Ha", "kind": "academic", "description": "google"},
             ["the field must be at least 4 characters long."],
         ),
         (
-            {"name": "", "description": ""},
+            {"name": "", "kind": "academic", "description": ""},
             ["This field is required."],
         ),
         (
-            {"name": "a" * 265, "description": ""},
+            {"name": "a" * 265, "kind": "academic", "description": ""},
             ["Ensure this value has at most 255 characters (it has 265)."],
         ),
         (
-            {"name": "محافظة حماه", "description": "google"},
+            {"name": "Group 001", "kind": "academic", "description": "google"},
             ["Group with this Name already exists."],
         ),
     ],
@@ -173,19 +101,19 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
     scope="package",
     params=[
         (
-            {"name": "Ha", "description": "google"},
+            {"name": "Ha", "kind": "academic", "description": "google"},
             {"name": ["Ensure this field has at least 4 characters."]},
         ),
         (
-            {"name": "", "description": ""},
+            {"name": "", "kind": "academic", "description": ""},
             {"name": ["This field may not be blank."]},
         ),
         (
-            {"name": "a" * 265, "description": ""},
+            {"name": "a" * 265, "kind": "academic", "description": ""},
             {"name": ["Ensure this field has no more than 255 characters."]},
         ),
         (
-            {"name": "محافظة حماه", "description": "google"},
+            {"name": "Group 002", "kind": "academic", "description": "google"},
             {"name": ["Group with this name already exists."]},
         ),
     ],

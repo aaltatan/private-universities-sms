@@ -11,7 +11,7 @@ from ..constants import groups as constants
 class BaseGroupFilter(BaseNameDescriptionFilter):
     class Meta:
         model = models.Group
-        fields = ("name", "description")
+        fields = ("name", "kind", "description")
 
 
 class APIGroupFilter(BaseGroupFilter):

@@ -21,6 +21,15 @@ class GroupManager(models.Manager):
 
 
 class Group(AbstractUniqueNameModel):
+    class KindChoices(models.TextChoices):
+        ACADEMIC = "academic", _("academic").title()
+        ADMINISTRATIVE = "administrative", _("administrative").title()
+
+    kind = models.CharField(
+        max_length=50,
+        choices=KindChoices.choices,
+        default=KindChoices.ADMINISTRATIVE,
+    )
     objects: GroupManager = GroupManager()
 
     class Meta:
@@ -28,7 +37,7 @@ class Group(AbstractUniqueNameModel):
         codename_plural = "groups"
         verbose_name = _("group").title()
         verbose_name_plural = _("groups").title()
-        ordering = ("name",)
+        ordering = ("kind", "name")
         permissions = (
             ("export_group", "Can export group"),
             ("view_activity_group", "Can view group activity"),

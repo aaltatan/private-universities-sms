@@ -9,6 +9,9 @@ from apps.core.utils import Deleter
 from apps.org.models import Group
 from tests.utils import reset_sequence
 
+from .factories import GroupFactory
+
+
 APP_LABEL = "org"
 SUBAPP_LABEL = "groups"
 MODEL_NAME = "Group"
@@ -42,18 +45,18 @@ def model() -> type[Model]:
 
 @pytest.fixture
 def api_keys() -> list[str]:
-    return ["id", "name", "description"]
+    return ["id", "name", "kind", "description"]
 
 
 @pytest.fixture
 def index_columns() -> list[str]:
-    return ["name", "description", "options"]
+    return ["name", "kind", "description", "options"]
 
 
 @pytest.fixture
 def counts() -> dict[str, int]:
     return {
-        "objects": 304,
+        "objects": 100,
         "bulk_delete_batch": 50,
     }
 
@@ -86,6 +89,7 @@ def templates() -> dict[str, str]:
 def clean_data_sample() -> dict[str, str]:
     return {
         "name": "محافظة دمشق",
+        "kind": "academic",
         "description": "دمشق",
     }
 
@@ -108,19 +112,7 @@ def custom_deleter():
 @pytest.fixture(scope="package", autouse=True)
 def create_objects(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
-        groups = [
-            {"name": "محافظة حماه", "description": "goo"},
-            {"name": "محافظة حمص", "description": "meta"},
-            {"name": "محافظة ادلب", "description": "meta"},
-            {"name": "محافظة المنيا", "description": "language mena"},
-        ]
-
-        for group in groups:
-            Group.objects.create(**group)
-
-        for idx in range(1, 301):
-            string = str(idx).rjust(3, "0")
-            Group.objects.create(name=f"City {string}", description=string)
+        GroupFactory.create_batch(100)
         yield
         Group.objects.all().delete()
         reset_sequence(Group)
