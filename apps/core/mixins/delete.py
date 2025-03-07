@@ -26,6 +26,9 @@ class DeleteMixin(ABC):
     def deleter(self) -> Deleter:
         pass
 
+    model: type[Model] | None = None
+    modal_template_name: str | None = None
+
     def __init__(self):
         if getattr(self, "deleter", None) is None:
             raise AttributeError(
@@ -140,7 +143,7 @@ class DeleteMixin(ABC):
         Returns the modal template name.
         Notes: you can use the *modal_template_name* attribute to override the default modal template name.
         """
-        if getattr(self, "modal_template_name", None):
+        if self.modal_template_name:
             return self.modal_template_name
         return "components/blocks/modals/delete.html"
 
@@ -148,7 +151,7 @@ class DeleteMixin(ABC):
         """
         Returns the model class.
         """
-        if getattr(self, "model", None) is not None:
+        if self.model:
             return self.model
 
         return self.activity_serializer.Meta.model

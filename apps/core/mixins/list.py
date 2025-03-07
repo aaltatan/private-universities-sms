@@ -46,6 +46,10 @@ class ListMixin(ABC):
     def get_actions(self) -> dict[str, Action]:
         pass
 
+    model: type[Model] | None = None
+    template_name: str | None = None
+    table_template_name: str | None = None
+
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
         Handles GET requests and returns a rendered template.
@@ -166,7 +170,7 @@ class ListMixin(ABC):
         """
         Returns the model class.
         """
-        if getattr(self, "model", None):
+        if self.model:
             return self.model
 
         return self.filter_class.Meta.model
@@ -176,7 +180,7 @@ class ListMixin(ABC):
         Returns the template name.
         Notes: you can use the *template_name* attribute to override the default template name.
         """
-        if getattr(self, "template_name", None):
+        if self.template_name:
             return self.template_name
 
         verbose_name_plural = self.get_verbose_name_plural()
@@ -189,11 +193,11 @@ class ListMixin(ABC):
         Returns the table template name.
         Notes: you can use the table_template_name attribute to override the default table template name.
         """
+        if self.table_template_name:
+            return self.table_template_name
+        
         verbose_name_plural = self.get_verbose_name_plural()
         app_label = self.get_app_label()
-
-        if getattr(self, "table_template_name", None):
-            return self.table_template_name
 
         return f"components/{app_label}/{verbose_name_plural}/table.html"
 
