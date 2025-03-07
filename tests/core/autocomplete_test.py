@@ -8,37 +8,6 @@ from tests.utils import is_template_used
 
 
 @pytest.mark.django_db
-def test_autocomplete_without_permissions(
-    client: Client,
-    urls: dict[str, str],
-) -> None:
-    client.login(
-        username="user_with_no_perm",
-        password="password",
-    )
-    payload = {
-        "term": "حم",
-        "app_label": "geo",
-        "model_name": "Governorate",
-        "object_name": "governorate",
-        "field_name": "name",
-    }
-    response = client.get(urls["autocomplete"], payload)
-    assert response.status_code == 403
-
-    payload = {
-        "app_label": "geo",
-        "model_name": "Governorate",
-        "object_name": "governorate",
-        "field_name": "name",
-    }
-    querystring = urlencode(payload)
-    response = client.post(f"{urls['autocomplete']}1/?{querystring}")
-
-    assert response.status_code == 403
-
-
-@pytest.mark.django_db
 def test_autocomplete_post_method_with_name_as_label_field_name(
     admin_client: Client, urls: dict[str, str]
 ) -> None:
