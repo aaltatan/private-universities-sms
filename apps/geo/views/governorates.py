@@ -72,7 +72,7 @@ class CityInline(InlineFormsetFactory):
     model = models.City
     form_class = forms.CityForm
     fields = ("name", "description")
-    extra = 5
+    extra = 0
 
     @classmethod
     def get_queryset(cls, obj: models.Governorate):
@@ -83,9 +83,9 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "geo.change_governorate"
     form_class = forms.GovernorateForm
     activity_serializer = serializers.GovernorateActivitySerializer
-    # inlines = {
-    #     "cities": CityInline,
-    # }
+    inlines = {
+        "cities": CityInline,
+    }
 
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):

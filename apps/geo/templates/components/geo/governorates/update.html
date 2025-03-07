@@ -13,8 +13,18 @@
     <c-inputs.text :field="form.name" />
     <c-inputs.text :field="form.description" />
   </div>
-  <div>
-    <div>{{ cities_formset.management_form }}</div>
+  <div x-data="formset">
+    <button @click.prevent="addNewForm">add</button>
+    <button @click.prevent="totalForms--">remove</button>
+    <div>
+      {% render_field cities_formset.management_form.TOTAL_FORMS x-model="totalForms" %}
+      <!--  -->
+      {{ cities_formset.management_form.INITIAL_FORMS }}
+      <!--  -->
+      {{ cities_formset.management_form.MIN_NUM_FORMS }}
+      <!--  -->
+      {{ cities_formset.management_form.MAX_NUM_FORMS }}
+    </div>
     <c-error.wrapper>
       {% for error in cities_formset.non_form_errors %}
       <c-error.error>{{ error }}</c-error.error>
@@ -68,3 +78,58 @@
   <c-inputs.text :field="form.description" />
 </c-forms.update>
 {% endif %}
+<table>
+  <c-table.tr :hide="True" id="empty-form" hx-disable="true">
+    <c-table.td :fixed="True" data-header="{% translate 'serial' %}"> __prefix__ </c-table.td>
+    <c-table.td data-header="{% translate 'name' %}">
+      {{ cities_formset.empty_form.id }}
+      <c-inputs.text
+        :show_help="False"
+        :show_label="False"
+        :field="cities_formset.empty_form.name"
+      />
+    </c-table.td>
+    <c-table.td data-header="{% translate 'description' %}">
+      <c-inputs.text
+        :show_help="False"
+        :show_label="False"
+        :field="cities_formset.empty_form.description"
+      />
+    </c-table.td>
+    {% if perms.geo.delete_city %}
+    <c-table.td :fixed="True" data-header="{% translate 'delete' %}">
+      <div class="relative flex items-center justify-center">
+        {% render_field cities_formset.empty_form.DELETE class="checkbox-input peer" %}
+        <!--  -->
+        {% heroicon_outline "check" class="checkbox-icon" %}
+      </div>
+    </c-table.td>
+    {% endif %}
+  </c-table.tr>
+</table>
+
+<script>
+  document.addEventListener("alpine:init", () => {
+    Alpine.data("formset", formset);
+  });
+  function formset(el) {
+    return {
+      totalForms: +"{{ cities_formset.management_form.INITIAL_FORMS.value }}",
+      addNewForm() {
+        this.totalForms++;
+        let emptyForm = document.getElementById("empty-form").cloneNode(true);
+        emptyForm.classList.remove("hidden");
+        emptyForm.removeAttribute("id");
+
+        // Update the form index in the empty form
+        let reg = /__prefix__/g;
+        emptyForm.innerHTML = emptyForm.innerHTML.replace(reg, this.totalForms - 1);
+
+        // Append the new form to the table
+        document.querySelector("tbody").appendChild(emptyForm);
+
+        // Increment the totalForms counter
+      },
+    };
+  }
+</script>

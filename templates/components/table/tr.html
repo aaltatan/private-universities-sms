@@ -1,4 +1,4 @@
-<c-vars :header="False" :striped="True" />
+<c-vars :header="False" :striped="True" :hide="False" />
 
 <tr
   class="{% if not header %}
@@ -15,7 +15,9 @@
     odd:dark:bg-black 
     odd:dark:has-checked:!bg-neutral-800 
   {% endif %}
-  {% endif %}"
+  {% endif %}
+  {% if hide %}hidden{% endif %}"
+  {{ attrs }}
 >
   {{ slot }}
 </tr>
