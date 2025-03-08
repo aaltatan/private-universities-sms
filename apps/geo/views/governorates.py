@@ -72,7 +72,6 @@ class CityInline(InlineFormsetFactory):
     model = models.City
     form_class = forms.CityForm
     fields = ("name", "description")
-    extra = 0
 
     @classmethod
     def get_queryset(cls, obj: models.Governorate):

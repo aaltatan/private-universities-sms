@@ -13,9 +13,26 @@
     <c-inputs.text :field="form.name" />
     <c-inputs.text :field="form.description" />
   </div>
-  <div x-data="formset">
-    <button @click.prevent="addNewForm">add</button>
-    <button @click.prevent="totalForms--">remove</button>
+  <div
+    x-data="{
+      totalForms: +'{{ cities_formset.management_form.TOTAL_FORMS.value }}',
+      addNewForm() {
+        let emptyForm = document.getElementById('empty-form').cloneNode(true);
+        let serialTd = emptyForm.querySelector(`td[data-header='serial']`);
+        emptyForm.classList.remove('hidden');
+        emptyForm.removeAttribute('id');
+        
+        let reg = /__prefix__/g;
+        serialTd.innerHTML = serialTd.innerHTML.replace(reg, this.totalForms + 1);
+        emptyForm.innerHTML = emptyForm.innerHTML.replace(reg, this.totalForms);
+
+        document.querySelector('tbody').appendChild(emptyForm);
+        emptyForm.querySelector(`input:not([type='hidden'], select)`).focus();
+
+        this.totalForms++;
+      },
+    }"
+  >
     <div>
       {% render_field cities_formset.management_form.TOTAL_FORMS x-model="totalForms" %}
       <!--  -->
@@ -65,6 +82,9 @@
         {% endfor %}
       </c-table.table>
     </c-table>
+    <div class="my-2">
+      <c-button @click.prevent="addNewForm" width="full">{% translate 'add new row' %}</c-button>
+    </div>
   </div>
 </c-forms.update>
 {% else %}
@@ -78,6 +98,7 @@
   <c-inputs.text :field="form.description" />
 </c-forms.update>
 {% endif %}
+
 <table>
   <c-table.tr :hide="True" id="empty-form" hx-disable="true">
     <c-table.td :fixed="True" data-header="{% translate 'serial' %}"> __prefix__ </c-table.td>
@@ -99,37 +120,14 @@
     {% if perms.geo.delete_city %}
     <c-table.td :fixed="True" data-header="{% translate 'delete' %}">
       <div class="relative flex items-center justify-center">
-        {% render_field cities_formset.empty_form.DELETE class="checkbox-input peer" %}
-        <!--  -->
-        {% heroicon_outline "check" class="checkbox-icon" %}
+        <c-button
+          theme="outline"
+          rounded="full"
+          icon="x-mark"
+          @click.prevent="$el.closest('tr').remove()"
+        />
       </div>
     </c-table.td>
     {% endif %}
   </c-table.tr>
 </table>
-
-<script>
-  document.addEventListener("alpine:init", () => {
-    Alpine.data("formset", formset);
-  });
-  function formset(el) {
-    return {
-      totalForms: +"{{ cities_formset.management_form.INITIAL_FORMS.value }}",
-      addNewForm() {
-        this.totalForms++;
-        let emptyForm = document.getElementById("empty-form").cloneNode(true);
-        emptyForm.classList.remove("hidden");
-        emptyForm.removeAttribute("id");
-
-        // Update the form index in the empty form
-        let reg = /__prefix__/g;
-        emptyForm.innerHTML = emptyForm.innerHTML.replace(reg, this.totalForms - 1);
-
-        // Append the new form to the table
-        document.querySelector("tbody").appendChild(emptyForm);
-
-        // Increment the totalForms counter
-      },
-    };
-  }
-</script>
