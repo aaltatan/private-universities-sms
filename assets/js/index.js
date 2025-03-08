@@ -13,6 +13,7 @@ import { alert } from "./src/alert";
 import { badge } from "./src/badge";
 import { contextMenu } from "./src/context-menu";
 import { autocomplete, combobox, date } from "./src/fields";
+import { formset } from "./src/formset";
 import { layout, sidebarLinks, theme } from "./src/layout";
 import { messages } from "./src/messages";
 import { tableCheckAll } from "./src/td-check-all";
@@ -36,6 +37,7 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("autocomplete", autocomplete);
   Alpine.data("date", date);
   Alpine.data("combobox", combobox);
+  Alpine.data("formset", formset);
 });
 
 Alpine.start();

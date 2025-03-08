@@ -83,7 +83,7 @@
           </a>
         </c-table.td>
         <c-table.td data-header="{% translate 'governorate' %}">
-          {% if perms.governorates.can_change %}
+          {% if perms.geo.change_governorate %}
           <a
             hx-get="{{ obj.governorate.get_update_url }}{% querystring %}"
             hx-target="#modal-container"

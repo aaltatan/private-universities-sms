@@ -14,77 +14,34 @@
     <c-inputs.text :field="form.description" />
   </div>
   <div
-    x-data="{
-      totalForms: +'{{ cities_formset.management_form.TOTAL_FORMS.value }}',
-      addNewForm() {
-        let emptyForm = document.getElementById('empty-form').cloneNode(true);
-        let serialTd = emptyForm.querySelector(`td[data-header='serial']`);
-        emptyForm.classList.remove('hidden');
-        emptyForm.removeAttribute('id');
-        
-        let reg = /__prefix__/g;
-        serialTd.innerHTML = serialTd.innerHTML.replace(reg, this.totalForms + 1);
-        emptyForm.innerHTML = emptyForm.innerHTML.replace(reg, this.totalForms);
-
-        document.querySelector('tbody').appendChild(emptyForm);
-        emptyForm.querySelector(`input:not([type='hidden'], select)`).focus();
-
-        this.totalForms++;
-      },
-    }"
+    x-data="formset({
+      totalForms: {{ cities_formset.management_form.TOTAL_FORMS.value }},
+      emptyFormId: 'cities-empty-form',
+    })"
   >
-    <div>
-      {% render_field cities_formset.management_form.TOTAL_FORMS x-model="totalForms" %}
-      <!--  -->
-      {{ cities_formset.management_form.INITIAL_FORMS }}
-      <!--  -->
-      {{ cities_formset.management_form.MIN_NUM_FORMS }}
-      <!--  -->
-      {{ cities_formset.management_form.MAX_NUM_FORMS }}
-    </div>
+    <c-geo.governorates.cities.management-form />
     <c-error.wrapper>
       {% for error in cities_formset.non_form_errors %}
       <c-error.error>{{ error }}</c-error.error>
       {% endfor %}
     </c-error.wrapper>
-    <c-table height="xs">
+    <c-table height="none">
       <c-table.table>
         <c-table.tr header="True">
-          <c-table.th> # </c-table.th>
           <c-table.th> {% translate 'name' %} </c-table.th>
           <c-table.th> {% translate 'description' %} </c-table.th>
-          {% if perms.geo.delete_city %}
           <c-table.th> {% translate 'delete' %} </c-table.th>
-          {% endif %}
         </c-table.tr>
         {% for form in cities_formset.forms %}
-        <c-table.tr>
-          <c-table.td :fixed="True" data-header="{% translate 'serial' %}">
-            {{ forloop.counter }}
-          </c-table.td>
-          <c-table.td data-header="{% translate 'name' %}">
-            {{ form.id }}
-            <c-inputs.text :show_help="False" :show_label="False" :field="form.name" />
-          </c-table.td>
-          <c-table.td data-header="{% translate 'description' %}">
-            <c-inputs.text :show_help="False" :show_label="False" :field="form.description" />
-          </c-table.td>
-          {% if perms.geo.delete_city %}
-          <c-table.td :fixed="True" data-header="{% translate 'delete' %}">
-            <div class="relative flex items-center justify-center">
-              {% render_field form.DELETE class="checkbox-input peer" %}
-              <!--  -->
-              {% heroicon_outline "check" class="checkbox-icon" %}
-            </div>
-          </c-table.td>
-          {% endif %}
-        </c-table.tr>
+        <c-geo.governorates.cities.inline :form="form" />
         {% endfor %}
       </c-table.table>
     </c-table>
+    {% if perms.geo.add_city %}
     <div class="my-2">
-      <c-button @click.prevent="addNewForm" width="full">{% translate 'add new row' %}</c-button>
+      <c-button @click.prevent="addNewForm" width="full">{% translate 'add new row' %} </c-button>
     </div>
+    {% endif %}
   </div>
 </c-forms.update>
 {% else %}
@@ -100,34 +57,9 @@
 {% endif %}
 
 <table>
-  <c-table.tr :hide="True" id="empty-form" hx-disable="true">
-    <c-table.td :fixed="True" data-header="{% translate 'serial' %}"> __prefix__ </c-table.td>
-    <c-table.td data-header="{% translate 'name' %}">
-      {{ cities_formset.empty_form.id }}
-      <c-inputs.text
-        :show_help="False"
-        :show_label="False"
-        :field="cities_formset.empty_form.name"
-      />
-    </c-table.td>
-    <c-table.td data-header="{% translate 'description' %}">
-      <c-inputs.text
-        :show_help="False"
-        :show_label="False"
-        :field="cities_formset.empty_form.description"
-      />
-    </c-table.td>
-    {% if perms.geo.delete_city %}
-    <c-table.td :fixed="True" data-header="{% translate 'delete' %}">
-      <div class="relative flex items-center justify-center">
-        <c-button
-          theme="outline"
-          rounded="full"
-          icon="x-mark"
-          @click.prevent="$el.closest('tr').remove()"
-        />
-      </div>
-    </c-table.td>
-    {% endif %}
-  </c-table.tr>
+  <c-geo.governorates.cities.inline
+    row_id="cities-empty-form"
+    :hide="True"
+    :form="cities_formset.empty_form"
+  />
 </table>

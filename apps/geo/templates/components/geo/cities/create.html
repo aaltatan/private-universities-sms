@@ -7,7 +7,7 @@
   :form="form"
 >
   <c-inputs.text :field="form.name" />
-  {% if perms.governorates.can_create %}
+  {% if perms.geo.add_governorate %}
   <c-inputs.text :field="form.governorate" :has_add="True">
     <c-button
       rounded="full"

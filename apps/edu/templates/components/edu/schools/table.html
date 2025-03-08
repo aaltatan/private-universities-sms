@@ -84,7 +84,7 @@
           </a>
         </c-table.td>
         <c-table.td data-header="{% translate 'kind' %}">
-          {% if perms.schools.can_change %}
+          {% if perms.edu.change_school %}
           <a
             hx-get="{{ obj.kind.get_update_url }}{% querystring %}"
             hx-target="#modal-container"
@@ -103,7 +103,7 @@
           {% endif %}
         </c-table.td>
         <c-table.td data-header="{% translate 'nationality' %}">
-          {% if perms.nationalities.can_change %}
+          {% if perms.geo.change_nationality %}
           <a
             hx-get="{{ obj.nationality.get_update_url }}{% querystring %}"
             hx-target="#modal-container"

@@ -1,0 +1,22 @@
+{% load i18n widget_tweaks %}
+
+<c-vars row_id="" :hide="False" />
+
+<c-table.tr :hide="{{ hide }}" :id="row_id" hx-disable="true">
+  <c-table.td data-header="{% translate 'name' %}">
+    {{ form.id }}
+    <c-inputs.text :show_help="False" :show_label="False" :field="form.name" />
+  </c-table.td>
+  <c-table.td data-header="{% translate 'description' %}">
+    <c-inputs.text :show_help="False" :show_label="False" :field="form.description" />
+  </c-table.td>
+  {% if perms.geo.delete_city %}
+  <c-table.td :fixed="True" data-header="{% translate 'delete' %}">
+    <div class="relative flex items-center justify-center">
+      {% render_field form.DELETE class="checkbox-input peer" %}
+      <!--  -->
+      {% heroicon_outline "check" class="checkbox-icon" %}
+    </div>
+  </c-table.td>
+  {% endif %}
+</c-table.tr>

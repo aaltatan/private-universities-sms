@@ -83,7 +83,7 @@
           </a>
         </c-table.td>
         <c-table.td data-header="{% translate 'job type' %}">
-          {% if perms.job_types.can_change %}
+          {% if perms.org.change_jobtype %}
           <a
             hx-get="{{ obj.job_type.get_update_url }}{% querystring %}"
             hx-target="#modal-container"

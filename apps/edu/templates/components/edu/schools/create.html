@@ -7,7 +7,7 @@
   :form="form"
 >
   <c-inputs.text :field="form.name" />
-  {% if perms.schools.can_create %}
+  {% if perms.edu.add_school %}
   <c-inputs.text :field="form.kind" :has_add="True">
     <c-button
       rounded="full"
@@ -24,7 +24,7 @@
   <c-inputs.text :field="form.kind" />
   {% endif %}
   <!--  -->
-  {% if perms.nationalities.can_create %}
+  {% if perms.geo.add_nationality %}
   <c-inputs.text :field="form.nationality" :has_add="True">
     <c-button
       rounded="full"
