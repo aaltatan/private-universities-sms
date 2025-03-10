@@ -1,9 +1,10 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.translation import gettext as _
+from rest_framework import serializers
 
+from apps.core import signals
 from apps.core.models import AbstractUniqueNameModel
-from apps.core.signals import slugify_name
 from apps.core.utils import annotate_search
 
 from ..constants import degrees as constants
@@ -40,7 +41,7 @@ class Degree(AbstractUniqueNameModel):
 
     class Meta:
         icon = "square-3-stack-3d"
-        codename_plural = 'degrees'
+        codename_plural = "degrees"
         verbose_name = _("degree").title()
         verbose_name_plural = _("degrees").title()
         ordering = ("-is_academic", "order", "name")
@@ -50,4 +51,11 @@ class Degree(AbstractUniqueNameModel):
         )
 
 
-pre_save.connect(slugify_name, sender=Degree)
+class ActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Degree
+        fields = ("name", "is_academic", "description")
+
+
+pre_save.connect(signals.slugify_name, sender=Degree)
+pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=Degree)

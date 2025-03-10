@@ -70,7 +70,6 @@ class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "geo.change_nationality"
     form_class = forms.NationalityForm
-    activity_serializer = serializers.NationalityActivitySerializer
 
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):

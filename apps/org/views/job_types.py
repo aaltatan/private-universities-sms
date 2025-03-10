@@ -70,7 +70,6 @@ class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "org.change_jobtype"
     form_class = forms.JobTypeForm
-    activity_serializer = serializers.JobTypeActivitySerializer
 
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):

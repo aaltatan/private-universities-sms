@@ -70,7 +70,6 @@ class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "edu.change_schoolkind"
     form_class = forms.SchoolKindForm
-    activity_serializer = serializers.SchoolKindActivitySerializer
 
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):

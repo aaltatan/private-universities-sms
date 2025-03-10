@@ -1,9 +1,10 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.translation import gettext as _
+from rest_framework import serializers
 
+from apps.core import signals
 from apps.core.models import AbstractUniqueNameModel
-from apps.core.signals import slugify_name
 from apps.core.utils import annotate_search
 from apps.geo.models import Nationality
 
@@ -65,7 +66,7 @@ class School(AbstractUniqueNameModel):
     class Meta:
         icon = "academic-cap"
         ordering = ("name",)
-        codename_plural = 'schools'
+        codename_plural = "schools"
         verbose_name = _("school").title()
         verbose_name_plural = _("schools").title()
         permissions = (
@@ -74,4 +75,14 @@ class School(AbstractUniqueNameModel):
         )
 
 
-pre_save.connect(slugify_name, sender=School)
+class ActivitySerializer(serializers.ModelSerializer):
+    nationality = serializers.CharField(source="nationality.name")
+    kind = serializers.CharField(source="kind.name")
+
+    class Meta:
+        model = School
+        fields = ("name", "nationality", "kind", "description")
+
+
+pre_save.connect(signals.slugify_name, sender=School)
+pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=School)

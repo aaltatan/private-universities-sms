@@ -1,9 +1,10 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.translation import gettext as _
+from rest_framework import serializers
 
 from apps.core.models import AbstractUniqueNameModel
-from apps.core.signals import slugify_name
+from apps.core import signals
 from apps.core.utils import annotate_search
 
 from ..constants import positions as constants
@@ -41,4 +42,12 @@ class Position(AbstractUniqueNameModel):
         )
 
 
-pre_save.connect(slugify_name, sender=Position)
+class ActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Position
+        fields = ("name", "order", "description")
+
+
+
+pre_save.connect(signals.slugify_name, sender=Position)
+pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=Position)

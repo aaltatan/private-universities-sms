@@ -1,9 +1,10 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.translation import gettext as _
+from rest_framework import serializers
 
+from apps.core import signals
 from apps.core.models import AbstractUniqueNameModel
-from apps.core.signals import slugify_name
 from apps.core.utils import annotate_search
 
 from ..constants import cities as constants
@@ -43,4 +44,13 @@ class City(AbstractUniqueNameModel):
         )
 
 
-pre_save.connect(slugify_name, sender=City)
+class ActivitySerializer(serializers.ModelSerializer):
+    governorate = serializers.CharField(source="governorate.name")
+
+    class Meta:
+        model = City
+        fields = ("name", "governorate", "description")
+
+
+pre_save.connect(signals.slugify_name, sender=City)
+pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=City)

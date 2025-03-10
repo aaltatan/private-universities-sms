@@ -1,9 +1,10 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.translation import gettext as _
+from rest_framework import serializers
 
+from apps.core import signals
 from apps.core.models import AbstractUniqueNameModel
-from apps.core.signals import slugify_name
 from apps.core.utils import annotate_search
 from apps.core.validators import numeric_validator
 
@@ -44,4 +45,11 @@ class CostCenter(AbstractUniqueNameModel):
         )
 
 
-pre_save.connect(slugify_name, sender=CostCenter)
+class ActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CostCenter
+        fields = ("name", "accounting_id", "description")
+
+
+pre_save.connect(signals.slugify_name, sender=CostCenter)
+pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=CostCenter)

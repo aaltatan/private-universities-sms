@@ -1,10 +1,11 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.translation import gettext as _
+from rest_framework import serializers
 
+from apps.core import signals
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.schemas import ReportSchema
-from apps.core.signals import slugify_name
 from apps.core.utils import annotate_search
 
 from ..constants import job_types as constants
@@ -60,4 +61,11 @@ class JobType(AbstractUniqueNameModel):
         )
 
 
-pre_save.connect(slugify_name, sender=JobType)
+class ActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobType
+        fields = ("name", "description")
+
+
+pre_save.connect(signals.slugify_name, sender=JobType)
+pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=JobType)

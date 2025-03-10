@@ -1,9 +1,10 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.translation import gettext as _
+from rest_framework import serializers
 
+from apps.core import signals
 from apps.core.models import AbstractUniqueNameModel
-from apps.core.signals import slugify_name
 from apps.core.utils import annotate_search
 
 from ..constants import statuses as constants
@@ -26,8 +27,8 @@ class Status(AbstractUniqueNameModel):
         NOT_PAYABLE = False, _("not payable").title()
 
     is_payable = models.BooleanField(
-        verbose_name=_('payable'),
-        help_text=_('payable'),
+        verbose_name=_("payable"),
+        help_text=_("payable"),
         default=True,
     )
 
@@ -45,4 +46,11 @@ class Status(AbstractUniqueNameModel):
         )
 
 
-pre_save.connect(slugify_name, sender=Status)
+class ActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Status
+        fields = ("name", "is_payable", "description")
+
+
+pre_save.connect(signals.slugify_name, sender=Status)
+pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=Status)

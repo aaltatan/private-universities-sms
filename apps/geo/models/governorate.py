@@ -1,10 +1,11 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.translation import gettext as _
+from rest_framework import serializers
 
+from apps.core import signals
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.schemas import ReportSchema
-from apps.core.signals import slugify_name
 from apps.core.utils import annotate_search
 
 from ..constants import governorates as constants
@@ -60,4 +61,11 @@ class Governorate(AbstractUniqueNameModel):
         )
 
 
-pre_save.connect(slugify_name, sender=Governorate)
+class ActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Governorate
+        fields = ("name", "description")
+
+
+pre_save.connect(signals.slugify_name, sender=Governorate)
+pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=Governorate)

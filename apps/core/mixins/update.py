@@ -3,19 +3,15 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 from django.contrib import messages
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.forms import BaseInlineFormSet, ModelForm
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
-from rest_framework.serializers import ModelSerializer
 
 from ..inline import InlineFormsetFactory
-from ..models import Activity
 from ..schemas import RequestParser
-from ..utils import get_differences
 
 
 class UpdateMixin(ABC):
@@ -26,11 +22,6 @@ class UpdateMixin(ABC):
     @property
     @abstractmethod
     def form_class(self) -> type[ModelForm]:
-        pass
-
-    @property
-    @abstractmethod
-    def activity_serializer(self) -> type[ModelSerializer]:
         pass
 
     template_name: str | None = None
@@ -70,8 +61,6 @@ class UpdateMixin(ABC):
         model = self.get_model_class()
         self.obj = get_object_or_404(model, slug=slug)
 
-        from_data: dict | list = self.activity_serializer(self.obj).data
-
         form = self.form_class(request.POST, instance=self.obj)
 
         formsets = []
@@ -99,7 +88,6 @@ class UpdateMixin(ABC):
                 request=request,
                 form=form,
                 request_parser=request_parser,
-                from_data=from_data,
                 formsets=formsets,
             )
 
@@ -114,7 +102,6 @@ class UpdateMixin(ABC):
         request: HttpRequest,
         form: type[ModelForm],
         request_parser: RequestParser,
-        from_data: dict | list,
         formsets: list[BaseInlineFormSet],
     ) -> HttpResponse:
         """
@@ -123,18 +110,6 @@ class UpdateMixin(ABC):
         obj = form.save()
         for formset in formsets:
             formset.save()
-
-        to_data: dict | list = self.activity_serializer(obj).data
-        differences = get_differences(from_data, to_data)
-
-        if differences:
-            Activity.objects.create(
-                user=request.user,
-                kind=Activity.KindChoices.UPDATE,
-                content_type=ContentType.objects.get_for_model(self.obj),
-                object_id=self.obj.pk,
-                data=differences,
-            )
 
         messages.success(
             request,

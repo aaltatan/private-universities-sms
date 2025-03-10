@@ -81,7 +81,6 @@ class CityInline(InlineFormsetFactory):
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "geo.change_governorate"
     form_class = forms.GovernorateForm
-    activity_serializer = serializers.GovernorateActivitySerializer
     # inlines = {
     #     "cities": CityInline,
     # }

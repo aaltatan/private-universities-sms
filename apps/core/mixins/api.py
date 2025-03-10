@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
 
 from ..models import Activity
-from ..utils import get_differences, Deleter
+from ..utils import Deleter
 
 
 class APIMixin(ABC):
@@ -51,23 +51,6 @@ class APIMixin(ABC):
                 {"details": deleter.get_message()},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-    def perform_update(self, serializer):
-        from_data = self.activity_serializer(serializer.instance).data
-        instance_after_update = serializer.save()
-        to_data = self.activity_serializer(instance_after_update).data
-
-        differences = get_differences(from_data, to_data)
-
-        Activity.objects.create(
-            user=self.request.user,
-            kind=Activity.KindChoices.UPDATE,
-            content_type=ContentType.objects.get_for_model(
-                instance_after_update,
-            ),
-            object_id=instance_after_update.pk,
-            data=differences,
-        )
 
     def perform_create(self, serializer):
         instance = serializer.save()
