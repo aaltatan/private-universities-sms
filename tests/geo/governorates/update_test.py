@@ -10,7 +10,7 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import is_required_star_visible, is_template_used
+from tests.utils import get_management_form, is_required_star_visible, is_template_used
 
 
 @pytest.mark.django_db
@@ -51,12 +51,16 @@ def test_update_form_with_clean_data(
     urls: dict[str, str],
     clean_data_sample: dict[str, str],
     counts: dict[str, int],
+    subapp_label: str,
 ):
     querystring = "?page=1&per_page=10&ordering=-id"
     obj = model.objects.get(id=1)
     url = obj.get_update_url() + querystring
 
     clean_data_sample["update"] = "true"
+    management_form = get_management_form(app_label="cities")
+    clean_data_sample = {**clean_data_sample, **management_form}
+
     response = admin_client.post(url, clean_data_sample)
     messages_list = list(
         get_messages(request=response.wsgi_request),

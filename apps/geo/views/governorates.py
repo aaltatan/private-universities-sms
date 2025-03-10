@@ -79,7 +79,7 @@ class CityInline(InlineFormsetFactory):
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "geo.change_governorate"
     form_class = forms.GovernorateForm
-    # inlines = (CityInline,)
+    inlines = (CityInline,)
 
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):

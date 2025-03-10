@@ -43,8 +43,6 @@ class UpdateMixin(ABC):
 
         template_name = self.get_template_name()
         formsets_context = self.get_formsets_context(self.obj)
-        print(f'{formsets_context=}')
-        print('#' * 100)
         context = self.get_context_data(**formsets_context)
 
         if request.htmx:
@@ -65,8 +63,14 @@ class UpdateMixin(ABC):
 
         form = self.form_class(request.POST, instance=self.obj)
 
+        request_parser = RequestParser(
+            request=request,
+            action="update",
+            index_url=self.get_app_urls()["index_url"],
+        )
+
         formsets = []
-        if self.inlines:
+        if self.inlines and not request_parser.is_modal_request:
             for inline_class in self.inlines:
                 inline: InlineFormsetFactory = inline_class()
                 qs = inline.get_queryset(self.obj)
@@ -80,11 +84,6 @@ class UpdateMixin(ABC):
                 )
                 formsets.append(formset)
 
-        request_parser = RequestParser(
-            request=request,
-            action="update",
-            index_url=self.get_app_urls()["index_url"],
-        )
         if form.is_valid() and all(formset.is_valid() for formset in formsets):
             return self.get_form_valid_response(
                 request=request,

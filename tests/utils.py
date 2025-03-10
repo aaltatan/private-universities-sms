@@ -5,6 +5,21 @@ from django.test import Client
 from selectolax.parser import HTMLParser, Node
 
 
+def get_management_form(
+    app_label: str,
+    initial_forms: int = 0,
+    total_forms: int = 0,
+    min_num_forms: int = 0,
+    max_num_forms: int = 1000,
+) -> dict[str, int]:
+    return {
+        f"{app_label}-INITIAL_FORMS": str(initial_forms),
+        f"{app_label}-TOTAL_FORMS": str(total_forms),
+        f"{app_label}-MIN_NUM_FORMS": str(min_num_forms),
+        f"{app_label}-MAX_NUM_FORMS": str(max_num_forms),
+    }
+
+
 def get_token_headers(client: Client, admin: bool = False) -> dict[str, str]:
     response = client.post(
         "/api/token/",
