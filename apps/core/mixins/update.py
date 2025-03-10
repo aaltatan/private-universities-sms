@@ -1,6 +1,6 @@
 import json
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Iterable
 
 from django.contrib import messages
 from django.db.models import Model
@@ -27,7 +27,7 @@ class UpdateMixin(ABC):
     template_name: str | None = None
     form_template_name: str | None = None
     form_modal_template_name: str | None = None
-    inlines: dict[str, InlineFormsetFactory] | None = None
+    inlines: Iterable[InlineFormsetFactory] | None = None
 
     def get(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
         """
@@ -43,6 +43,8 @@ class UpdateMixin(ABC):
 
         template_name = self.get_template_name()
         formsets_context = self.get_formsets_context(self.obj)
+        print(f'{formsets_context=}')
+        print('#' * 100)
         context = self.get_context_data(**formsets_context)
 
         if request.htmx:
@@ -65,7 +67,7 @@ class UpdateMixin(ABC):
 
         formsets = []
         if self.inlines:
-            for inline_class in self.inlines.values():
+            for inline_class in self.inlines:
                 inline: InlineFormsetFactory = inline_class()
                 qs = inline.get_queryset(self.obj)
                 Formset = inline.get_formset_class(
@@ -175,17 +177,14 @@ class UpdateMixin(ABC):
         context = {}
 
         if self.inlines:
-            for app_label, inline_class in self.inlines.items():
-                key = f"{app_label}_formset"
+            for inline_class in self.inlines:
 
                 extra: int | None = None
 
                 inline: InlineFormsetFactory = inline_class()
+                key = f"{inline.codename_plural}_formset"
 
-                add_permission = f"{inline.app_label}.add_{inline.object_name}"
-                change_permission = f"{inline.app_label}.change_{inline.object_name}"
-
-                if not self.request.user.has_perm(add_permission):
+                if not self.request.user.has_perm(inline.add_permission):
                     extra = 0
 
                 Formset = inline.get_formset_class(
@@ -194,12 +193,15 @@ class UpdateMixin(ABC):
                     extra=extra,
                 )
 
-                kwargs = {"instance": obj, "queryset": inline.get_queryset(obj)}
+                kwargs = {
+                    "instance": obj,
+                    "queryset": inline.get_queryset(obj),
+                }
 
                 if include_data:
                     kwargs["data"] = self.request.POST
 
-                if self.request.user.has_perm(change_permission):
+                if self.request.user.has_perm(inline.change_permission):
                     context[key] = Formset(**kwargs)
 
         return context

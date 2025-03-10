@@ -32,8 +32,20 @@ class InlineFormsetFactory(ABC):
         return self.model._meta.app_label
 
     @property
+    def codename_plural(self) -> str:
+        return self.model._meta.codename_plural
+
+    @property
     def object_name(self) -> str:
         return self.model._meta.object_name.lower()
+    
+    @property
+    def add_permission(self) -> str:
+        return f"{self.app_label}.add_{self.object_name}"
+    
+    @property
+    def change_permission(self) -> str:
+        return f"{self.app_label}.change_{self.object_name}"
 
     @abstractmethod
     def get_queryset(self, obj: Model):
