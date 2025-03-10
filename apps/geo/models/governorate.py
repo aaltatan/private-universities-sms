@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, pre_delete
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
@@ -69,3 +69,4 @@ class ActivitySerializer(serializers.ModelSerializer):
 
 pre_save.connect(signals.slugify_name, sender=Governorate)
 pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=Governorate)
+pre_delete.connect(signals.add_delete_activity(ActivitySerializer), sender=Governorate)

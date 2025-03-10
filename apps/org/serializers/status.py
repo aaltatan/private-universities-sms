@@ -9,9 +9,3 @@ class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Status
         fields = ("id", "name", "is_payable", "description")
-
-
-class StatusActivitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Status
-        fields = ("name", "is_payable", "description")

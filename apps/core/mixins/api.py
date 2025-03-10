@@ -3,18 +3,12 @@ from abc import ABC, abstractmethod
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.serializers import ModelSerializer
 
 from ..models import Activity
 from ..utils import Deleter
 
 
 class APIMixin(ABC):
-    @property
-    @abstractmethod
-    def activity_serializer(self) -> type[ModelSerializer]:
-        pass
-
     @property
     @abstractmethod
     def deleter(self) -> Deleter:
@@ -31,20 +25,11 @@ class APIMixin(ABC):
             )
 
         instance = self.get_object()
-        object_id = instance.pk
-        serializer = self.activity_serializer(instance)
 
         deleter: Deleter = self.deleter(obj=instance)
         deleter.delete()
 
         if deleter.has_deleted:
-            Activity.objects.create(
-                user=request.user,
-                kind=Activity.KindChoices.DELETE,
-                content_type=ContentType.objects.get_for_model(instance),
-                object_id=object_id,
-                data=serializer.data,
-            )
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(

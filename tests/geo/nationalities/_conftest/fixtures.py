@@ -2,6 +2,7 @@ import pytest
 from django.contrib.auth.models import Permission
 from django.db.models import Model
 from django.urls import reverse
+from django.db import connection
 
 from apps.core.models import User
 from apps.core.utils import Deleter
@@ -112,7 +113,8 @@ def create_objects(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
         NationalityFactory.create_batch(100)
         yield
-        Nationality.objects.all().delete()
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM geo_nationality;")
         reset_sequence(Nationality)
 
 

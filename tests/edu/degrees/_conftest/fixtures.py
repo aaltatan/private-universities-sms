@@ -1,6 +1,7 @@
 import pytest
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+from django.db import connection
 from django.db.models import Model
 from django.urls import reverse
 
@@ -128,7 +129,8 @@ def create_objects(django_db_setup, django_db_blocker):
                 description=string,
             )
         yield
-        Degree.objects.all().delete()
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM edu_degree;")
         reset_sequence(Degree)
 
 

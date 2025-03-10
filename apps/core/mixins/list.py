@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Any, Literal
 
+from django.conf import settings
 from django.core.paginator import EmptyPage, Page, PageNotAnInteger, Paginator
 from django.db.models import Model, QuerySet
 from django.http import (
@@ -12,10 +13,8 @@ from django.http import (
 )
 from django.shortcuts import render
 from django.urls import reverse
-from django.conf import settings
 from django_filters import FilterSet
 from import_export.resources import ModelResource
-from rest_framework.serializers import ModelSerializer
 from tablib import Dataset
 
 from ..constants import PERMISSION
@@ -30,11 +29,6 @@ class ListMixin(ABC):
     @property
     @abstractmethod
     def filter_class(self) -> type[FilterSet]:
-        pass
-
-    @property
-    @abstractmethod
-    def activity_serializer(self) -> type[ModelSerializer]:
         pass
 
     @property
@@ -195,7 +189,7 @@ class ListMixin(ABC):
         """
         if self.table_template_name:
             return self.table_template_name
-        
+
         verbose_name_plural = self.get_verbose_name_plural()
         app_label = self.get_app_label()
 

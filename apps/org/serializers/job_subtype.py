@@ -16,14 +16,6 @@ class JobSubtypeSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "description", "job_type")
 
 
-class JobSubtypeActivitySerializer(serializers.ModelSerializer):
-    job_type = serializers.CharField(source="job_type.name")
-
-    class Meta:
-        model = models.JobSubtype
-        fields = ("name", "job_type", "description")
-
-
 class CreateUpdateJobSubtypeSerializer(serializers.ModelSerializer):
     job_type = serializers.PrimaryKeyRelatedField(
         queryset=models.JobType.objects.all(),

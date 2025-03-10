@@ -9,9 +9,3 @@ class NationalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Nationality
         fields = ("id", "name", "is_local", "description")
-
-
-class NationalityActivitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Nationality
-        fields = ("name", "is_local", "description")

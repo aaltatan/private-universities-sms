@@ -6,9 +6,9 @@ from rest_framework import filters as rest_filters
 from rest_framework import viewsets
 
 from apps.core import filter_backends, mixins
+from apps.core.inline import InlineFormsetFactory
 from apps.core.schemas import Action
 from apps.core.utils import Deleter
-from apps.core.inline import InlineFormsetFactory
 
 from .. import filters, forms, models, resources, serializers
 from ..constants import governorates as constants
@@ -21,7 +21,6 @@ class APIViewSet(
 ):
     queryset = models.Governorate.objects.all()
     serializer_class = serializers.GovernorateSerializer
-    activity_serializer = serializers.GovernorateActivitySerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
         django_filters.DjangoFilterBackend,
@@ -43,7 +42,6 @@ class ListView(
     permission_required = "geo.view_governorate"
     filter_class = filters.GovernorateFilter
     resource_class = resources.GovernorateResource
-    activity_serializer = serializers.GovernorateActivitySerializer
     deleter = Deleter
     search_fields = constants.SEARCH_FIELDS
 
@@ -89,4 +87,4 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
     permission_required = "geo.delete_governorate"
     deleter = Deleter
-    activity_serializer = serializers.GovernorateActivitySerializer
+    model = models.Governorate

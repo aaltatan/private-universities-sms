@@ -48,21 +48,3 @@ class CreateUpdateSchoolSerializer(serializers.ModelSerializer):
             "phone",
             "description",
         )
-
-
-class SchoolActivitySerializer(serializers.ModelSerializer):
-    kind = serializers.CharField(source="nationality.name")
-    nationality = serializers.CharField(source="nationality.name")
-
-    class Meta:
-        model = models.School
-        fields = (
-            "id",
-            "name",
-            "kind",
-            "nationality",
-            "website",
-            "email",
-            "phone",
-            "description",
-        )

@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth.models import Permission
+from django.db import connection
 from django.db.models import Model
 from django.urls import reverse
 
@@ -112,7 +113,8 @@ def create_objects(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
         StatusFactory.create_batch(100)
         yield
-        Status.objects.all().delete()
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM org_status;")
         reset_sequence(Status)
 
 

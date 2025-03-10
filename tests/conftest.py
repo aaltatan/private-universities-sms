@@ -111,6 +111,10 @@ def headers_modal_GET() -> dict[str, str]:
 @pytest.fixture(autouse=True, scope="session")
 def create_base_users(django_db_setup, django_db_blocker) -> None:
     with django_db_blocker.unblock():
+        User.objects.create_superuser(
+            username="admin",
+            password="password",
+        )
         User.objects.create_user(
             username="user_with_no_perm",
             password="password",

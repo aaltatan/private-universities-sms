@@ -1,16 +1,12 @@
-from .degree import DegreeActivitySerializer, DegreeSerializer
-from .school import SchoolActivitySerializer, SchoolSerializer, CreateUpdateSchoolSerializer
-from .school_kind import SchoolKindActivitySerializer, SchoolKindSerializer
-from .specialization import SpecializationActivitySerializer, SpecializationSerializer
+from .degree import DegreeSerializer
+from .school import SchoolSerializer, CreateUpdateSchoolSerializer
+from .school_kind import SchoolKindSerializer
+from .specialization import SpecializationSerializer
 
 __all__ = [
-    "DegreeActivitySerializer",
     "DegreeSerializer",
-    "SchoolActivitySerializer",
     "CreateUpdateSchoolSerializer",
     "SchoolSerializer",
-    "SchoolKindActivitySerializer",
     "SchoolKindSerializer",
-    "SpecializationActivitySerializer",
     "SpecializationSerializer",
 ]

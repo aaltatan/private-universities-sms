@@ -15,9 +15,3 @@ class GovernorateSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Governorate
         fields = ("id", "name", "description", "cities", "cities_count")
-
-
-class GovernorateActivitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Governorate
-        fields = ("name", "description")

@@ -20,7 +20,6 @@ class APIViewSet(
 ):
     queryset = models.Specialization.objects.all()
     serializer_class = serializers.SpecializationSerializer
-    activity_serializer = serializers.SpecializationActivitySerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
         django_filters.DjangoFilterBackend,
@@ -42,7 +41,6 @@ class ListView(
     permission_required = "edu.view_specialization"
     filter_class = filters.SpecializationFilter
     resource_class = resources.SpecializationResource
-    activity_serializer = serializers.SpecializationActivitySerializer
     deleter = Deleter
     search_fields = constants.SEARCH_FIELDS
 
@@ -75,4 +73,4 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
     permission_required = "edu.delete_specialization"
     deleter = Deleter
-    activity_serializer = serializers.SpecializationActivitySerializer
+    model = models.Specialization

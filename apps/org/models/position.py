@@ -1,10 +1,10 @@
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_delete, pre_save
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
-from apps.core.models import AbstractUniqueNameModel
 from apps.core import signals
+from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search
 
 from ..constants import positions as constants
@@ -51,3 +51,4 @@ class ActivitySerializer(serializers.ModelSerializer):
 
 pre_save.connect(signals.slugify_name, sender=Position)
 pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=Position)
+pre_delete.connect(signals.add_delete_activity(ActivitySerializer), sender=Position)

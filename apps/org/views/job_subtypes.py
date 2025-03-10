@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views.generic import View, DetailView
+from django.views.generic import DetailView, View
 from django.views.generic.list import MultipleObjectMixin
 from django_filters import rest_framework as django_filters
 from rest_framework import filters as rest_filters
@@ -20,7 +20,6 @@ class APIViewSet(
 ):
     queryset = models.JobSubtype.objects.all()
     serializer_class = serializers.JobSubtypeSerializer
-    activity_serializer = serializers.JobSubtypeActivitySerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
         django_filters.DjangoFilterBackend,
@@ -47,7 +46,6 @@ class ListView(
     permission_required = "org.view_jobsubtype"
     filter_class = filters.JobSubtypeFilter
     resource_class = resources.JobSubtypeResource
-    activity_serializer = serializers.JobSubtypeActivitySerializer
     deleter = Deleter
     search_fields = constants.SEARCH_FIELDS
 
@@ -80,4 +78,4 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
     permission_required = "org.delete_jobsubtype"
     deleter = Deleter
-    activity_serializer = serializers.JobSubtypeActivitySerializer
+    model = models.JobSubtype

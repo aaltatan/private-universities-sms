@@ -20,7 +20,6 @@ class APIViewSet(
 ):
     queryset = models.SchoolKind.objects.all()
     serializer_class = serializers.SchoolKindSerializer
-    activity_serializer = serializers.SchoolKindActivitySerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
         django_filters.DjangoFilterBackend,
@@ -42,7 +41,6 @@ class ListView(
     permission_required = "edu.view_schoolkind"
     filter_class = filters.SchoolKindFilter
     resource_class = resources.SchoolKindResource
-    activity_serializer = serializers.SchoolKindActivitySerializer
     deleter = Deleter
     search_fields = constants.SEARCH_FIELDS
 
@@ -75,4 +73,4 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
     permission_required = "edu.delete_schoolkind"
     deleter = Deleter
-    activity_serializer = serializers.SchoolKindActivitySerializer
+    model = models.SchoolKind

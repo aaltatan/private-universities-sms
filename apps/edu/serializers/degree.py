@@ -15,15 +15,3 @@ class DegreeSerializer(serializers.ModelSerializer):
             "is_academic",
             "description",
         )
-
-
-class DegreeActivitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Degree
-        fields = (
-            "id",
-            "name",
-            "order",
-            "is_academic",
-            "description",
-        )

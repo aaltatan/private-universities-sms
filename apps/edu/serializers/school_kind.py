@@ -33,15 +33,3 @@ class SchoolKindSerializer(serializers.ModelSerializer):
             "schools",
             "schools_count",
         )
-
-
-class SchoolKindActivitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.SchoolKind
-        fields = (
-            "id",
-            "name",
-            "is_governmental",
-            "is_virtual",
-            "description",
-        )

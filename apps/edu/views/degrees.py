@@ -20,7 +20,6 @@ class APIViewSet(
 ):
     queryset = models.Degree.objects.all()
     serializer_class = serializers.DegreeSerializer
-    activity_serializer = serializers.DegreeActivitySerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
         django_filters.DjangoFilterBackend,
@@ -42,7 +41,6 @@ class ListView(
     permission_required = "edu.view_degree"
     filter_class = filters.DegreeFilter
     resource_class = resources.DegreeResource
-    activity_serializer = serializers.DegreeActivitySerializer
     deleter = Deleter
     search_fields = constants.SEARCH_FIELDS
 
@@ -75,4 +73,4 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
     permission_required = "edu.delete_degree"
     deleter = Deleter
-    activity_serializer = serializers.DegreeActivitySerializer
+    model = models.Degree

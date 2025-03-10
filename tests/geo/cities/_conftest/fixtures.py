@@ -2,6 +2,7 @@ import pytest
 from django.contrib.auth.models import Permission
 from django.db.models import Model
 from django.urls import reverse
+from django.db import connection
 
 from apps.core.models import User
 from apps.geo.models import Governorate, City
@@ -125,8 +126,9 @@ def create_objects(django_db_setup, django_db_blocker):
 
         yield
 
-        City.objects.all().delete()
-        Governorate.objects.all().delete()
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM geo_city;")
+            cursor.execute("DELETE FROM geo_governorate;")
 
         reset_sequence(Governorate)
         reset_sequence(City)

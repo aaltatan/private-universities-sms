@@ -20,7 +20,6 @@ class APIViewSet(
 ):
     queryset = models.Group.objects.all()
     serializer_class = serializers.GroupSerializer
-    activity_serializer = serializers.GroupActivitySerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
         django_filters.DjangoFilterBackend,
@@ -42,7 +41,6 @@ class ListView(
     permission_required = "org.view_group"
     filter_class = filters.GroupFilter
     resource_class = resources.GroupResource
-    activity_serializer = serializers.GroupActivitySerializer
     deleter = Deleter
     search_fields = constants.SEARCH_FIELDS
 
@@ -75,4 +73,4 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
     permission_required = "org.delete_group"
     deleter = Deleter
-    activity_serializer = serializers.GroupActivitySerializer
+    model = models.Group

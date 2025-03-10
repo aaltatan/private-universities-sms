@@ -2,6 +2,7 @@ from typing import Any, Generator
 
 import pytest
 from django.urls import reverse
+from django.db import connection
 from playwright.sync_api import Page, sync_playwright
 
 from apps.geo.models import Governorate, City
@@ -65,8 +66,9 @@ def create_governorates(django_db_setup, django_db_blocker):
 
         yield
 
-        City.objects.all().delete()
-        Governorate.objects.all().delete()
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM geo_city;")
+            cursor.execute("DELETE FROM geo_governorate;")
 
         reset_sequence(Governorate)
         reset_sequence(City)

@@ -3,22 +3,19 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 from django.contrib import messages
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
-from rest_framework.serializers import ModelSerializer
 
-from ..models import Activity
 from ..utils import Deleter
 
 
 class DeleteMixin(ABC):
     @property
     @abstractmethod
-    def activity_serializer(self) -> type[ModelSerializer]:
+    def model(self) -> type[Model]:
         pass
 
     @property
@@ -26,7 +23,6 @@ class DeleteMixin(ABC):
     def deleter(self) -> Deleter:
         pass
 
-    model: type[Model] | None = None
     modal_template_name: str | None = None
 
     def __init__(self):
@@ -70,21 +66,12 @@ class DeleteMixin(ABC):
 
         model = self.get_model_class()
         self.obj = get_object_or_404(model, slug=slug)
-        serializer = self.activity_serializer(self.obj)
-        object_id = self.obj.pk
 
         deleter: Deleter = self.deleter(obj=self.obj)
 
         deleter.delete()
 
         if deleter.has_deleted:
-            Activity.objects.create(
-                user=request.user,
-                kind=Activity.KindChoices.DELETE,
-                content_type=ContentType.objects.get_for_model(self.obj),
-                object_id=object_id,
-                data=serializer.data,
-            )
             response = HttpResponse(status=204)
             querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
             messages.success(request, deleter.get_message())
@@ -151,7 +138,4 @@ class DeleteMixin(ABC):
         """
         Returns the model class.
         """
-        if self.model:
-            return self.model
-
-        return self.activity_serializer.Meta.model
+        return self.model

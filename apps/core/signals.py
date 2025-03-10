@@ -60,3 +60,25 @@ def add_update_activity(
                 )
 
     return _add_update_activity
+
+
+def add_delete_activity(
+    activity_serializer: serializers.ModelSerializer,
+) -> Callable[..., None]:
+    def _add_delete_activity(
+        sender: Any, instance: models.Activity, *args, **kwargs: dict[str, Any]
+    ) -> None:
+        request = RequestMiddleware.get_current_request()
+
+        if request and instance.pk is not None:
+            instance_data = activity_serializer(instance).data
+
+            models.Activity.objects.create(
+                user=request.user,
+                kind=models.Activity.KindChoices.DELETE,
+                content_type=ContentType.objects.get_for_model(instance),
+                object_id=instance.pk,
+                data=instance_data,
+            )
+
+    return _add_delete_activity

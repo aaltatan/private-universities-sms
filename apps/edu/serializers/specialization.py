@@ -14,14 +14,3 @@ class SpecializationSerializer(serializers.ModelSerializer):
             "is_specialist",
             "description",
         )
-
-
-class SpecializationActivitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Specialization
-        fields = (
-            "id",
-            "name",
-            "is_specialist",
-            "description",
-        )

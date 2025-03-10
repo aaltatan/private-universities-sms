@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth.models import Permission
+from django.db import connection
 from django.db.models import Model
 from django.urls import reverse
 
@@ -7,7 +8,6 @@ from apps.core.models import User
 from apps.core.utils import Deleter
 from apps.org.models import JobType
 from tests.utils import reset_sequence
-
 
 APP_LABEL = "org"
 SUBAPP_LABEL = "job_types"
@@ -122,7 +122,8 @@ def create_objects(django_db_setup, django_db_blocker):
             string = str(idx).rjust(3, "0")
             JobType.objects.create(name=f"City {string}", description=string)
         yield
-        JobType.objects.all().delete()
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM org_jobtype;")
         reset_sequence(JobType)
 
 

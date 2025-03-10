@@ -24,11 +24,3 @@ class CreateUpdateCitySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.City
         fields = ("name", "governorate", "description")
-
-
-class CityActivitySerializer(serializers.ModelSerializer):
-    governorate = serializers.CharField(source="governorate.name")
-
-    class Meta:
-        model = models.City
-        fields = ("name", "governorate", "description")

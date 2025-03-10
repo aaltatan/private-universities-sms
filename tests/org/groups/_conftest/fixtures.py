@@ -1,6 +1,7 @@
 import pytest
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+from django.db import connection
 from django.db.models import Model
 from django.urls import reverse
 
@@ -10,7 +11,6 @@ from apps.org.models import Group
 from tests.utils import reset_sequence
 
 from .factories import GroupFactory
-
 
 APP_LABEL = "org"
 SUBAPP_LABEL = "groups"
@@ -114,7 +114,8 @@ def create_objects(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
         GroupFactory.create_batch(100)
         yield
-        Group.objects.all().delete()
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM org_group;")
         reset_sequence(Group)
 
 

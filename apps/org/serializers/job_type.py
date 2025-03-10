@@ -21,9 +21,3 @@ class JobTypeSerializer(serializers.ModelSerializer):
             "job_subtypes",
             "job_subtypes_count",
         )
-
-
-class JobTypeActivitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.JobType
-        fields = ("name", "description")

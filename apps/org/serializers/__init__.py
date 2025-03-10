@@ -1,26 +1,16 @@
-from .cost_center import CostCenterActivitySerializer, CostCenterSerializer
-from .group import GroupActivitySerializer, GroupSerializer
-from .job_subtype import (
-    CreateUpdateJobSubtypeSerializer,
-    JobSubtypeActivitySerializer,
-    JobSubtypeSerializer,
-)
-from .job_type import JobTypeActivitySerializer, JobTypeSerializer
-from .position import PositionActivitySerializer, PositionSerializer
-from .status import StatusActivitySerializer, StatusSerializer
+from .cost_center import CostCenterSerializer
+from .group import GroupSerializer
+from .job_subtype import CreateUpdateJobSubtypeSerializer, JobSubtypeSerializer
+from .job_type import JobTypeSerializer
+from .position import PositionSerializer
+from .status import StatusSerializer
 
 __all__ = [
     "CostCenterSerializer",
-    "CostCenterActivitySerializer",
     "JobTypeSerializer",
-    "JobTypeActivitySerializer",
     "JobSubtypeSerializer",
-    "JobSubtypeActivitySerializer",
     "CreateUpdateJobSubtypeSerializer",
     "GroupSerializer",
-    "GroupActivitySerializer",
-    "PositionActivitySerializer",
     "PositionSerializer",
-    "StatusActivitySerializer",
     "StatusSerializer",
 ]
