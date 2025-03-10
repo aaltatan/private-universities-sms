@@ -30,7 +30,9 @@
         <c-table.tr header="True">
           <c-table.th> {% translate 'name' %} </c-table.th>
           <c-table.th> {% translate 'description' %} </c-table.th>
+          {% if perms.geo.delete_city %}
           <c-table.th> {% translate 'delete' %} </c-table.th>
+          {% endif %}
         </c-table.tr>
         {% for form in cities_formset.forms %}
         <c-geo.governorates.cities.inline :form="form" />
