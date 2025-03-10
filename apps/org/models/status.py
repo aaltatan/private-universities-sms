@@ -4,6 +4,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from apps.core import signals
+from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search
 
@@ -21,7 +22,7 @@ class StatusManager(models.Manager):
         )
 
 
-class Status(AbstractUniqueNameModel):
+class Status(AddCreateActivityMixin, AbstractUniqueNameModel):
     class PayableChoices(models.TextChoices):
         PAYABLE = True, _("payable").title()
         NOT_PAYABLE = False, _("not payable").title()

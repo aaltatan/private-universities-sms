@@ -4,6 +4,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from apps.core import signals
+from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search
 
@@ -22,7 +23,7 @@ class NationalityManager(models.Manager):
         )
 
 
-class Nationality(AbstractUniqueNameModel):
+class Nationality(AddCreateActivityMixin, AbstractUniqueNameModel):
     class LocalityChoices(models.TextChoices):
         LOCAL = True, _("local").title()
         FOREIGN = False, _("foreign").title()

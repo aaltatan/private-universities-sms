@@ -5,10 +5,12 @@ from .delete import DeleteMixin
 from .details import DetailsMixin
 from .index import IndexMixin
 from .list import ListMixin
+from .save import AddCreateActivityMixin
 from .update import UpdateMixin
 from .utils import CustomDjangoQLSearchMixin
 
 __all__ = [
+    "AddCreateActivityMixin",
     "CustomDjangoQLSearchMixin",
     "ListMixin",
     "CreateMixin",

@@ -4,6 +4,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from apps.core import signals
+from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search
 from apps.geo.models import Nationality
@@ -24,7 +25,7 @@ class SchoolManager(models.Manager):
         )
 
 
-class School(AbstractUniqueNameModel):
+class School(AddCreateActivityMixin, AbstractUniqueNameModel):
     nationality = models.ForeignKey(
         Nationality,
         on_delete=models.PROTECT,

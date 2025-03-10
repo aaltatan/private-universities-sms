@@ -4,6 +4,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from apps.core import signals
+from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search
 
@@ -21,7 +22,7 @@ class PositionManager(models.Manager):
         )
 
 
-class Position(AbstractUniqueNameModel):
+class Position(AddCreateActivityMixin, AbstractUniqueNameModel):
     order = models.IntegerField(
         verbose_name=_('order'),
         help_text=_('order of position'),

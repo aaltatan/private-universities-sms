@@ -4,6 +4,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from apps.core import signals
+from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search
 from apps.core.validators import numeric_validator
@@ -22,7 +23,7 @@ class CostCenterManager(models.Manager):
         )
 
 
-class CostCenter(AbstractUniqueNameModel):
+class CostCenter(AddCreateActivityMixin, AbstractUniqueNameModel):
     accounting_id = models.CharField(
         verbose_name=_("cost center id"),
         validators=[numeric_validator],

@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 from django.contrib import messages
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.forms import ModelForm
 from django.http import HttpRequest, HttpResponse
@@ -11,7 +10,6 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from ..models import Activity
 from ..schemas import RequestParser
 
 
@@ -109,12 +107,6 @@ class CreateMixin(ABC):
         Returns the form valid response.
         """
         obj = form.save()
-        Activity.objects.create(
-            user=request.user,
-            kind=Activity.KindChoices.CREATE,
-            content_type=ContentType.objects.get_for_model(obj),
-            object_id=obj.pk,
-        )
         messages.success(
             request,
             _("{} has been created successfully").format(obj),

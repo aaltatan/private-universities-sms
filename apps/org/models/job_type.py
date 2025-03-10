@@ -4,6 +4,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from apps.core import signals
+from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.schemas import ReportSchema
 from apps.core.utils import annotate_search
@@ -46,7 +47,7 @@ class JobTypeManager(models.Manager):
         )
 
 
-class JobType(AbstractUniqueNameModel):
+class JobType(AddCreateActivityMixin, AbstractUniqueNameModel):
     objects: JobTypeManager = JobTypeManager()
 
     class Meta:

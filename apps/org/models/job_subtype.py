@@ -4,6 +4,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from apps.core import signals
+from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search
 
@@ -23,7 +24,7 @@ class JobSubtypeManager(models.Manager):
         )
 
 
-class JobSubtype(AbstractUniqueNameModel):
+class JobSubtype(AddCreateActivityMixin, AbstractUniqueNameModel):
     job_type = models.ForeignKey(
         JobType,
         on_delete=models.PROTECT,
