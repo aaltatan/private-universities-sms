@@ -8,6 +8,7 @@ ORDERING_FIELDS: dict[str, str] = {
     "website": _("website"),
     "email": _("email"),
     "phone": _("phone"),
+    "address": _("address"),
     "description": _("description"),
 }
 

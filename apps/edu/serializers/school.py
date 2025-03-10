@@ -25,6 +25,7 @@ class SchoolSerializer(serializers.ModelSerializer):
             "website",
             "email",
             "phone",
+            "address",
             "description",
         )
 
@@ -46,5 +47,6 @@ class CreateUpdateSchoolSerializer(serializers.ModelSerializer):
             "website",
             "email",
             "phone",
+            "address",
             "description",
         )

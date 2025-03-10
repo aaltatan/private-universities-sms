@@ -28,6 +28,10 @@ class BaseSchoolFilter(BaseNameDescriptionFilter):
         label=_("phone").title(),
         placeholder=_("phone number").title(),
     )
+    address = get_text_filter(
+        label=_("address").title(),
+        placeholder=_("address").title(),
+    )
 
     class Meta:
         model = models.School
@@ -38,6 +42,7 @@ class BaseSchoolFilter(BaseNameDescriptionFilter):
             "website",
             "email",
             "phone",
+            "address",
             "description",
         )
 

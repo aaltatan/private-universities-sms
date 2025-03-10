@@ -34,7 +34,7 @@
       icon="adjustments-horizontal"
       size="20"
       @click="openOverlaySidebar"
-      data-fields="name,description,kind,nationality,website,email,phone"
+      data-fields="name,description,kind,nationality,website,email,phone,address"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -191,6 +191,7 @@
             <c-inputs.text :field="filter.form.website" />
             <c-inputs.text :field="filter.form.phone" />
             <c-inputs.text :field="filter.form.email" />
+            <c-inputs.text :field="filter.form.address" />
             <c-inputs.text :field="filter.form.description" />
           </c-slot>
           <c-slot name="footer">

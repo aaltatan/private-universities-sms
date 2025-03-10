@@ -18,6 +18,7 @@ class BaseSchoolForm(forms.ModelForm):
             "website",
             "email",
             "phone",
+            "address",
             "description",
         )
         widgets = {
@@ -27,6 +28,9 @@ class BaseSchoolForm(forms.ModelForm):
             "website": widgets.get_url_widget(),
             "phone": widgets.get_text_widget(
                 placeholder=_("phone number").title(),
+            ),
+            "address": widgets.get_text_widget(
+                placeholder=_("address").title(),
             ),
         }
 

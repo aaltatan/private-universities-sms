@@ -61,6 +61,13 @@ class School(AddCreateActivityMixin, AbstractUniqueNameModel):
         blank=True,
         null=True,
     )
+    address = models.CharField(
+        verbose_name=_("address"),
+        max_length=255,
+        default="",
+        blank=True,
+        null=True,
+    )
 
     objects: SchoolManager = SchoolManager()
 
@@ -82,7 +89,16 @@ class ActivitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = School
-        fields = ("name", "nationality", "kind", "description")
+        fields = (
+            "name",
+            "nationality",
+            "kind",
+            "website",
+            "email",
+            "phone",
+            "address",
+            "description",
+        )
 
 
 pre_save.connect(signals.slugify_name, sender=School)
