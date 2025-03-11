@@ -18,7 +18,7 @@ class APIViewSet(
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
 ):
-    queryset = models.SchoolKind.objects.all()
+    queryset = models.SchoolKind.objects.all().order_by("name")
     serializer_class = serializers.SchoolKindSerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,

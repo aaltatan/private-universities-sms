@@ -19,7 +19,7 @@ class APIViewSet(
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
 ):
-    queryset = models.Governorate.objects.all()
+    queryset = models.Governorate.objects.all().order_by("name")
     serializer_class = serializers.GovernorateSerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,

@@ -9,6 +9,8 @@ from .. import models
 
 
 class BaseSchoolForm(forms.ModelForm):
+    website = forms.URLField(required=False, assume_scheme="https")
+
     class Meta:
         model = models.School
         fields = (

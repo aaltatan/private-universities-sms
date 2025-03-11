@@ -200,7 +200,8 @@ class ListMixin(ABC):
         Returns the queryset.
         """
         model = self.get_model_class()
-        qs = model.objects.all()
+        default_ordering = model._meta.ordering
+        qs = model.objects.all().order_by(*default_ordering)
 
         request: HttpRequest = self.request
 
