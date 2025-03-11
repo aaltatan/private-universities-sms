@@ -27,6 +27,10 @@ class SchoolResource(BaseResource):
         attribute="email",
         column_name=_("email").title(),
     )
+    address = fields.Field(
+        attribute="address",
+        column_name=_("address").title(),
+    )
 
     class Meta:
         model = models.School
@@ -38,6 +42,7 @@ class SchoolResource(BaseResource):
             "website",
             "email",
             "phone",
+            "address",
             "description",
             "slug",
         )
