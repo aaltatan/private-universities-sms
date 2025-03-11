@@ -15,7 +15,7 @@ from ..constants import cities as constants
 class BaseCitiesFilter(BaseNameDescriptionFilter):
     class Meta:
         model = models.City
-        fields = ("name", "governorate", "description")
+        fields = ("name", "governorate", "kind", "description")
 
 
 class APICitiesFilter(FilterComboboxMixin, BaseCitiesFilter):

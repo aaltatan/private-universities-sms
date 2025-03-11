@@ -13,7 +13,7 @@ class CitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.City
-        fields = ("id", "name", "description", "governorate")
+        fields = ("id", "name", "kind", "description", "governorate")
 
 
 class CreateUpdateCitySerializer(serializers.ModelSerializer):
@@ -23,4 +23,4 @@ class CreateUpdateCitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.City
-        fields = ("name", "governorate", "description")
+        fields = ("name", "kind", "governorate", "description")

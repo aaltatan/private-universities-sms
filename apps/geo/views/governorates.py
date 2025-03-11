@@ -69,7 +69,7 @@ class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
 class CityInline(InlineFormsetFactory):
     model = models.City
     form_class = forms.CityForm
-    fields = ("name", "description")
+    fields = ("name", "kind", "description")
 
     @classmethod
     def get_queryset(cls, obj: models.Governorate):

@@ -10,7 +10,7 @@ from .. import models
 class BaseCityForm(forms.ModelForm):
     class Meta:
         model = models.City
-        fields = ("name", "governorate", "description")
+        fields = ("name", "governorate", "kind", "description")
         widgets = {
             "name": get_text_widget(placeholder=_("city name")),
             "description": get_textarea_widget(),

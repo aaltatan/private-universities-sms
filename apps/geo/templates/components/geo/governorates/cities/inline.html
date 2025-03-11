@@ -7,6 +7,9 @@
     {{ form.id }}
     <c-inputs.text :show_help="False" :show_label="False" :field="form.name" />
   </c-table.td>
+  <c-table.td data-header="{% translate 'kind' %}">
+    <c-inputs.text :show_help="False" :show_label="False" :field="form.kind" />
+  </c-table.td>
   <c-table.td data-header="{% translate 'description' %}">
     <c-inputs.text :show_help="False" :show_label="False" :field="form.description" />
   </c-table.td>

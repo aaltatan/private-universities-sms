@@ -25,17 +25,29 @@ class CityManager(models.Manager):
 
 
 class City(AddCreateActivityMixin, AbstractUniqueNameModel):
+    class KindChoices(models.TextChoices):
+        CITY = "city", _("city").title()
+        AREA = "area", _("area").title()
+        TOWN = "town", _("town").title()
+        VILLAGE = "village", _("village").title()
+        OTHER = "other", _("other").title()
+
     governorate = models.ForeignKey(
         Governorate,
         on_delete=models.PROTECT,
         related_name="cities",
+    )
+    kind = models.CharField(
+        max_length=10,
+        choices=KindChoices.choices,
+        default=KindChoices.CITY,
     )
 
     objects: CityManager = CityManager()
 
     class Meta:
         icon = "home-modern"
-        ordering = ("name",)
+        ordering = ("kind", "name")
         codename_plural = "cities"
         verbose_name = _("city").title()
         verbose_name_plural = _("cities").title()

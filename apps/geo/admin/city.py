@@ -10,6 +10,7 @@ class CityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = (
         "id",
         "name",
+        "kind",
         "governorate__name",
         "description",
         "slug",

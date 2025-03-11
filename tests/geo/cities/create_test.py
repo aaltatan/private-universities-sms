@@ -32,6 +32,7 @@ def test_create_page(
     h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
+    kind_select = form.css_first("select[name='kind']")
     governorate_input = form.css_first("input[name='governorate']")
     create_governorate_btn = get_nested_create_btn(form, input_name="governorate")
     description_input = form.css_first("textarea[name='description']")
@@ -44,12 +45,14 @@ def test_create_page(
     assert form.attributes["id"] == f"{subapp_label}-form"
 
     assert name_input is not None
+    assert kind_select is not None
     assert governorate_input is not None
     assert description_input is not None
 
     assert create_governorate_btn is not None
     assert get_nested_hx_path(create_governorate_btn) == reverse("governorates:create")
     assert is_required_star_visible(form, "name")
+    assert is_required_star_visible(form, "kind", input_type="select")
     assert is_required_star_visible(form, "governorate")
 
 

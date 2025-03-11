@@ -50,12 +50,12 @@ def governorate_model() -> Governorate:
 
 @pytest.fixture
 def api_keys() -> list[str]:
-    return ["id", "name", "description", "governorate"]
+    return ["id", "name", "kind", "description", "governorate"]
 
 
 @pytest.fixture
 def index_columns() -> list[str]:
-    return ["name", "description", "governorate", "options"]
+    return ["name", "description", "kind", "governorate", "options"]
 
 
 @pytest.fixture
@@ -94,6 +94,7 @@ def templates() -> dict[str, str]:
 def clean_data_sample() -> dict[str, str]:
     return {
         "name": "مدينة حماه",
+        "kind": "city",
         "governorate": "محافظة حماه",
         "description": "حماه",
     }

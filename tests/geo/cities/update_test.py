@@ -12,6 +12,7 @@ from selectolax.parser import HTMLParser
 from apps.core.models import AbstractUniqueNameModel as Model
 from tests.utils import (
     get_nested_create_btn,
+    is_option_selected,
     is_required_star_visible,
     is_template_used,
 )
@@ -31,6 +32,7 @@ def test_update_page(
     h1 = parser.css_first("form h1").text(strip=True).lower()
     form = parser.css_first("main form")
     name_input = form.css_first("input[name='name']")
+    kind_select = form.css_first("select[name='kind']")
     governorate_input = form.css_first("input[name='governorate']")
     create_governorate_btn = form.css_first(
         "div[role='group']:has(input[name='governorate']) div[aria-label='create nested object']"
@@ -46,11 +48,13 @@ def test_update_page(
 
     assert "required" in name_input.attributes
     assert name_input.attributes["value"] == obj.name
+    assert is_option_selected(kind_select, obj.kind)
     assert governorate_input.attributes["value"] == str(obj.governorate.pk)
     assert description_input.text(strip=True) == obj.description
 
     assert required_star is not None
     assert is_required_star_visible(form, "name")
+    assert is_required_star_visible(form, "kind", input_type="select")
     assert create_governorate_btn is not None
     assert is_required_star_visible(form, "governorate")
 

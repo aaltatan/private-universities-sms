@@ -22,10 +22,21 @@ class CityResource(BaseResource):
         attribute="governorate__name",
         column_name=_("governorate").title(),
     )
+    kind = fields.Field(
+        attribute="kind",
+        column_name=_("kind").title(),
+    )
 
     class Meta:
         model = models.City
-        fields = ("serial", "name", "governorate", "description", "slug")
+        fields = (
+            "serial",
+            "name",
+            "kind",
+            "governorate",
+            "description",
+            "slug",
+        )
 
 
 class NationalityResource(BaseResource):

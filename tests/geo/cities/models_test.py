@@ -29,11 +29,12 @@ def test_validators(
     governorate_model: type[Model],
     models_dirty_data_test_cases: tuple[str],
 ):
-    name, governorate_pk, description = models_dirty_data_test_cases
+    name, kind, governorate_pk, description = models_dirty_data_test_cases
     gov = governorate_model.objects.filter(pk=governorate_pk).first()
     with pytest.raises((ValidationError, IntegrityError)):
         obj = model.objects.create(
             name=name,
+            kind=kind,
             governorate=gov,
             description=description,
         )

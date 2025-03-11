@@ -29,5 +29,6 @@ class CityFactory(factory.django.DjangoModelFactory):
         django_get_or_create = ("name",)
 
     name = factory.Sequence(lambda n: "City " + str(n + 1).rjust(3, "0"))
+    kind = factory.Iterator(["city", "town", "village", "area"])
     governorate = factory.SubFactory(GovernorateFactory)
     description = factory.Faker("text")

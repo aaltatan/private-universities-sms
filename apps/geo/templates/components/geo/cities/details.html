@@ -24,6 +24,14 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'kind'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.get_kind_display }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
               {% translate 'description'|title %}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">

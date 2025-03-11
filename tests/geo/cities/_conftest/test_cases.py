@@ -128,12 +128,13 @@ def order_test_cases(request: pytest.FixtureRequest):
 @pytest.fixture(
     scope="package",
     params=[
-        ("", 1, ""),
-        ("x", 1, "x"),
-        ("xx", 1, "xx"),
-        ("xxx", 1, "xxx"),
+        ("", "city", 1, ""),
+        ("x", "city", 1, "x"),
+        ("xx", "city", 1, "xx"),
+        ("xxx", "city", 1, "xxx"),
         (
             "Valid City",
+            "city",
             13123,  # not valid governorate pk
             "some description",
         ),
@@ -161,6 +162,7 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Ha",
+                "kind": "city",
                 "governorate": "محافظة حمص",
                 "description": "google",
             },
@@ -169,6 +171,7 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "",
+                "kind": "city",
                 "governorate": "محافظة حمص",
                 "description": "",
             },
@@ -177,6 +180,7 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "a" * 265,
+                "kind": "city",
                 "governorate": "محافظة حمص",
                 "description": "",
             },
@@ -185,6 +189,7 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Hama City",
+                "kind": "city",
                 "governorate": "محافظة حمص",
                 "description": "google",
             },
@@ -193,6 +198,7 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Hama City sdadsas",
+                "kind": "city",
                 "governorate": "محافظة x",
                 "description": "google",
             },
@@ -201,6 +207,7 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Ham",
+                "kind": "city",
                 "governorate": "محافظة x",
                 "description": "google",
             },
@@ -212,6 +219,7 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Ham",
+                "kind": "city",
                 "governorate": "",
                 "description": "google",
             },
@@ -223,6 +231,7 @@ def export_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "",
+                "kind": "city",
                 "governorate": "",
             },
             [
@@ -242,6 +251,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Ha",
+                "kind": "city",
                 "governorate": 1,
                 "description": "google",
             },
@@ -250,6 +260,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "",
+                "kind": "city",
                 "governorate": 2,
                 "description": "",
             },
@@ -258,6 +269,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "a" * 265,
+                "kind": "city",
                 "governorate": 3,
                 "description": "",
             },
@@ -266,6 +278,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Hama City",
+                "kind": "city",
                 "governorate": 4,
                 "description": "google",
             },
@@ -274,6 +287,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Hama City sss",
+                "kind": "city",
                 "governorate_id": 4,
                 "description": "google",
             },
@@ -282,6 +296,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Hama City sss",
+                "kind": "city",
                 "governorate": "dasdas",
                 "description": "google",
             },
@@ -290,6 +305,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Hama City sss",
+                "kind": "city",
                 "governorate": 412312,
                 "description": "google",
             },
@@ -298,6 +314,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "Ham",
+                "kind": "city",
                 "governorate": 412312,
                 "description": "google",
             },
@@ -309,6 +326,7 @@ def dirty_data_test_cases(request: pytest.FixtureRequest):
         (
             {
                 "name": "",
+                "kind": "city",
                 "governorate": "412312",
                 "description": "google",
             },
