@@ -78,8 +78,10 @@ class RequestParser:
     target: str = field(init=False, default="")
     dont_redirect: bool = field(init=False)
     hx_location: str = field(init=False)
+    querystring: str = field(init=False)
     save: bool = field(init=False, default=False)
     save_and_add_another: bool = field(init=False, default=False)
+    save_and_continue_editing: bool = field(init=False, default=False)
     update: bool = field(init=False, default=False)
     update_and_continue_editing: bool = field(init=False, default=False)
 
@@ -90,13 +92,22 @@ class RequestParser:
                 self.save_and_add_another = (
                     request.POST.get("save_and_add_another") is not None
                 )
-                if self.save and self.save_and_add_another:
+                self.save_and_continue_editing = (
+                    request.POST.get("save_and_continue_editing") is not None
+                )
+                if all(
+                    [
+                        self.save,
+                        self.save_and_add_another,
+                        self.save_and_continue_editing,
+                    ]
+                ):
                     raise ValueError(
-                        "save and save_and_add_another are mutually exclusive"
+                        "save, save_and_add_another and save_and_continue_editing are mutually exclusive"
                     )
-                if not self.save and not self.save_and_add_another:
+                if not self.save and not self.save_and_add_another and not self.save_and_continue_editing:
                     raise ValueError(
-                        "save or save_and_add_another is required",
+                        "save, save_and_add_another or save_and_continue_editing is required",
                     )
             elif self.action == "update":
                 self.update = request.POST.get("update") is not None
@@ -121,8 +132,8 @@ class RequestParser:
         self.dont_redirect = request.headers.get("dont-redirect") is not None
 
         querystring = request.GET.urlencode()
-        querystring = querystring and f"?{querystring}"
-        self.index_url += querystring
+        self.querystring = querystring and f"?{querystring}"
+        self.index_url += self.querystring
 
         self.next_url = request.headers.get("referer", self.index_url)
 

@@ -55,7 +55,7 @@ class CommonCreateTests:
         headers = {**headers_modal_GET, "target": "#modal-container"}
         with pytest.raises(
             ValueError,
-            match="save or save_and_add_another is required",
+            match="save, save_and_add_another or save_and_continue_editing is required",
         ):
             admin_client.post(urls["create"], clean_data_sample, headers=headers)
 

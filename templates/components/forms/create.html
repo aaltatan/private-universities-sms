@@ -9,13 +9,13 @@
     'lg': 'max-w-lg',
     'xl': 'max-w-xl',
   }"
-  width="md"
+  width="lg"
 />
 
 <form
   hx-post="{{ url }}"
   hx-swap="innerHTML show:top"
-  hx-disabled-elt="#save-button, #save-and-add-another-button"
+  hx-disabled-elt="#save-button, #save-and-add-another-button, #save-and-continue-editing-button"
   x-trap="true"
   id="{{ form_id }}"
   class="{{ widths|get_item:width }} mx-auto"
@@ -49,6 +49,16 @@
       id="save-and-add-another-button"
       value="{% translate 'save and add another'|title %}"
       title="{% translate 'save and add another'|title %}"
+    />
+    <c-button
+      kind="input"
+      theme="primary"
+      width="full"
+      type="submit"
+      name="save_and_continue_editing"
+      id="save-and-continue-editing-button"
+      value="{% translate 'save and continue editing'|title %}"
+      title="{% translate 'save and continue editing'|title %}"
     />
     <c-button
       kind="a"

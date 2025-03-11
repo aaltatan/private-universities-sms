@@ -131,6 +131,8 @@ class CreateMixin(ABC):
                 context=context,
                 status=201,
             )
+        elif request_parser.save_and_continue_editing:
+            response["Hx-Redirect"] = obj.get_update_url() + request_parser.querystring
 
         response["Hx-Trigger"] = "messages"
 
