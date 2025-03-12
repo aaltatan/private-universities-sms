@@ -30,7 +30,9 @@
           {% for city in object.cities.all %}
           <c-table.tr>
             <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}"> {{ city }} </c-table.td>
+            <c-table.td data-header="{% translate 'name'|title %}"> {{ city }} </c-table.td>
+            <c-table.td data-header="{% translate 'kind'|title %}"> {{ city.get_kind_display }} </c-table.td>
+            <c-table.td data-header="{% translate 'description'|title %}"> {{ city.description }} </c-table.td>
           </c-table.tr>
           {% endfor %}
         </c-table.table>
