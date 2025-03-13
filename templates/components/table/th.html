@@ -1,6 +1,17 @@
+<c-vars
+  :alignments="{
+    'start': 'justify-start',
+    'center': 'justify-center',
+    'end': 'justify-end',
+  }"
+  alignment="start"
+/>
+
 <th
   scope="col"
-  class="px-2 py-3 text-start max-md:hidden sticky top-0 -translate-y-0.5 z-10 border-neutral-300 bg-white text-neutral-900 dark:border-neutral-800 dark:bg-neutral-950 dark:text-white border-b first-letter:capitalize font-semibold tracking-tighter"
+  class="px-2 py-3 max-md:hidden sticky top-0 -translate-y-0.5 z-10 border-neutral-300 bg-white text-neutral-900 dark:border-neutral-800 dark:bg-neutral-950 dark:text-white border-b font-semibold tracking-tighter"
 >
-  {{ slot }}
+  <div class="flex items-center {{ alignments|get_item:alignment }} capitalize">
+    {{ slot }}
+  </div>
 </th>

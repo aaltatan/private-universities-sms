@@ -2,9 +2,13 @@ from abc import ABC, abstractmethod
 from typing import Iterable
 
 from django.db.models import Model
-from django.forms import ModelForm
+from django.forms import ModelForm, HiddenInput
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.http import HttpRequest
+
+
+class InlineFormset(BaseInlineFormSet):
+    ordering_widget = HiddenInput
 
 
 class InlineFormsetFactory(ABC):
@@ -23,7 +27,7 @@ class InlineFormsetFactory(ABC):
     def fields(self) -> Iterable[str]:
         pass
 
-    custom_formset_class: BaseInlineFormSet | None = None
+    custom_formset_class: InlineFormset | None = None
     extra: int = 1
     max_num: int = 1000
 
@@ -38,11 +42,11 @@ class InlineFormsetFactory(ABC):
     @property
     def object_name(self) -> str:
         return self.model._meta.object_name.lower()
-    
+
     @property
     def add_permission(self) -> str:
         return f"{self.app_label}.add_{self.object_name}"
-    
+
     @property
     def change_permission(self) -> str:
         return f"{self.app_label}.change_{self.object_name}"
@@ -57,13 +61,14 @@ class InlineFormsetFactory(ABC):
         parent_model: Model,
         extra: int | None = None,
         max_num: int | None = None,
-    ) -> type[BaseInlineFormSet]:
+    ) -> type[InlineFormset]:
         kwargs = {
             "parent_model": parent_model,
             "model": self.model,
             "form": self.form_class,
             "extra": extra if extra is not None else self.extra,
             "fields": self.fields,
+            "can_order": True,
             "max_num": max_num if max_num is not None else self.max_num,
             "can_delete": request.user.has_perm(
                 f"{self.app_label}.delete_{self.object_name}",
@@ -72,5 +77,7 @@ class InlineFormsetFactory(ABC):
 
         if self.custom_formset_class:
             kwargs["formset"] = self.custom_formset_class
+        else:
+            kwargs["formset"] = InlineFormset
 
         return inlineformset_factory(**kwargs)

@@ -73,7 +73,7 @@ class CityInline(InlineFormsetFactory):
 
     @classmethod
     def get_queryset(cls, obj: models.Governorate):
-        return obj.cities.all().order_by("id")
+        return obj.cities.all().order_by("ordering", "id")
 
 
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):

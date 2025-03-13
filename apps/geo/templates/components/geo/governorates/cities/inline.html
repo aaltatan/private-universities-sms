@@ -2,9 +2,11 @@
 
 <c-vars row_id="" :hide="False" />
 
-<c-table.tr :hide="{{ hide }}" :id="row_id" hx-disable="true">
+<c-table.tr x-sort:item="{{ forloop.counter }}" :hide="{{ hide }}" :id="row_id" hx-disable="true">
   <c-table.td data-header="{% translate 'name' %}">
     {{ form.id }}
+    <!--  -->
+    {{ form.ORDER }}
     <c-inputs.text :show_help="False" :show_label="False" :field="form.name" />
   </c-table.td>
   <c-table.td data-header="{% translate 'kind' %}">

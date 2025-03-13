@@ -24,6 +24,7 @@ class AbstractUniqueNameModel(models.Model):
         null=True,
         verbose_name=_("description"),
     )
+    ordering = models.PositiveIntegerField(default=0) # to order objects in inlines
     slug = models.SlugField(
         max_length=255,
         unique=True,

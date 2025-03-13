@@ -28,16 +28,18 @@
     <c-table height="none">
       <c-table.table>
         <c-table.tr header="True">
-          <c-table.th> {% translate 'name' %} </c-table.th>
-          <c-table.th> {% translate 'kind' %} </c-table.th>
-          <c-table.th> {% translate 'description' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'name' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'kind' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'description' %} </c-table.th>
           {% if perms.geo.delete_city %}
-          <c-table.th> {% translate 'delete' %} </c-table.th>
+          <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
           {% endif %}
         </c-table.tr>
-        {% for form in cities_formset.forms %}
-        <c-geo.governorates.cities.inline :form="form" />
-        {% endfor %}
+        <tbody x-sort="sortHandler">
+          {% for form in cities_formset %}
+          <c-geo.governorates.cities.inline :form="form" />
+          {% endfor %}
+        </tbody>
       </c-table.table>
     </c-table>
     {% if perms.geo.add_city %}
