@@ -1,12 +1,12 @@
 import pytest
 from django.contrib.auth.models import Permission
+from django.db import connection
 from django.db.models import Model
 from django.urls import reverse
-from django.db import connection
 
 from apps.core.models import User
 from apps.core.utils import Deleter
-from apps.geo.models import Governorate
+from apps.geo.models import City, Governorate
 from tests.utils import reset_sequence
 
 APP_LABEL = "geo"
@@ -38,6 +38,11 @@ def subapp_label() -> str:
 @pytest.fixture
 def model() -> type[Model]:
     return Governorate
+
+
+@pytest.fixture
+def city_model() -> City:
+    return City
 
 
 @pytest.fixture
@@ -140,6 +145,34 @@ def create_users(django_db_setup, django_db_blocker, permissions) -> None:
         view_perm = Permission.objects.get(codename=f"view_{OBJECT_NAME}")
         user_with_view_perm_only.user_permissions.add(view_perm)
 
+        city_user_with_change_perm = User.objects.create_user(
+            username="city_user_with_change_perm",
+            password="password",
+        )
+        city_user_with_change_delete_perm = User.objects.create_user(
+            username="city_user_with_change_delete_perm",
+            password="password",
+        )
+        city_user_with_change_add_perm = User.objects.create_user(
+            username="city_user_with_change_add_perm",
+            password="password",
+        )
+
+        city_change_perm = Permission.objects.get(codename="change_city")
+        city_delete_perm = Permission.objects.get(codename="delete_city")
+        city_add_perm = Permission.objects.get(codename="add_city")
+
+        city_user_with_change_perm.user_permissions.add(
+            view_perm,
+            city_change_perm,
+        )
+        city_user_with_change_delete_perm.user_permissions.add(
+            view_perm, city_delete_perm, city_change_perm
+        )
+        city_user_with_change_add_perm.user_permissions.add(
+            view_perm, city_add_perm, city_change_perm
+        )
+
         for p in permissions:
             perm = Permission.objects.get(
                 codename=f"{p}_{OBJECT_NAME}",
@@ -149,3 +182,7 @@ def create_users(django_db_setup, django_db_blocker, permissions) -> None:
                 password="password",
             )
             user.user_permissions.add(view_perm, perm)
+
+            city_user_with_change_perm.user_permissions.add(perm)
+            city_user_with_change_delete_perm.user_permissions.add(perm)
+            city_user_with_change_add_perm.user_permissions.add(perm)

@@ -5,7 +5,7 @@ from typing import Any, Iterable
 from django.contrib import messages
 from django.db.models import Model
 from django.forms import BaseInlineFormSet, ModelForm
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -69,7 +69,7 @@ class UpdateMixin(ABC):
             index_url=self.get_app_urls()["index_url"],
         )
 
-        formsets = []
+        formsets: list[BaseInlineFormSet] = []
         if self.inlines and not request_parser.is_modal_request:
             for inline_class in self.inlines:
                 inline: InlineFormsetFactory = inline_class()
@@ -85,6 +85,23 @@ class UpdateMixin(ABC):
                 formsets.append(formset)
 
         if form.is_valid() and all(formset.is_valid() for formset in formsets):
+            for formset in formsets:
+                has_new_objects = bool(
+                    [
+                        item
+                        for item in formset.cleaned_data
+                        if not item.get("id") and item
+                    ]
+                )
+                criteria = has_new_objects and not request.user.has_perm(
+                    inline.add_permission
+                )
+                print(f'{has_new_objects=}')
+                print(f'{not request.user.has_perm(inline.add_permission)=}')
+                if criteria:
+                    print('#' * 100)
+                    return HttpResponseForbidden()
+
             return self.get_form_valid_response(
                 request=request,
                 form=form,
@@ -182,7 +199,6 @@ class UpdateMixin(ABC):
 
         if self.inlines:
             for inline_class in self.inlines:
-
                 extra: int | None = None
 
                 inline: InlineFormsetFactory = inline_class()
