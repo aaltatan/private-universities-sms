@@ -1,6 +1,15 @@
 export function formset({ totalForms = 0, emptyFormId = "empty-form" }) {
   return {
     totalForms: totalForms,
+    init() {
+      this.resetSerials();
+    },
+    resetSerials() {
+      let serials = document.querySelectorAll("td[data-header='#']");
+      serials.forEach((serial, idx) => {
+        serial.innerHTML = idx + 1;
+      });
+    },
     addNewForm() {
       let emptyForm = document.getElementById(emptyFormId).cloneNode(true);
       emptyForm.classList.remove("hidden");
@@ -13,6 +22,7 @@ export function formset({ totalForms = 0, emptyFormId = "empty-form" }) {
       emptyForm.querySelector(`input:not([type='hidden'], select)`).focus();
 
       this.totalForms++;
+      this.resetSerials();
     },
     sortHandler() {
       let orders = document.querySelectorAll("input[id$='-ORDER']");

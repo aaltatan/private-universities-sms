@@ -28,6 +28,7 @@
     <c-table height="none">
       <c-table.table>
         <c-table.tr header="True">
+          <c-table.th alignment="center"> # </c-table.th>
           <c-table.th alignment="center"> {% translate 'name' %} </c-table.th>
           <c-table.th alignment="center"> {% translate 'kind' %} </c-table.th>
           <c-table.th alignment="center"> {% translate 'description' %} </c-table.th>
@@ -35,7 +36,7 @@
           <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
           {% endif %}
         </c-table.tr>
-        <tbody x-sort="sortHandler">
+        <tbody x-sort="sortHandler();resetSerials();">
           {% for form in cities_formset %}
           <c-geo.governorates.cities.inline :form="form" />
           {% endfor %}
