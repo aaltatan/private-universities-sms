@@ -46,6 +46,37 @@ class CommonCreateTests:
         assert model.objects.count() == objects_count + 1
 
     @staticmethod
+    def test_create_new_object_with_save_and_continue_editing_btn(
+        model: type[Model],
+        admin_client: Client,
+        urls: dict[str, str],
+        templates: dict[str, str],
+        clean_data_sample: dict[str, str],
+        counts: dict[str, int],
+    ) -> None:
+        objects_count = counts["objects"]
+        response = admin_client.get(urls["create"])
+
+        assert response.status_code == status.HTTP_200_OK
+        assert is_template_used(templates["create"], response)
+
+        clean_data_sample["save_and_continue_editing"] = "true"
+        response = admin_client.post(urls["create"], clean_data_sample)
+        messages_list = list(
+            get_messages(request=response.wsgi_request),
+        )
+        success_message = f"{clean_data_sample['name']} has been created successfully"
+
+        last_obj = model.objects.all().order_by("id").last()
+
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.headers.get("Hx-Redirect") == last_obj.get_update_url()
+        assert response.headers.get("Hx-Trigger") == "messages"
+        assert messages_list[0].level == messages.SUCCESS
+        assert messages_list[0].message == success_message
+        assert model.objects.count() == objects_count + 1
+
+    @staticmethod
     def test_create_from_modal_without_using_save_or_save_and_add_another(
         admin_client: Client,
         urls: dict[str, str],
