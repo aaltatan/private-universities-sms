@@ -6,6 +6,7 @@ from rest_framework import filters as rest_filters
 from rest_framework import viewsets
 
 from apps.core import filter_backends, mixins
+from apps.core.inline import InlineFormsetFactory
 from apps.core.schemas import Action
 from apps.core.utils import Deleter
 
@@ -65,9 +66,20 @@ class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
     form_class = forms.JobTypeForm
 
 
+class JobSubtypeInline(InlineFormsetFactory):
+    model = models.JobSubtype
+    form_class = forms.JobSubtypeForm
+    fields = ("name", "description")
+
+    @classmethod
+    def get_queryset(cls, obj: models.JobType):
+        return obj.job_subtypes.all().order_by("ordering", "id")
+
+
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "org.change_jobtype"
     form_class = forms.JobTypeForm
+    inlines = (JobSubtypeInline,)
 
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):

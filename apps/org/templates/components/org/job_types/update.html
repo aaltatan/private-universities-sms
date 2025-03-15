@@ -1,5 +1,55 @@
-{% load i18n %}
+{% load i18n widget_tweaks %}
 
+<!--  -->
+{% if job_subtypes_formset.forms %}
+<c-forms.update
+  form_title="{% translate 'update' %} {{ form.instance }}"
+  url="{{ update_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+  width="xl"
+>
+  <div class="grid grid-cols-2 gap-2">
+    <c-inputs.text :field="form.name" />
+    <c-inputs.text :field="form.description" />
+  </div>
+  <div
+    x-data="formset({
+      totalForms: {{ job_subtypes_formset.management_form.TOTAL_FORMS.value }},
+      emptyFormId: 'job-subtypes-empty-form',
+    })"
+  >
+    <c-org.job_types.job_subtypes.management-form />
+    <c-error.wrapper>
+      {% for error in job_subtypes_formset.non_form_errors %}
+      <c-error.error>{{ error }}</c-error.error>
+      {% endfor %}
+    </c-error.wrapper>
+    <c-table height="none" id="job-subtypes-formset-table">
+      <c-table.table>
+        <c-table.tr header="True">
+          <c-table.th alignment="center"> # </c-table.th>
+          <c-table.th alignment="center"> {% translate 'name' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'description' %} </c-table.th>
+          {% if perms.org.delete_jobsubtype %}
+          <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
+          {% endif %}
+        </c-table.tr>
+        <tbody x-sort="sortHandler();resetSerials();">
+          {% for form in job_subtypes_formset %}
+          <c-org.job_types.job_subtypes.inline :form="form" />
+          {% endfor %}
+        </tbody>
+      </c-table.table>
+    </c-table>
+    {% if perms.org.add_jobsubtype %}
+    <div class="my-2">
+      <c-button @click.prevent="addNewForm" width="full">{% translate 'add new row' %} </c-button>
+    </div>
+    {% endif %}
+  </div>
+</c-forms.update>
+{% else %}
 <c-forms.update
   form_title="{% translate 'update' %} {{ form.instance }}"
   url="{{ update_url }}{% querystring %}"
@@ -9,3 +59,12 @@
   <c-inputs.text :field="form.name" />
   <c-inputs.text :field="form.description" />
 </c-forms.update>
+{% endif %}
+
+<table>
+  <c-org.job_types.job_subtypes.inline
+    row_id="job-subtypes-empty-form"
+    :hide="True"
+    :form="job_subtypes_formset.empty_form"
+  />
+</table>
