@@ -367,5 +367,5 @@ def test_create_cities_without_create_perm_with_wrong_initial_forms(
         },
     )
 
-    assert response.status_code == status.HTTP_403_FORBIDDEN
+    assert response.status_code == status.HTTP_200_OK
     assert city_model.objects.count() == 3

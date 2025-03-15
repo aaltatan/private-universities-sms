@@ -86,20 +86,13 @@ class UpdateMixin(ABC):
 
         if form.is_valid() and all(formset.is_valid() for formset in formsets):
             for formset in formsets:
-                has_new_objects = bool(
-                    [
-                        item
-                        for item in formset.cleaned_data
-                        if not item.get("id") and item
-                    ]
-                )
-                criteria = has_new_objects and not request.user.has_perm(
+                new_objects = [
+                    item for item in formset.cleaned_data if not item.get("id") and item
+                ]
+                criteria = bool(new_objects) and not request.user.has_perm(
                     inline.add_permission
                 )
-                print(f'{has_new_objects=}')
-                print(f'{not request.user.has_perm(inline.add_permission)=}')
                 if criteria:
-                    print('#' * 100)
                     return HttpResponseForbidden()
 
             return self.get_form_valid_response(
