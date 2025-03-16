@@ -11,6 +11,10 @@ class JobTypeResource(BaseResource):
         attribute="job_subtypes_count",
         column_name=_("job subtypes count").title(),
     )
+    employees_count = fields.Field(
+        attribute="employees_count",
+        column_name=_("employees count").title(),
+    )
 
     class Meta:
         model = models.JobType
@@ -18,6 +22,7 @@ class JobTypeResource(BaseResource):
             "serial",
             "name",
             "job_subtypes_count",
+            "employees_count",
             "description",
             "slug",
         )
@@ -28,10 +33,21 @@ class JobSubtypeResource(BaseResource):
         attribute="job_type__name",
         column_name=_("job type").title(),
     )
+    employees_count = fields.Field(
+        attribute="employees_count",
+        column_name=_("employees count").title(),
+    )
 
     class Meta:
         model = models.JobSubtype
-        fields = ("serial", "name", "job_type", "description", "slug")
+        fields = (
+            "serial",
+            "name",
+            "job_type",
+            "employees_count",
+            "description",
+            "slug",
+        )
 
 
 class GroupResource(BaseResource):
@@ -39,10 +55,21 @@ class GroupResource(BaseResource):
         attribute="kind",
         column_name=_("kind").title(),
     )
+    employees_count = fields.Field(
+        attribute="employees_count",
+        column_name=_("employees count").title(),
+    )
 
     class Meta:
         model = models.Group
-        fields = ("serial", "name", "kind", "description", "slug")
+        fields = (
+            "serial",
+            "name",
+            "kind",
+            "employees_count",
+            "description",
+            "slug",
+        )
 
 
 class CostCenterResource(BaseResource):
@@ -50,10 +77,21 @@ class CostCenterResource(BaseResource):
         attribute="accounting_id",
         column_name=_("accounting id").title(),
     )
+    employees_count = fields.Field(
+        attribute="employees_count",
+        column_name=_("employees count").title(),
+    )
 
     class Meta:
         model = models.CostCenter
-        fields = ("serial", "name", "accounting_id", "description", "slug")
+        fields = (
+            "serial",
+            "name",
+            "accounting_id",
+            "employees_count",
+            "description",
+            "slug",
+        )
 
 
 class PositionResource(BaseResource):
@@ -61,10 +99,21 @@ class PositionResource(BaseResource):
         attribute="order",
         column_name=_("order").title(),
     )
+    employees_count = fields.Field(
+        attribute="employees_count",
+        column_name=_("employees count").title(),
+    )
 
     class Meta:
         model = models.Position
-        fields = ("serial", "name", "order", "description", "slug")
+        fields = (
+            "serial",
+            "name",
+            "order",
+            "employees_count",
+            "description",
+            "slug",
+        )
 
 
 class StatusResource(BaseResource):
@@ -72,10 +121,21 @@ class StatusResource(BaseResource):
         attribute="is_payable",
         column_name=_("is payable").title(),
     )
+    employees_count = fields.Field(
+        attribute="employees_count",
+        column_name=_("employees count").title(),
+    )
 
     def dehydrate_is_payable(self, obj: models.Status):
         return self._dehydrate_boolean(obj.is_payable)
 
     class Meta:
         model = models.Status
-        fields = ("serial", "name", "is_payable", "description", "slug")
+        fields = (
+            "serial",
+            "name",
+            "is_payable",
+            "employees_count",
+            "description",
+            "slug",
+        )

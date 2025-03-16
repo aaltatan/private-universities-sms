@@ -22,6 +22,10 @@ class CityResource(BaseResource):
         attribute="governorate__name",
         column_name=_("governorate").title(),
     )
+    employees_count = fields.Field(
+        attribute="employees_count",
+        column_name=_("employees count").title(),
+    )
     kind = fields.Field(
         attribute="kind",
         column_name=_("kind").title(),
@@ -33,6 +37,7 @@ class CityResource(BaseResource):
             "serial",
             "name",
             "kind",
+            "employees_count",
             "governorate",
             "description",
             "slug",

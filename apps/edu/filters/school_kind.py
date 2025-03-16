@@ -22,6 +22,9 @@ class BaseSchoolKindFilter(BaseNameDescriptionFilter):
         choices=models.SchoolKind.VirtualChoices,
     )
     schools_count_from, schools_count_to = get_number_from_to_filters("schools_count")
+    employees_count_from, employees_count_to = get_number_from_to_filters(
+        "employees_count",
+    )
 
     class Meta:
         model = models.SchoolKind
@@ -30,6 +33,8 @@ class BaseSchoolKindFilter(BaseNameDescriptionFilter):
             "is_governmental",
             "schools_count_from",
             "schools_count_to",
+            "employees_count_from",
+            "employees_count_to",
             "is_virtual",
             "description",
         )

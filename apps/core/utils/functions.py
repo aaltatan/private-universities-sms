@@ -14,8 +14,9 @@ def get_apps_links(
     specific_app_label: str | None = None,
     view_name: str = "index",
     additional_links: list[AppLink] = [],
+    unlinked_apps: list[str] = [],
 ) -> list[AppLink]:
-    local_apps = settings.LOCAL_APPS
+    local_apps = [app for app in settings.LOCAL_APPS if app not in unlinked_apps]
     local_apps = [app.replace("apps.", "") for app in local_apps]
 
     models = apps.all_models

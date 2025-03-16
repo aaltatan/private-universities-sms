@@ -10,10 +10,18 @@ class CitySerializer(serializers.ModelSerializer):
             fields = ("id", "name", "description")
 
     governorate = BaseGovernorateSerializer(read_only=True)
+    employees_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = models.City
-        fields = ("id", "name", "kind", "description", "governorate")
+        fields = (
+            "id",
+            "name",
+            "kind",
+            "description",
+            "governorate",
+            "employees_count",
+        )
 
 
 class CreateUpdateCitySerializer(serializers.ModelSerializer):

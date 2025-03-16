@@ -31,6 +31,10 @@ class SchoolResource(BaseResource):
         attribute="address",
         column_name=_("address").title(),
     )
+    employees_count = fields.Field(
+        attribute="employees_count",
+        column_name=_("employees count").title(),
+    )
 
     class Meta:
         model = models.School
@@ -43,6 +47,7 @@ class SchoolResource(BaseResource):
             "email",
             "phone",
             "address",
+            "employees_count",
             "description",
             "slug",
         )
@@ -61,6 +66,10 @@ class SchoolKindResource(BaseResource):
         attribute="schools_count",
         column_name=_("schools count").title(),
     )
+    employees_count = fields.Field(
+        attribute="employees_count",
+        column_name=_("employees count").title(),
+    )
 
     def dehydrate_is_governmental(self, obj: models.SchoolKind) -> str:
         return self._dehydrate_boolean(obj.is_governmental)
@@ -76,6 +85,7 @@ class SchoolKindResource(BaseResource):
             "is_governmental",
             "is_virtual",
             "schools_count",
+            "employees_count",
             "description",
             "slug",
         )
@@ -86,13 +96,24 @@ class SpecializationResource(BaseResource):
         attribute="is_specialist",
         column_name=_("specialist?").title(),
     )
+    employees_count = fields.Field(
+        attribute="employees_count",
+        column_name=_("employees count").title(),
+    )
 
     def dehydrate_is_specialist(self, obj: models.Specialization) -> str:
         return self._dehydrate_boolean(obj.is_specialist)
 
     class Meta:
         model = models.Specialization
-        fields = ("serial", "name", "is_specialist", "description", "slug")
+        fields = (
+            "serial",
+            "name",
+            "is_specialist",
+            "description",
+            "employees_count",
+            "slug",
+        )
 
 
 class DegreeResource(BaseResource):
@@ -100,10 +121,21 @@ class DegreeResource(BaseResource):
         attribute="is_academic",
         column_name=_("academic?").title(),
     )
+    employees_count = fields.Field(
+        attribute="employees_count",
+        column_name=_("employees count").title(),
+    )
 
     def dehydrate_is_academic(self, obj: models.Degree) -> str:
         return self._dehydrate_boolean(obj.is_academic)
 
     class Meta:
         model = models.Degree
-        fields = ("serial", "name", "is_academic", "description", "slug")
+        fields = (
+            "serial",
+            "name",
+            "is_academic",
+            "employees_count",
+            "description",
+            "slug",
+        )

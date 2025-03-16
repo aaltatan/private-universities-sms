@@ -24,7 +24,9 @@ def constants(request: HttpRequest) -> dict[str, Any]:
             "per_page": settings.PER_PAGE,
         },
         "sidebar_links": get_apps_links(
-            request=request, additional_links=[dashboard_link]
+            request=request,
+            additional_links=[dashboard_link],
+            unlinked_apps=["apps.employees"],
         ),
     }
     return data

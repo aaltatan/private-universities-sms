@@ -6,6 +6,7 @@ ORDERING_FIELDS: dict[str, str] = {
     "name": _("name"),
     "is_local": _("locality"),
     "description": _("description"),
+    "employees_count": _("employees count"),
 }
 
 SEARCH_FIELDS: tuple[str] = ("name", "description")

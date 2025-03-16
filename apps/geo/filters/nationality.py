@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.core.filters import (
     BaseNameDescriptionFilter,
     BaseQSearchFilter,
+    get_number_from_to_filters,
     get_ordering_filter,
 )
 
@@ -16,10 +17,19 @@ class BaseNationalityFilter(BaseNameDescriptionFilter):
         label=_("locality").title(),
         choices=models.Nationality.LocalityChoices,
     )
+    employees_count_from, employees_count_to = get_number_from_to_filters(
+        "employees_count",
+    )
 
     class Meta:
         model = models.Nationality
-        fields = ("name", "is_local", "description")
+        fields = (
+            "name",
+            "is_local",
+            "employees_count_from",
+            "employees_count_to",
+            "description",
+        )
 
 
 class APINationalityFilter(BaseNationalityFilter):

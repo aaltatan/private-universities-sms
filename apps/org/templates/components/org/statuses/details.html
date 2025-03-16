@@ -22,6 +22,14 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'employees count'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.employees_count }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
               {% translate 'description'|title %}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">

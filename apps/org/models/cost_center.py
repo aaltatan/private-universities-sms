@@ -19,6 +19,7 @@ class CostCenterManager(models.Manager):
             .get_queryset()
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
+                employees_count=models.Count("employees"),
             )
         )
 

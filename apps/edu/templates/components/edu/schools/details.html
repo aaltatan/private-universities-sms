@@ -10,9 +10,7 @@
             <c-table.td data-header="{% translate 'name'|title %}">
               {% translate 'name'|title %}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.name }}
-            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.name }} </c-table.td>
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
@@ -60,6 +58,14 @@
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.address|default_if_none:"" }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'employees count'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.employees_count }}
             </c-table.td>
           </c-table.tr>
           <c-table.tr>

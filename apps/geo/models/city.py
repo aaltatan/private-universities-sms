@@ -20,6 +20,7 @@ class CityManager(models.Manager):
             .select_related("governorate")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
+                employees_count=models.Count("employees"),
             )
         )
 

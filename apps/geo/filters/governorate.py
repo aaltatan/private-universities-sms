@@ -11,6 +11,9 @@ from ..constants import governorates as constants
 
 class BaseGovernoratesFilter(BaseNameDescriptionFilter):
     cities_count_from, cities_count_to = get_number_from_to_filters("cities_count")
+    employees_count_from, employees_count_to = get_number_from_to_filters(
+        "employees_count",
+    )
 
     class Meta:
         model = models.Governorate
@@ -18,6 +21,8 @@ class BaseGovernoratesFilter(BaseNameDescriptionFilter):
             "name",
             "cities_count_from",
             "cities_count_to",
+            "employees_count_from",
+            "employees_count_to",
             "description",
         )
 

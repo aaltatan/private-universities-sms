@@ -43,6 +43,7 @@ class JobTypeManager(models.Manager):
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
                 job_subtypes_count=models.Count("job_subtypes"),
+                employees_count=models.Count("job_subtypes__employees"),
             )
         )
 

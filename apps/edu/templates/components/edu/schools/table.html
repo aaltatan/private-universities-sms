@@ -34,7 +34,7 @@
       icon="adjustments-horizontal"
       size="20"
       @click="openOverlaySidebar"
-      data-fields="name,description,kind,nationality,website,email,phone,address"
+      data-fields="name,description,kind,nationality,website,email,phone,address,employees_count_from,employees_count_to"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -64,6 +64,7 @@
         <c-table.th>{% translate 'name' %}</c-table.th>
         <c-table.th>{% translate 'kind' %}</c-table.th>
         <c-table.th>{% translate 'nationality' %}</c-table.th>
+        <c-table.th>{% translate 'employees count' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
       </c-table.tr>
@@ -121,6 +122,7 @@
           <!--  -->
           {% endif %}
         </c-table.td>
+        <c-table.td data-header="{% translate 'employees count' %}"> {{ obj.employees_count }} </c-table.td>
         <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
         <c-table.td fixed="True">
           {% if can_update or can_delete or can_view_activity %}
@@ -192,6 +194,10 @@
             <c-inputs.text :field="filter.form.phone" />
             <c-inputs.text :field="filter.form.email" />
             <c-inputs.text :field="filter.form.address" />
+            <c-inputs.range-wrapper title="{% translate 'employees count'|title %}">
+              <c-inputs.text :show_label="False" :field="filter.form.employees_count_from" />
+              <c-inputs.text :show_label="False" :field="filter.form.employees_count_to" />
+            </c-inputs.range-wrapper>
             <c-inputs.text :field="filter.form.description" />
           </c-slot>
           <c-slot name="footer">

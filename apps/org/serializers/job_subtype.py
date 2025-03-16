@@ -10,10 +10,17 @@ class JobSubtypeSerializer(serializers.ModelSerializer):
             fields = ("id", "name", "description")
 
     job_type = JobTypeSerializer()
+    employees_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = models.JobSubtype
-        fields = ("id", "name", "description", "job_type")
+        fields = (
+            "id",
+            "name",
+            "description",
+            "job_type",
+            "employees_count",
+        )
 
 
 class CreateUpdateJobSubtypeSerializer(serializers.ModelSerializer):

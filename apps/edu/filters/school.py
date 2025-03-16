@@ -5,6 +5,7 @@ from apps.core.filters import (
     BaseQSearchFilter,
     FilterComboboxMixin,
     get_combobox_choices_filter,
+    get_number_from_to_filters,
     get_ordering_filter,
     get_text_filter,
 )
@@ -32,6 +33,9 @@ class BaseSchoolFilter(BaseNameDescriptionFilter):
         label=_("address").title(),
         placeholder=_("address").title(),
     )
+    employees_count_from, employees_count_to = get_number_from_to_filters(
+        "employees_count",
+    )
 
     class Meta:
         model = models.School
@@ -44,6 +48,8 @@ class BaseSchoolFilter(BaseNameDescriptionFilter):
             "phone",
             "address",
             "description",
+            "employees_count_from",
+            "employees_count_to",
         )
 
 

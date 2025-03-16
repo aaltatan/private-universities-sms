@@ -18,12 +18,18 @@ class BaseDegreeFilter(BaseNameDescriptionFilter):
         choices=models.Degree.AcademicChoices,
     )
     order_from, order_to = get_number_from_to_filters(field_name="order")
+    employees_count_from, employees_count_to = get_number_from_to_filters(
+        "employees_count",
+    )
 
     class Meta:
         model = models.Degree
         fields = (
             "name",
-            "order",
+            "order_from",
+            "order_to",
+            "employees_count_from",
+            "employees_count_to",
             "is_academic",
             "description",
         )

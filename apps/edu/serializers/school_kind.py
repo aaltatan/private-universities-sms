@@ -21,6 +21,7 @@ class SchoolKindSerializer(serializers.ModelSerializer):
     is_virtual = serializers.BooleanField()
     schools = SchoolSerializer(many=True, read_only=True)
     schools_count = serializers.IntegerField(read_only=True)
+    employees_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = models.SchoolKind
@@ -32,4 +33,5 @@ class SchoolKindSerializer(serializers.ModelSerializer):
             "description",
             "schools",
             "schools_count",
+            "employees_count",
         )

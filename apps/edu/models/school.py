@@ -21,6 +21,7 @@ class SchoolManager(models.Manager):
             .select_related("nationality", "kind")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
+                employees_count=models.Count("employees"),
             )
         )
 

@@ -5,6 +5,7 @@ from apps.core.filters import (
     BaseQSearchFilter,
     FilterComboboxMixin,
     get_combobox_choices_filter,
+    get_number_from_to_filters,
     get_ordering_filter,
 )
 
@@ -13,9 +14,20 @@ from ..constants import cities as constants
 
 
 class BaseCitiesFilter(BaseNameDescriptionFilter):
+    employees_count_from, employees_count_to = get_number_from_to_filters(
+        "employees_count",
+    )
+
     class Meta:
         model = models.City
-        fields = ("name", "governorate", "kind", "description")
+        fields = (
+            "name",
+            "governorate",
+            "employees_count_from",
+            "employees_count_to",
+            "kind",
+            "description",
+        )
 
 
 class APICitiesFilter(FilterComboboxMixin, BaseCitiesFilter):

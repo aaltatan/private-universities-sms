@@ -43,6 +43,7 @@ class GovernorateManager(models.Manager):
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
                 cities_count=models.Count("cities"),
+                employees_count=models.Count("cities__employees"),
             )
         )
 

@@ -14,6 +14,7 @@ class SchoolSerializer(serializers.ModelSerializer):
 
     nationality = NationalitySerializer(read_only=True)
     kind = KindSerializer(read_only=True)
+    employees_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = models.School
@@ -27,6 +28,7 @@ class SchoolSerializer(serializers.ModelSerializer):
             "phone",
             "address",
             "description",
+            "employees_count",
         )
 
 

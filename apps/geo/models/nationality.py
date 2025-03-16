@@ -19,6 +19,7 @@ class NationalityManager(models.Manager):
             .prefetch_related("schools")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
+                employees_count=models.Count("employees"),
             )
         )
 

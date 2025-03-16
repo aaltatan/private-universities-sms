@@ -20,6 +20,7 @@ class SchoolKindManager(models.Manager):
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
                 schools_count=models.Count("schools"),
+                employees_count=models.Count("schools__employees"),
             )
         )
 

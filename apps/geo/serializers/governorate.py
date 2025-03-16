@@ -11,7 +11,15 @@ class GovernorateSerializer(serializers.ModelSerializer):
 
     cities_count = serializers.IntegerField(read_only=True)
     cities = BaseCitySerializer(many=True, read_only=True)
+    employees_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = models.Governorate
-        fields = ("id", "name", "description", "cities", "cities_count")
+        fields = (
+            "id",
+            "name",
+            "description",
+            "cities",
+            "cities_count",
+            "employees_count",
+        )

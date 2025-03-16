@@ -34,7 +34,7 @@
       icon="adjustments-horizontal"
       size="20"
       @click="openOverlaySidebar"
-      data-fields="name,order_from,order_to,description"
+      data-fields="name,order_from,order_to,description,employees_count_from,employees_count_to"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -63,6 +63,7 @@
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'name' %}</c-table.th>
         <c-table.th>{% translate 'order' %}</c-table.th>
+        <c-table.th>{% translate 'employees count' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
       </c-table.tr>
@@ -83,6 +84,9 @@
           </a>
         </c-table.td>
         <c-table.td data-header="{% translate 'order' %}"> {{ obj.order }} </c-table.td>
+        <c-table.td data-header="{% translate 'employees count' %}">
+          {{ obj.employees_count }}
+        </c-table.td>
         <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
         <c-table.td fixed="True">
           {% if can_update or can_delete or can_view_activity %}
@@ -151,6 +155,10 @@
             <c-inputs.range-wrapper title="{% translate 'order' %}">
               <c-inputs.text :show_label="False" :field="filter.form.order_from" />
               <c-inputs.text :show_label="False" :field="filter.form.order_to" />
+            </c-inputs.range-wrapper>
+            <c-inputs.range-wrapper title="{% translate 'employees count'|title %}">
+              <c-inputs.text :show_label="False" :field="filter.form.employees_count_from" />
+              <c-inputs.text :show_label="False" :field="filter.form.employees_count_to" />
             </c-inputs.range-wrapper>
             <c-inputs.text :field="filter.form.description" />
           </c-slot>

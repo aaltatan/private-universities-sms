@@ -5,6 +5,7 @@ from apps.core.filters import (
     BaseQSearchFilter,
     FilterComboboxMixin,
     get_combobox_choices_filter,
+    get_number_from_to_filters,
     get_ordering_filter,
 )
 
@@ -13,9 +14,19 @@ from ..constants import job_subtypes as constants
 
 
 class BaseJobSubtypeFilter(BaseNameDescriptionFilter):
+    employees_count_from, employees_count_to = get_number_from_to_filters(
+        "employees_count",
+    )
+
     class Meta:
         model = models.JobSubtype
-        fields = ("name", "job_type", "description")
+        fields = (
+            "name",
+            "job_type",
+            "employees_count_from",
+            "employees_count_to",
+            "description",
+        )
 
 
 class APIJobSubtypeFilter(FilterComboboxMixin, BaseJobSubtypeFilter):

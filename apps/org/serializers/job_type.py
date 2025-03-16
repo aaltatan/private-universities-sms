@@ -11,6 +11,7 @@ class JobTypeSerializer(serializers.ModelSerializer):
 
     job_subtypes = JobSubtypeSerializer(many=True, read_only=True)
     job_subtypes_count = serializers.IntegerField(read_only=True)
+    employees_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = models.JobType
@@ -20,4 +21,5 @@ class JobTypeSerializer(serializers.ModelSerializer):
             "description",
             "job_subtypes",
             "job_subtypes_count",
+            "employees_count",
         )
