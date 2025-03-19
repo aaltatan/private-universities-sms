@@ -3,20 +3,25 @@
 <c-vars
   form_title="update"
   :widths="{
-    'none': '',
-    'sm': 'max-w-sm',
-    'md': 'max-w-md',
-    'lg': 'max-w-lg',
-    'xl': 'max-w-xl',
+    'none': 'mx-4',
+    'sm': 'max-w-sm mx-auto',
+    'md': 'max-w-md mx-auto',
+    'lg': 'max-w-lg mx-auto',
+    'xl': 'max-w-xl mx-auto',
+    '2xl': 'max-w-2xl mx-auto',
   }"
-  width="md"
+  width="lg"
+  encoding="urlencoded"
 />
 
 <form
   hx-post="{{ url }}"
   hx-target="#{{ form_id }}"
+  {% if encoding == 'multipart' %}
+  hx-encoding="multipart/form-data"
+  {% endif %}
   id="{{ form_id }}"
-  class="{{ widths|get_item:width }} mx-auto"
+  class="{{ widths|get_item:width }}"
   x-trap="true"
 >
   <h1 class="text-2xl my-2 first-letter:capitalize">{{ form_title }}</h1>

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 
 from apps.core.schemas import Perm
@@ -5,7 +7,26 @@ from apps.core.utils import (
     dict_to_css,
     get_differences,
     increase_slug_by_one,
+    calculate_age_in_years,
 )
+
+
+@pytest.mark.parametrize(
+    "birth_date, expected_age",
+    [
+        (datetime(2000, 1, 1), 25),
+        (datetime(2007, 1, 1), 18),
+        (datetime(2007, 2, 1), 18),
+        (datetime(2007, 3, 17), 18),
+        (datetime(2007, 3, 18), 18),
+        (datetime(2007, 3, 19), 18),
+        (datetime(2007, 3, 20), 17),
+        (datetime(2007, 3, 21), 17),
+        (datetime(2007, 3, 22), 17),
+    ],
+)
+def test_calculate_age_in_years(birth_date: datetime, expected_age: int):
+    assert calculate_age_in_years(birth_date) == expected_age
 
 
 @pytest.mark.parametrize(

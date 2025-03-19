@@ -10,6 +10,7 @@ from rest_framework_simplejwt.views import (
 
 from apps.edu.views import IndexView as EduIndexView
 from apps.geo.views import IndexView as GeoIndexView
+from apps.hr.views import IndexView as HRIndexView
 from apps.org.views import IndexView as OrgIndexView
 
 from .router import router
@@ -139,6 +140,23 @@ urlpatterns = [
             ]
         ),
     ),
+    path(
+        "hr/",
+        include(
+            [
+                path(
+                    "",
+                    HRIndexView.as_view(),
+                    kwargs={"title": _("human resources")},
+                ),
+                path(
+                    "employees/",
+                    include("apps.hr.urls.employees"),
+                    kwargs={"title": _("employees")},
+                ),
+            ]
+        ),
+    )
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

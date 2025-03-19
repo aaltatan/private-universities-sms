@@ -4,6 +4,7 @@ from .fields import (
     get_number_from_to_filters,
     get_ordering_filter,
     get_text_filter,
+    get_date_from_to_filters,
 )
 from .mixins import FilterComboboxMixin, FilterSearchMixin, FilterTextMixin
 
@@ -15,6 +16,7 @@ __all__ = [
     "FilterTextMixin",
     "get_combobox_choices_filter",
     "get_number_from_to_filters",
+    "get_date_from_to_filters",
     "get_ordering_filter",
     "get_text_filter",
 ]

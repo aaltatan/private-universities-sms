@@ -53,7 +53,7 @@ class CreateMixin(ABC):
         """
         Handles the POST request.
         """
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         request_parser = RequestParser(
             request=request,
             action="create",
@@ -95,6 +95,12 @@ class CreateMixin(ABC):
         else:
             response = render(request, template_name, context)
 
+        messages.error(request, _("form is invalid"))
+        response["Hx-Trigger"] = "messages"
+
+        print(form.errors.as_data())
+        print('#' * 100)
+        
         return response
 
     def get_form_valid_response(

@@ -3,22 +3,27 @@
 <c-vars
   form_title="add new"
   :widths="{
-    'none': '',
-    'sm': 'max-w-sm',
-    'md': 'max-w-md',
-    'lg': 'max-w-lg',
-    'xl': 'max-w-xl',
+    'none': 'mx-4',
+    'sm': 'max-w-sm mx-auto',
+    'md': 'max-w-md mx-auto',
+    'lg': 'max-w-lg mx-auto',
+    'xl': 'max-w-xl mx-auto',
+    '2xl': 'max-w-2xl mx-auto',
   }"
   width="lg"
+  encoding="urlencoded"
 />
 
 <form
   hx-post="{{ url }}"
   hx-swap="innerHTML show:top"
   hx-disabled-elt="#save-button, #save-and-add-another-button, #save-and-continue-editing-button"
+  {% if encoding == 'multipart' %}
+  hx-encoding="multipart/form-data"
+  {% endif %}
   x-trap="true"
   id="{{ form_id }}"
-  class="{{ widths|get_item:width }} mx-auto"
+  class="{{ widths|get_item:width }}"
 >
   <h1 class="text-2xl my-2 first-letter:capitalize">{{ form_title }}</h1>
   {% if form.non_field_errors %}

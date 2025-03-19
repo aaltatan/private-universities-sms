@@ -1,5 +1,10 @@
+from typing import Iterable
+
+from django.db import models
 from django.forms.widgets import (
     DateInput,
+    FileInput,
+    Input,
     SelectMultiple,
     Textarea,
     TextInput,
@@ -44,6 +49,37 @@ class ComboboxWidget(RenderMixin, SelectMultiple):
 
     template_name = "widgets/combobox.html"
     checked_attribute = {"checked": True}
+
+
+class SelectMultipleWidget(RenderMixin, SelectMultiple):
+    """
+    An extended SelectMultiple widget that renders a select multiple.
+    """
+
+    template_name = "widgets/select-multiple.html"
+    checked_attribute = {"checked": True}
+
+
+class TextWithDataListInputWidget(Input):
+    input_type = "text"
+    template_name = "widgets/text-datalist.html"
+
+    def __init__(self, attrs=None, datalist: Iterable | None = None) -> None:
+        self.datalist = datalist
+        super().__init__(attrs)
+
+    def get_context(self, *args, **kwargs) -> dict:
+        context = super().get_context(*args, **kwargs)
+        context["datalist"] = self.datalist
+        return context
+
+
+class AvatarWidget(RenderMixin, FileInput):
+    """
+    An extended FileInput widget that renders an avatar.
+    """
+
+    template_name = "widgets/avatar.html"
 
 
 class OrderingWidget(RenderMixin, SelectMultiple):
@@ -124,3 +160,14 @@ def get_date_widget(
 ) -> DateWidget:
     """Get date field."""
     return DateWidget(fill_onfocus=fill_onfocus, attrs=attributes)
+
+
+def get_input_datalist(
+    model: models.Model, field_name: str, **attrs
+) -> TextWithDataListInputWidget:
+    return TextWithDataListInputWidget(
+        attrs=attrs,
+        datalist=model.objects.values_list(field_name, flat=True)
+        .order_by(field_name)
+        .distinct(),
+    )

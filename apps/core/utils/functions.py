@@ -1,10 +1,12 @@
 import re
+from datetime import datetime
 
 from django.apps import apps
 from django.conf import settings
 from django.db.models import Model
-from django.urls import reverse_lazy
 from django.http import HttpRequest
+from django.urls import reverse_lazy
+from django.utils import timezone
 
 from apps.core.schemas import AppLink
 
@@ -15,6 +17,7 @@ def get_apps_links(
     view_name: str = "index",
     additional_links: list[AppLink] = [],
     unlinked_apps: list[str] = [],
+    unlinked_models: list[str] = [],
 ) -> list[AppLink]:
     local_apps = [app for app in settings.LOCAL_APPS if app not in unlinked_apps]
     local_apps = [app.replace("apps.", "") for app in local_apps]
@@ -28,6 +31,9 @@ def get_apps_links(
 
     for app_label, sub_app in models.items():
         for object_name, model in sub_app.items():
+            if object_name in unlinked_models:
+                continue
+
             app_link = AppLink(
                 icon=getattr(model._meta, "icon", "star"),
                 text=getattr(model._meta, "verbose_name_plural", "some app"),
@@ -95,3 +101,16 @@ def get_differences(from_: dict, to: dict) -> dict:
         return {"before": before, "after": after}
     else:
         return {}
+
+
+def calculate_age_in_years(birthdate: datetime) -> int:
+    """
+    calculates the age in years.
+    """
+    today = timezone.now().date()
+    age = today.year - birthdate.year
+
+    if (today.month, today.day) < (birthdate.month, birthdate.day):
+        age -= 1
+
+    return age

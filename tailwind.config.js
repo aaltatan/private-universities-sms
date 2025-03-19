@@ -27,6 +27,7 @@ module.exports = {
   },
   plugins: [
     require("tailwind-scrollbar"),
+    require("@tailwindcss/container-queries"),
     plugin(function ({ addVariant }) {
       addVariant("has-checked", ["&:has(input:checked)"]);
     }),

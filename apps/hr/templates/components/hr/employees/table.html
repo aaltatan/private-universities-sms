@@ -1,0 +1,236 @@
+{% load i18n widget_tweaks %}
+
+<c-blocks.table id="{{ table_id }}" :index_url="{{ index_url }}" :table_id="{{ table_id }}">
+  <c-slot name="search">
+    <c-table.filter-form trigger="search" class="w-full" prevent="True">
+      <c-inputs.text
+        :field="filter.form.q"
+        :show_label="False"
+        show_icon="True"
+        icon="magnifying-glass"
+        kind="search"
+        placeholder="{% translate 'search'|title %}"
+      />
+    </c-table.filter-form>
+  </c-slot>
+
+  <c-slot name="buttons_bar">
+    {% if can_create %}
+    <c-button
+      size="20"
+      kind="a"
+      href="{{ create_url }}{% querystring %}"
+      theme="primary"
+      title="{% translate 'add new'|title %}"
+      aria-label="create new object"
+    />
+    {% endif %}
+
+    <c-table.filter-form trigger="order-by-change">
+      {{ filter.form.ordering }}
+    </c-table.filter-form>
+
+    <c-button
+      icon="adjustments-horizontal"
+      size="20"
+      @click="openOverlaySidebar"
+      data-fields="firstname"
+      badge="True"
+      title="{% translate 'filters'|title %}"
+    />
+  </c-slot>
+
+  {% if can_delete %}
+  <c-slot name="actions">
+    <c-layout.contextmenu.section>
+      <c-layout.contextmenu.item color="danger" icon="trash">
+        <c-table.action-button
+          action_name="delete"
+          value="{% translate 'delete' %}"
+          hx-post="{{ index_url }}{% querystring %}"
+          hx-target="#modal-container"
+          hx-indicator="#modal-spinner"
+          aria-label="delete all objects"
+        />
+      </c-layout.contextmenu.item>
+    </c-layout.contextmenu.section>
+  </c-slot>
+  {% endif %}
+
+  <form hx-post="{{ index_url }}" id="{{ form_table_id }}">
+    <c-table.table>
+      <c-table.tr header="True">
+        <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
+        <c-table.th>{% translate 'fullname' %}</c-table.th>
+        <c-table.th>{% translate 'birth date' %}</c-table.th>
+        <c-table.th>{% translate 'gender' %}</c-table.th>
+        <c-table.th>{% translate 'governorate' %}</c-table.th>
+        <c-table.th>{% translate 'city' %}</c-table.th>
+        <c-table.th>{% translate 'hire date' %}</c-table.th>
+        <c-table.th>{% translate 'cost center' %}</c-table.th>
+        <c-table.th>{% translate 'position' %}</c-table.th>
+        <c-table.th>{% translate 'status' %}</c-table.th>
+        <c-table.th>{% translate 'job type' %}</c-table.th>
+        <c-table.th>{% translate 'job subtype' %}</c-table.th>
+        <c-table.th>{% translate 'degree' %}</c-table.th>
+        <c-table.th>{% translate 'academic?' %}</c-table.th>
+        <c-table.th>{% translate 'specialization' %}</c-table.th>
+        <c-table.th>{% translate 'specialist?' %}</c-table.th>
+        <c-table.th>{% translate 'options' %}</c-table.th>
+      </c-table.tr>
+      {% for obj in page %}
+      <c-table.tr>
+        <c-table.td-check :show_checkbox="can_delete" :obj="obj" idx="{{ forloop.counter }}" />
+        <c-table.td data-header="{% translate 'fullname' %}">
+          <a
+            href="#"
+            hx-get="{{ obj.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.fullname }}
+          </a>
+        </c-table.td>
+        <c-table.td
+          data-header="{% translate 'birth date' %}"
+          title="{{ obj.birth_date|timesince }}"
+        >
+          {{ obj.birth_date|date:'Y-m-d' }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'gender' %}">
+          {% if obj.gender == "male" %}
+          <c-badge theme="sky"> {{ obj.get_gender_display }} </c-badge>
+          {% else %}
+          <c-badge theme="pink"> {{ obj.get_gender_display }} </c-badge>
+          {% endif %}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'governorate' %}">
+          {{ obj.city.governorate }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'city' %}"> {{ obj.city }} </c-table.td>
+        <c-table.td data-header="{% translate 'hire date' %}" title="{{ obj.hire_date|timesince }}">
+          {{ obj.hire_date|date:'Y-m-d' }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'cost center' %}"> {{ obj.cost_center }} </c-table.td>
+        <c-table.td data-header="{% translate 'position' %}"> {{ obj.position }} </c-table.td>
+        <c-table.td data-header="{% translate 'status' %}">
+          {% if obj.status.is_payable %}
+          <c-badge theme="green"> {{ obj.status }} </c-badge>
+          {% else %}
+          <c-badge theme="red"> {{ obj.status }} </c-badge>
+          {% endif %}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'job type' %}">
+          {{ obj.job_subtype.job_type }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'job subtype' %}"> {{ obj.job_subtype }} </c-table.td>
+        <c-table.td data-header="{% translate 'degree' %}"> {{ obj.degree }} </c-table.td>
+        <c-table.td data-header="{% translate 'academic?' %}">
+          {% if obj.degree.is_academic %}
+          <c-badge theme="primary"> {% translate 'academic'|title %} </c-badge>
+          {% else %}
+          <c-badge> {% translate 'applied'|title %} </c-badge>
+          {% endif %}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'specialization' %}">
+          {{ obj.specialization }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'specialist?' %}">
+          {% if obj.specialization.is_specialist %}
+          <c-badge theme="primary"> {% translate 'specialist'|title %} </c-badge>
+          {% else %}
+          <c-badge> {% translate 'supporter'|title %} </c-badge>
+          {% endif %}
+        </c-table.td>
+        <c-table.td fixed="True">
+          {% if can_update or can_delete or can_view_activity %}
+          <c-layout.contextmenu button_padding="sm">
+            {% if can_update or can_view_activity %}
+            <c-layout.contextmenu.section>
+              {% if can_view_activity %}
+              <c-layout.contextmenu.item
+                icon="clock"
+                href="#"
+                hx-get="{{ obj.get_activities_url }}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="object activities"
+              >
+                {% translate 'activities' %}
+              </c-layout.contextmenu.item>
+              {% endif %}
+              <!--  -->
+              {% if can_update %}
+              <c-layout.contextmenu.item
+                icon="pencil"
+                href="{{ obj.get_update_url }}{% querystring %}"
+                aria-label="edit object"
+              >
+                {% translate 'edit' %}
+              </c-layout.contextmenu.item>
+              {% endif %}
+            </c-layout.contextmenu.section>
+            {% endif %}
+            <!--  -->
+            {% if can_delete %}
+            <c-layout.contextmenu.section>
+              <c-layout.contextmenu.item
+                color="danger"
+                icon="trash"
+                href="#"
+                hx-get="{{ obj.get_delete_url }}{% querystring %}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="delete object"
+              >
+                {% translate 'delete' %}
+              </c-layout.contextmenu.item>
+            </c-layout.contextmenu.section>
+            {% endif %}
+          </c-layout.contextmenu>
+          {% endif %}
+        </c-table.td>
+      </c-table.tr>
+      {% empty %}
+      <c-table.empty-tr />
+      {% endfor %}
+    </c-table.table>
+  </form>
+
+  <c-slot name="filters">
+    <c-layout.sidebar.overlay-sidebar>
+      <c-table.filter-form trigger="submit" class="w-full">
+        <c-layout.sidebar.overlay-content>
+          <c-slot name="header"> {% translate 'filters'|title %} </c-slot>
+          <c-slot name="body"> </c-slot>
+          <c-slot name="footer">
+            <c-button
+              icon="adjustments-horizontal"
+              theme="primary"
+              size="20"
+              title="{% translate 'filters'|title %}"
+            >
+              {% translate 'apply'|title %}
+            </c-button>
+            <c-button
+              icon="arrow-path"
+              size="20"
+              kind="a"
+              hx-get="{{ index_url }}"
+              hx-include="#no-content"
+              hx-target="#{{ table_id }}"
+              title="{% translate 'reset'|title %}"
+            >
+              {% translate 'reset'|title %}
+            </c-button>
+          </c-slot>
+        </c-layout.sidebar.overlay-content>
+      </c-table.filter-form>
+    </c-layout.sidebar.overlay-sidebar>
+  </c-slot>
+</c-blocks.table>

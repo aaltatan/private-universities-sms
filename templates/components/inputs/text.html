@@ -54,10 +54,10 @@
   {% if show_icon %}
   <div class="relative">
     <span class="absolute start-2 top-1/2 -translate-y-1/2">
-      {% heroicon_outline icon size=icon_size class="text-neutral-500" %}
+      {% heroicon_outline icon size=icon_size class="text-neutral-400 dark:text-neutral-500" %}
     </span>
     {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme
-    style="padding-inline-start: 2rem" type=kind %}
+    style="padding-inline-start: 2.5rem" type=kind %}
   </div>
   {% else %}
   <!--  -->

@@ -1,0 +1,72 @@
+{% load i18n static %}
+
+<c-forms.wrapper>
+  <c-inputs.avatar :instance="instance" :field="form.profile" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="4">
+  <c-inputs.text :field="form.firstname" />
+  <c-inputs.text :field="form.lastname" />
+  <c-inputs.text :field="form.father_name" />
+  <c-inputs.text :field="form.mother_name" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="2">
+  <c-inputs.text :field="form.birth_place" />
+  <c-inputs.text show_icon="True" icon="calendar-days" :field="form.birth_date" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="2">
+  <c-inputs.text :field="form.national_id" />
+  <c-inputs.text :field="form.passport_id" />
+</c-forms.wrapper>
+<c-forms.wrapper>
+  <c-inputs.text :field="form.card_id" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="3">
+  <c-inputs.text :field="form.civil_registry_office" />
+  <c-inputs.text :field="form.registry_office_name" />
+  <c-inputs.text :field="form.registry_office_id" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="3">
+  <c-inputs.text :field="form.gender" />
+  <c-inputs.text :field="form.face_color" />
+  <c-inputs.text :field="form.eyes_color" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="2">
+  <c-inputs.text :field="form.address" />
+  <c-inputs.text :field="form.current_address" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="2">
+  <c-inputs.text :field="form.special_signs" />
+  <c-inputs.text show_icon="True" icon="calendar-days" :field="form.card_date" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="3">
+  <c-inputs.text :field="form.martial_status" />
+  <c-inputs.text :field="form.military_status" />
+  <c-inputs.text :field="form.religion" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="2">
+  <c-inputs.text :field="form.nationality" />
+  <c-inputs.text :field="form.city" />
+</c-forms.wrapper>
+<c-forms.wrapper>
+  <c-inputs.text show_icon="True" icon="calendar-days" :field="form.hire_date" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="2">
+  <c-inputs.text :field="form.cost_center" />
+  <c-inputs.text :field="form.job_subtype" />
+  <c-inputs.text :field="form.position" />
+  <c-inputs.text :field="form.status" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="3">
+  <c-inputs.text :field="form.school" />
+  <c-inputs.text :field="form.specialization" />
+  <c-inputs.text :field="form.degree" />
+</c-forms.wrapper>
+<c-forms.wrapper>
+  <c-inputs.text :field="form.user" />
+</c-forms.wrapper>
+<c-forms.wrapper>
+  <c-inputs.m2m :field="form.groups" />
+</c-forms.wrapper>
+<c-forms.wrapper>
+  <c-inputs.text :field="form.notes" />
+</c-forms.wrapper>

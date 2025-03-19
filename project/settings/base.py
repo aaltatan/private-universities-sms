@@ -34,7 +34,7 @@ LOCAL_APPS = [
     "apps.geo",
     "apps.org",
     "apps.edu",
-    "apps.employees",
+    "apps.hr",
 ]
 
 THIRTY_PARTY_APPS = [
@@ -193,6 +193,8 @@ PER_PAGE = 50
 MESSAGES_TIMEOUT = 7
 
 PER_PAGE_ARRAY = [10, 25, 50, 100]
+
+MIN_EMPLOYEE_AGE = 18
 
 # Django Rest Framework settings
 REST_FRAMEWORK = {

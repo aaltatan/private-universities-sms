@@ -10,6 +10,11 @@ from .employee import Employee
 
 
 class Mobile(AddCreateActivityMixin, models.Model):
+    class HasWhatsappChoices(models.TextChoices):
+        NONE = "", "------"
+        YES = True, _("yes").title()
+        NO = False, _("no").title()
+
     class KindChoices(models.TextChoices):
         PERSONAL = "personal", _("personal").title()
         WORK = "work", _("work").title()
@@ -34,6 +39,9 @@ class Mobile(AddCreateActivityMixin, models.Model):
         default=True,
         verbose_name=_("has whatsapp"),
     )
+    ordering = models.PositiveIntegerField(
+        default=0,
+    )
     notes = models.TextField(
         verbose_name=_("notes"),
         max_length=1000,
@@ -49,6 +57,12 @@ class Mobile(AddCreateActivityMixin, models.Model):
 
     def get_whatsapp_url(self) -> str:
         return f"https://web.whatsapp.com/send?phone=+963{self.number[1:]}&text=Hello!"
+
+    class Meta:
+        verbose_name = _("mobile")
+        verbose_name_plural = _("mobiles")
+        ordering = ("kind", "number")
+        codename_plural = "mobiles"
 
 
 class ActivitySerializer(serializers.ModelSerializer):

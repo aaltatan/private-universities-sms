@@ -1,0 +1,146 @@
+{% load i18n widget_tweaks %}
+
+<c-forms.update
+  form_title="{% translate 'update' %} {{ form.instance }}"
+  url="{{ update_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+  width="2xl"
+  encoding="multipart"
+>
+  <c-hr.employees.form-body />
+  <div
+    x-data="formset({
+      totalForms: {{ mobiles_formset.management_form.TOTAL_FORMS.value }},
+      emptyFormId: 'mobiles-empty-form',
+      tableId: 'mobiles-formset-table',
+    })"
+  >
+    <c-separator>{% translate 'mobiles'|title %}</c-separator>
+    <c-hr.employees.mobiles.management-form />
+    <c-error.wrapper>
+      {% for error in mobiles_formset.non_form_errors %}
+      <c-error.error>{{ error }}</c-error.error>
+      {% endfor %}
+    </c-error.wrapper>
+    <c-table height="none" id="mobiles-formset-table">
+      <c-table.table>
+        <c-table.tr header="True">
+          <c-table.th alignment="center"> # </c-table.th>
+          <c-table.th alignment="center"> {% translate 'number' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'has whatsapp' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'kind' %} </c-table.th>
+          {% if perms.hr.delete_mobile %}
+          <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
+          {% endif %}
+        </c-table.tr>
+        <tbody x-sort="sortHandler();resetSerials();">
+          {% for form in mobiles_formset %}
+          <c-hr.employees.mobiles.inline :form="form" />
+          {% endfor %}
+        </tbody>
+      </c-table.table>
+    </c-table>
+    {% if perms.hr.add_mobile %}
+    <div class="my-2">
+      <c-button @click.prevent="addNewForm" width="full">{% translate 'add new row' %} </c-button>
+    </div>
+    {% endif %}
+  </div>
+  <div
+    x-data="formset({
+      totalForms: {{ phones_formset.management_form.TOTAL_FORMS.value }},
+      emptyFormId: 'phones-empty-form',
+      tableId: 'phones-formset-table',
+    })"
+  >
+    <c-separator>{% translate 'phones'|title %}</c-separator>
+    <c-hr.employees.phones.management-form />
+    <c-error.wrapper>
+      {% for error in phones_formset.non_form_errors %}
+      <c-error.error>{{ error }}</c-error.error>
+      {% endfor %}
+    </c-error.wrapper>
+    <c-table height="none" id="phones-formset-table">
+      <c-table.table>
+        <c-table.tr header="True">
+          <c-table.th alignment="center"> # </c-table.th>
+          <c-table.th alignment="center"> {% translate 'number' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'kind' %} </c-table.th>
+          {% if perms.hr.delete_mobile %}
+          <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
+          {% endif %}
+        </c-table.tr>
+        <tbody x-sort="sortHandler();resetSerials();">
+          {% for form in phones_formset %}
+          <c-hr.employees.phones.inline :form="form" />
+          {% endfor %}
+        </tbody>
+      </c-table.table>
+    </c-table>
+    {% if perms.hr.add_mobile %}
+    <div class="my-2">
+      <c-button @click.prevent="addNewForm" width="full">{% translate 'add new row' %} </c-button>
+    </div>
+    {% endif %}
+  </div>
+  <div
+    x-data="formset({
+      totalForms: {{ emails_formset.management_form.TOTAL_FORMS.value }},
+      emptyFormId: 'emails-empty-form',
+      tableId: 'emails-formset-table',
+    })"
+  >
+    <c-separator>{% translate 'emails'|title %}</c-separator>
+    <c-hr.employees.emails.management-form />
+    <c-error.wrapper>
+      {% for error in emails_formset.non_form_errors %}
+      <c-error.error>{{ error }}</c-error.error>
+      {% endfor %}
+    </c-error.wrapper>
+    <c-table height="none" id="emails-formset-table">
+      <c-table.table>
+        <c-table.tr header="True">
+          <c-table.th alignment="center"> # </c-table.th>
+          <c-table.th alignment="center"> {% translate 'email' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'kind' %} </c-table.th>
+          {% if perms.hr.delete_mobile %}
+          <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
+          {% endif %}
+        </c-table.tr>
+        <tbody x-sort="sortHandler();resetSerials();">
+          {% for form in emails_formset %}
+          <c-hr.employees.emails.inline :form="form" />
+          {% endfor %}
+        </tbody>
+      </c-table.table>
+    </c-table>
+    {% if perms.hr.add_mobile %}
+    <div class="my-2">
+      <c-button @click.prevent="addNewForm" width="full">{% translate 'add new row' %} </c-button>
+    </div>
+    {% endif %}
+  </div>
+</c-forms.update>
+
+<table>
+  <c-hr.employees.mobiles.inline
+    row_id="mobiles-empty-form"
+    :hide="True"
+    :form="mobiles_formset.empty_form"
+  />
+</table>
+<table>
+  <c-hr.employees.phones.inline
+    row_id="phones-empty-form"
+    :hide="True"
+    :form="phones_formset.empty_form"
+  />
+</table>
+<table>
+  <c-hr.employees.emails.inline
+    row_id="emails-empty-form"
+    :hide="True"
+    :form="emails_formset.empty_form"
+  />
+</table>

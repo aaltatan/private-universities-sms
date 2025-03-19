@@ -1,11 +1,11 @@
-export function formset({ totalForms = 0, emptyFormId = "empty-form" }) {
+export function formset({ totalForms = 0, emptyFormId = "empty-form", tableId = "formset" }) {
   return {
     totalForms: totalForms,
     init() {
       this.resetSerials();
     },
     resetSerials() {
-      let serials = document.querySelectorAll("td[data-header='#']");
+      let serials = document.querySelectorAll(`#${tableId} td[data-header='#']`);
       serials.forEach((serial, idx) => {
         serial.innerHTML = idx + 1;
       });
@@ -18,7 +18,7 @@ export function formset({ totalForms = 0, emptyFormId = "empty-form" }) {
       let reg = /__prefix__/g;
       emptyForm.innerHTML = emptyForm.innerHTML.replace(reg, this.totalForms);
 
-      document.querySelector("tbody[x-sort]").appendChild(emptyForm);
+      document.querySelector(`#${tableId} tbody[x-sort]`).appendChild(emptyForm);
       emptyForm.querySelector(`input:not([type='hidden'], select)`).focus();
 
       this.totalForms++;

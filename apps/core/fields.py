@@ -2,7 +2,8 @@ from typing import Any
 from urllib.parse import urlencode
 
 from django.db.models import QuerySet
-from django.forms import ModelChoiceField
+from django.forms import FileInput, ModelChoiceField
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from .widgets import AutocompleteWidget
@@ -14,6 +15,16 @@ class CustomModelChoiceField(ModelChoiceField):
     default_error_messages = {
         "invalid_choice": _("this choice is not valid"),
     }
+
+
+def get_avatar_field(url: str, **kwargs: dict[str, str]) -> FileInput:
+    attrs = {
+        "hx-get": reverse_lazy(url, kwargs=kwargs),
+        "hx-trigger": "load",
+        "hx-target": "this",
+    }
+
+    return FileInput(attrs)
 
 
 def get_autocomplete_field(

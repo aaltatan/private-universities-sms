@@ -29,6 +29,7 @@
     "tailwindcss": "^3.4.16"
   },
   "devDependencies": {
+    "@tailwindcss/container-queries": "^0.1.1",
     "tailwind-scrollbar": "^3.1.0",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1"

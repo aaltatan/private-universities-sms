@@ -26,7 +26,12 @@ def constants(request: HttpRequest) -> dict[str, Any]:
         "sidebar_links": get_apps_links(
             request=request,
             additional_links=[dashboard_link],
-            unlinked_apps=["apps.employees"],
+            unlinked_models=[
+                "employee_groups",
+                "email",
+                "phone",
+                "mobile",
+            ],
         ),
     }
     return data

@@ -6,12 +6,14 @@ class OptimizationMixin:
         return queryset.select_related(
             # geo
             "city",
+            "city__governorate",
             "nationality",
             # org
             "cost_center",
             "position",
             "status",
             "job_subtype",
+            "job_subtype__job_type",
             # edu
             "degree",
             "school",

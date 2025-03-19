@@ -23,7 +23,16 @@ class IndexMixin(ABC):
         return permissions
 
     def get_apps_links(self) -> list[AppLink]:
-        return get_apps_links(self.request, self.app_title)
+        return get_apps_links(
+            self.request,
+            self.app_title,
+            unlinked_models=[
+                "employee_groups",
+                "email",
+                "phone",
+                "mobile",
+            ],
+        )
 
     def get_context_data(self, **kwargs):
         links = self.get_apps_links()

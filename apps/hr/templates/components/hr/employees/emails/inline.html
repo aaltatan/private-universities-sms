@@ -1,0 +1,25 @@
+{% load i18n widget_tweaks %}
+
+<c-vars row_id="" :hide="False" />
+
+<c-table.tr x-sort:item="{{ forloop.counter }}" :hide="{{ hide }}" :id="row_id" hx-disable="true">
+  <c-table.td data-header="#"> # </c-table.td>
+  <c-table.td data-header="{% translate 'email' %}">
+    {{ form.id }}
+    <!--  -->
+    {{ form.ORDER }}
+    <c-inputs.text :show_help="False" :show_label="False" :field="form.email" />
+  </c-table.td>
+  <c-table.td data-header="{% translate 'kind' %}">
+    <c-inputs.text :show_help="False" :show_label="False" :field="form.kind" />
+  </c-table.td>
+  {% if perms.geo.delete_city %}
+  <c-table.td :fixed="True" data-header="{% translate 'delete' %}">
+    <div class="relative flex items-center justify-center">
+      {% render_field form.DELETE class="checkbox-input peer" %}
+      <!--  -->
+      {% heroicon_outline "check" class="checkbox-icon" %}
+    </div>
+  </c-table.td>
+  {% endif %}
+</c-table.tr>

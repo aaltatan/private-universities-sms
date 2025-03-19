@@ -11,6 +11,7 @@ from ..widgets import (
     get_email_widget,
     get_text_widget,
     get_url_widget,
+    get_date_widget,
 )
 
 
@@ -115,6 +116,32 @@ def get_number_from_to_filters(
         field_name=field_name,
         lookup_expr="lte",
         widget=get_text_widget(**to_attributes),
+    )
+
+    return from_, to
+
+
+def get_date_from_to_filters(
+    field_name: str,
+    from_attributes: dict[str, str] = {},
+    to_attributes: dict[str, str] = {},
+) -> tuple[filters.DateFilter, filters.DateFilter]:
+    """Get number range fields."""
+
+    from_attributes.setdefault("placeholder", _("from").title())
+    from_attributes.setdefault("x-mask", "9999-99-99")
+    to_attributes.setdefault("placeholder", _("to").title())
+    to_attributes.setdefault("x-mask", "9999-99-99")
+
+    from_ = filters.DateFilter(
+        field_name=field_name,
+        lookup_expr="gte",
+        widget=get_date_widget(**from_attributes, fill_onfocus=False),
+    )
+    to = filters.DateFilter(
+        field_name=field_name,
+        lookup_expr="lte",
+        widget=get_date_widget(**to_attributes, fill_onfocus=False),
     )
 
     return from_, to

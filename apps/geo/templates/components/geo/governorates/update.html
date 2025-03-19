@@ -17,6 +17,7 @@
     x-data="formset({
       totalForms: {{ cities_formset.management_form.TOTAL_FORMS.value }},
       emptyFormId: 'cities-empty-form',
+      tableId: 'cities-formset-table',
     })"
   >
     <c-geo.governorates.cities.management-form />

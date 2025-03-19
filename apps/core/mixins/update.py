@@ -43,7 +43,7 @@ class UpdateMixin(ABC):
 
         template_name = self.get_template_name()
         formsets_context = self.get_formsets_context(self.obj)
-        context = self.get_context_data(**formsets_context)
+        context = self.get_context_data(instance=self.obj, **formsets_context)
 
         if request.htmx:
             if request_parser.is_modal_request:
@@ -61,7 +61,11 @@ class UpdateMixin(ABC):
         model = self.get_model_class()
         self.obj = get_object_or_404(model, slug=slug)
 
-        form = self.form_class(request.POST, instance=self.obj)
+        form = self.form_class(
+            request.POST,
+            request.FILES,
+            instance=self.obj,
+        )
 
         request_parser = RequestParser(
             request=request,
@@ -146,7 +150,10 @@ class UpdateMixin(ABC):
                 elif request_parser.update_and_continue_editing:
                     template_name = self.get_form_template_name()
                     formsets_context = self.get_formsets_context(obj)
-                    context = self.get_context_data(**formsets_context)
+                    context = self.get_context_data(
+                        instance=obj,
+                        **formsets_context,
+                    )
                     response = render(request, template_name, context)
 
         response["Hx-Trigger"] = "messages"
@@ -173,8 +180,11 @@ class UpdateMixin(ABC):
         template_name = self.get_form_template_name()
 
         formset_context = self.get_formsets_context(self.obj, include_data=True)
-        context = self.get_context_data(**formset_context)
-        context["form"] = form
+        context = self.get_context_data(
+            form=form,
+            instance=form.instance,
+            **formset_context,
+        )
 
         if request_parser.is_modal_request:
             template_name = self.get_form_modal_template_name()
@@ -183,6 +193,10 @@ class UpdateMixin(ABC):
             response["Hx-Retarget"] = "#modal-container"
         else:
             response = render(request, template_name, context)
+
+        messages.error(request, _("form is invalid"))
+        response["Hx-Trigger"] = "messages"
+
         return response
 
     def get_formsets_context(

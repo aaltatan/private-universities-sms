@@ -17,6 +17,7 @@
     x-data="formset({
       totalForms: {{ job_subtypes_formset.management_form.TOTAL_FORMS.value }},
       emptyFormId: 'job-subtypes-empty-form',
+      tableId: 'job-subtypes-formset-table',
     })"
   >
     <c-org.job_types.job_subtypes.management-form />

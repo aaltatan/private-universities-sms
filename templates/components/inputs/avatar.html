@@ -1,0 +1,25 @@
+{% load i18n static %}
+
+<div class="relative w-fit mx-auto my-4">
+  <a
+    href="{% if instance.profile %}{{ instance.profile.url }}{% else %}{% static 'images/user.png' %}{% endif %}"
+    target="_blank"
+  >
+    <img
+      src="{% if instance.profile %}{{ instance.profile.url }}{% else %}{% static 'images/user.png' %}{% endif %}"
+      alt="{% translate 'user profile'|title %}"
+      class="rounded-full object-cover size-28 block border border-neutral-300 dark:border-neutral-800"
+      x-ref="filePreview"
+    />
+  </a>
+  <label class="absolute bottom-0 end-0" for="{{ field.id_for_label }}">
+    <c-button
+      @click.prevent="$el.nextElementSibling.click()"
+      theme="primary"
+      rounded="full"
+      icon="pencil"
+      size="16"
+    />
+    {{ field }}
+  </label>
+</div>

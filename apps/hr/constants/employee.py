@@ -42,4 +42,5 @@ SEARCH_FIELDS: tuple[str] = (
     "lastname",
     "father_name",
     "national_id",
+    "cost_center__name",
 )

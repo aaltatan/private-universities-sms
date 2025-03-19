@@ -316,7 +316,9 @@ class Employee(AddCreateActivityMixin, models.Model):
 def employee_pre_save(sender, instance: Employee, *args, **kwargs):
     value = (
         instance.firstname
+        + " "
         + instance.father_name
+        + " "
         + instance.lastname
         + "-"
         + instance.national_id

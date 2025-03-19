@@ -1,0 +1,81 @@
+{% load i18n %}
+
+<div
+  class="flex items-center gap-1 flex-wrap border border-neutral-300
+dark:border-neutral-800 p-2 rounded-md"
+  x-data="{
+    options: [
+      {% for group_name, group_choices, group_index in widget.optgroups %}
+        {% for option in group_choices %}
+          {
+            name: '{{ option.name }}',
+            value: '{{ option.value }}',
+            label: '{{ option.label }}',
+            selected: '{{ option.selected }}' === 'True',
+            index: '{{ option.index }}',
+            type: '{{ option.type }}',
+            wrap_label: '{{ option.wrap_label }}',
+            checked: '{{ option.attrs.checked }}' === 'True',
+            show: true,
+          },
+        {% endfor %}
+      {% endfor %}
+    ],
+    keywords: '',
+    searchHandler() {
+      this.options = this.options.map((option) => {
+        if (option.selected) {
+          return option;
+        }
+        option.show = false;
+        let searchName = option.label + ' ' + option.label;
+        let pattern = new RegExp(this.keywords.split(' ').join('.+'), 'g');
+        if (searchName.match(pattern)) {
+          option.show = true;
+        }
+        return option;
+      });
+    },
+    init() {
+      this.sortHandler();
+    },
+    sortHandler() {
+      $nextTick(() => {
+        this.options = this.options.sort((a, b) => b.selected - a.selected);
+      });
+    },
+  }"
+>
+  <input
+    type="search"
+    class="text-input mb-2"
+    x-model="keywords"
+    id="search"
+    placeholder="{% translate 'search'|title %}"
+    @search="searchHandler"
+    @keyup="searchHandler"
+    @keypress="if ($event.key === 'Enter') $event.preventDefault()"
+  />
+  <template x-for="option in options" :key="option.value">
+    <div
+      class="[&:has(input:checked)]:bg-blue-600 [&:has(input:checked)]:text-white bg-neutral-950 text-white hover:bg-neutral-800 border-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 border-none ring-neutral-500 rounded-md text-xs"
+      x-show="option.show"
+    >
+      <label
+        @click="sortHandler"
+        :for="option.name + '-' + option.value"
+        x-text="option.label"
+        class="p-2 block cursor-pointer text-xs"
+      ></label>
+      <input
+        type="checkbox"
+        :name="option.name"
+        :value="option.value"
+        :checked="option.selected"
+        :id="option.name + '-' + option.value"
+        x-model="option.selected"
+        hidden
+      />
+    </div>
+  </template>
+</div>
