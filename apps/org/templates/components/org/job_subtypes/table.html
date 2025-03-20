@@ -61,51 +61,15 @@
     <c-table.table>
       <c-table.tr header="True">
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
+        <c-table.th>{% translate 'options' %}</c-table.th>
         <c-table.th>{% translate 'name' %}</c-table.th>
         <c-table.th>{% translate 'job type' %}</c-table.th>
         <c-table.th>{% translate 'employees count' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
-        <c-table.th>{% translate 'options' %}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
       <c-table.tr>
         <c-table.td-check :show_checkbox="can_delete" :obj="obj" idx="{{ forloop.counter }}" />
-        <c-table.td data-header="{% translate 'name' %}">
-          <a
-            href="#"
-            hx-get="{{ obj.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
-            {{ obj.name }}
-          </a>
-        </c-table.td>
-        <c-table.td data-header="{% translate 'job type' %}">
-          {% if perms.org.change_jobtype %}
-          <a
-            hx-get="{{ obj.job_type.get_update_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            hx-headers='{"modal": true, "target": "#{{ table_id }}"}'
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="edit job_type object"
-          >
-            {{ obj.job_type }}
-          </a>
-          {% else %}
-          <!--  -->
-          {{ obj.job_type }}
-          <!--  -->
-          {% endif %}
-        </c-table.td>
-        <c-table.td data-header="{% translate 'employees count' %}">
-          {{ obj.employees_count }}
-        </c-table.td>
-        <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
         <c-table.td fixed="True">
           {% if can_update or can_delete or can_view_activity %}
           <c-layout.contextmenu button_padding="sm">
@@ -156,6 +120,42 @@
           </c-layout.contextmenu>
           {% endif %}
         </c-table.td>
+        <c-table.td data-header="{% translate 'name' %}">
+          <a
+            href="#"
+            hx-get="{{ obj.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.name }}
+          </a>
+        </c-table.td>
+        <c-table.td data-header="{% translate 'job type' %}">
+          {% if perms.org.change_jobtype %}
+          <a
+            hx-get="{{ obj.job_type.get_update_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            hx-headers='{"modal": true, "target": "#{{ table_id }}"}'
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="edit job_type object"
+          >
+            {{ obj.job_type }}
+          </a>
+          {% else %}
+          <!--  -->
+          {{ obj.job_type }}
+          <!--  -->
+          {% endif %}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'employees count' %}">
+          {{ obj.employees_count }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
       </c-table.tr>
       {% empty %}
       <c-table.empty-tr />

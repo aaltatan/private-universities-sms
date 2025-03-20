@@ -61,16 +61,66 @@
     <c-table.table>
       <c-table.tr header="True">
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
+        <c-table.th>{% translate 'options' %}</c-table.th>
         <c-table.th>{% translate 'name' %}</c-table.th>
         <c-table.th>{% translate 'kind' %}</c-table.th>
         <c-table.th>{% translate 'nationality' %}</c-table.th>
         <c-table.th>{% translate 'employees count' %}</c-table.th>
         <c-table.th>{% translate 'description' %}</c-table.th>
-        <c-table.th>{% translate 'options' %}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
       <c-table.tr>
         <c-table.td-check :show_checkbox="can_delete" :obj="obj" idx="{{ forloop.counter }}" />
+        <c-table.td fixed="True">
+          {% if can_update or can_delete or can_view_activity %}
+          <c-layout.contextmenu button_padding="sm">
+            {% if can_update or can_view_activity %}
+            <c-layout.contextmenu.section>
+              {% if can_view_activity %}
+              <c-layout.contextmenu.item
+                icon="clock"
+                href="#"
+                hx-get="{{ obj.get_activities_url }}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="object activities"
+              >
+                {% translate 'activities' %}
+              </c-layout.contextmenu.item>
+              {% endif %}
+              <!--  -->
+              {% if can_update %}
+              <c-layout.contextmenu.item
+                icon="pencil"
+                href="{{ obj.get_update_url }}{% querystring %}"
+                aria-label="edit object"
+              >
+                {% translate 'edit' %}
+              </c-layout.contextmenu.item>
+              {% endif %}
+            </c-layout.contextmenu.section>
+            {% endif %}
+            <!--  -->
+            {% if can_delete %}
+            <c-layout.contextmenu.section>
+              <c-layout.contextmenu.item
+                color="danger"
+                icon="trash"
+                href="#"
+                hx-get="{{ obj.get_delete_url }}{% querystring %}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="delete object"
+              >
+                {% translate 'delete' %}
+              </c-layout.contextmenu.item>
+            </c-layout.contextmenu.section>
+            {% endif %}
+          </c-layout.contextmenu>
+          {% endif %}
+        </c-table.td>
         <c-table.td data-header="{% translate 'name' %}">
           <a
             href="#"
@@ -122,58 +172,10 @@
           <!--  -->
           {% endif %}
         </c-table.td>
-        <c-table.td data-header="{% translate 'employees count' %}"> {{ obj.employees_count }} </c-table.td>
-        <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
-        <c-table.td fixed="True">
-          {% if can_update or can_delete or can_view_activity %}
-          <c-layout.contextmenu button_padding="sm">
-            {% if can_update or can_view_activity %}
-            <c-layout.contextmenu.section>
-              {% if can_view_activity %}
-              <c-layout.contextmenu.item
-                icon="clock"
-                href="#"
-                hx-get="{{ obj.get_activities_url }}"
-                hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
-                aria-label="object activities"
-              >
-                {% translate 'activities' %}
-              </c-layout.contextmenu.item>
-              {% endif %}
-              <!--  -->
-              {% if can_update %}
-              <c-layout.contextmenu.item
-                icon="pencil"
-                href="{{ obj.get_update_url }}{% querystring %}"
-                aria-label="edit object"
-              >
-                {% translate 'edit' %}
-              </c-layout.contextmenu.item>
-              {% endif %}
-            </c-layout.contextmenu.section>
-            {% endif %}
-            <!--  -->
-            {% if can_delete %}
-            <c-layout.contextmenu.section>
-              <c-layout.contextmenu.item
-                color="danger"
-                icon="trash"
-                href="#"
-                hx-get="{{ obj.get_delete_url }}{% querystring %}"
-                hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
-                aria-label="delete object"
-              >
-                {% translate 'delete' %}
-              </c-layout.contextmenu.item>
-            </c-layout.contextmenu.section>
-            {% endif %}
-          </c-layout.contextmenu>
-          {% endif %}
+        <c-table.td data-header="{% translate 'employees count' %}">
+          {{ obj.employees_count }}
         </c-table.td>
+        <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
       </c-table.tr>
       {% empty %}
       <c-table.empty-tr />

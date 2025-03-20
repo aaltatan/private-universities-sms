@@ -9,10 +9,10 @@
   :form="form"
   width="xl"
 >
-  <div class="grid grid-cols-2 gap-2">
+  <c-forms.wrapper cols="2">
     <c-inputs.text :field="form.name" />
     <c-inputs.text :field="form.description" />
-  </div>
+  </c-forms.wrapper>
   <div
     x-data="formset({
       totalForms: {{ job_subtypes_formset.management_form.TOTAL_FORMS.value }},

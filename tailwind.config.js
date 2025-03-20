@@ -22,9 +22,7 @@ module.exports = {
     "ms-32",
     "ms-36",
   ],
-  theme: {
-    extend: {},
-  },
+  theme: {},
   plugins: [
     require("tailwind-scrollbar"),
     require("@tailwindcss/container-queries"),
