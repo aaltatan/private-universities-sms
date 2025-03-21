@@ -276,7 +276,7 @@ class Employee(AddCreateActivityMixin, models.Model):
         default=0,
     )  # to order objects in inlines
 
-    objects = EmployeeManager()
+    objects: EmployeeManager = EmployeeManager()
 
     class Meta:
         ordering = ("firstname",)
