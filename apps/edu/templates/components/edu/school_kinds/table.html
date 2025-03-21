@@ -1,4 +1,4 @@
-{% load i18n widget_tweaks %}
+{% load i18n widget_tweaks utils %}
 
 <c-blocks.table id="{{ table_id }}" :index_url="{{ index_url }}" :table_id="{{ table_id }}">
   <c-slot name="search">
@@ -62,12 +62,12 @@
       <c-table.tr header="True">
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
-        <c-table.th>{% translate 'name' %}</c-table.th>
-        <c-table.th>{% translate 'is governmental' %}</c-table.th>
-        <c-table.th>{% translate 'is virtual' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'name' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'is_governmental' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'is_virtual' }}</c-table.th>
         <c-table.th>{% translate 'schools count' %}</c-table.th>
         <c-table.th>{% translate 'employees count' %}</c-table.th>
-        <c-table.th>{% translate 'description' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'description' }}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
       <c-table.tr>
@@ -122,7 +122,7 @@
           </c-layout.contextmenu>
           {% endif %}
         </c-table.td>
-        <c-table.td data-header="{% translate 'name' %}">
+        <c-table.td data-header="{{ model|verbose_name:'name' }}">
           <a
             href="#"
             hx-get="{{ obj.get_absolute_url }}{% querystring %}"
@@ -135,7 +135,7 @@
             {{ obj.name }}
           </a>
         </c-table.td>
-        <c-table.td data-header="{% translate 'is governmental' %}">
+        <c-table.td data-header="{{ model|verbose_name:'is_governmental' }}">
           <c-badge>
             {% if obj.is_governmental %}
             <!--  -->
@@ -148,7 +148,7 @@
             {% endif %}
           </c-badge>
         </c-table.td>
-        <c-table.td data-header="{% translate 'is virtual' %}">
+        <c-table.td data-header="{{ model|verbose_name:'is_virtual' }}">
           <c-badge>
             {% if obj.is_virtual %}
             <!--  -->
@@ -167,7 +167,7 @@
         <c-table.td data-header="{% translate 'employees count' %}">
           {{ obj.employees_count }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'description' }}"> {{ obj.description }} </c-table.td>
       </c-table.tr>
       {% empty %}
       <c-table.empty-tr />

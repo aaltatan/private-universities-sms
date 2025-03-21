@@ -68,7 +68,9 @@ class Employee(AddCreateActivityMixin, models.Model):
         verbose_name=_("birth place"),
         validators=[two_chars_validator],
     )
-    birth_date = models.DateField()
+    birth_date = models.DateField(
+        verbose_name=_("birth date"),
+    )
     national_id = models.CharField(
         max_length=255,
         verbose_name=_("national id"),
@@ -117,6 +119,7 @@ class Employee(AddCreateActivityMixin, models.Model):
         max_length=10,
         choices=GenderChoices.choices,
         default=GenderChoices.MALE,
+        verbose_name=_("gender"),
     )
     face_color = models.CharField(
         max_length=255,
@@ -145,37 +148,44 @@ class Employee(AddCreateActivityMixin, models.Model):
     card_date = models.DateField(
         null=True,
         blank=True,
+        verbose_name=_("card date"),
     )
     martial_status = models.CharField(
         max_length=30,
         choices=MartialStatusChoices.choices,
         default=MartialStatusChoices.SINGLE,
+        verbose_name=_("martial status"),
     )
     military_status = models.CharField(
         max_length=30,
         choices=MilitaryStatus.choices,
         default=MilitaryStatus.EXCUSED,
+        verbose_name=_("military status"),
     )
     religion = models.CharField(
         max_length=30,
         choices=ReligionChoices.choices,
         default=ReligionChoices.MUSLIM,
+        verbose_name=_("religion"),
     )
     current_address = models.CharField(
         max_length=255,
         default="",
         blank=True,
+        verbose_name=_("current address"),
     )
     # geo
     nationality = models.ForeignKey(
         Nationality,
         on_delete=models.PROTECT,
         related_name="employees",
+        verbose_name=_("nationality"),
     )
     city = models.ForeignKey(
         City,
         on_delete=models.PROTECT,
         related_name="employees",
+        verbose_name=_("city"),
     )
     hire_date = models.DateField()
     notes = models.TextField(
@@ -188,53 +198,63 @@ class Employee(AddCreateActivityMixin, models.Model):
         upload_to="profiles",
         null=True,
         blank=True,
+        verbose_name=_("profile"),
     )
     identity_document = models.FileField(
         upload_to="identities",
         null=True,
         blank=True,
+        verbose_name=_("identity document"),
     )
     # org
     cost_center = models.ForeignKey(
         CostCenter,
         on_delete=models.PROTECT,
         related_name="employees",
+        verbose_name=_("cost center"),
     )
     position = models.ForeignKey(
         Position,
         on_delete=models.PROTECT,
         related_name="employees",
+        verbose_name=_("position"),
     )
     status = models.ForeignKey(
         Status,
         on_delete=models.PROTECT,
         related_name="employees",
+        verbose_name=_("status"),
     )
     job_subtype = models.ForeignKey(
         JobSubtype,
         on_delete=models.PROTECT,
         related_name="employees",
+        verbose_name=_("job subtype"),
     )
     groups = models.ManyToManyField(
         Group,
         related_name="employees",
         blank=True,
+        verbose_name=_("groups"),
     )
     # edu
     degree = models.ForeignKey(
         Degree,
         on_delete=models.PROTECT,
         related_name="employees",
+        verbose_name=_("degree"),
     )
     school = models.ForeignKey(
         School,
         on_delete=models.PROTECT,
         related_name="employees",
+        verbose_name=_("school"),
     )
     specialization = models.ForeignKey(
         Specialization,
         on_delete=models.PROTECT,
         related_name="employees",
+        verbose_name=_("specialization"),
     )
     # user
     user = models.OneToOneField(
@@ -243,6 +263,7 @@ class Employee(AddCreateActivityMixin, models.Model):
         related_name="employee",
         null=True,
         blank=True,
+        verbose_name=_("user"),
     )
     slug = models.SlugField(
         unique=True,

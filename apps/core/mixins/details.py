@@ -11,6 +11,11 @@ class DetailsMixin:
 
     def get_app_label(self) -> str:
         return self.model._meta.app_label
+    
+    def get_context_data(self, **kwargs) -> dict[str, any]:
+        context = super().get_context_data(**kwargs)
+        context["model"] = self.model
+        return context
 
     def get_template_names(self) -> list[str]:
         if getattr(self, "template_name", None) is not None:

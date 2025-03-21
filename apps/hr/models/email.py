@@ -40,7 +40,7 @@ class Email(AddCreateActivityMixin, models.Model):
     )
 
     def __str__(self) -> str:
-        return f"{self.employee.get_fullname()} - {self.email}"
+        return self.email
 
     def get_absolute_url(self) -> str:
         return f"mailto:{self.email}"

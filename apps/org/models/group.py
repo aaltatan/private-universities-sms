@@ -32,6 +32,7 @@ class Group(AddCreateActivityMixin, AbstractUniqueNameModel):
         max_length=50,
         choices=KindChoices.choices,
         default=KindChoices.ADMINISTRATIVE,
+        verbose_name=_("kind"),
     )
     objects: GroupManager = GroupManager()
 

@@ -62,6 +62,7 @@ def index_columns() -> list[str]:
         "is governmental",
         "is virtual",
         "schools count",
+        "employees count",
         "description",
         "options",
     ]

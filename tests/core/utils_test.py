@@ -20,13 +20,14 @@ from apps.core.utils import (
         (datetime(2007, 3, 17), 18),
         (datetime(2007, 3, 18), 18),
         (datetime(2007, 3, 19), 18),
-        (datetime(2007, 3, 20), 17),
+        (datetime(2007, 3, 20), 18),
         (datetime(2007, 3, 21), 17),
         (datetime(2007, 3, 22), 17),
     ],
 )
 def test_calculate_age_in_years(birth_date: datetime, expected_age: int):
-    assert calculate_age_in_years(birth_date) == expected_age
+    today = datetime(2025, 3, 20)
+    assert calculate_age_in_years(birth_date, today) == expected_age
 
 
 @pytest.mark.parametrize(

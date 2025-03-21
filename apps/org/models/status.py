@@ -29,7 +29,7 @@ class Status(AddCreateActivityMixin, AbstractUniqueNameModel):
         NOT_PAYABLE = False, _("not payable").title()
 
     is_payable = models.BooleanField(
-        verbose_name=_("payable"),
+        verbose_name=_("is payable"),
         help_text=_("payable"),
         default=True,
     )

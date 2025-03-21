@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n utils %}
 
 <c-layout.modal width="xl">
   <c-layout.modal.body :close_padding="buttons_padding">
@@ -8,13 +8,13 @@
         <c-table.table>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'name'|title %}
+              {{ model|verbose_name:'name' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}"> {{ object.name }} </c-table.td>
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'governmental?'|title %}
+              {{ model|verbose_name:'is_governmental' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.is_governmental|yesno|title }}
@@ -22,7 +22,7 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'virtual?'|title %}
+              {{ model|verbose_name:'is_virtual' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.is_virtual|yesno|title }}
@@ -38,7 +38,7 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'description'|title %}
+              {{ model|verbose_name:'description' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.description }}

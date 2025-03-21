@@ -103,11 +103,16 @@ def get_differences(from_: dict, to: dict) -> dict:
         return {}
 
 
-def calculate_age_in_years(birthdate: datetime) -> int:
+def calculate_age_in_years(
+    birthdate: datetime,
+    today: datetime | None = None,
+) -> int:
     """
     calculates the age in years.
     """
-    today = timezone.now().date()
+    if today is None:
+        today = timezone.now().date()
+
     age = today.year - birthdate.year
 
     if (today.month, today.day) < (birthdate.month, birthdate.day):

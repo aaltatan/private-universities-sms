@@ -345,6 +345,7 @@ class ListMixin(ABC):
             "app_label": self.get_app_label(),
             "subapp_label": self.get_verbose_name_plural(),
             "model_name": self.get_model_name(),
+            "model": self.get_model_class(),
             **self.get_app_urls(),
             **self.get_html_ids(),
             **self.get_permissions(),

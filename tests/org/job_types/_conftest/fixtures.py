@@ -47,7 +47,7 @@ def api_keys() -> list[str]:
 
 @pytest.fixture
 def index_columns() -> list[str]:
-    return ["name", "job subtypes count", "description", "options"]
+    return ["name", "job subtypes count", "employees count", "description", "options"]
 
 
 @pytest.fixture

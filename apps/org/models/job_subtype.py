@@ -30,6 +30,7 @@ class JobSubtype(AddCreateActivityMixin, AbstractUniqueNameModel):
         JobType,
         on_delete=models.PROTECT,
         related_name="job_subtypes",
+        verbose_name=_("job type"),
     )
 
     objects: JobSubtypeManager = JobSubtypeManager()

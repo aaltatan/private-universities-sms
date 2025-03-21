@@ -1,4 +1,4 @@
-{% load i18n widget_tweaks %}
+{% load i18n widget_tweaks utils %}
 
 <c-blocks.table id="{{ table_id }}" :index_url="{{ index_url }}" :table_id="{{ table_id }}">
   <c-slot name="search">
@@ -62,11 +62,11 @@
       <c-table.tr header="True">
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
-        <c-table.th>{% translate 'name' %}</c-table.th>
-        <c-table.th>{% translate 'kind' %}</c-table.th>
-        <c-table.th>{% translate 'nationality' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'name' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'kind' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'nationality' }}</c-table.th>
         <c-table.th>{% translate 'employees count' %}</c-table.th>
-        <c-table.th>{% translate 'description' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'description' }}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
       <c-table.tr>
@@ -121,7 +121,7 @@
           </c-layout.contextmenu>
           {% endif %}
         </c-table.td>
-        <c-table.td data-header="{% translate 'name' %}">
+        <c-table.td data-header="{{ model|verbose_name:'name' }}">
           <a
             href="#"
             hx-get="{{ obj.get_absolute_url }}{% querystring %}"
@@ -134,7 +134,7 @@
             {{ obj.name }}
           </a>
         </c-table.td>
-        <c-table.td data-header="{% translate 'kind' %}">
+        <c-table.td data-header="{{ model|verbose_name:'kind' }}">
           {% if perms.edu.change_school %}
           <a
             hx-get="{{ obj.kind.get_update_url }}{% querystring %}"
@@ -153,7 +153,7 @@
           <!--  -->
           {% endif %}
         </c-table.td>
-        <c-table.td data-header="{% translate 'nationality' %}">
+        <c-table.td data-header="{{ model|verbose_name:'nationality' }}">
           {% if perms.geo.change_nationality %}
           <a
             hx-get="{{ obj.nationality.get_update_url }}{% querystring %}"
@@ -175,7 +175,7 @@
         <c-table.td data-header="{% translate 'employees count' %}">
           {{ obj.employees_count }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'description' %}"> {{ obj.description }} </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'description' }}"> {{ obj.description }} </c-table.td>
       </c-table.tr>
       {% empty %}
       <c-table.empty-tr />

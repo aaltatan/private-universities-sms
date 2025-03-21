@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n utils %}
 
 <c-layout.modal width="xl">
   <c-layout.modal.body :close_padding="buttons_padding">
@@ -8,13 +8,13 @@
         <c-table.table>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'name'|title %}
+              {{ model|verbose_name:'name' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}"> {{ object.name }} </c-table.td>
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'nationality'|title %}
+              {{ model|verbose_name:'nationality' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.nationality.name }}
@@ -22,7 +22,7 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'kind'|title %}
+              {{ model|verbose_name:'kind' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.kind.name }}
@@ -30,7 +30,7 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'website'|title %}
+              {{ model|verbose_name:'website' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.website|default_if_none:"" }}
@@ -38,7 +38,7 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'email'|title %}
+              {{ model|verbose_name:'email' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.email|default_if_none:"" }}
@@ -46,7 +46,7 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'phone'|title %}
+              {{ model|verbose_name:'phone' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.phone|default_if_none:"" }}
@@ -54,7 +54,7 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'address'|title %}
+              {{ model|verbose_name:'address' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.address|default_if_none:"" }}
@@ -70,7 +70,7 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'description'|title %}
+              {{ model|verbose_name:'description' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.description }}

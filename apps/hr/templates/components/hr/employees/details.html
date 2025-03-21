@@ -1,49 +1,438 @@
-{% load i18n %}
+{% load i18n static utils %}
 
 <c-layout.modal width="xl">
   <c-layout.modal.body :close_padding="buttons_padding">
-    <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
+    <c-slot name="header">{% translate 'details'|title %}: {{ object.fullname }} </c-slot>
     <c-slot name="body">
-      <c-table height="sm">
-        <c-table.table>
-          <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'name'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.name }} </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td data-header="{% translate 'order'|title %}">
-              {% translate 'order'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.order }} </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'academic?'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.is_academic|yesno|title }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'employees count'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.employees_count }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
-              {% translate 'description'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.description }}
-            </c-table.td>
-          </c-table.tr>
-        </c-table.table>
-      </c-table>
+      <div class="grid grid-cols-4 gap-2">
+        <img
+          src="{% if object.profile %}{{ object.profile.url }}{% else %}{% static 'images/avatar.png' %}{% endif %}"
+          class="rounded-md size-48 object-cover block border border-neutral-300 dark:border-neutral-800"
+          alt="avatar"
+        />
+        <div class="col-span-3">
+          <c-table height="none">
+            <c-table.table>
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'firstname' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.firstname }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'lastname' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.lastname }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'father_name' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.father_name }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'mother_name' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.mother_name }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'birth_place' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.birth_place }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'birth_date' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.birth_date|date:'Y-m-d' }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'age'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.birth_date|timesince }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'national_id' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.national_id }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'passport_id' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.passport_id|default_if_none:"" }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'card_id' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.card_id }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'civil_registry_office' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.civil_registry_office }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'registry_office_name' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.registry_office_name }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'registry_office_id' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.registry_office_id }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'gender' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.get_gender_display }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'face_color' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.face_color }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'eyes_color' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.eyes_color }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'address' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.address }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'special_signs' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.special_signs }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'card_date' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.card_date|date:'Y-m-d' }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'martial_status' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.get_martial_status_display }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'military_status' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.get_military_status_display }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'religion' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.get_religion_display }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'current_address' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.current_address }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'nationality' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.nationality }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'governorate'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.city.governorate }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'city' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.city }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'hire_date' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.hire_date|date:'Y-m-d' }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'work age'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.hire_date|timesince }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'notes' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.notes }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'cost_center' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.cost_center }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'position' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.position }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'status' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.status }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'job type'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.job_subtype.job_type }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'job_subtype' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.job_subtype }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'groups' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {% for group in object.groups.all %} {{ group }}, {% endfor %}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'degree' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.degree }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'academic?'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.degree.is_academic|yesno|title }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'school' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.school }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'specialization' }}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.specialization }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'specialist?'|title %}">
+                  {% translate 'specialist?'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.specialization.is_specialist|yesno|title }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+            </c-table.table>
+          </c-table>
+          {% if object.mobiles.all %}
+          <c-separator> {% translate 'mobiles'|title %} </c-separator>
+          <c-table height="none">
+            <c-table.table>
+              {% for number in object.mobiles.all %}
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'number'|title %}">
+                  <a href="{{ number.get_absolute_url }}" target="_blank">{{ number }}</a>
+                </c-table.td>
+                <c-table.td data-header="{% translate 'whatsapp'|title %}">
+                  {% if number.has_whatsapp %}
+                  <a href="{{ number.get_whatsapp_url }}" target="_blank">{{ number }}</a>
+                  {% endif %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'kind'|title %}">
+                  {{ number.get_kind_display }}
+                </c-table.td>
+              </c-table.tr>
+              {% endfor %}
+            </c-table.table>
+          </c-table>
+          {% endif %}
+          {% if object.phones.all %}
+          <c-separator> {% translate 'phones'|title %} </c-separator>
+          <c-table height="none">
+            <c-table.table>
+              {% for number in object.phones.all %}
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'number'|title %}">
+                  <a href="{{ number.get_absolute_url }}" target="_blank">{{ number }}</a>
+                </c-table.td>
+                <c-table.td data-header="{% translate 'kind'|title %}">
+                  {{ number.get_kind_display }}
+                </c-table.td>
+              </c-table.tr>
+              {% endfor %}
+            </c-table.table>
+          </c-table>
+          {% endif %}
+          {% if object.emails.all %}
+          <c-separator> {% translate 'emails'|title %} </c-separator>
+          <c-table height="none">
+            <c-table.table>
+              {% for email in object.emails.all %}
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'email'|title %}">
+                  <a href="{{ email.get_absolute_url }}" target="_blank">{{ email }}</a>
+                </c-table.td>
+                <c-table.td data-header="{% translate 'kind'|title %}">
+                  {{ email.get_kind_display }}
+                </c-table.td>
+              </c-table.tr>
+              {% endfor %}
+            </c-table.table>
+          </c-table>
+          {% endif %}
+        </div>
+      </div>
     </c-slot>
     <c-slot name="footer">
       <c-button

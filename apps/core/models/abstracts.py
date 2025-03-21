@@ -17,6 +17,7 @@ class AbstractUniqueNameModel(models.Model):
         max_length=255,
         unique=True,
         validators=[four_char_length_validator],
+        verbose_name=_("name"),
     )
     description = models.TextField(
         default="",

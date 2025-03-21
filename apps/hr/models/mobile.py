@@ -50,7 +50,7 @@ class Mobile(AddCreateActivityMixin, models.Model):
     )
 
     def __str__(self) -> str:
-        return f"{self.employee.get_fullname()} - {self.number}"
+        return f"+963{self.number[1:]}"
 
     def get_absolute_url(self) -> str:
         return f"tel:+963{self.number[1:]}"

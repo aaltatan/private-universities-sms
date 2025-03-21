@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<c-vars 
+<c-vars
   :heights="{
     'xs': 'max-h-[40vh] sm:max-h-[55vh]',
     'sm': 'max-h-[50vh] sm:max-h-[65vh]',
@@ -12,9 +12,9 @@
 />
 
 <div id="{{ id }}" class="relative hx-swap:opacity-80" x-data="tableCheckAll">
-  <div class="flex items-center justify-between flex-col gap-2 sm:gap-1 sm:flex-row mb-2">
-    {{ header }}
-  </div>
+  <div
+    class="flex items-center justify-between flex-col gap-2 sm:gap-1 sm:flex-row mb-2 empty:hidden"
+  >{{ header }}</div>
 
   <div
     class="relative {% if overflow %}overflow-auto{% endif %} w-full rounded-md border border-neutral-300 dark:border-neutral-800 scroll {{ heights|get_item:height }}"

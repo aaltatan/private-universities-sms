@@ -1,4 +1,4 @@
-{% load i18n widget_tweaks %}
+{% load i18n widget_tweaks utils %}
 
 <c-blocks.table id="{{ table_id }}" :index_url="{{ index_url }}" :table_id="{{ table_id }}">
   <c-slot name="search">
@@ -63,19 +63,19 @@
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
         <c-table.th>{% translate 'fullname' %}</c-table.th>
-        <c-table.th>{% translate 'birth date' %}</c-table.th>
-        <c-table.th>{% translate 'gender' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'birth_date' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'gender' }}</c-table.th>
         <c-table.th>{% translate 'governorate' %}</c-table.th>
-        <c-table.th>{% translate 'city' %}</c-table.th>
-        <c-table.th>{% translate 'hire date' %}</c-table.th>
-        <c-table.th>{% translate 'cost center' %}</c-table.th>
-        <c-table.th>{% translate 'position' %}</c-table.th>
-        <c-table.th>{% translate 'status' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'city' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'hire_date' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'cost_center' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'position' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'status' }}</c-table.th>
         <c-table.th>{% translate 'job type' %}</c-table.th>
-        <c-table.th>{% translate 'job subtype' %}</c-table.th>
-        <c-table.th>{% translate 'degree' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'job_subtype' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'degree' }}</c-table.th>
         <c-table.th>{% translate 'academic?' %}</c-table.th>
-        <c-table.th>{% translate 'specialization' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'specialization' }}</c-table.th>
         <c-table.th>{% translate 'specialist?' %}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
@@ -145,12 +145,12 @@
           </a>
         </c-table.td>
         <c-table.td
-          data-header="{% translate 'birth date' %}"
+          data-header="{{ model|verbose_name:'birth_date' }}"
           title="{{ obj.birth_date|timesince }}"
         >
           {{ obj.birth_date|date:'Y-m-d' }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'gender' %}">
+        <c-table.td data-header="{{ model|verbose_name:'gender' }}">
           {% if obj.gender == "male" %}
           <c-badge theme="sky"> {{ obj.get_gender_display }} </c-badge>
           {% else %}
@@ -161,12 +161,12 @@
           {{ obj.city.governorate }}
         </c-table.td>
         <c-table.td data-header="{% translate 'city' %}"> {{ obj.city }} </c-table.td>
-        <c-table.td data-header="{% translate 'hire date' %}" title="{{ obj.hire_date|timesince }}">
+        <c-table.td data-header="{{ model|verbose_name:'hire_date' }}" title="{{ obj.hire_date|timesince }}">
           {{ obj.hire_date|date:'Y-m-d' }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'cost center' %}"> {{ obj.cost_center }} </c-table.td>
-        <c-table.td data-header="{% translate 'position' %}"> {{ obj.position }} </c-table.td>
-        <c-table.td data-header="{% translate 'status' %}">
+        <c-table.td data-header="{{ model|verbose_name:'cost_center' }}"> {{ obj.cost_center }} </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'position' }}"> {{ obj.position }} </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'status' }}">
           {% if obj.status.is_payable %}
           <c-badge theme="green"> {{ obj.status }} </c-badge>
           {% else %}
@@ -176,8 +176,8 @@
         <c-table.td data-header="{% translate 'job type' %}">
           {{ obj.job_subtype.job_type }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'job subtype' %}"> {{ obj.job_subtype }} </c-table.td>
-        <c-table.td data-header="{% translate 'degree' %}"> {{ obj.degree }} </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'job_subtype' }}"> {{ obj.job_subtype }} </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'degree' }}"> {{ obj.degree }} </c-table.td>
         <c-table.td data-header="{% translate 'academic?' %}">
           {% if obj.degree.is_academic %}
           <c-badge theme="primary"> {% translate 'academic'|title %} </c-badge>
@@ -185,7 +185,7 @@
           <c-badge> {% translate 'applied'|title %} </c-badge>
           {% endif %}
         </c-table.td>
-        <c-table.td data-header="{% translate 'specialization' %}">
+        <c-table.td data-header="{{ model|verbose_name:'specialization' }}">
           {{ obj.specialization }}
         </c-table.td>
         <c-table.td data-header="{% translate 'specialist?' %}">

@@ -37,11 +37,13 @@ class City(AddCreateActivityMixin, AbstractUniqueNameModel):
         Governorate,
         on_delete=models.PROTECT,
         related_name="cities",
+        verbose_name=_("governorate"),
     )
     kind = models.CharField(
         max_length=10,
         choices=KindChoices.choices,
         default=KindChoices.CITY,
+        verbose_name=_("kind"),
     )
 
     objects: CityManager = CityManager()
