@@ -26,7 +26,7 @@
     class="dark:bg-black bg-white text-neutral-900 dark:text-neutral-100"
     hx-history="false"
     hx-headers='{ "X-CSRFToken": "{{ csrf_token }}" }'
-    :class="{'lg:me-64': overlaySidebarOpened}"
+    :class="{'lg:me-72': overlaySidebarOpened}"
     @keyup.alt.equal="sidebarSearchFocus"
     x-data="layout({ title: '{{ page_title }}' || '{{ project_name }}' })"
     x-cloak

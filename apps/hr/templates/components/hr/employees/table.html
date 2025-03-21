@@ -161,11 +161,18 @@
           {{ obj.city.governorate }}
         </c-table.td>
         <c-table.td data-header="{% translate 'city' %}"> {{ obj.city }} </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'hire_date' }}" title="{{ obj.hire_date|timesince }}">
+        <c-table.td
+          data-header="{{ model|verbose_name:'hire_date' }}"
+          title="{{ obj.hire_date|timesince }}"
+        >
           {{ obj.hire_date|date:'Y-m-d' }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'cost_center' }}"> {{ obj.cost_center }} </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'position' }}"> {{ obj.position }} </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'cost_center' }}">
+          {{ obj.cost_center }}
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'position' }}">
+          {{ obj.position }}
+        </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'status' }}">
           {% if obj.status.is_payable %}
           <c-badge theme="green"> {{ obj.status }} </c-badge>
@@ -176,7 +183,9 @@
         <c-table.td data-header="{% translate 'job type' %}">
           {{ obj.job_subtype.job_type }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'job_subtype' }}"> {{ obj.job_subtype }} </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'job_subtype' }}">
+          {{ obj.job_subtype }}
+        </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'degree' }}"> {{ obj.degree }} </c-table.td>
         <c-table.td data-header="{% translate 'academic?' %}">
           {% if obj.degree.is_academic %}
@@ -207,7 +216,97 @@
       <c-table.filter-form trigger="submit" class="w-full">
         <c-layout.sidebar.overlay-content>
           <c-slot name="header"> {% translate 'filters'|title %} </c-slot>
-          <c-slot name="body"> </c-slot>
+          <c-slot name="body">
+            <c-inputs.text :field="filter.form.firstname" />
+            <c-inputs.text :field="filter.form.lastname" />
+            <c-inputs.text :field="filter.form.father_name" />
+            <c-inputs.text :field="filter.form.mother_name" />
+            <c-inputs.text :field="filter.form.birth_place" />
+            <c-inputs.range-wrapper title="{% translate 'birth date'|title %}">
+              <c-inputs.text
+                :show_icon="True"
+                icon="calendar"
+                icon_size="16"
+                :show_label="False"
+                :field="filter.form.birth_date_from"
+              />
+              <c-inputs.text
+                :show_icon="True"
+                icon="calendar"
+                icon_size="16"
+                :show_label="False"
+                :field="filter.form.birth_date_to"
+              />
+            </c-inputs.range-wrapper>
+            <c-inputs.range-wrapper title="{% translate 'age'|title %}">
+              <c-inputs.text :show_label="False" :field="filter.form.age_from" />
+              <c-inputs.text :show_label="False" :field="filter.form.age_to" />
+            </c-inputs.range-wrapper>
+            <c-inputs.text :field="filter.form.national_id" />
+            <c-inputs.text :field="filter.form.card_id" />
+            <c-inputs.text :field="filter.form.passport_id" />
+            <c-inputs.text :field="filter.form.civil_registry_office" />
+            <c-inputs.text :field="filter.form.registry_office_name" />
+            <c-inputs.text :field="filter.form.registry_office_id" />
+            <c-inputs.text :field="filter.form.gender" />
+            <c-inputs.text :field="filter.form.face_color" />
+            <c-inputs.text :field="filter.form.eyes_color" />
+            <c-inputs.text :field="filter.form.address" />
+            <c-inputs.text :field="filter.form.special_signs" />
+            <c-inputs.range-wrapper title="{% translate 'card date'|title %}">
+              <c-inputs.text
+                :show_label="False"
+                :field="filter.form.card_date_from"
+                :show_icon="True"
+                icon="calendar"
+                icon_size="16"
+              />
+              <c-inputs.text
+                :show_label="False"
+                :field="filter.form.card_date_to"
+                :show_icon="True"
+                icon="calendar"
+                icon_size="16"
+              />
+            </c-inputs.range-wrapper>
+            <c-inputs.text :field="filter.form.martial_status" />
+            <c-inputs.text :field="filter.form.military_status" />
+            <c-inputs.text :field="filter.form.religion" />
+            <c-inputs.text :field="filter.form.current_address" />
+            <c-inputs.text :field="filter.form.nationality" />
+            <c-inputs.text :field="filter.form.governorate" />
+            <c-inputs.text :field="filter.form.city" />
+            <c-inputs.range-wrapper title="{% translate 'hire date'|title %}">
+              <c-inputs.text
+                :show_label="False"
+                :field="filter.form.hire_date_from"
+                :show_icon="True"
+                icon="calendar"
+                icon_size="16"
+              />
+              <c-inputs.text
+                :show_label="False"
+                :field="filter.form.hire_date_to"
+                :show_icon="True"
+                icon="calendar"
+                icon_size="16"
+              />
+            </c-inputs.range-wrapper>
+            <c-inputs.range-wrapper title="{% translate 'job age'|title %}">
+              <c-inputs.text :show_label="False" :field="filter.form.job_age_from" />
+              <c-inputs.text :show_label="False" :field="filter.form.job_age_to" />
+            </c-inputs.range-wrapper>
+            <c-inputs.text :field="filter.form.cost_center" />
+            <c-inputs.text :field="filter.form.position" />
+            <c-inputs.text :field="filter.form.status" />
+            <c-inputs.text :field="filter.form.job_type" />
+            <c-inputs.text :field="filter.form.job_subtype" />
+            <c-inputs.text :field="filter.form.groups" />
+            <c-inputs.text :field="filter.form.degree" />
+            <c-inputs.text :field="filter.form.school" />
+            <c-inputs.text :field="filter.form.specialization" />
+            <c-inputs.text :field="filter.form.notes" />
+          </c-slot>
           <c-slot name="footer">
             <c-button
               icon="adjustments-horizontal"

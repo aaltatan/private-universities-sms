@@ -3,75 +3,107 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.core.filters import (
     BaseQSearchFilter,
-    get_ordering_filter,
-    get_date_from_to_filters,
+    FilterTextMixin,
+    FilterComboboxMixin,
     get_combobox_choices_filter,
+    get_date_from_to_filters,
+    get_ordering_filter,
+    get_text_filter,
+    get_number_from_to_filters,
 )
 
 from .. import models
 from ..constants import employee as constants
 
 
-class BaseEmployeeFilter(filters.FilterSet):
+class BaseEmployeeFilter(FilterComboboxMixin, FilterTextMixin, filters.FilterSet):
+    firstname = get_text_filter(label=_("first name").title())
+    lastname = get_text_filter(label=_("last name").title())
+    father_name = get_text_filter(label=_("father name").title())
+    mother_name = get_text_filter(label=_("mother name").title())
+    birth_place = get_text_filter(label=_("birth place").title())
     birth_date_from, birth_date_to = get_date_from_to_filters(
         field_name="birth_date",
     )
+    age_from, age_to = get_number_from_to_filters(
+        field_name="age",
+    )
+    national_id = get_text_filter(label=_("national id").title())
+    card_id = get_text_filter(label=_("card id").title())
+    passport_id = get_text_filter(label=_("passport id").title())
+    civil_registry_office = get_text_filter(label=_("civil registry office").title())
+    registry_office_name = get_text_filter(label=_("registry office name").title())
+    registry_office_id = get_text_filter(label=_("registry office id").title())
+    address = get_text_filter(label=_("address").title())
+    special_signs = get_text_filter(label=_("special signs").title())
     card_date_from, card_date_to = get_date_from_to_filters(
         field_name="card_date",
     )
+    current_address = get_text_filter(label=_("current address").title())
     hire_date_from, hire_date_to = get_date_from_to_filters(
         field_name="hire_date",
     )
+    job_age_from, job_age_to = get_number_from_to_filters(
+        field_name="job_age",
+    )
+    notes = get_text_filter(label=_("notes").title())
 
     class Meta:
         model = models.Employee
-        fields = (
-            "firstname",
-            "lastname",
-            "father_name",
-            "mother_name",
-            "birth_place",
-            "birth_date_from",
-            "birth_date_to",
-            "national_id",
-            "passport_id",
-            "card_id",
-            "civil_registry_office",
-            "registry_office_name",
-            "registry_office_id",
-            "gender",
-            "face_color",
-            "eyes_color",
-            "address",
-            "special_signs",
-            "card_date_from",
-            "card_date_to",
-            "martial_status",
-            "military_status",
-            "religion",
-            "current_address",
-            "nationality",
-            "city",
-            "hire_date_from",
-            "hire_date_to",
-            "notes",
-            "cost_center",
-            "position",
-            "status",
-            "job_subtype",
-            "groups",
-            "degree",
-            "school",
-            "specialization",
+        exclude = (
+            "id",
+            "slug",
+            "ordering",
             "user",
+            "profile",
+            "identity_document",
         )
 
 
 class APIEmployeeFilter(BaseEmployeeFilter):
+    face_color = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="face_color",
+        label=_("face color"),
+        api_filter=True,
+    )
+    eyes_color = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="eyes_color",
+        label=_("eyes color"),
+        api_filter=True,
+    )
+    martial_status = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="martial_status",
+        label=_("martial status"),
+        choices=models.Employee.MartialStatusChoices.choices,
+        api_filter=True,
+    )
+    military_status = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="military_status",
+        label=_("military status"),
+        choices=models.Employee.MilitaryStatus.choices,
+        api_filter=True,
+    )
+    religion = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="religion",
+        label=_("religion"),
+        choices=models.Employee.ReligionChoices.choices,
+        api_filter=True,
+    )
     nationality = get_combobox_choices_filter(
         model=models.Employee,
         field_name="nationality__name",
         label=_("nationality"),
+        api_filter=True,
+    )
+    governorate = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="city__governorate__name",
+        label=_("governorate"),
         api_filter=True,
     )
     city = get_combobox_choices_filter(
@@ -96,6 +128,12 @@ class APIEmployeeFilter(BaseEmployeeFilter):
         model=models.Employee,
         field_name="status__name",
         label=_("status"),
+        api_filter=True,
+    )
+    job_type = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="job_subtype__job_type__name",
+        label=_("job type"),
         api_filter=True,
     )
     job_subtype = get_combobox_choices_filter(
@@ -126,22 +164,49 @@ class APIEmployeeFilter(BaseEmployeeFilter):
         model=models.Employee,
         field_name="specialization__name",
         label=_("specialization"),
-        api_filter=True,
-    )
-    user = get_combobox_choices_filter(
-        model=models.Employee,
-        field_name="user__username",
-        label=_("user"),
         api_filter=True,
     )
 
 
 class EmployeeFilter(BaseQSearchFilter, BaseEmployeeFilter):
     ordering = get_ordering_filter(constants.ORDERING_FIELDS)
+    face_color = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="face_color",
+        label=_("face color"),
+    )
+    eyes_color = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="eyes_color",
+        label=_("eyes color"),
+    )
+    martial_status = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="martial_status",
+        label=_("martial status"),
+        choices=models.Employee.MartialStatusChoices.choices,
+    )
+    military_status = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="military_status",
+        label=_("military status"),
+        choices=models.Employee.MilitaryStatus.choices,
+    )
+    religion = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="religion",
+        label=_("religion"),
+        choices=models.Employee.ReligionChoices.choices,
+    )
     nationality = get_combobox_choices_filter(
         model=models.Employee,
         field_name="nationality__name",
         label=_("nationality"),
+    )
+    governorate = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="city__governorate__name",
+        label=_("governorate"),
     )
     city = get_combobox_choices_filter(
         model=models.Employee,
@@ -162,6 +227,11 @@ class EmployeeFilter(BaseQSearchFilter, BaseEmployeeFilter):
         model=models.Employee,
         field_name="status__name",
         label=_("status"),
+    )
+    job_type = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="job_subtype__job_type__name",
+        label=_("job type"),
     )
     job_subtype = get_combobox_choices_filter(
         model=models.Employee,
@@ -187,9 +257,4 @@ class EmployeeFilter(BaseQSearchFilter, BaseEmployeeFilter):
         model=models.Employee,
         field_name="specialization__name",
         label=_("specialization"),
-    )
-    user = get_combobox_choices_filter(
-        model=models.Employee,
-        field_name="user__username",
-        label=_("user"),
     )
