@@ -125,10 +125,9 @@ class UpdateMixin(ABC):
         obj = form.save()
         for formset in formsets:
             for form in formset.forms:
-                if form.cleaned_data:
+                if form.is_valid():
                     item = form.save(commit=False)
                     item.ordering = form.cleaned_data.get("ORDER") or 1_000_000
-                    item.save()
             formset.save()
 
         messages.success(
