@@ -21,7 +21,7 @@
   class="text-neutral-600 dark:text-neutral-300 [&:has(input[aria-invalid='true'])_label]:text-red-500"
 >
   {% if has_add or show_label %}
-  <div class="flex items-center gap-1">
+  <div class="relative">
     {% if show_label %}
     <label
       for="{{ field.id_for_label }}"
@@ -40,7 +40,7 @@
     {% endif %}
     <!--  -->
     {% if has_add %}
-    <div aria-label="create nested object">{{ slot }}</div>
+    <div class="absolute top-1/2 -translate-y-1/2 end-0" aria-label="create nested object">{{ slot }}</div>
     {% endif %}
   </div>
   {% endif %}
