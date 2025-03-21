@@ -1,14 +1,16 @@
+{% load i18n %}
+
 <c-vars
-  theme="text-xs text-neutral-500 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-300 capitalize tracking-tight"
+  theme="text-xs text-neutral-500 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-300 capitalize tracking-tight whitespace-nowrap"
 />
 
-<ul class="flex items-center justify-center gap-0.5 select-none">
+<ul class="flex items-center flex-wrap gap-0.5 select-none p-1">
   {% if breadcrumbs %}
   <li class="flex items-center gap-1">
     <a href="{% url 'core:index' %}" class="{{ theme }}">
-      {% heroicon_outline "home" size="16" %}
+      {% translate 'home'|title %}
     </a>
-    {% heroicon_outline "chevron-right" size="16" class="rtl:-rotate-180" %}
+    <span class="{{ theme }} mx-0.5">/</span>
   </li>
   {% endif %}
   <!--  -->
@@ -21,7 +23,7 @@
     >
       {{ breadcrumb.title }}
     </a>
-    {% heroicon_outline "chevron-right" size="16" class="rtl:-rotate-180 block" %}
+    <span class="{{ theme }} mx-0.5">/</span>
     <!--  -->
     {% else %}
     <span class="{{ theme }} !text-black dark:!text-white"> {{ breadcrumb.title }} </span>
