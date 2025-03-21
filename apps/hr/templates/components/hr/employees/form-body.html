@@ -42,8 +42,39 @@
   <c-inputs.text :field="form.religion" />
 </c-forms.wrapper>
 <c-forms.wrapper cols="2">
+  {% if perms.geo.add_nationality %}
+  <c-inputs.text :field="form.nationality" :has_add="True">
+    <c-button
+      rounded="full"
+      theme="outline"
+      padding="sm"
+      size="20"
+      hx-get="{% url 'nationalities:create' %}"
+      hx-target="#modal-container"
+      hx-headers='{"modal": true, "target": "#no-content"}'
+      @click.prevent="showModal"
+    />
+  </c-inputs.text>
+  {% else %}
   <c-inputs.text :field="form.nationality" />
+  {% endif %}
+  <!--  -->
+  {% if perms.geo.add_city %}
+  <c-inputs.text :field="form.city" :has_add="True">
+    <c-button
+      rounded="full"
+      theme="outline"
+      padding="sm"
+      size="20"
+      hx-get="{% url 'cities:create' %}"
+      hx-target="#modal-container"
+      hx-headers='{"modal": true, "target": "#no-content"}'
+      @click.prevent="showModal"
+    />
+  </c-inputs.text>
+  {% else %}
   <c-inputs.text :field="form.city" />
+  {% endif %}
 </c-forms.wrapper>
 <c-forms.wrapper>
   <c-inputs.text show_icon="True" icon="calendar-days" :field="form.hire_date" />
@@ -51,12 +82,58 @@
 <c-forms.wrapper cols="2">
   <c-inputs.text :field="form.cost_center" />
   <c-inputs.text :field="form.job_subtype" />
+  {% if perms.org.add_position %}
+  <c-inputs.text :field="form.position" :has_add="True">
+    <c-button
+      rounded="full"
+      theme="outline"
+      padding="sm"
+      size="20"
+      hx-get="{% url 'positions:create' %}"
+      hx-target="#modal-container"
+      hx-headers='{"modal": true, "target": "#no-content"}'
+      @click.prevent="showModal"
+    />
+  </c-inputs.text>
+  {% else %}
   <c-inputs.text :field="form.position" />
+  {% endif %}
   <c-inputs.text :field="form.status" />
 </c-forms.wrapper>
 <c-forms.wrapper cols="3">
+  {% if perms.edu.add_school %}
+  <c-inputs.text :field="form.school" :has_add="True">
+    <c-button
+      rounded="full"
+      theme="outline"
+      padding="sm"
+      size="20"
+      hx-get="{% url 'schools:create' %}"
+      hx-target="#modal-container"
+      hx-headers='{"modal": true, "target": "#no-content"}'
+      @click.prevent="showModal"
+    />
+  </c-inputs.text>
+  {% else %}
   <c-inputs.text :field="form.school" />
+  {% endif %}
+  <!--  -->
+  {% if perms.edu.add_specialization %}
+  <c-inputs.text :field="form.specialization" :has_add="True">
+    <c-button
+      rounded="full"
+      theme="outline"
+      padding="sm"
+      size="20"
+      hx-get="{% url 'specializations:create' %}"
+      hx-target="#modal-container"
+      hx-headers='{"modal": true, "target": "#no-content"}'
+      @click.prevent="showModal"
+    />
+  </c-inputs.text>
+  {% else %}
   <c-inputs.text :field="form.specialization" />
+  {% endif %}
   <c-inputs.text :field="form.degree" />
 </c-forms.wrapper>
 <c-forms.wrapper>
