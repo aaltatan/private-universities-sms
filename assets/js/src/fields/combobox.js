@@ -58,7 +58,7 @@ export function combobox(comboboxData = { options: [], selectedText: "" }) {
     },
     init() {
       this.name = this.$refs.comboBoxSearch.dataset.name;
-      let forId = this.$el.previousElementSibling.previousElementSibling.getAttribute("for");
+      let forId = this.$el.parentElement.querySelector("label").getAttribute("for");
       this.$refs.comboBoxSearch.setAttribute("id", forId);
       let initials = location.href.match(new RegExp(`(?<=${name}\=)\d+`));
       initials = initials && initials.map((e) => +e);
