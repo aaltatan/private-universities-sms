@@ -12,7 +12,16 @@ class FilterTextMixin:
         if not value:
             return qs
 
-        query = get_keywords_query(value, field_name=name)
+        is_reversed = value.startswith("!")
+
+        if is_reversed:
+            value = value[1:]
+
+        query = get_keywords_query(
+            value,
+            field_name=name,
+            is_reversed=is_reversed,
+        )
         return qs.filter(query)
 
 

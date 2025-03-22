@@ -11,9 +11,11 @@ from djangoql.queryset import apply_search
 
 def get_keywords_query(
     value: str,
+    *,
     field_name: str = "search",
     join: Literal["and", "or"] = "and",
     type: Literal["word", "letter"] = "word",
+    is_reversed: bool = False,
 ) -> Q:
     """
     Returns a search query.
@@ -29,9 +31,15 @@ def get_keywords_query(
     for word in keywords:
         kwargs = {f"{field_name}__icontains": word}
         if join == "and":
-            query &= Q(**kwargs)
+            if is_reversed:
+                query &= ~Q(**kwargs)
+            else:
+                query &= Q(**kwargs)
         else:
-            query |= Q(**kwargs)
+            if is_reversed:
+                query |= ~Q(**kwargs)
+            else:
+                query |= Q(**kwargs)
 
     return query
 
