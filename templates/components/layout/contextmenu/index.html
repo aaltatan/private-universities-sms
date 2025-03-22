@@ -44,7 +44,7 @@
     x-ref="contextmenu"
     @keydown.down.prevent="$focus.wrap().next()"
     @keydown.up.prevent="$focus.wrap().previous()"
-    class="fixed z-30 flex w-48 max-h-64 scroll overflow-auto flex-col divide-y divide-neutral-300 rounded-md border border-neutral-300 bg-white dark:divide-neutral-800 dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none"
+    class="fixed z-50 flex w-48 max-h-64 scroll overflow-auto flex-col divide-y divide-neutral-300 rounded-md border border-neutral-300 bg-white dark:divide-neutral-800 dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none"
     role="menu"
   >
     {{ slot }}

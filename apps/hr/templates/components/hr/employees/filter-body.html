@@ -1,0 +1,91 @@
+{% load i18n %}
+
+<c-inputs.text :field="filter.form.firstname" />
+<c-inputs.text :field="filter.form.lastname" />
+<c-inputs.text :field="filter.form.father_name" />
+<c-inputs.text :field="filter.form.mother_name" />
+<c-inputs.text :field="filter.form.birth_place" />
+<c-inputs.range-wrapper title="{% translate 'birth date'|title %}">
+  <c-inputs.text
+    :show_icon="True"
+    icon="calendar"
+    icon_size="16"
+    :show_label="False"
+    :field="filter.form.birth_date_from"
+  />
+  <c-inputs.text
+    :show_icon="True"
+    icon="calendar"
+    icon_size="16"
+    :show_label="False"
+    :field="filter.form.birth_date_to"
+  />
+</c-inputs.range-wrapper>
+<c-inputs.range-wrapper title="{% translate 'age'|title %}">
+  <c-inputs.text :show_label="False" :field="filter.form.age_from" />
+  <c-inputs.text :show_label="False" :field="filter.form.age_to" />
+</c-inputs.range-wrapper>
+<c-inputs.text :field="filter.form.national_id" />
+<c-inputs.text :field="filter.form.card_id" />
+<c-inputs.text :field="filter.form.passport_id" />
+<c-inputs.text :field="filter.form.civil_registry_office" />
+<c-inputs.text :field="filter.form.registry_office_name" />
+<c-inputs.text :field="filter.form.registry_office_id" />
+<c-inputs.text :field="filter.form.gender" />
+<c-inputs.text :field="filter.form.face_color" />
+<c-inputs.text :field="filter.form.eyes_color" />
+<c-inputs.text :field="filter.form.address" />
+<c-inputs.text :field="filter.form.special_signs" />
+<c-inputs.text :field="filter.form.martial_status" />
+<c-inputs.text :field="filter.form.military_status" />
+<c-inputs.text :field="filter.form.religion" />
+<c-inputs.text :field="filter.form.current_address" />
+<c-inputs.text :field="filter.form.nationality" />
+<c-inputs.text :field="filter.form.governorate" />
+<c-inputs.text :field="filter.form.city" />
+<c-inputs.text :field="filter.form.cost_center" />
+<c-inputs.text :field="filter.form.position" />
+<c-inputs.text :field="filter.form.status" />
+<c-inputs.text :field="filter.form.job_type" />
+<c-inputs.text :field="filter.form.job_subtype" />
+<c-inputs.text :field="filter.form.groups" />
+<c-inputs.text :field="filter.form.degree" />
+<c-inputs.text :field="filter.form.school" />
+<c-inputs.text :field="filter.form.specialization" />
+<c-inputs.range-wrapper title="{% translate 'card date'|title %}">
+  <c-inputs.text
+    :show_label="False"
+    :field="filter.form.card_date_from"
+    :show_icon="True"
+    icon="calendar"
+    icon_size="16"
+  />
+  <c-inputs.text
+    :show_label="False"
+    :field="filter.form.card_date_to"
+    :show_icon="True"
+    icon="calendar"
+    icon_size="16"
+  />
+</c-inputs.range-wrapper>
+<c-inputs.range-wrapper title="{% translate 'hire date'|title %}">
+  <c-inputs.text
+    :show_label="False"
+    :field="filter.form.hire_date_from"
+    :show_icon="True"
+    icon="calendar"
+    icon_size="16"
+  />
+  <c-inputs.text
+    :show_label="False"
+    :field="filter.form.hire_date_to"
+    :show_icon="True"
+    icon="calendar"
+    icon_size="16"
+  />
+</c-inputs.range-wrapper>
+<c-inputs.range-wrapper title="{% translate 'job age'|title %}">
+  <c-inputs.text :show_label="False" :field="filter.form.job_age_from" />
+  <c-inputs.text :show_label="False" :field="filter.form.job_age_to" />
+</c-inputs.range-wrapper>
+<c-inputs.text :field="filter.form.notes" />
