@@ -21,6 +21,15 @@ class FilterComboboxMixin:
     A mixin that add a filter_combobox to a model.
     """
 
+    def filter_combobox_combined(self, qs, name, value):
+        if not value:
+            return qs
+
+        for obj in value:
+            qs = qs.filter(**{name: obj})
+
+        return qs
+
     def filter_combobox(self, qs, name, value):
         if not value:
             return qs

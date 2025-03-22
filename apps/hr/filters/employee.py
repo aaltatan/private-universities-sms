@@ -3,20 +3,24 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.core.filters import (
     BaseQSearchFilter,
-    FilterTextMixin,
     FilterComboboxMixin,
+    FilterTextMixin,
     get_combobox_choices_filter,
     get_date_from_to_filters,
+    get_number_from_to_filters,
     get_ordering_filter,
     get_text_filter,
-    get_number_from_to_filters,
 )
 
 from .. import models
 from ..constants import employee as constants
 
 
-class BaseEmployeeFilter(FilterComboboxMixin, FilterTextMixin, filters.FilterSet):
+class BaseEmployeeFilter(
+    FilterComboboxMixin,
+    FilterTextMixin,
+    filters.FilterSet,
+):
     firstname = get_text_filter(label=_("first name").title())
     lastname = get_text_filter(label=_("last name").title())
     father_name = get_text_filter(label=_("father name").title())
@@ -31,8 +35,12 @@ class BaseEmployeeFilter(FilterComboboxMixin, FilterTextMixin, filters.FilterSet
     national_id = get_text_filter(label=_("national id").title())
     card_id = get_text_filter(label=_("card id").title())
     passport_id = get_text_filter(label=_("passport id").title())
-    civil_registry_office = get_text_filter(label=_("civil registry office").title())
-    registry_office_name = get_text_filter(label=_("registry office name").title())
+    civil_registry_office = get_text_filter(
+        label=_("civil registry office").title(),
+    )
+    registry_office_name = get_text_filter(
+        label=_("registry office name").title(),
+    )
     registry_office_id = get_text_filter(label=_("registry office id").title())
     address = get_text_filter(label=_("address").title())
     special_signs = get_text_filter(label=_("special signs").title())
@@ -148,6 +156,13 @@ class APIEmployeeFilter(BaseEmployeeFilter):
         label=_("groups"),
         api_filter=True,
     )
+    groups_combined = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="groups__name",
+        method_name="filter_combobox_combined",
+        label=_("groups combined"),
+        api_filter=True,
+    )
     degree = get_combobox_choices_filter(
         model=models.Employee,
         field_name="degree__name",
@@ -242,6 +257,12 @@ class EmployeeFilter(BaseQSearchFilter, BaseEmployeeFilter):
         model=models.Employee,
         field_name="groups__name",
         label=_("groups"),
+    )
+    groups_combined = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="groups__name",
+        method_name="filter_combobox_combined",
+        label=_("groups combined"),
     )
     degree = get_combobox_choices_filter(
         model=models.Employee,
