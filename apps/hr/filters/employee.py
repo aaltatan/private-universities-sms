@@ -11,6 +11,9 @@ from apps.core.filters import (
     get_ordering_filter,
     get_text_filter,
 )
+from apps.edu.models import Degree, Specialization
+from apps.geo.models import Nationality
+from apps.org.models import Status
 
 from .. import models
 from ..constants import employee as constants
@@ -55,6 +58,26 @@ class BaseEmployeeFilter(
         field_name="job_age",
     )
     notes = get_text_filter(label=_("notes").title())
+    is_specialist = filters.ChoiceFilter(
+        field_name="specialization__is_specialist",
+        label=_("specialty").title(),
+        choices=Specialization.SpecialistChoices,
+    )
+    is_academic = filters.ChoiceFilter(
+        field_name="degree__is_academic",
+        label=_("academic").title(),
+        choices=Degree.AcademicChoices,
+    )
+    is_payable = filters.ChoiceFilter(
+        field_name="status__is_payable",
+        label=_("payability").title(),
+        choices=Status.PayableChoices,
+    )
+    is_local = filters.ChoiceFilter(
+        field_name="nationality__is_local",
+        label=_("locality").title(),
+        choices=Nationality.LocalityChoices,
+    )
 
     class Meta:
         model = models.Employee
@@ -175,6 +198,12 @@ class APIEmployeeFilter(BaseEmployeeFilter):
         label=_("school"),
         api_filter=True,
     )
+    school_kind = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="school__kind__name",
+        label=_("school kind"),
+        api_filter=True,
+    )
     specialization = get_combobox_choices_filter(
         model=models.Employee,
         field_name="specialization__name",
@@ -273,6 +302,11 @@ class EmployeeFilter(BaseQSearchFilter, BaseEmployeeFilter):
         model=models.Employee,
         field_name="school__name",
         label=_("school"),
+    )
+    school_kind = get_combobox_choices_filter(
+        model=models.Employee,
+        field_name="school__kind__name",
+        label=_("school kind"),
     )
     specialization = get_combobox_choices_filter(
         model=models.Employee,

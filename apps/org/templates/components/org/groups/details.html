@@ -16,7 +16,9 @@
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'kind' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.kind }} </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.get_kind_display }}
+            </c-table.td>
           </c-table.tr>
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">

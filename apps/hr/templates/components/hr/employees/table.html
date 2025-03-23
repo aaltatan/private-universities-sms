@@ -34,7 +34,7 @@
       icon="adjustments-horizontal"
       size="20"
       @click="openOverlaySidebar"
-      data-fields="firstname,lastname,father_name,mother_name,birth_place,birth_date_from,birth_date_to,age_from,age_to,national_id,card_id,passport_id,civil_registry_office,registry_office_name,registry_office_id,address,special_signs,card_date_from,card_date_to,martial_status,military_status,religion,current_address,nationality,governorate,city,cost_center,position,status,job_type,job_subtype,groups,degree,school,specialization,notes,gender,groups_combined"
+      data-fields="firstname,lastname,father_name,mother_name,birth_place,birth_date_from,birth_date_to,age_from,age_to,national_id,card_id,passport_id,civil_registry_office,registry_office_name,registry_office_id,address,special_signs,card_date_from,card_date_to,martial_status,military_status,religion,current_address,nationality,governorate,city,cost_center,position,status,job_type,job_subtype,groups,degree,school,specialization,notes,gender,groups_combined,is_academic,is_specialist,is_payable,hire_date_from,hire_date_to,job_age_from,job_age_to,school_kind,is_local"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -63,21 +63,18 @@
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
         <c-table.th>{% translate 'fullname' %}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'birth_date' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'cost_center' }}</c-table.th>
+        <c-table.th>{% translate 'job type' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'job_subtype' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'position' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'degree' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'specialization' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'groups' }}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'gender' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'birth_date' }}</c-table.th>
         <c-table.th>{% translate 'governorate' %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'city' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'hire_date' }}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'cost_center' }}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'position' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'status' }}</c-table.th>
-        <c-table.th>{% translate 'job type' %}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'job_subtype' }}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'degree' }}</c-table.th>
-        <c-table.th>{% translate 'academic?' %}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'specialization' }}</c-table.th>
-        <c-table.th>{% translate 'specialist?' %}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
       <c-table.tr>
@@ -142,73 +139,165 @@
             class="hover:underline cursor-pointer"
             aria-label="object details"
           >
-            {{ obj.fullname }}
+            <div class="flex items-center gap-1">
+              <span
+                class="{% if obj.gender == 'male' %}bg-sky-600{% else %}bg-pink-600{% endif %} size-1 block rounded-full"
+              ></span>
+              <span>{{ obj.fullname }}</span>
+            </div>
           </a>
         </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'cost_center' }}">
+          <a
+            href="#"
+            hx-get="{{ obj.cost_center.get_absolute_url }}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.cost_center }}
+          </a>
+        </c-table.td>
+        <c-table.td data-header="{% translate 'job type' %}">
+          <a
+            href="#"
+            hx-get="{{ obj.job_subtype.job_type.get_absolute_url }}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.job_subtype.job_type }}
+          </a>
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'job_subtype' }}">
+          <a
+            href="#"
+            hx-get="{{ obj.job_subtype.get_absolute_url }}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.job_subtype }}
+          </a>
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'position' }}">
+          <a
+            href="#"
+            hx-get="{{ obj.position.get_absolute_url }}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.position }}
+          </a>
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'degree' }}">
+          <a
+            href="#"
+            hx-get="{{ obj.degree.get_absolute_url }}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.degree }}
+          </a>
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'specialization' }}">
+          <a
+            href="#"
+            hx-get="{{ obj.specialization.get_absolute_url }}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.specialization }}
+          </a>
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'groups' }}">
+          <div class="flex items-center gap-0.5">
+            {% for group in obj.groups.all %}
+            <c-badge>
+              <a
+                href="#"
+                hx-get="{{ group.get_absolute_url }}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                class="hover:underline cursor-pointer"
+                aria-label="object details"
+              >
+                {{ group }}
+              </a>
+            </c-badge>
+            {% endfor %}
+          </div>
+        </c-table.td>
         <c-table.td
-        data-header="{{ model|verbose_name:'birth_date' }}"
-        title="{{ obj.birth_date|timesince }}"
+          data-header="{{ model|verbose_name:'birth_date' }}"
+          title="{{ obj.birth_date|timesince }}"
         >
-        {{ obj.birth_date|date:'Y-m-d' }}
-      </c-table.td>
-      <c-table.td data-header="{{ model|verbose_name:'groups' }}">
-        {% for group in obj.groups.all %}
-           {{ group }},
-        {% endfor %}
-      </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'gender' }}">
-          {% if obj.gender == "male" %}
-          <c-badge theme="sky"> {{ obj.get_gender_display }} </c-badge>
-          {% else %}
-          <c-badge theme="pink"> {{ obj.get_gender_display }} </c-badge>
-          {% endif %}
+          {{ obj.birth_date|date:'Y-m-d' }}
         </c-table.td>
         <c-table.td data-header="{% translate 'governorate' %}">
-          {{ obj.city.governorate }}
+          <a
+            href="#"
+            hx-get="{{ obj.city.governorate.get_absolute_url }}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.city.governorate }}
+          </a>
         </c-table.td>
-        <c-table.td data-header="{% translate 'city' %}"> {{ obj.city }} </c-table.td>
+        <c-table.td data-header="{% translate 'city' %}">
+          <a
+            href="#"
+            hx-get="{{ obj.city.get_absolute_url }}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.city }}
+          </a>
+        </c-table.td>
         <c-table.td
           data-header="{{ model|verbose_name:'hire_date' }}"
           title="{{ obj.hire_date|timesince }}"
         >
           {{ obj.hire_date|date:'Y-m-d' }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'cost_center' }}">
-          {{ obj.cost_center }}
-        </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'position' }}">
-          {{ obj.position }}
-        </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'status' }}">
-          {% if obj.status.is_payable %}
-          <c-badge theme="green"> {{ obj.status }} </c-badge>
-          {% else %}
-          <c-badge theme="red"> {{ obj.status }} </c-badge>
-          {% endif %}
-        </c-table.td>
-        <c-table.td data-header="{% translate 'job type' %}">
-          {{ obj.job_subtype.job_type }}
-        </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'job_subtype' }}">
-          {{ obj.job_subtype }}
-        </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'degree' }}"> {{ obj.degree }} </c-table.td>
-        <c-table.td data-header="{% translate 'academic?' %}">
-          {% if obj.degree.is_academic %}
-          <c-badge theme="primary"> {% translate 'academic'|title %} </c-badge>
-          {% else %}
-          <c-badge> {% translate 'applied'|title %} </c-badge>
-          {% endif %}
-        </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'specialization' }}">
-          {{ obj.specialization }}
-        </c-table.td>
-        <c-table.td data-header="{% translate 'specialist?' %}">
-          {% if obj.specialization.is_specialist %}
-          <c-badge theme="primary"> {% translate 'specialist'|title %} </c-badge>
-          {% else %}
-          <c-badge> {% translate 'supporter'|title %} </c-badge>
-          {% endif %}
+          <a
+            href="#"
+            hx-get="{{ obj.status.get_absolute_url }}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {% if obj.status.is_payable %}
+            <c-badge theme="green"> {{ obj.status }} </c-badge>
+            {% else %}
+            <c-badge theme="red"> {{ obj.status }} </c-badge>
+            {% endif %}
+          </a>
         </c-table.td>
       </c-table.tr>
       {% empty %}
