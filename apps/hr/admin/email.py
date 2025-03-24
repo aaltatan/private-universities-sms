@@ -6,7 +6,8 @@ from .. import models
 
 @admin.register(models.Email)
 class EmailAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ("fullname", "email")
+    list_display = ("id", "email", "fullname")
+    list_display_links = ("id", "email")
     search_fields = (
         "employee__firstname",
         "employee__father_name",

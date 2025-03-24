@@ -6,7 +6,8 @@ from .. import models
 
 @admin.register(models.Phone)
 class PhoneAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ("fullname", "number")
+    list_display = ("id", "number", "fullname")
+    list_display_links = ("id", "number")
     autocomplete_fields = ("employee",)
     list_per_page = 20
     search_fields = (

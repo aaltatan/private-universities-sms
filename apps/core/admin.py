@@ -58,3 +58,7 @@ class ActivityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "content_type",
         "object_id",
     )
+
+admin.site.site_header = "Private Universities Salaries Management System"
+admin.site.site_title = "PUSMS"
+admin.site.index_title = "PUSMS"

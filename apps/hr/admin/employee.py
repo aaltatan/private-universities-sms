@@ -26,6 +26,7 @@ class PhoneInline(admin.TabularInline):
 @admin.register(models.Employee)
 class EmployeeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = (
+        "id",
         "fullname",
         "gender",
         "city__name",
@@ -36,6 +37,7 @@ class EmployeeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "degree__name",
         "specialization__name",
     )
+    list_display_links = ("id", "fullname")
     search_fields = constants.SEARCH_FIELDS
     fields = (
         ("profile",),

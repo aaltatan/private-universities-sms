@@ -9,10 +9,12 @@ from .. import models
 @admin.register(models.Mobile)
 class MobileAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = (
-        "fullname",
+        "id",
         "number",
         "has_whatsapp",
+        "fullname",
     )
+    list_display_links = ("id", "number")
     search_fields = (
         "employee__firstname",
         "employee__father_name",
