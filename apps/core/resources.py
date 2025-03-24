@@ -15,7 +15,16 @@ class SerialResourceMixin:
         return value
 
 
-class BaseResource(SerialResourceMixin, resources.ModelResource):
+class DehydrateBooleanMixin:
+    def _dehydrate_boolean(self, is_true: bool = True):
+        return _("yes").title() if is_true else _("no").title()
+
+
+class BaseResource(
+    DehydrateBooleanMixin,
+    SerialResourceMixin,
+    resources.ModelResource,
+):
     """
     Fields name, description, slug
     """
@@ -36,6 +45,3 @@ class BaseResource(SerialResourceMixin, resources.ModelResource):
         attribute="slug",
         column_name=_("slug").title(),
     )
-
-    def _dehydrate_boolean(self, is_true: bool = True):
-        return _("yes").title() if is_true else _("no").title()

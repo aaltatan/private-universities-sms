@@ -291,6 +291,9 @@ class Employee(AddCreateActivityMixin, models.Model):
 
     def get_fullname(self) -> str:
         return f"{self.firstname} {self.father_name} {self.lastname}"
+    
+    def get_shortname(self) -> str:
+        return f"{self.firstname} {self.lastname}"
 
     def __str__(self) -> str:
         return self.get_fullname()
