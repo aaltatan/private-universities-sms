@@ -1,35 +1,40 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import DetailView, View
 from django.views.generic.list import MultipleObjectMixin
-# from django_filters import rest_framework as django_filters
-# from rest_framework import filters as rest_filters
-# from rest_framework import viewsets
+from django_filters import rest_framework as django_filters
+from rest_framework import filters as rest_filters
+from rest_framework import viewsets
 
-from apps.core import mixins
+from apps.core import filter_backends, mixins
+from apps.core.inline import InlineFormsetFactory
 from apps.core.schemas import Action
 from apps.core.utils import Deleter
-from apps.core.inline import InlineFormsetFactory
 
-from .. import filters, forms, models, resources  # , serializers
+from .. import filters, forms, models, resources, serializers
 from ..constants import employee as constants
 
 
-# class APIViewSet(
-#     mixins.APIMixin,
-#     mixins.BulkDeleteAPIMixin,
-#     viewsets.ModelViewSet,
-# ):
-#     queryset = models.Employee.objects.all()
-#     serializer_class = serializers.EmployeeSerializer
-#     filter_backends = [
-#         filter_backends.DjangoQLSearchFilter,
-#         django_filters.DjangoFilterBackend,
-#         rest_filters.OrderingFilter,
-#     ]
-#     filterset_class = filters.APIEmployeeFilter
-#     ordering_fields = constants.ORDERING_FIELDS
-#     search_fields = constants.SEARCH_FIELDS
-#     deleter = Deleter
+class APIViewSet(
+    mixins.APIMixin,
+    mixins.BulkDeleteAPIMixin,
+    viewsets.ModelViewSet,
+):
+    queryset = models.Employee.objects.all()
+    serializer_class = serializers.EmployeeSerializer
+    filter_backends = [
+        filter_backends.DjangoQLSearchFilter,
+        django_filters.DjangoFilterBackend,
+        rest_filters.OrderingFilter,
+    ]
+    filterset_class = filters.APIEmployeeFilter
+    ordering_fields = constants.ORDERING_FIELDS
+    search_fields = constants.SEARCH_FIELDS
+    deleter = Deleter
+
+    def get_serializer_class(self):
+        if self.action in ("create", "update", "partial_update"):
+            return serializers.EmployeeCreateUpdateSerializer
+        return serializers.EmployeeSerializer
 
 
 class ListView(
