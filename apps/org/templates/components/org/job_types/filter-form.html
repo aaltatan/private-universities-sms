@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<c-blocks.table-filters>
+  <c-inputs.text :field="filter.form.name" />
+  <c-inputs.range-wrapper title="{% translate 'job subtypes count'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.job_subtypes_count_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.job_subtypes_count_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'employees count'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.employees_count_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.employees_count_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.description" />
+</c-blocks.table-filters>

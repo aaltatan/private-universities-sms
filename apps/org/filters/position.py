@@ -1,12 +1,6 @@
-from apps.core.filters import (
-    BaseNameDescriptionFilter,
-    BaseQSearchFilter,
-    get_number_from_to_filters,
-    get_ordering_filter,
-)
+from apps.core.filters import BaseNameDescriptionFilter, get_number_from_to_filters
 
 from .. import models
-from ..constants import positions as constants
 
 
 class BasePositionFilter(BaseNameDescriptionFilter):
@@ -31,5 +25,5 @@ class APIPositionFilter(BasePositionFilter):
     pass
 
 
-class PositionFilter(BaseQSearchFilter, BasePositionFilter):
-    ordering = get_ordering_filter(constants.ORDERING_FIELDS)
+class PositionFilter(BasePositionFilter):
+    pass

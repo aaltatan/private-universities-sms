@@ -1,12 +1,6 @@
-from apps.core.filters import (
-    BaseNameDescriptionFilter,
-    BaseQSearchFilter,
-    get_ordering_filter,
-    get_number_from_to_filters,
-)
+from apps.core.filters import BaseNameDescriptionFilter, get_number_from_to_filters
 
 from .. import models
-from ..constants import governorates as constants
 
 
 class BaseGovernoratesFilter(BaseNameDescriptionFilter):
@@ -31,5 +25,5 @@ class APIGovernoratesFilter(BaseGovernoratesFilter):
     pass
 
 
-class GovernorateFilter(BaseQSearchFilter, BaseGovernoratesFilter):
-    ordering = get_ordering_filter(constants.ORDERING_FIELDS)
+class GovernorateFilter(BaseGovernoratesFilter):
+    pass

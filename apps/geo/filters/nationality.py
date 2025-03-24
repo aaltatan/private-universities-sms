@@ -1,15 +1,9 @@
 import django_filters as filters
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.filters import (
-    BaseNameDescriptionFilter,
-    BaseQSearchFilter,
-    get_number_from_to_filters,
-    get_ordering_filter,
-)
+from apps.core.filters import BaseNameDescriptionFilter, get_number_from_to_filters
 
 from .. import models
-from ..constants import nationalities as constants
 
 
 class BaseNationalityFilter(BaseNameDescriptionFilter):
@@ -36,5 +30,5 @@ class APINationalityFilter(BaseNationalityFilter):
     pass
 
 
-class NationalityFilter(BaseQSearchFilter, BaseNationalityFilter):
-    ordering = get_ordering_filter(constants.ORDERING_FIELDS)
+class NationalityFilter(BaseNationalityFilter):
+    pass

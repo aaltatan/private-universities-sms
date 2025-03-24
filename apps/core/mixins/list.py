@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any, Literal
+from typing import Any, Iterable, Literal
 
 from django.conf import settings
 from django.core.paginator import EmptyPage, Page, PageNotAnInteger, Paginator
@@ -18,6 +18,7 @@ from import_export.resources import ModelResource
 from tablib import Dataset
 
 from ..constants import PERMISSION
+from ..filters import BaseQSearchFilter, get_ordering_filter
 from ..schemas import Action
 
 
@@ -25,6 +26,11 @@ class ListMixin(ABC):
     """
     A mixin that adds a list view.
     """
+
+    @property
+    @abstractmethod
+    def model(self) -> type[Model]:
+        pass
 
     @property
     @abstractmethod
@@ -36,13 +42,19 @@ class ListMixin(ABC):
     def resource_class(self) -> type[ModelResource]:
         pass
 
+    @property
+    @abstractmethod
+    def ordering_fields(self) -> Iterable[str]:
+        pass
+
     @abstractmethod
     def get_actions(self) -> dict[str, Action]:
         pass
 
-    model: type[Model] | None = None
     template_name: str | None = None
     table_template_name: str | None = None
+    filter_form_template_name: str | None = None
+    search_ordering_filter_class: type[FilterSet] | None = None
 
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
@@ -50,6 +62,9 @@ class ListMixin(ABC):
         """
         if request.GET.get("redirected"):
             return self.get_export_response(request)
+
+        if request.GET.get("filters"):
+            return self.get_filters_response(request)
 
         template_name: str = self.get_template_name()
 
@@ -69,6 +84,15 @@ class ListMixin(ABC):
         Handles the POST request.
         """
         return self.get_bulk_actions_response(request)
+
+    def get_filters_response(self, request: HttpRequest) -> HttpResponse:
+        """
+        Returns the filters response.
+        """
+        template_name = self.get_filter_form_template_name()
+        context = self.filter_context_data()
+
+        return render(self.request, template_name, context)
 
     def get_bulk_actions_response(self, request: HttpRequest) -> HttpResponse:
         """
@@ -164,10 +188,23 @@ class ListMixin(ABC):
         """
         Returns the model class.
         """
-        if self.model:
-            return self.model
+        return self.model
 
-        return self.filter_class.Meta.model
+    def get_search_ordering_filter_class(self) -> type[FilterSet]:
+        """
+        Returns the search ordering filter class.
+        """
+        if self.search_ordering_filter_class:
+            return self.search_ordering_filter_class
+
+        class SearchOrderingFilter(BaseQSearchFilter):
+            ordering = get_ordering_filter(self.ordering_fields)
+
+            class Meta:
+                model = self.get_model_class()
+                fields = ("id",)
+
+        return SearchOrderingFilter
 
     def get_template_name(self) -> str:
         """
@@ -195,6 +232,19 @@ class ListMixin(ABC):
 
         return f"components/{app_label}/{verbose_name_plural}/table.html"
 
+    def get_filter_form_template_name(self) -> str:
+        """
+        Returns the filter form template name.
+        Notes: you can use the filter_form_template_name attribute to override the default filter form template name.
+        """
+        if self.filter_form_template_name:
+            return self.filter_form_template_name
+
+        verbose_name_plural = self.get_verbose_name_plural()
+        app_label = self.get_app_label()
+
+        return f"components/{app_label}/{verbose_name_plural}/filter-form.html"
+
     def get_queryset(self) -> QuerySet:
         """
         Returns the queryset.
@@ -204,10 +254,13 @@ class ListMixin(ABC):
         qs = model.objects.all().order_by(*default_ordering)
 
         request: HttpRequest = self.request
+        SearchOrderingFilter = self.get_search_ordering_filter_class()
 
-        filter_class = self.filter_class(request.GET, qs)
+        search_ordering_filter = SearchOrderingFilter(request.GET, qs)
+        qs = search_ordering_filter.qs
 
-        qs = filter_class.qs
+        filter_obj = self.filter_class(request.GET, qs)
+        qs = filter_obj.qs
 
         return qs
 
@@ -328,20 +381,36 @@ class ListMixin(ABC):
             **self.get_html_ids(),
         }
 
+    def filter_context_data(self, **kwargs) -> dict[str, Any]:
+        """
+        Returns the filter context data that will be passed to the template.
+        """
+        filter_obj = self.filter_class(self.request.GET, self.get_queryset())
+
+        return {
+            "filter": filter_obj,
+            **self.get_app_urls(),
+            **self.get_html_ids(),
+        }
+
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         """
         Returns the context data that will be passed to the template.
         """
         qs: QuerySet = self.get_queryset()
         request: HttpRequest = self.request
-        filter_class = self.filter_class(request.GET or request.POST, qs.all())
+        SearchOrderingFilter = self.get_search_ordering_filter_class()
+
+        search_ordering_filter = SearchOrderingFilter(
+            request.GET or request.POST, qs.all()
+        )
         page: Page = self.get_page_class()
 
         page.paginator.count
 
         return {
             "page": page,
-            "filter": filter_class,
+            "search_ordering_filter": search_ordering_filter,
             "app_label": self.get_app_label(),
             "subapp_label": self.get_verbose_name_plural(),
             "model_name": self.get_model_name(),

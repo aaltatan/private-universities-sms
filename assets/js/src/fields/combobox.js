@@ -38,6 +38,12 @@ export function combobox(comboboxData = { options: [], selectedText: "" }) {
         return e;
       });
     },
+    unCheckAllHandler() {
+      this.options = this.options.map((e) => {
+        e.selected = false;
+        return e;
+      });
+    },
     sortHandler() {
       this.comboboxOpen = !this.comboboxOpen;
       this.options.sort((a, b) => b.selected - a.selected);

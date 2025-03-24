@@ -1,12 +1,10 @@
 from apps.core.filters import (
     BaseNameDescriptionFilter,
     BaseQSearchFilter,
-    get_ordering_filter,
     get_number_from_to_filters,
 )
 
 from .. import models
-from ..constants import job_types as constants
 
 
 class BaseJobTypeFilter(BaseNameDescriptionFilter):
@@ -34,4 +32,4 @@ class APIJobTypeFilter(BaseJobTypeFilter):
 
 
 class JobTypeFilter(BaseQSearchFilter, BaseJobTypeFilter):
-    ordering = get_ordering_filter(constants.ORDERING_FIELDS)
+    pass

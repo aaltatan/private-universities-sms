@@ -44,10 +44,11 @@ class ListView(
     View,
 ):
     permission_required = "edu.view_school"
+    model = models.School
     filter_class = filters.SchoolFilter
     resource_class = resources.SchoolResource
     deleter = Deleter
-    search_fields = constants.SEARCH_FIELDS
+    ordering_fields = constants.ORDERING_FIELDS
 
     def get_actions(self) -> dict[str, Action]:
         return {

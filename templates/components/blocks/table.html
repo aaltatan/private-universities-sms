@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<c-table  :id="id">
+<c-table :id="id">
   <c-slot name="header">
     <span class="hidden" x-data="sidebarLinks"></span>
     <div class="min-w-64 max-sm:w-full">{{ search }}</div>
@@ -68,18 +68,13 @@
       <c-button
         icon="arrow-path"
         size="20"
-        hx-get="{{ index_url }}"
-        hx-target="#{{ table_id }}"
-        hx-push-url="true"
-        hx-indicator="#table-spinner"
+        kind="a"
+        href="{{ index_url }}"
         title="{% translate 'reset'|title %}"
       />
     </div>
   </c-slot>
-  <!--  -->
   {{ slot }}
-  <!--  -->
-  {{ filters }}
   <c-slot name="pagination">
     <c-table.pagination />
   </c-slot>

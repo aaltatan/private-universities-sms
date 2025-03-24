@@ -2,14 +2,11 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.core.filters import (
     BaseNameDescriptionFilter,
-    BaseQSearchFilter,
-    get_ordering_filter,
-    get_text_filter,
     get_number_from_to_filters,
+    get_text_filter,
 )
 
 from .. import models
-from ..constants import cost_centers as constants
 
 
 class BaseCostCenterFilter(BaseNameDescriptionFilter):
@@ -36,5 +33,5 @@ class APICostCenterFilter(BaseCostCenterFilter):
     pass
 
 
-class CostCenterFilter(BaseQSearchFilter, BaseCostCenterFilter):
-    ordering = get_ordering_filter(constants.ORDERING_FIELDS)
+class CostCenterFilter(BaseCostCenterFilter):
+    pass

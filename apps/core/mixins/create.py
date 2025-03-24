@@ -98,9 +98,6 @@ class CreateMixin(ABC):
         messages.error(request, _("form is invalid"))
         response["Hx-Trigger"] = "messages"
 
-        print(form.errors.as_data())
-        print('#' * 100)
-        
         return response
 
     def get_form_valid_response(

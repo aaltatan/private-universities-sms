@@ -4,7 +4,7 @@
   <c-slot name="search">
     <c-table.filter-form trigger="search" class="w-full" prevent="True">
       <c-inputs.text
-        :field="filter.form.q"
+        :field="search_ordering_filter.form.q"
         :show_label="False"
         show_icon="True"
         icon="magnifying-glass"
@@ -27,13 +27,17 @@
     {% endif %}
 
     <c-table.filter-form trigger="order-by-change">
-      {{ filter.form.ordering }}
+      {{ search_ordering_filter.form.ordering }}
     </c-table.filter-form>
 
     <c-button
       icon="adjustments-horizontal"
       size="20"
-      @click="openOverlaySidebar"
+      hx-get="{{ index_url }}{% querystring %}"
+      hx-vals='{"filters": true}'
+      hx-target="#overlay-sidebar-container"
+      hx-swap="innerHTML"
+      @click.debounce.200ms="openOverlaySidebar"
       data-fields="name,cities_count_from,cities_count_to,description,employees_count_from,employees_count_to"
       badge="True"
       title="{% translate 'filters'|title %}"
@@ -139,54 +143,13 @@
         <c-table.td data-header="{% translate 'employees count' %}">
           {{ obj.employees_count }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'description' }}"> {{ obj.description }} </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'description' }}">
+          {{ obj.description }}
+        </c-table.td>
       </c-table.tr>
       {% empty %}
       <c-table.empty-tr />
       {% endfor %}
     </c-table.table>
   </form>
-
-  <c-slot name="filters">
-    <c-layout.sidebar.overlay-sidebar>
-      <c-table.filter-form trigger="submit" class="w-full">
-        <c-layout.sidebar.overlay-content>
-          <c-slot name="header"> {% translate 'filters'|title %} </c-slot>
-          <c-slot name="body">
-            <c-inputs.text :field="filter.form.name" />
-            <c-inputs.range-wrapper title="{% translate 'cities count'|title %}">
-              <c-inputs.text :show_label="False" :field="filter.form.cities_count_from" />
-              <c-inputs.text :show_label="False" :field="filter.form.cities_count_to" />
-            </c-inputs.range-wrapper>
-            <c-inputs.range-wrapper title="{% translate 'employees count'|title %}">
-              <c-inputs.text :show_label="False" :field="filter.form.employees_count_from" />
-              <c-inputs.text :show_label="False" :field="filter.form.employees_count_to" />
-            </c-inputs.range-wrapper>
-            <c-inputs.text :field="filter.form.description" />
-          </c-slot>
-          <c-slot name="footer">
-            <c-button
-              icon="adjustments-horizontal"
-              theme="primary"
-              size="20"
-              title="{% translate 'filters'|title %}"
-            >
-              {% translate 'apply'|title %}
-            </c-button>
-            <c-button
-              icon="arrow-path"
-              size="20"
-              kind="a"
-              hx-get="{{ index_url }}"
-              hx-include="#no-content"
-              hx-target="#{{ table_id }}"
-              title="{% translate 'reset'|title %}"
-            >
-              {% translate 'reset'|title %}
-            </c-button>
-          </c-slot>
-        </c-layout.sidebar.overlay-content>
-      </c-table.filter-form>
-    </c-layout.sidebar.overlay-sidebar>
-  </c-slot>
 </c-blocks.table>

@@ -1,0 +1,31 @@
+{% load i18n %}
+
+<c-table.filter-form trigger="submit" class="w-full">
+  <c-layout.sidebar.overlay-content>
+    <c-slot name="header"> {% translate 'filters'|title %} </c-slot>
+    <c-slot name="body"> {{ slot }} </c-slot>
+    <c-slot name="footer">
+      <c-button
+        icon="adjustments-horizontal"
+        theme="primary"
+        size="20"
+        title="{% translate 'filters'|title %}"
+      >
+        {% translate 'apply'|title %}
+      </c-button>
+      <c-button
+        icon="arrow-path"
+        size="20"
+        hx-get="{{ index_url }}?filters=true"
+        hx-include="#no-content"
+        hx-push-url="false"
+        hx-target="#overlay-sidebar-container"
+        hx-swap="innerHTML"
+        hx-indicator="#no-content"
+        title="{% translate 'reset'|title %}"
+      >
+        {% translate 'reset'|title %}
+      </c-button>
+    </c-slot>
+  </c-layout.sidebar.overlay-content>
+</c-table.filter-form>

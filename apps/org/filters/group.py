@@ -1,12 +1,6 @@
-from apps.core.filters import (
-    BaseNameDescriptionFilter,
-    BaseQSearchFilter,
-    get_number_from_to_filters,
-    get_ordering_filter,
-)
+from apps.core.filters import BaseNameDescriptionFilter, get_number_from_to_filters
 
 from .. import models
-from ..constants import groups as constants
 
 
 class BaseGroupFilter(BaseNameDescriptionFilter):
@@ -29,5 +23,5 @@ class APIGroupFilter(BaseGroupFilter):
     pass
 
 
-class GroupFilter(BaseQSearchFilter, BaseGroupFilter):
-    ordering = get_ordering_filter(constants.ORDERING_FIELDS)
+class GroupFilter(BaseGroupFilter):
+    pass

@@ -40,10 +40,11 @@ class ListView(
     View,
 ):
     permission_required = "geo.view_governorate"
+    model = models.Governorate
     filter_class = filters.GovernorateFilter
     resource_class = resources.GovernorateResource
     deleter = Deleter
-    search_fields = constants.SEARCH_FIELDS
+    ordering_fields = constants.ORDERING_FIELDS
 
     def get_actions(self) -> dict[str, Action]:
         return {

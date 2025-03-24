@@ -1,15 +1,9 @@
 import django_filters as filters
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.filters import (
-    BaseNameDescriptionFilter,
-    BaseQSearchFilter,
-    get_ordering_filter,
-    get_number_from_to_filters,
-)
+from apps.core.filters import BaseNameDescriptionFilter, get_number_from_to_filters
 
 from .. import models
-from ..constants import school_kinds as constants
 
 
 class BaseSchoolKindFilter(BaseNameDescriptionFilter):
@@ -44,8 +38,5 @@ class APISchoolKindFilter(BaseSchoolKindFilter):
     pass
 
 
-class SchoolKindFilter(
-    BaseQSearchFilter,
-    BaseSchoolKindFilter,
-):
-    ordering = get_ordering_filter(constants.ORDERING_FIELDS)
+class SchoolKindFilter(BaseSchoolKindFilter):
+    pass

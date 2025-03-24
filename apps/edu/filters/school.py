@@ -2,16 +2,13 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.core.filters import (
     BaseNameDescriptionFilter,
-    BaseQSearchFilter,
     FilterComboboxMixin,
     get_combobox_choices_filter,
     get_number_from_to_filters,
-    get_ordering_filter,
     get_text_filter,
 )
 
 from .. import models
-from ..constants import schools as constants
 
 
 class BaseSchoolFilter(BaseNameDescriptionFilter):
@@ -68,12 +65,7 @@ class APISchoolFilter(FilterComboboxMixin, BaseSchoolFilter):
     )
 
 
-class SchoolFilter(
-    FilterComboboxMixin,
-    BaseQSearchFilter,
-    BaseSchoolFilter,
-):
-    ordering = get_ordering_filter(constants.ORDERING_FIELDS)
+class SchoolFilter(FilterComboboxMixin, BaseSchoolFilter):
     kind = get_combobox_choices_filter(
         model=models.School,
         field_name="kind__name",

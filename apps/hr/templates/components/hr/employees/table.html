@@ -4,7 +4,7 @@
   <c-slot name="search">
     <c-table.filter-form trigger="search" class="w-full" prevent="True">
       <c-inputs.text
-        :field="filter.form.q"
+        :field="search_ordering_filter.form.q"
         :show_label="False"
         show_icon="True"
         icon="magnifying-glass"
@@ -27,13 +27,17 @@
     {% endif %}
 
     <c-table.filter-form trigger="order-by-change">
-      {{ filter.form.ordering }}
+      {{ search_ordering_filter.form.ordering }}
     </c-table.filter-form>
 
     <c-button
       icon="adjustments-horizontal"
       size="20"
-      @click="openOverlaySidebar"
+      hx-get="{{ index_url }}{% querystring %}"
+      hx-vals='{"filters": true}'
+      hx-target="#overlay-sidebar-container"
+      hx-swap="innerHTML"
+      @click.debounce.200ms="openOverlaySidebar"
       data-fields="firstname,lastname,father_name,mother_name,birth_place,birth_date_from,birth_date_to,age_from,age_to,national_id,card_id,passport_id,civil_registry_office,registry_office_name,registry_office_id,address,special_signs,card_date_from,card_date_to,martial_status,military_status,religion,current_address,nationality,governorate,city,cost_center,position,status,job_type,job_subtype,groups,degree,school,specialization,notes,gender,groups_combined,is_academic,is_specialist,is_payable,hire_date_from,hire_date_to,job_age_from,job_age_to,school_kind,is_local"
       badge="True"
       title="{% translate 'filters'|title %}"
@@ -305,38 +309,4 @@
       {% endfor %}
     </c-table.table>
   </form>
-
-  <c-slot name="filters">
-    <c-layout.sidebar.overlay-sidebar>
-      <c-table.filter-form trigger="submit" class="w-full">
-        <c-layout.sidebar.overlay-content>
-          <c-slot name="header"> {% translate 'filters'|title %} </c-slot>
-          <c-slot name="body">
-            <c-hr.employees.filter-body />
-          </c-slot>
-          <c-slot name="footer">
-            <c-button
-              icon="adjustments-horizontal"
-              theme="primary"
-              size="20"
-              title="{% translate 'filters'|title %}"
-            >
-              {% translate 'apply'|title %}
-            </c-button>
-            <c-button
-              icon="arrow-path"
-              size="20"
-              kind="a"
-              hx-get="{{ index_url }}"
-              hx-include="#no-content"
-              hx-target="#{{ table_id }}"
-              title="{% translate 'reset'|title %}"
-            >
-              {% translate 'reset'|title %}
-            </c-button>
-          </c-slot>
-        </c-layout.sidebar.overlay-content>
-      </c-table.filter-form>
-    </c-layout.sidebar.overlay-sidebar>
-  </c-slot>
 </c-blocks.table>

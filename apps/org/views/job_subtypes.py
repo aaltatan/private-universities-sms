@@ -44,10 +44,11 @@ class ListView(
     View,
 ):
     permission_required = "org.view_jobsubtype"
+    model = models.JobSubtype
     filter_class = filters.JobSubtypeFilter
     resource_class = resources.JobSubtypeResource
     deleter = Deleter
-    search_fields = constants.SEARCH_FIELDS
+    ordering_fields = constants.ORDERING_FIELDS
 
     def get_actions(self) -> dict[str, Action]:
         return {

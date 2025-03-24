@@ -3,6 +3,7 @@
 <div
   data-combo
   x-effect="effectHandler()"
+  @combobox-reset.window="unCheckAllHandler"
   class="relative w-full"
   x-data="combobox({ 
     options: [

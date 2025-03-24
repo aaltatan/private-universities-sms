@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<c-blocks.table-filters>
+  <c-inputs.text :field="filter.form.name" />
+  <c-inputs.text :field="filter.form.kind" />
+  <c-inputs.text :field="filter.form.nationality" />
+  <c-inputs.text :field="filter.form.website" />
+  <c-inputs.text :field="filter.form.phone" />
+  <c-inputs.text :field="filter.form.email" />
+  <c-inputs.text :field="filter.form.address" />
+  <c-inputs.range-wrapper title="{% translate 'employees count'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.employees_count_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.employees_count_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.description" />
+</c-blocks.table-filters>

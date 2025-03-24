@@ -26,7 +26,6 @@ def get_ordering_filter(fields: Mapping[str, str]) -> CustomOrderingFilter:
     return CustomOrderingFilter(
         fields=list(fields.keys()),
         field_labels=fields,
-        widget=OrderingWidget,
     )
 
 

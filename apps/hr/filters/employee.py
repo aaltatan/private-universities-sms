@@ -2,13 +2,11 @@ import django_filters as filters
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.filters import (
-    BaseQSearchFilter,
     FilterComboboxMixin,
     FilterTextMixin,
     get_combobox_choices_filter,
     get_date_from_to_filters,
     get_number_from_to_filters,
-    get_ordering_filter,
     get_text_filter,
 )
 from apps.edu.models import Degree, Specialization
@@ -16,7 +14,6 @@ from apps.geo.models import Nationality
 from apps.org.models import Status
 
 from .. import models
-from ..constants import employee as constants
 
 
 class BaseEmployeeFilter(
@@ -212,8 +209,7 @@ class APIEmployeeFilter(BaseEmployeeFilter):
     )
 
 
-class EmployeeFilter(BaseQSearchFilter, BaseEmployeeFilter):
-    ordering = get_ordering_filter(constants.ORDERING_FIELDS)
+class EmployeeFilter(BaseEmployeeFilter):
     face_color = get_combobox_choices_filter(
         model=models.Employee,
         field_name="face_color",
