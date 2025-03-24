@@ -92,7 +92,10 @@ class ListMixin(ABC):
         template_name = self.get_filter_form_template_name()
         context = self.filter_context_data()
 
-        return render(self.request, template_name, context)
+        response = render(self.request, template_name, context)
+        response['Hx-Trigger'] = 'open-overlay-sidebar'
+
+        return response
 
     def get_bulk_actions_response(self, request: HttpRequest) -> HttpResponse:
         """

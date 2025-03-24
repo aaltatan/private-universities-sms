@@ -1,1 +1,3 @@
-<div id="overlay-sidebar-container">{{ slot }}</div>
+<div id="overlay-sidebar-container" @open-overlay-sidebar.window.debounce.200ms="openOverlaySidebar">
+  {{ slot }}
+</div>

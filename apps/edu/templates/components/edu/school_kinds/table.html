@@ -37,7 +37,6 @@
       hx-vals='{"filters": true}'
       hx-target="#overlay-sidebar-container"
       hx-swap="innerHTML"
-      @click.debounce.200ms="openOverlaySidebar"
       data-fields="name,description,schools_count_from,schools_count_to,is_governmental,is_virtual,employees_count_from,employees_count_to"
       badge="True"
       title="{% translate 'filters'|title %}"
