@@ -19,13 +19,20 @@
         {% endfor %}
         {% endfor %}
       ],
+      init() {
+        this.options.forEach(option => {
+          if (option.checked) {
+            $refs.orderBy.value = option.value;
+          }
+        });
+      },
       handleChange(option) {
         $refs.orderBy.value = option.value;
         $dispatch("order-by-change")
       },
     }'
   >
-    <input type="text" x-ref="orderBy" name="{{ widget.name }}" />
+    <input type="hidden" x-ref="orderBy" name="{{ widget.name }}" />
     <c-layout.contextmenu.section>
       <template x-for="option in options" :key="option.value">
         <c-layout.contextmenu.item
