@@ -2,15 +2,21 @@
 
 <c-layout.modal width="xl">
   <c-layout.modal.body :close_padding="buttons_padding">
-    <c-slot name="header">{% translate 'details'|title %}: {{ object.fullname }} </c-slot>
+    <c-slot name="header"> {% translate 'details'|title %}: {{ object.fullname }} </c-slot>
     <c-slot name="body">
-      <div class="grid grid-cols-4 gap-2">
-        <img
-          src="{% if object.profile %}{{ object.profile.url }}{% else %}{% static 'images/avatar.png' %}{% endif %}"
-          class="rounded-md size-48 object-cover block border border-neutral-300 dark:border-neutral-800"
-          alt="avatar"
-        />
-        <div class="col-span-3">
+      <div class="grid grid-cols-1 @md:grid-cols-4 gap-2">
+        <a
+          href="{% if object.profile %}{{ object.profile.url }}{% else %}{% static 'images/user.png' %}{% endif %}"
+          target="_blank"
+          class="block"
+        >
+          <img
+            src="{% if object.profile %}{{ object.profile.url }}{% else %}{% static 'images/user.png' %}{% endif %}"
+            class="rounded-md size-48 object-cover block border border-neutral-300 dark:border-neutral-800"
+            alt="avatar"
+          />
+        </a>
+        <div class="@md:col-span-3">
           <c-table height="none">
             <c-table.table>
               <c-table.tr>
@@ -382,11 +388,23 @@
               {% for number in object.mobiles.all %}
               <c-table.tr>
                 <c-table.td data-header="{% translate 'number'|title %}">
-                  <a href="{{ number.get_absolute_url }}" target="_blank">{{ number }}</a>
+                  <a href="{{ number.get_absolute_url }}" class="hover:underline" target="_blank">
+                    {{ number }}
+                  </a>
                 </c-table.td>
                 <c-table.td data-header="{% translate 'whatsapp'|title %}">
                   {% if number.has_whatsapp %}
-                  <a href="{{ number.get_whatsapp_url }}" target="_blank">{{ number }}</a>
+                  <a
+                    href="{{ number.get_whatsapp_url }}"
+                    class="hover:underline flex items-center gap-1"
+                    target="_blank"
+                  >
+                    {% translate 'whatsapp'|title %}
+                    <!--  -->
+                    {% heroicon_outline "arrow-top-right-on-square" size="16" %}
+                  </a>
+                  {% else %}
+                  <span>{% translate 'has no whatsapp'|title %}</span>
                   {% endif %}
                 </c-table.td>
                 <c-table.td data-header="{% translate 'kind'|title %}">
@@ -396,7 +414,8 @@
               {% endfor %}
             </c-table.table>
           </c-table>
-          {% endif %}
+          {% endif %} 
+          <!--  -->
           {% if object.phones.all %}
           <c-separator> {% translate 'phones'|title %} </c-separator>
           <c-table height="none">
@@ -404,7 +423,9 @@
               {% for number in object.phones.all %}
               <c-table.tr>
                 <c-table.td data-header="{% translate 'number'|title %}">
-                  <a href="{{ number.get_absolute_url }}" target="_blank">{{ number }}</a>
+                  <a href="{{ number.get_absolute_url }}" class="hover:underline" target="_blank">
+                    {{ number }}
+                  </a>
                 </c-table.td>
                 <c-table.td data-header="{% translate 'kind'|title %}">
                   {{ number.get_kind_display }}
@@ -413,7 +434,8 @@
               {% endfor %}
             </c-table.table>
           </c-table>
-          {% endif %}
+          {% endif %} 
+          <!--  -->
           {% if object.emails.all %}
           <c-separator> {% translate 'emails'|title %} </c-separator>
           <c-table height="none">
@@ -421,7 +443,9 @@
               {% for email in object.emails.all %}
               <c-table.tr>
                 <c-table.td data-header="{% translate 'email'|title %}">
-                  <a href="{{ email.get_absolute_url }}" target="_blank">{{ email }}</a>
+                  <a href="{{ email.get_absolute_url }}" class="hover:underline" target="_blank">
+                    {{ email }}
+                  </a>
                 </c-table.td>
                 <c-table.td data-header="{% translate 'kind'|title %}">
                   {{ email.get_kind_display }}
