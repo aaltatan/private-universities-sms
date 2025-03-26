@@ -21,3 +21,13 @@ class MobileSerializer(serializers.ModelSerializer):
             "has_whatsapp",
             "notes",
         )
+
+
+class MobileCreateSerializer(serializers.ModelSerializer):
+    employee = serializers.PrimaryKeyRelatedField(
+        queryset=models.Employee.objects.all(),
+    )
+
+    class Meta:
+        model = models.Mobile
+        fields = ("number", "employee", "kind", "has_whatsapp", "notes")

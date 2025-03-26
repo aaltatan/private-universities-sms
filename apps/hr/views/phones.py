@@ -30,3 +30,8 @@ class APIViewSet(
         "employee__national_id",
     )
     deleter = Deleter
+
+    def get_serializer_class(self):
+        if self.action in ("create", "update", "partial_update"):
+            return serializers.PhoneCreateSerializer
+        return serializers.PhoneSerializer

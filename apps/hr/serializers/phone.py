@@ -13,3 +13,13 @@ class PhoneSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Phone
         fields = ("id", "employee_id", "fullname", "number", "kind", "notes")
+
+
+class PhoneCreateSerializer(serializers.ModelSerializer):
+    employee = serializers.PrimaryKeyRelatedField(
+        queryset=models.Employee.objects.all(),
+    )
+
+    class Meta:
+        model = models.Phone
+        fields = ("number", "employee", "kind", "notes")

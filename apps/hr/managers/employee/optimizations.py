@@ -17,8 +17,15 @@ class OptimizationMixin:
             # edu
             "degree",
             "school",
+            "school__kind",
+            "school__nationality",
             "specialization",
         )
 
     def _prefetch_related(self, queryset: models.QuerySet):
-        return queryset.prefetch_related("groups")
+        return queryset.prefetch_related(
+            "groups",
+            "emails",
+            "phones",
+            "mobiles",
+        )

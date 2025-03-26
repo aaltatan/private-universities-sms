@@ -13,3 +13,13 @@ class EmailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Email
         fields = ("id", "employee_id", "fullname", "email", "kind", "notes")
+
+
+class EmailCreateSerializer(serializers.ModelSerializer):
+    employee = serializers.PrimaryKeyRelatedField(
+        queryset=models.Employee.objects.all(),
+    )
+
+    class Meta:
+        model = models.Email
+        fields = ("email", "employee", "kind", "notes")

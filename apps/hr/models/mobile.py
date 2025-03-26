@@ -9,6 +9,10 @@ from apps.core.mixins import AddCreateActivityMixin
 from .employee import Employee
 
 
+class MobileManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().select_related("employee")
+
 class Mobile(AddCreateActivityMixin, models.Model):
     class HasWhatsappChoices(models.TextChoices):
         NONE = "", "------"
@@ -24,6 +28,7 @@ class Mobile(AddCreateActivityMixin, models.Model):
         max_length=255,
         verbose_name=_("mobile number"),
         validators=[validators.syrian_mobile_validator],
+        unique=True,
     )
     kind = models.CharField(
         max_length=30,
@@ -48,6 +53,8 @@ class Mobile(AddCreateActivityMixin, models.Model):
         default="",
         blank=True,
     )
+
+    objects: MobileManager = MobileManager()
 
     def __str__(self) -> str:
         return f"+963{self.number[1:]}"

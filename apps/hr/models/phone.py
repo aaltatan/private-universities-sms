@@ -9,6 +9,11 @@ from apps.core.mixins import AddCreateActivityMixin
 from .employee import Employee
 
 
+class PhoneManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().select_related("employee")
+
+
 class Phone(AddCreateActivityMixin, models.Model):
     class KindChoices(models.TextChoices):
         PERSONAL = "personal", _("personal").title()
@@ -40,13 +45,16 @@ class Phone(AddCreateActivityMixin, models.Model):
         blank=True,
     )
 
+    objects: PhoneManager = PhoneManager()
+
     def __str__(self) -> str:
         return f"+963{self.number[1:]}"
 
     def get_absolute_url(self) -> str:
         return f"tel:+963{self.number[1:]}"
-    
+
     class Meta:
+        unique_together = ("employee", "number")
         verbose_name = _("phone")
         verbose_name_plural = _("phones")
         ordering = ("kind", "number")

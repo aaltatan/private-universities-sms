@@ -9,6 +9,11 @@ from apps.core.mixins import AddCreateActivityMixin
 from .employee import Employee
 
 
+class EmailManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().select_related("employee")
+
+
 class Email(AddCreateActivityMixin, models.Model):
     class KindChoices(models.TextChoices):
         PERSONAL = "personal", _("personal").title()
@@ -18,6 +23,7 @@ class Email(AddCreateActivityMixin, models.Model):
     email = models.EmailField(
         max_length=255,
         verbose_name=_("email"),
+        unique=True,
     )
     kind = models.CharField(
         max_length=30,
@@ -38,6 +44,8 @@ class Email(AddCreateActivityMixin, models.Model):
         default="",
         blank=True,
     )
+
+    objects: EmailManager = EmailManager()
 
     def __str__(self) -> str:
         return self.email
