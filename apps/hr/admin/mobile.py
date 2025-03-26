@@ -3,7 +3,7 @@ from django.db.models import QuerySet
 from django.http import HttpRequest
 from import_export.admin import ImportExportModelAdmin
 
-from .. import models
+from .. import models, resources
 
 
 @admin.register(models.Mobile)
@@ -24,10 +24,11 @@ class MobileAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     autocomplete_fields = ("employee",)
     list_per_page = 20
     actions = ("remove_whatsapp", "add_whatsapp")
+    resource_classes = (resources.MobileResource,)
 
     @admin.display(description="Fullname")
     def fullname(self, obj: models.Mobile):
-        return f"{obj.employee.firstname} {obj.employee.father_name} {obj.employee.lastname}"
+        return obj.employee.get_fullname()
 
     @admin.action(description="Remove has_whatsapp from selected Mobiles")
     def remove_whatsapp(self, request: HttpRequest, queryset: QuerySet):

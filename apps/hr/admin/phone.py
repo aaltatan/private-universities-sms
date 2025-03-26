@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
-from .. import models
+from .. import models, resources
 
 
 @admin.register(models.Phone)
@@ -16,7 +16,8 @@ class PhoneAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "employee__lastname",
         "number",
     )
+    resource_classes = (resources.PhoneResource,)
 
     @admin.display(description="Fullname")
     def fullname(self, obj: models.Phone):
-        return f"{obj.employee.firstname} {obj.employee.father_name} {obj.employee.lastname}"
+        return obj.employee.get_fullname()

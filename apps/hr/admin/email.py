@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
-from .. import models
+from .. import models, resources
 
 
 @admin.register(models.Email)
@@ -16,7 +16,8 @@ class EmailAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     )
     autocomplete_fields = ("employee",)
     list_per_page = 20
+    resource_classes = (resources.EmailResource,)
 
     @admin.display(description="Fullname")
     def fullname(self, obj: models.Email):
-        return f"{obj.employee.firstname} {obj.employee.father_name} {obj.employee.lastname}"
+        return obj.employee.get_fullname()
