@@ -23,11 +23,8 @@ class AnnotationMixin:
                 Value(" "),
                 F("lastname"),
             ),
-            shortname=Concat(
-                F("firstname"),
-                Value(" "),
-                F("lastname"),
-            ),
+            shortname=Concat(F("firstname"), Value(" "), F("lastname")),
+            father_fullname=Concat(F("father_name"), Value(" "), F("lastname")),
         )
 
     def _annotate_ages(self, queryset: models.QuerySet):

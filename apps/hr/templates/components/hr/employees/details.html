@@ -21,6 +21,24 @@
             <c-table.table>
               <c-table.tr>
                 <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'fullname'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.fullname }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'shortname'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.shortname }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'firstname' }}
                 </c-table.td>
                 <c-table.td data-header="{% translate 'value'|title %}">
@@ -43,6 +61,15 @@
                 </c-table.td>
                 <c-table.td data-header="{% translate 'value'|title %}">
                   {{ object.father_name }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'father fullname'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.father_fullname }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
@@ -414,7 +441,7 @@
               {% endfor %}
             </c-table.table>
           </c-table>
-          {% endif %} 
+          {% endif %}
           <!--  -->
           {% if object.phones.all %}
           <c-separator> {% translate 'phones'|title %} </c-separator>
@@ -434,7 +461,7 @@
               {% endfor %}
             </c-table.table>
           </c-table>
-          {% endif %} 
+          {% endif %}
           <!--  -->
           {% if object.emails.all %}
           <c-separator> {% translate 'emails'|title %} </c-separator>

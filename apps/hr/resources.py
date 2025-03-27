@@ -33,6 +33,9 @@ class EmployeeResource(
         attribute="father_name",
         column_name=_("father name").title(),
     )
+    father_fullname = fields.Field(
+        column_name=_("father fullname").title(),
+    )
     mother_name = fields.Field(
         attribute="mother_name",
         column_name=_("mother name").title(),
@@ -214,6 +217,9 @@ class EmployeeResource(
     def dehydrate_shortname(self, obj: models.Employee):
         return obj.get_shortname()
 
+    def dehydrate_father_fullname(self, obj: models.Employee):
+        return obj.get_father_fullname()
+
     def dehydrate_age(self, obj: models.Employee):
         return obj.age
 
@@ -252,6 +258,7 @@ class EmployeeResource(
             "firstname",
             "lastname",
             "father_name",
+            "father_fullname",
             "mother_name",
             "birth_place",
             "birth_date",

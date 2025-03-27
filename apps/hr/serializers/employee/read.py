@@ -118,6 +118,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
     fullname = serializers.SerializerMethodField()
     shortname = serializers.SerializerMethodField()
+    father_fullname = serializers.SerializerMethodField()
     age = serializers.IntegerField()
     nationality = NationalitySerializer(read_only=True)
     city = CitySerializer(read_only=True)
@@ -141,6 +142,9 @@ class EmployeeSerializer(serializers.ModelSerializer):
     def get_shortname(self, obj: models.Employee):
         return obj.get_shortname()
 
+    def get_father_fullname(self, obj: models.Employee):
+        return obj.get_father_fullname()
+
     class Meta:
         model = models.Employee
         fields = (
@@ -150,6 +154,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
             "firstname",
             "lastname",
             "father_name",
+            "father_fullname",
             "mother_name",
             "birth_place",
             "birth_date",
