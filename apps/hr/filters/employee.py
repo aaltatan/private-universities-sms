@@ -23,6 +23,21 @@ class UpcomingBirthdayChoices(TextChoices):
     DAY = "day", _("day").title()
 
 
+class UpcomingBirthdaysFilter(filters.FilterSet):
+    this = filters.TypedChoiceFilter(
+        label=_("this").title(),
+        choices=UpcomingBirthdayChoices,
+        method="filter_upcoming_birthday_this",
+    )
+
+    def filter_upcoming_birthday_this(self, queryset, name, value):
+        return queryset.get_upcoming_birthdays(this=value)
+
+    class Meta:
+        model = models.Employee
+        fields = ("this",)
+
+
 class BaseEmployeeFilter(
     FilterComboboxMixin,
     FilterTextMixin,

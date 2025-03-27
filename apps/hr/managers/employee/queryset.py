@@ -1,7 +1,6 @@
 from typing import Literal
 
 from django.db import models
-from django.db.models.functions import ExtractDay, ExtractMonth
 from django.utils import timezone
 
 
@@ -28,14 +27,9 @@ class EmployeeQuerySet(models.QuerySet):
         if date is None:
             date = timezone.datetime.now()
 
-        qs = self.annotate(
-            birth_day=ExtractDay("birth_date"),
-            birth_month=ExtractMonth("birth_date"),
-        )
-
         filter_kwargs = {
             "year": {
-                "birth_month__gte": date.month,
+                "next_birthday__gte": date,
             },
             "month": {
                 "birth_month": date.month,
@@ -44,7 +38,7 @@ class EmployeeQuerySet(models.QuerySet):
             "day": {
                 "birth_month": date.month,
                 "birth_day": date.day,
-            }
+            },
         }
 
-        return qs.filter(**filter_kwargs[this])
+        return self.filter(**filter_kwargs[this])

@@ -1,6 +1,6 @@
 from django.db import models
-from django.db.models import ExpressionWrapper, F, Value
-from django.db.models.functions import Concat, Floor
+from django.db.models import DateField, ExpressionWrapper, F, Func, Value
+from django.db.models.functions import Concat, ExtractDay, ExtractMonth, Floor
 from django.utils import timezone
 
 from apps.core.utils import annotate_search
@@ -27,7 +27,9 @@ class AnnotationMixin:
             father_fullname=Concat(F("father_name"), Value(" "), F("lastname")),
         )
 
-    def _annotate_ages(self, queryset: models.QuerySet):
+    def _annotate_dates(self, queryset: models.QuerySet):
+        current_year = timezone.datetime.now().year
+
         return queryset.annotate(
             age=ExpressionWrapper(
                 Floor(
@@ -42,5 +44,13 @@ class AnnotationMixin:
                     / timezone.timedelta(days=365)
                 ),
                 output_field=models.IntegerField(),
+            ),
+            birth_month=ExtractMonth("birth_date"),
+            birth_day=ExtractDay("birth_date"),
+            next_birthday=Func(
+                Value(current_year),
+                Func(F("birth_date"), function="DAYOFYEAR"),
+                function="MAKEDATE",
+                output_field=DateField(),
             ),
         )

@@ -4,5 +4,5 @@
   class="px-2 text-start py-1 {% if not wrap %}whitespace-nowrap{% endif %} text-xs {% if not fixed %} flex before:content-[attr(data-header)':'] {% endif %} items-center gap-2 px-2 py-1 before:font-medium before:capitalize @lg:table-cell @lg:before:content-['']"
   {{ attrs }}
 >
-  <div class="w-full mx-2">{{ slot }}</div>
+  <div class="w-full">{{ slot }}</div>
 </td>

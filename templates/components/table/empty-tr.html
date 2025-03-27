@@ -1,7 +1,11 @@
 {% load i18n %}
 
+<c-vars message="" />
+
 <c-table.tr>
   <c-table.td colspan="100%">
-    <p class="text-center capitalize p-4">{% translate 'no results' %}</p>
+    <p class="text-center capitalize p-4">
+      {% if message %} {{ message }} {% else %} {% translate 'no results' %} {% endif %}
+    </p>
   </c-table.td>
 </c-table.tr>

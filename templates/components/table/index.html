@@ -8,16 +8,17 @@
     'none': 'overflow-hidden',
   }"
   :overflow="True"
+  :bordered="True"
   height="base"
 />
 
-<div id="{{ id }}" class="relative hx-swap:opacity-80" x-data="tableCheckAll">
+<div id="{{ id }}" class="relative hx-swap:opacity-80 select-none" x-data="tableCheckAll">
   <div
     class="flex items-center justify-between flex-col gap-2 sm:gap-1 sm:flex-row mb-2 empty:hidden"
   >{{ header }}</div>
 
   <div
-    class="relative {% if overflow %}overflow-auto{% endif %} w-full rounded-md border border-neutral-300 dark:border-neutral-800 scroll {{ heights|get_item:height }}"
+    class="relative {% if overflow %}overflow-auto{% endif %} w-full rounded-md scroll {{ heights|get_item:height }} {% if bordered %}border border-neutral-300 dark:border-neutral-800{% endif %}"
   >
     <div
       id="table-spinner"

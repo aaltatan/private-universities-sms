@@ -1,4 +1,7 @@
+from datetime import date
+
 from django.db import models
+from django.utils import timezone
 from django.db.models.signals import pre_delete, pre_save
 from django.urls import reverse
 from django.utils.text import slugify
@@ -297,6 +300,11 @@ class Employee(AddCreateActivityMixin, models.Model):
 
     def get_shortname(self) -> str:
         return f"{self.firstname} {self.lastname}"
+
+    def get_next_birthday(self) -> date:
+        return timezone.datetime(
+            timezone.now().year, self.birth_date.month, self.birth_date.day
+        ).date()
 
     def __str__(self) -> str:
         return self.get_fullname()

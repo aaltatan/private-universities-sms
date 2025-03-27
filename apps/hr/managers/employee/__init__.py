@@ -36,6 +36,6 @@ class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
         # annotations
         queryset = self._annotate_search(queryset)
         queryset = self._annotate_names(queryset)
-        queryset = self._annotate_ages(queryset)
+        queryset = self._annotate_dates(queryset)
 
         return queryset

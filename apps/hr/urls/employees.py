@@ -1,8 +1,8 @@
-from django.urls import path
+from django.urls import include, path
 from django.utils.translation import gettext as _
 
 from ..views import employees as views
-
+from ..views.widgets import UpcomingBirthdaysView
 
 app_name = "employees"
 
@@ -37,5 +37,17 @@ urlpatterns = [
         view=views.DeleteView.as_view(),
         name="delete",
         kwargs={"title": _("delete")},
+    ),
+    path(
+        route="widgets/",
+        view=include(
+            [
+                path(
+                    route="upcoming-birthdays/",
+                    view=UpcomingBirthdaysView.as_view(),
+                    name="upcoming-birthdays",
+                ),
+            ],
+        ),
     ),
 ]
