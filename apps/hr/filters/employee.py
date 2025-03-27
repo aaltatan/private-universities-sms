@@ -1,4 +1,5 @@
 import django_filters as filters
+from django.db.models import TextChoices
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.filters import (
@@ -14,6 +15,12 @@ from apps.geo.models import Nationality
 from apps.org.models import Status
 
 from .. import models
+
+
+class UpcomingBirthdayChoices(TextChoices):
+    YEAR = "year", _("year").title()
+    MONTH = "month", _("month").title()
+    DAY = "day", _("day").title()
 
 
 class BaseEmployeeFilter(
@@ -75,6 +82,14 @@ class BaseEmployeeFilter(
         label=_("locality").title(),
         choices=Nationality.LocalityChoices,
     )
+    upcoming_birthday_this = filters.ChoiceFilter(
+        label=_("upcoming birthday this").title(),
+        choices=UpcomingBirthdayChoices,
+        method="filter_upcoming_birthday_this",
+    )
+
+    def filter_upcoming_birthday_this(self, queryset, name, value):
+        return queryset.get_upcoming_birthdays(this=value)
 
     class Meta:
         model = models.Employee
