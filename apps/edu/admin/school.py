@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
-from .. import models
+from .. import models, resources
 from ..constants import schools as constants
 
 
@@ -19,3 +19,4 @@ class SchoolAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = constants.SEARCH_FIELDS
     list_per_page = 20
     autocomplete_fields = ("nationality", "kind")
+    resource_classes = (resources.SchoolResource,)

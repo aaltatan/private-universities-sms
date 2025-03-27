@@ -3,7 +3,7 @@ from django.db.models import QuerySet
 from django.http import HttpRequest
 from import_export.admin import ImportExportModelAdmin
 
-from .. import models
+from .. import models, resources
 from ..constants import job_subtypes as constants
 
 
@@ -16,6 +16,7 @@ class JobSubtypeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     autocomplete_fields = ("job_type",)
     list_filter = ("job_type__name",)
     actions = ("reset_ordering",)
+    resource_classes = (resources.JobSubtypeResource,)
 
     @admin.action(description="Reset ordering for selected Job Subtypes")
     def reset_ordering(self, request: HttpRequest, queryset: QuerySet):

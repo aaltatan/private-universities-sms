@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
-from .. import models
+from .. import models, resources
 from ..constants import employee as constants
 
 
@@ -85,6 +85,7 @@ class EmployeeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     )
     list_per_page = 20
     inlines = (MobileInline, PhoneInline, EmailInline)
+    resource_classes = (resources.EmployeeResource,)
 
     @admin.display(description="Fullname")
     def fullname(self, obj: models.Employee):

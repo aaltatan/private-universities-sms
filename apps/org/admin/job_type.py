@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
-from .. import models
+from .. import models, resources
 from ..constants import job_types as constants
 
 
@@ -18,3 +18,4 @@ class JobTypeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = constants.SEARCH_FIELDS
     list_per_page = 20
     inlines = (JobSubtypeInline,)
+    resource_classes = (resources.JobTypeResource,)
