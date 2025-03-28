@@ -2,7 +2,7 @@ from django.urls import include, path
 from django.utils.translation import gettext as _
 
 from ..views import employees as views
-from ..views.widgets import UpcomingBirthdaysView
+from ..views import widgets
 
 app_name = "employees"
 
@@ -44,8 +44,13 @@ urlpatterns = [
             [
                 path(
                     route="upcoming-birthdays/",
-                    view=UpcomingBirthdaysView.as_view(),
+                    view=widgets.UpcomingBirthdaysView.as_view(),
                     name="upcoming-birthdays",
+                ),
+                path(
+                    route="group-by-counts/",
+                    view=widgets.GroupByCountsView.as_view(),
+                    name="group-by-counts",
                 ),
             ],
         ),

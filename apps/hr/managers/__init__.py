@@ -1,4 +1,7 @@
-from .employee import EmployeeManager
+from .employee import EmployeeManager, EmployeeQuerySet
 
 
-__all__ = ["EmployeeManager"]
+__all__ = [
+    "EmployeeManager",
+    "EmployeeQuerySet",
+]

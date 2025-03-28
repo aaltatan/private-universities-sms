@@ -1,12 +1,21 @@
 <c-layout>
-  {% if perms.hr.view_employee %}
-  <div class="grid grid-cols-1 @md:grid-cols-2 @lg:grid-cols-4 gap-1">
+  <div class="grid grid-cols-1 @md:grid-cols-2 @lg:grid-cols-4 gap-2">
+    {% if perms.hr.view_employee %}
     <div class="col-span-2">
-      <c-skeletons.card 
+      <c-skeletons.card
         hx-get="{% url 'employees:upcoming-birthdays' %}?this=day"
         hx-trigger="revealed"
       />
     </div>
+    {% endif %}
+    <!--  -->
+    {% if perms.hr.view_employee %}
+    <div class="col-span-2">
+      <c-skeletons.card
+        hx-get="{% url 'employees:group-by-counts' %}?group_by=gender"
+        hx-trigger="revealed"
+      />
+    </div>
+    {% endif %}
   </div>
-  {% endif %}
 </c-layout>

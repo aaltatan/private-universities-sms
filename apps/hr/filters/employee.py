@@ -15,12 +15,58 @@ from apps.geo.models import Nationality
 from apps.org.models import Status
 
 from .. import models
+from ..managers import EmployeeQuerySet
 
 
 class UpcomingBirthdayChoices(TextChoices):
     YEAR = "year", _("year").title()
     MONTH = "month", _("month").title()
     DAY = "day", _("day").title()
+
+
+class GroupedByCountsFilter(filters.FilterSet):
+    class CountsGroupedByChoices(TextChoices):
+        GENDER = "gender", _("gender").title()
+        FACE_COLOR = "face_color", _("face color").title()
+        EYES_COLOR = "eyes_color", _("eyes color").title()
+        MARTIAL_STATUS = "martial_status", _("martial status").title()
+        MILITARY_STATUS = "military_status", _("military status").title()
+        RELIGION = "religion", _("religion").title()
+        BIRTH_PLACE = "birth_place", _("birth place").title()
+        # geo
+        GOVERNORATE = "city__governorate__name", _("governorate").title()
+        CITY = "city__name", _("city").title()
+        NATIONALITY = "nationality__name", _("nationality").title()
+        # org
+        COST_CENTER = "cost_center__name", _("cost center").title()
+        POSITION = "position__name", _("position").title()
+        STATUS = "status__name", _("status").title()
+        JOB_TYPE = "job_subtype__job_type__name", _("job type").title()
+        JOB_SUBTYPE = "job_subtype__name", _("job subtype").title()
+        GROUPS = "groups__name", _("groups").title()
+        # edu
+        DEGREE = "degree__name", _("degree").title()
+        SCHOOL = "school__name", _("school").title()
+        SCHOOL_KIND = "school__kind__name", _("school kind").title()
+        SPECIALIZATION = "specialization__name", _("specialization").title()
+
+    group_by = filters.TypedChoiceFilter(
+        label=_("group by").title(),
+        choices=CountsGroupedByChoices,
+        method="filter_counts_grouped_by",
+    )
+
+    def filter_counts_grouped_by(
+        self,
+        queryset: EmployeeQuerySet,
+        name,
+        value,
+    ):
+        return queryset.get_counts_grouped_by(group_by=value)
+
+    class Meta:
+        model = models.Employee
+        fields = ("group_by",)
 
 
 class UpcomingBirthdaysFilter(filters.FilterSet):
@@ -30,7 +76,12 @@ class UpcomingBirthdaysFilter(filters.FilterSet):
         method="filter_upcoming_birthday_this",
     )
 
-    def filter_upcoming_birthday_this(self, queryset, name, value):
+    def filter_upcoming_birthday_this(
+        self,
+        queryset: EmployeeQuerySet,
+        name,
+        value,
+    ):
         return queryset.get_upcoming_birthdays(this=value)
 
     class Meta:

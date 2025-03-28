@@ -1,14 +1,16 @@
 from typing import Literal
 
-from django.db import models
+from django.db.models import Count, QuerySet
 from django.utils import timezone
 
 
-class EmployeeQuerySet(models.QuerySet):
+class EmployeeQuerySet(QuerySet):
     """
     Custom QuerySet for Employee model.
     """
-
+    def get_counts_grouped_by(self, group_by: str = "gender"):
+        return self.values(group_by).annotate(counts=Count("pk"))
+    
     def get_upcoming_birthdays(
         self,
         *,

@@ -13,6 +13,11 @@ def get(value: Any, arg: str) -> Any:
 
 
 @register.filter
+def get_first_value(value: dict) -> Any:
+    return list(value.values())[0]
+
+
+@register.filter
 def pretty_json(value):
     return json.dumps(value, indent=2, ensure_ascii=False)
 

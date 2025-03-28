@@ -7,8 +7,7 @@ from .index import IndexMixin
 from .list import ListMixin
 from .save import AddCreateActivityMixin
 from .update import UpdateMixin
-from .utils import CustomDjangoQLSearchMixin
-from .widget import WidgetViewMixin
+from .utils import CustomDjangoQLSearchMixin, FiltersetMixin
 
 __all__ = [
     "AddCreateActivityMixin",
@@ -22,5 +21,5 @@ __all__ = [
     "BulkDeleteAPIMixin",
     "APIMixin",
     "IndexMixin",
-    "WidgetViewMixin",
+    "FiltersetMixin",
 ]

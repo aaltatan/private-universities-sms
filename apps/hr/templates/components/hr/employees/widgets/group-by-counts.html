@@ -1,0 +1,37 @@
+{% load i18n widget_tweaks utils %}
+
+<c-card id="group-by-counts">
+  <c-slot name="title">
+    <div class="flex items-center gap-1">
+      🧑‍🤝‍🧑 <span class="first-letter:uppercase">{% translate 'employees counts grouped by' %}</span>
+    </div>
+  </c-slot>
+  <c-slot name="options">
+    <form
+      hx-get="{% url 'employees:group-by-counts' %}"
+      hx-trigger="change"
+      hx-target="#group-by-counts"
+      hx-indicator="#group-by-counts div[role=spinner]"
+    >
+      <c-inputs.text :field="filter.form.group_by" :show_label="False" />
+    </form>
+  </c-slot>
+  <c-table :bordered="False">
+    <c-table.table>
+      <c-table.tr :header="True">
+        <c-table.th> {% translate 'key' %} </c-table.th>
+        <c-table.th> {% translate 'counts' %} </c-table.th>
+      </c-table.tr>
+      {% for obj in object_list %}
+      <c-table.tr>
+        <c-table.td data-header="{% translate 'key' %}">
+          {{ obj|get_first_value|default:'-'|title }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'value' %}"> {{ obj.counts }} </c-table.td>
+      </c-table.tr>
+      {% empty %}
+      <c-table.empty-tr />
+      {% endfor %}
+    </c-table.table>
+  </c-table>
+</c-card>

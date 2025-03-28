@@ -2,7 +2,9 @@
 
 <c-card id="upcoming-birthdays">
   <c-slot name="title">
-    <div class="flex items-center gap-1">🎂 {% translate 'upcoming birthdays' %}</div>
+    <div class="flex items-center gap-1">
+      🎂 <span class="first-letter:uppercase">{% translate 'upcoming birthdays this' %}</span>
+    </div>
   </c-slot>
   <c-slot name="options">
     <form
