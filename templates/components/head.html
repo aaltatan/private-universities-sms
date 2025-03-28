@@ -1,4 +1,4 @@
-{% load static %}
+{% load django_vite %}
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,14 +27,10 @@
   }
 </script>
 
-<link rel="icon" href="{% static 'favicon.ico' %}" />
+<link rel="shortcut icon" href="{% vite_asset_url 'assets/favicon.ico' %}" type="image/x-icon" />
 
-{% if debug %}
-<link rel="stylesheet" href="{% static 'main.dev.css' %}" />
-<script src="{% static 'main.dev.js' %}" defer></script>
-{% else %}
-<link rel="stylesheet" href="{% static 'main.min.css' %}" />
-<script src="{% static 'main.min.js' %}" defer></script>
-{% endif %}
+{% vite_hmr_client %}
+<!--  -->
+{% vite_asset './assets/js/index.js' %}
 
 <title>{{ project_name }}</title>

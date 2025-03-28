@@ -49,6 +49,7 @@ THIRTY_PARTY_APPS = [
     "widget_tweaks",
     "rest_framework",
     "rest_framework_simplejwt",
+    "django_vite",
 ]
 
 CORE_APPS = [
@@ -163,6 +164,7 @@ USE_TZ = False
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Media files
 MEDIA_URL = "/media/"
@@ -208,4 +210,12 @@ REST_FRAMEWORK = {
     "SEARCH_PARAM": "q",
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
     "PAGE_SIZE": 10,
+}
+
+# vite settings
+
+DJANGO_VITE = {
+    "default": {
+        "dev_mode": DEBUG,
+    }
 }

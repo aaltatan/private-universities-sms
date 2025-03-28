@@ -1,12 +1,12 @@
-{% load i18n static %}
+{% load i18n django_vite %}
 
 <div class="relative w-fit mx-auto my-4">
   <a
-    href="{% if instance.profile %}{{ instance.profile.url }}{% else %}{% static 'images/user.png' %}{% endif %}"
+    href="{% if instance.profile %}{{ instance.profile.url }}{% else %}{% vite_asset_url 'assets/images/user.png' %}{% endif %}"
     target="_blank"
   >
     <img
-      src="{% if instance.profile %}{{ instance.profile.url }}{% else %}{% static 'images/user.png' %}{% endif %}"
+      src="{% if instance.profile %}{{ instance.profile.url }}{% else %}{% vite_asset_url 'assets/images/user.png' %}{% endif %}"
       alt="{% translate 'user profile'|title %}"
       class="rounded-full object-cover size-28 block border border-neutral-300 dark:border-neutral-800"
       x-ref="filePreview"

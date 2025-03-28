@@ -5,8 +5,11 @@ import persist from "@alpinejs/persist";
 import sort from "@alpinejs/sort";
 import Autosize from "@marcreichel/alpine-autosize";
 import Alpine from "alpinejs";
+import htmx from "htmx.org";
+import "../css/main.css";
+import "../favicon.ico";
 
-window.htmx = require("htmx.org");
+window.htmx = htmx;
 window.Alpine = Alpine;
 
 import { alert } from "./src/alert";

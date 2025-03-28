@@ -363,6 +363,18 @@ wheels = [
 ]
 
 [[package]]
+name = "django-vite"
+version = "3.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/23/fe/4be07f538bbf9bf8bf73b045552ec2a1b4fba67e3176abb30490b643368e/django_vite-3.1.0.tar.gz", hash = "sha256:8b4ffe4a9fa81ff568bfb195e74dde8694aaf13fd4b656ae60bf59cce08b85e8", size = 25434 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/30/59/7df4b1077fa41b43b4e542696d75138dbb86a65f44248c607b3e0f1014ce/django_vite-3.1.0-py3-none-any.whl", hash = "sha256:4e46572bd6b1ce70784be129205dc2ffcbc7a3c19fea50bebfb72b327bbde5fc", size = 23579 },
+]
+
+[[package]]
 name = "django-widget-tweaks"
 version = "1.5.0"
 source = { registry = "https://pypi.org/simple" }
@@ -748,6 +760,7 @@ dependencies = [
     { name = "django-htmx" },
     { name = "django-import-export", extra = ["xlsx"] },
     { name = "django-silk" },
+    { name = "django-vite" },
     { name = "django-widget-tweaks" },
     { name = "djangoql" },
     { name = "djangorestframework" },
@@ -784,6 +797,7 @@ requires-dist = [
     { name = "django-htmx", specifier = ">=1.21.0" },
     { name = "django-import-export", extras = ["xlsx"], specifier = ">=4.3.3" },
     { name = "django-silk", specifier = ">=5.3.2" },
+    { name = "django-vite", specifier = ">=3.1.0" },
     { name = "django-widget-tweaks", specifier = ">=1.5.0" },
     { name = "djangoql", specifier = ">=0.18.1" },
     { name = "djangorestframework", specifier = ">=3.15.2" },
