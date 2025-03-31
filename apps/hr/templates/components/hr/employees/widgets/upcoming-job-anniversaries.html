@@ -1,0 +1,59 @@
+{% load i18n widget_tweaks %}
+
+<c-card id="upcoming-job-anniversaries">
+  <c-slot name="title">
+    <div class="flex items-center gap-1">
+      ⚒️ <span class="first-letter:uppercase">{% translate 'upcoming job anniversaries this' %}</span>
+    </div>
+  </c-slot>
+  <c-slot name="options">
+    <form
+      hx-get="{% url 'employees:upcoming-job-anniversaries' %}"
+      hx-trigger="change"
+      hx-target="#upcoming-job-anniversaries"
+      hx-indicator="#upcoming-job-anniversaries div[role=spinner]"
+    >
+      <c-inputs.text :field="filter.form.this" :show_label="False" />
+    </form>
+  </c-slot>
+  <c-table :bordered="False">
+    <c-table.table>
+      <c-table.tr :header="True">
+        <c-table.th> {% translate 'fullname' %} </c-table.th>
+        <c-table.th> {% translate 'hire date' %} </c-table.th>
+        <c-table.th> {% translate 'next anniversary' %} </c-table.th>
+      </c-table.tr>
+      {% for obj in object_list %}
+      <c-table.tr>
+        <c-table.td data-header="{% translate 'fullname' %}">
+          <a
+            href="#"
+            hx-get="{{ obj.get_absolute_url }}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.fullname }}
+          </a>
+        </c-table.td>
+        <c-table.td
+          title="{{ obj.hire_date|timesince }}"
+          data-header="{% translate 'hire date' %}"
+        >
+          {{ obj.hire_date|date:'Y-m-d' }}
+        </c-table.td>
+        <c-table.td 
+          data-header="{% translate 'next anniversary' %}"
+          title="{{ obj.next_nth_job_anniversary|timeuntil:now }}"
+        >
+          {{ obj.next_nth_job_anniversary|date:'Y-m-d' }}
+        </c-table.td>
+      </c-table.tr>
+      {% empty %}
+      <c-table.empty-tr message="{% translate 'No upcoming job anniversaries' %}" />
+      {% endfor %}
+    </c-table.table>
+  </c-table>
+</c-card>

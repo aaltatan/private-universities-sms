@@ -19,6 +19,18 @@ class UpcomingBirthdaysView(PermissionRequiredMixin, FiltersetMixin, ListView):
         return context
 
 
+class UpcomingJobAnniversariesView(PermissionRequiredMixin, FiltersetMixin, ListView):
+    permission_required = "hr.view_employee"
+    template_name = "components/hr/employees/widgets/upcoming-job-anniversaries.html"
+    queryset = models.Employee.objects.all()
+    filterset_class = filters.UpcomingJobAnniversariesFilter
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["now"] = timezone.datetime.now()
+        return context
+
+
 class GroupByCountsView(PermissionRequiredMixin, FiltersetMixin, ListView):
     permission_required = "hr.view_employee"
     template_name = "components/hr/employees/widgets/group-by-counts.html"

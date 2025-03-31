@@ -48,6 +48,11 @@ urlpatterns = [
                     name="upcoming-birthdays",
                 ),
                 path(
+                    route="upcoming-job-anniversaries/",
+                    view=widgets.UpcomingJobAnniversariesView.as_view(),
+                    name="upcoming-job-anniversaries",
+                ),
+                path(
                     route="group-by-counts/",
                     view=widgets.GroupByCountsView.as_view(),
                     name="group-by-counts",
