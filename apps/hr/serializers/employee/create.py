@@ -1,9 +1,12 @@
+from django.conf import settings
 from django.db import transaction
 from django.db.models import Q
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import validators
+from apps.core.utils import calculate_age_in_years
 
 from ... import models
 
@@ -47,6 +50,36 @@ class EmployeeCreateUpdateSerializer(serializers.ModelSerializer):
     mobiles = MobileSerializer(many=True)
     phones = PhoneSerializer(many=True)
     emails = EmailSerializer(many=True)
+
+    def validate_birth_date(self, birth_date: timezone.datetime):
+        age: int = calculate_age_in_years(birth_date)
+        min_age = settings.MIN_EMPLOYEE_AGE
+
+        if timezone.now().date() < birth_date:
+            raise serializers.ValidationError(
+                _("birth date cannot be in the future"),
+            )
+
+        if age < min_age:
+            raise serializers.ValidationError(
+                _("employee's age must be at least {} years old").format(min_age),
+            )
+
+        return birth_date
+
+    def validate_hire_date(self, hire_date: timezone.datetime):
+        if timezone.now().date() < hire_date:
+            raise serializers.ValidationError(
+                _("hire date cannot be in the future"),
+            )
+        return hire_date
+
+    def validate_card_date(self, card_date: timezone.datetime):
+        if timezone.now().date() < card_date:
+            raise serializers.ValidationError(
+                _("card date cannot be in the future"),
+            )
+        return card_date
 
     def validate_emails(self, emails: list[dict]):
         if emails:
