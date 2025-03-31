@@ -72,6 +72,11 @@ class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
     permission_required = "hr.view_employee"
     model = models.Employee
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["now"] = timezone.now()
+        return context
+
 
 class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
     permission_required = "hr.add_employee"

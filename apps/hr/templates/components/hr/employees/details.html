@@ -12,7 +12,7 @@
         >
           <img
             src="{% if object.profile %}{{ object.profile.url }}{% else %}{% vite_asset_url 'assets/images/user.png' %}{% endif %}"
-            class="rounded-md size-48 object-cover block border border-neutral-300 dark:border-neutral-800"
+            class="size-48 rounded-full object-cover block border border-neutral-300 dark:border-neutral-800"
             alt="avatar"
           />
         </a>
@@ -106,6 +106,24 @@
                 </c-table.td>
                 <c-table.td data-header="{% translate 'value'|title %}">
                   {{ object.birth_date|timesince }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'next birthday'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.next_birthday|date:'Y-m-d' }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'until next birthday'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.next_birthday|timeuntil:now }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
@@ -295,6 +313,24 @@
                 </c-table.td>
                 <c-table.td data-header="{% translate 'value'|title %}">
                   {{ object.hire_date|timesince }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'next job anniversary'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.next_nth_job_anniversary|date:'Y-m-d' }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'until next job anniversary'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.next_nth_job_anniversary|timeuntil:now }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
