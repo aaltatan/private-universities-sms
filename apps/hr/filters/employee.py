@@ -1,5 +1,4 @@
 import django_filters as filters
-from django.db.models import TextChoices
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.filters import (
@@ -14,45 +13,14 @@ from apps.edu.models import Degree, Specialization
 from apps.geo.models import Nationality
 from apps.org.models import Status
 
-from .. import models
+from .. import choices, models
 from ..managers import EmployeeQuerySet
 
 
-class DateUnitsChoices(TextChoices):
-    YEAR = "year", _("year").title()
-    MONTH = "month", _("month").title()
-    DAY = "day", _("day").title()
-
-
 class GroupedByCountsFilter(filters.FilterSet):
-    class CountsGroupedByChoices(TextChoices):
-        GENDER = "gender", _("gender").title()
-        FACE_COLOR = "face_color", _("face color").title()
-        EYES_COLOR = "eyes_color", _("eyes color").title()
-        MARTIAL_STATUS = "martial_status", _("martial status").title()
-        MILITARY_STATUS = "military_status", _("military status").title()
-        RELIGION = "religion", _("religion").title()
-        BIRTH_PLACE = "birth_place", _("birth place").title()
-        # geo
-        GOVERNORATE = "city__governorate__name", _("governorate").title()
-        CITY = "city__name", _("city").title()
-        NATIONALITY = "nationality__name", _("nationality").title()
-        # org
-        COST_CENTER = "cost_center__name", _("cost center").title()
-        POSITION = "position__name", _("position").title()
-        STATUS = "status__name", _("status").title()
-        JOB_TYPE = "job_subtype__job_type__name", _("job type").title()
-        JOB_SUBTYPE = "job_subtype__name", _("job subtype").title()
-        GROUPS = "groups__name", _("groups").title()
-        # edu
-        DEGREE = "degree__name", _("degree").title()
-        SCHOOL = "school__name", _("school").title()
-        SCHOOL_KIND = "school__kind__name", _("school kind").title()
-        SPECIALIZATION = "specialization__name", _("specialization").title()
-
     group_by = filters.TypedChoiceFilter(
         label=_("group by").title(),
-        choices=CountsGroupedByChoices,
+        choices=choices.CountsGroupedByChoices,
         method="filter_counts_grouped_by",
     )
 
@@ -67,7 +35,7 @@ class GroupedByCountsFilter(filters.FilterSet):
 class UpcomingBirthdaysFilter(filters.FilterSet):
     this = filters.TypedChoiceFilter(
         label=_("this").title(),
-        choices=DateUnitsChoices,
+        choices=choices.DateUnitsChoices,
         method="filter_upcoming_birthday_this",
     )
 
@@ -82,7 +50,7 @@ class UpcomingBirthdaysFilter(filters.FilterSet):
 class UpcomingJobAnniversariesFilter(filters.FilterSet):
     this = filters.TypedChoiceFilter(
         label=_("this").title(),
-        choices=DateUnitsChoices,
+        choices=choices.DateUnitsChoices,
         method="filter_upcoming_job_anniversary_this",
     )
 
@@ -111,6 +79,11 @@ class BaseEmployeeFilter(
     )
     age_from, age_to = get_number_from_to_filters(
         field_name="age",
+    )
+    age_group = filters.ChoiceFilter(
+        field_name="age_group",
+        label=_("age group").title(),
+        choices=choices.AgeGroupChoices,
     )
     national_id = get_text_filter(label=_("national id").title())
     card_id = get_text_filter(label=_("card id").title())
@@ -157,12 +130,12 @@ class BaseEmployeeFilter(
     )
     upcoming_birthday_this = filters.ChoiceFilter(
         label=_("upcoming birthday this").title(),
-        choices=DateUnitsChoices,
+        choices=choices.DateUnitsChoices,
         method="filter_upcoming_birthday_this",
     )
     upcoming_job_anniversary_this = filters.ChoiceFilter(
         label=_("upcoming job anniversary this").title(),
-        choices=DateUnitsChoices,
+        choices=choices.DateUnitsChoices,
         method="filter_upcoming_job_anniversary_this",
     )
 

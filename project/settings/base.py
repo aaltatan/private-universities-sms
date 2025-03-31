@@ -200,6 +200,8 @@ MIN_EMPLOYEE_AGE = 18
 
 NTH_JOB_ANNIVERSARY = 2
 
+YEARS_COUNT_TO_GROUP_JOB_AGE = 3
+
 # Django Rest Framework settings
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "apps.core.pagination.CorePagination",

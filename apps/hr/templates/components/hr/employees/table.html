@@ -260,6 +260,7 @@
           x-data="combineTitle({
             '{% translate 'fullname'|title %}': '{{ obj.fullname }}',
             '{% translate 'age'|title %}': '{{ obj.birth_date|timesince }}',
+            '{% translate 'age group'|title %}': '{{ obj.age_group|title }}',
             '{% translate 'next birthday'|title %}': '{{ obj.next_birthday|date:'Y-m-d' }}',
             '{% translate 'until next birthday'|title %}': '{{ obj.next_birthday|timeuntil:now }}',
           })"
@@ -298,6 +299,7 @@
           x-data="combineTitle({
             '{% translate 'fullname'|title %}': '{{ obj.fullname }}',
             '{% translate 'job age'|title %}': '{{ obj.hire_date|timesince }}',
+            '{% translate 'job age group'|title %}': '{{ obj.job_age_group|capfirst }}',
             '{% translate 'next job anniversary'|title %}': '{{ obj.next_nth_job_anniversary|date:'Y-m-d' }}',
             '{% translate 'until next job anniversary'|title %}': '{{ obj.next_nth_job_anniversary|timeuntil:now }}',
           })"

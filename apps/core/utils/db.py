@@ -3,6 +3,7 @@ from typing import Iterable
 from django.db import models
 from django.db.models.functions import Cast, Concat, ExtractYear, Mod
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 
 def annotate_search(fields: Iterable[str]) -> Concat:
@@ -192,3 +193,38 @@ def db_get_next_anniversary(
         f"_next_nth_{label}_year": _next_nth_anniversary_year,
         f"next_nth_{label}": next_nth_anniversary,
     }
+
+
+def db_get_age_groups(field_name: str, n: int = 2) -> models.Case:
+    """
+    Returns the age groups of a specific DateField in years (on database level).
+
+    Args:
+        field_name (str): The name of the DateField.
+        n (int): The number of age groups.
+            Defaults to 2.
+
+    Returns:
+        models.Case: The age groups of the specified DateField.
+    """
+    if n < 2:
+        raise ValueError("n must be greater than or equal to 2")
+
+    return models.Case(
+        *[
+            models.When(
+                **{
+                    f"{field_name}__gte": i * n - (n - 1),
+                    f"{field_name}__lte": i * n,
+                },
+                then=models.Value(
+                    _(
+                        "between {} and {} years",
+                    ).format(i * n - (n - 1), i * n),
+                ),
+            )
+            for i in range(1, round(30 / n))
+        ],
+        default=models.Value(_("below {} years").format(n)),
+        output_field=models.CharField(),
+    )

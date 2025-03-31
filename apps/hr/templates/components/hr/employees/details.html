@@ -111,6 +111,15 @@
               <!--  -->
               <c-table.tr>
                 <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'age group'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.age_group|title }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
                   {% translate 'next birthday'|title %}
                 </c-table.td>
                 <c-table.td data-header="{% translate 'value'|title %}">
@@ -309,10 +318,19 @@
               <!--  -->
               <c-table.tr>
                 <c-table.td data-header="{% translate 'name'|title %}">
-                  {% translate 'work age'|title %}
+                  {% translate 'job age'|title %}
                 </c-table.td>
                 <c-table.td data-header="{% translate 'value'|title %}">
                   {{ object.hire_date|timesince }}
+                </c-table.td>
+              </c-table.tr>
+              <!--  -->
+              <c-table.tr>
+                <c-table.td data-header="{% translate 'name'|title %}">
+                  {% translate 'job age group'|title %}
+                </c-table.td>
+                <c-table.td data-header="{% translate 'value'|title %}">
+                  {{ object.job_age_group|capfirst }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->

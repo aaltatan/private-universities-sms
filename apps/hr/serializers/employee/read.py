@@ -120,10 +120,12 @@ class EmployeeSerializer(serializers.ModelSerializer):
     shortname = serializers.SerializerMethodField()
     father_fullname = serializers.SerializerMethodField()
     age = serializers.IntegerField()
+    age_group = serializers.CharField()
     next_birthday = serializers.DateField()
     nationality = NationalitySerializer(read_only=True)
     city = CitySerializer(read_only=True)
     job_age = serializers.IntegerField()
+    job_age_group = serializers.CharField()
     next_job_anniversary = serializers.DateField()
     cost_center = CostCenterSerializer(read_only=True)
     position = PositionSerializer(read_only=True)
@@ -161,6 +163,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
             "birth_place",
             "birth_date",
             "age",
+            "age_group",
             "next_birthday",
             "national_id",
             "passport_id",
@@ -182,6 +185,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
             "city",
             "hire_date",
             "job_age",
+            "job_age_group",
             "next_job_anniversary",
             "notes",
             "profile",
