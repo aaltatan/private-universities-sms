@@ -1,4 +1,4 @@
-from .db import annotate_search
+from .db import annotate_search, db_calculate_age_in_years, db_get_next_anniversary
 from .deleter import Deleter
 from .functions import (
     calculate_age_in_years,
@@ -15,6 +15,8 @@ __all__ = [
     "dict_to_css",
     "calculate_age_in_years",
     "annotate_search",
+    "db_calculate_age_in_years",
+    "db_get_next_anniversary",
     "get_keywords_query",
     "get_djangoql_query",
     "get_differences",

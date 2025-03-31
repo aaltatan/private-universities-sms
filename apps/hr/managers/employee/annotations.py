@@ -1,9 +1,14 @@
+from django.conf import settings
 from django.db import models
-from django.db.models import DateField, ExpressionWrapper, F, Func, Value
-from django.db.models.functions import Concat, ExtractDay, ExtractMonth, Floor
+from django.db.models.functions import Concat
 from django.utils import timezone
+from django.core.exceptions import ImproperlyConfigured
 
-from apps.core.utils import annotate_search
+from apps.core.utils import (
+    annotate_search,
+    db_calculate_age_in_years,
+    db_get_next_anniversary,
+)
 
 from ...constants import employee as constants
 
@@ -17,40 +22,51 @@ class AnnotationMixin:
     def _annotate_names(self, queryset: models.QuerySet):
         return queryset.annotate(
             fullname=Concat(
-                F("firstname"),
-                Value(" "),
-                F("father_name"),
-                Value(" "),
-                F("lastname"),
+                models.F("firstname"),
+                models.Value(" "),
+                models.F("father_name"),
+                models.Value(" "),
+                models.F("lastname"),
             ),
-            shortname=Concat(F("firstname"), Value(" "), F("lastname")),
-            father_fullname=Concat(F("father_name"), Value(" "), F("lastname")),
+            shortname=Concat(
+                models.F("firstname"), models.Value(" "), models.F("lastname")
+            ),
+            father_fullname=Concat(
+                models.F("father_name"), models.Value(" "), models.F("lastname")
+            ),
         )
 
     def _annotate_dates(self, queryset: models.QuerySet):
-        current_year = timezone.datetime.now().year
+        if getattr(settings, "NTH_JOB_ANNIVERSARY", None) is None:
+            raise ImproperlyConfigured("NTH_JOB_ANNIVERSARY is not set")
 
-        return queryset.annotate(
-            age=ExpressionWrapper(
-                Floor(
-                    (timezone.now().date() - F("birth_date"))
-                    / timezone.timedelta(days=365)
-                ),
-                output_field=models.IntegerField(),
-            ),
-            job_age=ExpressionWrapper(
-                Floor(
-                    (timezone.now().date() - F("hire_date"))
-                    / timezone.timedelta(days=365)
-                ),
-                output_field=models.IntegerField(),
-            ),
-            birth_month=ExtractMonth("birth_date"),
-            birth_day=ExtractDay("birth_date"),
-            next_birthday=Func(
-                Value(current_year),
-                Func(F("birth_date"), function="DAYOFYEAR"),
-                function="MAKEDATE",
-                output_field=DateField(),
-            ),
+        if not isinstance(settings.NTH_JOB_ANNIVERSARY, int):
+            raise ImproperlyConfigured("NTH_JOB_ANNIVERSARY must be an integer")
+
+        if settings.NTH_JOB_ANNIVERSARY < 1:
+            raise ImproperlyConfigured(
+                "NTH_JOB_ANNIVERSARY must be greater than or equal to 1",
+            )
+
+        current_date = timezone.now()
+
+        next_birthday = db_get_next_anniversary(
+            field_name="birth_date",
+            label="birthday",
+            date=current_date,
         )
+        next_job_anniversary = db_get_next_anniversary(
+            field_name="hire_date",
+            label="job_anniversary",
+            n=settings.NTH_JOB_ANNIVERSARY or 2,
+            date=current_date,
+        )
+
+        dates = {
+            "age": db_calculate_age_in_years("birth_date", current_date),
+            **next_birthday,
+            "job_age": db_calculate_age_in_years("hire_date", current_date),
+            **next_job_anniversary,
+        }
+
+        return queryset.annotate(**dates)
