@@ -14,6 +14,7 @@ window.Alpine = Alpine;
 
 import { alert } from "./src/alert";
 import { badge } from "./src/badge";
+import { combineTitle } from "./src/combine-title";
 import { contextMenu } from "./src/context-menu";
 import { autocomplete, combobox, date } from "./src/fields";
 import { formset } from "./src/formset";
@@ -31,6 +32,7 @@ Alpine.plugin(Autosize);
 document.addEventListener("alpine:init", () => {
   Alpine.data("layout", layout);
   Alpine.data("sidebarLinks", sidebarLinks);
+  Alpine.data("combineTitle", combineTitle);
   Alpine.data("theme", theme);
   Alpine.data("contextMenu", contextMenu);
   Alpine.data("tableCheckAll", tableCheckAll);
