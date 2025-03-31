@@ -3,23 +3,7 @@ import nox
 
 @nox.session(venv_backend="none")
 def build(session: nox.Session) -> None:
-    session.run(
-        "npx",
-        "tailwindcss",
-        "-i",
-        "./assets/css/input.css",
-        "-o",
-        "./static/main.min.css",
-        "--minify",
-    )
-    session.run(
-        "npx",
-        "webpack",
-        "--config",
-        "webpack.config.js",
-        "--mode",
-        "production",
-    )
+    session.run("npm", "run", "build")
     session.run(
         "uv",
         "pip",
