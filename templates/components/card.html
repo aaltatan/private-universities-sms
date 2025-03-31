@@ -1,13 +1,13 @@
 {% load i18n %}
 
-<div {{ attrs }} class="border border-neutral-300 dark:border-neutral-800 rounded-lg relative overflow-hidden">
+<div {{ attrs }} class="border border-neutral-300 dark:border-neutral-800 rounded-lg relative overflow-hidden h-full">
   <div class="opacity-0 hx-request:opacity-80 hx-request:!z-20 flex items-center justify-center absolute w-full h-full bg-white dark:bg-black -z-10 duration-150" role="spinner">
     {% heroicon_outline "arrow-path" class="animate-spin" %}
   </div>
   <div
-    class="flex items-center justify-between border-b p-2 border-neutral-300 dark:border-neutral-800"
+    class="flex items-center justify-between border-b p-2 border-neutral-300 dark:border-neutral-800 gap-2"
   >
-    <h1 class="text-lg font-medium tracking-tight">{{ title }}</h1>
+    <h1 class="font-medium tracking-tighter leading-5">{{ title }}</h1>
     <div>{{ options }}</div>
   </div>
   <div>{{ slot }}</div>

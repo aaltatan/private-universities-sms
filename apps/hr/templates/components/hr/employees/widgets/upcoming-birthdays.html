@@ -21,7 +21,7 @@
       <c-table.tr :header="True">
         <c-table.th> {% translate 'fullname' %} </c-table.th>
         <c-table.th> {% translate 'birthdate' %} </c-table.th>
-        <c-table.th> {% translate 'until next' %} </c-table.th>
+        <c-table.th> {% translate 'next birthday' %} </c-table.th>
       </c-table.tr>
       {% for obj in object_list %}
       <c-table.tr>
@@ -44,8 +44,11 @@
         >
           {{ obj.birth_date|date:'Y-m-d' }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'until next' %}">
-          {{ obj.next_birthday|timeuntil:now }}
+        <c-table.td 
+          data-header="{% translate 'next birthday' %}"
+          title="{{ obj.next_birthday|timeuntil:now }}"
+        >
+          {{ obj.next_birthday|date:'Y-m-d' }}
         </c-table.td>
       </c-table.tr>
       {% empty %}
