@@ -53,6 +53,10 @@ class EmployeeResource(
         column_name=_("age").title(),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
+    next_birthday = fields.Field(
+        column_name=_("next birthday").title(),
+        widget=widgets.DateWidget(coerce_to_string=False),
+    )
     national_id = fields.Field(
         attribute="national_id",
         column_name=_("national id").title(),
@@ -133,6 +137,10 @@ class EmployeeResource(
     hire_date = fields.Field(
         attribute="hire_date",
         column_name=_("hire date").title(),
+        widget=widgets.DateWidget(coerce_to_string=False),
+    )
+    next_job_anniversary = fields.Field(
+        column_name=_("next job anniversary").title(),
         widget=widgets.DateWidget(coerce_to_string=False),
     )
     job_age = fields.Field(
@@ -226,6 +234,12 @@ class EmployeeResource(
     def dehydrate_job_age(self, obj: models.Employee):
         return obj.job_age
 
+    def dehydrate_next_birthday(self, obj: models.Employee):
+        return obj.next_birthday
+
+    def dehydrate_next_job_anniversary(self, obj: models.Employee):
+        return obj.next_nth_job_anniversary
+
     def dehydrate_is_payable(self, obj: models.Employee):
         return self._dehydrate_boolean(obj.status.is_payable)
 
@@ -263,6 +277,7 @@ class EmployeeResource(
             "birth_place",
             "birth_date",
             "age",
+            "next_birthday",
             "national_id",
             "card_id",
             "passport_id",
@@ -284,6 +299,7 @@ class EmployeeResource(
             "city",
             "hire_date",
             "job_age",
+            "next_job_anniversary",
             "notes",
             "cost_center",
             "position",

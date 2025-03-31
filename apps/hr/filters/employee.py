@@ -18,7 +18,7 @@ from .. import models
 from ..managers import EmployeeQuerySet
 
 
-class UpcomingBirthdayChoices(TextChoices):
+class DateUnitsChoices(TextChoices):
     YEAR = "year", _("year").title()
     MONTH = "month", _("month").title()
     DAY = "day", _("day").title()
@@ -56,12 +56,7 @@ class GroupedByCountsFilter(filters.FilterSet):
         method="filter_counts_grouped_by",
     )
 
-    def filter_counts_grouped_by(
-        self,
-        queryset: EmployeeQuerySet,
-        name,
-        value,
-    ):
+    def filter_counts_grouped_by(self, queryset: EmployeeQuerySet, name, value):
         return queryset.get_counts_grouped_by(group_by=value)
 
     class Meta:
@@ -72,17 +67,29 @@ class GroupedByCountsFilter(filters.FilterSet):
 class UpcomingBirthdaysFilter(filters.FilterSet):
     this = filters.TypedChoiceFilter(
         label=_("this").title(),
-        choices=UpcomingBirthdayChoices,
+        choices=DateUnitsChoices,
         method="filter_upcoming_birthday_this",
     )
 
-    def filter_upcoming_birthday_this(
-        self,
-        queryset: EmployeeQuerySet,
-        name,
-        value,
-    ):
+    def filter_upcoming_birthday_this(self, queryset: EmployeeQuerySet, name, value):
         return queryset.get_upcoming_birthdays(this=value)
+
+    class Meta:
+        model = models.Employee
+        fields = ("this",)
+
+
+class UpcomingJobAnniversariesFilter(filters.FilterSet):
+    this = filters.TypedChoiceFilter(
+        label=_("this").title(),
+        choices=DateUnitsChoices,
+        method="filter_upcoming_job_anniversary_this",
+    )
+
+    def filter_upcoming_job_anniversary_this(
+        self, queryset: EmployeeQuerySet, name, value
+    ):
+        return queryset.get_upcoming_job_anniversaries(this=value)
 
     class Meta:
         model = models.Employee
@@ -150,12 +157,22 @@ class BaseEmployeeFilter(
     )
     upcoming_birthday_this = filters.ChoiceFilter(
         label=_("upcoming birthday this").title(),
-        choices=UpcomingBirthdayChoices,
+        choices=DateUnitsChoices,
         method="filter_upcoming_birthday_this",
     )
+    upcoming_job_anniversary_this = filters.ChoiceFilter(
+        label=_("upcoming job anniversary this").title(),
+        choices=DateUnitsChoices,
+        method="filter_upcoming_job_anniversary_this",
+    )
 
-    def filter_upcoming_birthday_this(self, queryset, name, value):
+    def filter_upcoming_birthday_this(self, queryset: EmployeeQuerySet, name, value):
         return queryset.get_upcoming_birthdays(this=value)
+
+    def filter_upcoming_job_anniversary_this(
+        self, queryset: EmployeeQuerySet, name, value
+    ):
+        return queryset.get_upcoming_job_anniversaries(this=value)
 
     class Meta:
         model = models.Employee

@@ -27,6 +27,27 @@
     <c-inputs.text :show_label="False" :field="filter.form.age_from" />
     <c-inputs.text :show_label="False" :field="filter.form.age_to" />
   </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'hire date'|title %}">
+    <c-inputs.text
+      :show_label="False"
+      :field="filter.form.hire_date_from"
+      :show_icon="True"
+      icon="calendar"
+      icon_size="16"
+    />
+    <c-inputs.text
+      :show_label="False"
+      :field="filter.form.hire_date_to"
+      :show_icon="True"
+      icon="calendar"
+      icon_size="16"
+    />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'job age'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.job_age_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.job_age_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.upcoming_job_anniversary_this" />
   <c-inputs.text :field="filter.form.national_id" />
   <c-inputs.text :field="filter.form.card_id" />
   <c-inputs.text :field="filter.form.passport_id" />
@@ -75,26 +96,6 @@
       icon="calendar"
       icon_size="16"
     />
-  </c-inputs.range-wrapper>
-  <c-inputs.range-wrapper title="{% translate 'hire date'|title %}">
-    <c-inputs.text
-      :show_label="False"
-      :field="filter.form.hire_date_from"
-      :show_icon="True"
-      icon="calendar"
-      icon_size="16"
-    />
-    <c-inputs.text
-      :show_label="False"
-      :field="filter.form.hire_date_to"
-      :show_icon="True"
-      icon="calendar"
-      icon_size="16"
-    />
-  </c-inputs.range-wrapper>
-  <c-inputs.range-wrapper title="{% translate 'job age'|title %}">
-    <c-inputs.text :show_label="False" :field="filter.form.job_age_from" />
-    <c-inputs.text :show_label="False" :field="filter.form.job_age_to" />
   </c-inputs.range-wrapper>
   <c-inputs.text :field="filter.form.notes" />
 </c-blocks.table-filters>

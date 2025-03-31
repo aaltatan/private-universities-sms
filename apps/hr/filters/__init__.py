@@ -4,6 +4,7 @@ from .employee import (
     EmployeeFilter,
     GroupedByCountsFilter,
     UpcomingBirthdaysFilter,
+    UpcomingJobAnniversariesFilter,
 )
 from .mobile import APIMobileFilter, MobileFilter
 from .phone import APIPhoneFilter, PhoneFilter
@@ -15,6 +16,7 @@ __all__ = [
     "EmployeeFilter",
     "GroupedByCountsFilter",
     "UpcomingBirthdaysFilter",
+    "UpcomingJobAnniversariesFilter",
     "APIMobileFilter",
     "MobileFilter",
     "APIPhoneFilter",
