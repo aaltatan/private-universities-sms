@@ -4,7 +4,7 @@ from django.views.generic import DetailView, View
 from django.views.generic.list import MultipleObjectMixin
 from django_filters import rest_framework as django_filters
 from rest_framework import filters as rest_filters
-from rest_framework import viewsets
+from rest_framework import parsers, viewsets
 
 from apps.core import filter_backends, mixins
 from apps.core.inline import InlineFormsetFactory
@@ -31,6 +31,11 @@ class APIViewSet(
     ordering_fields = constants.ORDERING_FIELDS
     search_fields = constants.SEARCH_FIELDS
     deleter = Deleter
+    parser_classes = (
+        parsers.JSONParser,
+        parsers.MultiPartParser,
+        parsers.FormParser,
+    )
 
     def get_serializer_class(self):
         if self.action in ("create", "update", "partial_update"):
