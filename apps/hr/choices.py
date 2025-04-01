@@ -31,6 +31,7 @@ class CountsGroupedByChoices(TextChoices):
     RELIGION = "religion", _("religion").title()
     BIRTH_PLACE = "birth_place", _("birth place").title()
     AGE_GROUP = "age_group", _("age group").title()
+    JOB_AGE_GROUP = "job_age_group", _("job age group").title()
     # geo
     GOVERNORATE = "city__governorate__name", _("governorate").title()
     CITY = "city__name", _("city").title()

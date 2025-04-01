@@ -214,16 +214,17 @@ def db_get_age_groups(field_name: str, n: int = 2) -> models.Case:
         *[
             models.When(
                 **{
-                    f"{field_name}__gte": i * n - (n - 1),
-                    f"{field_name}__lte": i * n,
+                    f"{field_name}__gte": idx,
+                    f"{field_name}__lt": idx + n,
                 },
                 then=models.Value(
-                    _(
-                        "between {} and {} years",
-                    ).format(i * n - (n - 1), i * n),
+                    _("between {} and below {} years").format(
+                        str(idx).rjust(2, "0"),
+                        str(idx + n).rjust(2, "0"),
+                    ),
                 ),
             )
-            for i in range(1, round(30 / n))
+            for idx in range(0, 30, n)
         ],
         default=models.Value(_("below {} years").format(n)),
         output_field=models.CharField(),

@@ -25,7 +25,7 @@
       {% for obj in object_list %}
       <c-table.tr>
         <c-table.td data-header="{% translate 'key' %}">
-          {{ obj|get_first_value|default:'-'|title }}
+          {{ obj|get_first_value|default:'-'|capfirst }}
         </c-table.td>
         <c-table.td data-header="{% translate 'value' %}"> {{ obj.counts }} </c-table.td>
       </c-table.tr>
