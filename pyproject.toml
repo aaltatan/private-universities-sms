@@ -23,6 +23,7 @@ dependencies = [
     "django-silk>=5.3.2",
     "pillow>=11.1.0",
     "django-vite>=3.1.0",
+    "django-cors-headers>=4.7.0",
 ]
 
 [dependency-groups]

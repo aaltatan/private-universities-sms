@@ -50,6 +50,7 @@ THIRTY_PARTY_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "django_vite",
+    "corsheaders",
 ]
 
 CORE_APPS = [
@@ -72,6 +73,7 @@ MIDDLEWARE = [
     "apps.core.middlewares.CustomLoginRequiredMiddleware",
     "apps.core.middlewares.RequestMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -201,6 +203,11 @@ MIN_EMPLOYEE_AGE = 18
 NTH_JOB_ANNIVERSARY = 2
 
 YEARS_COUNT_TO_GROUP_JOB_AGE = 2
+
+# CORS settings
+
+CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=str).split(";")
+CORS_ALLOW_ALL_ORIGINS = config("CORS_ALLOW_ALL_ORIGINS", default=False, cast=bool)
 
 # Django Rest Framework settings
 REST_FRAMEWORK = {
