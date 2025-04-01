@@ -53,6 +53,9 @@ class EmployeeResource(
         column_name=_("age").title(),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
+    age_group = fields.Field(
+        column_name=_("age group").title(),
+    )
     next_birthday = fields.Field(
         column_name=_("next birthday").title(),
         widget=widgets.DateWidget(coerce_to_string=False),
@@ -147,6 +150,9 @@ class EmployeeResource(
         column_name=_("job age").title(),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
+    job_age_group = fields.Field(
+        column_name=_("job age group").title(),
+    )
     notes = fields.Field(
         attribute="notes",
         column_name=_("notes").title(),
@@ -230,9 +236,15 @@ class EmployeeResource(
 
     def dehydrate_age(self, obj: models.Employee):
         return obj.age
+    
+    def dehydrate_age_group(self, obj: models.Employee):
+        return obj.age_group.title()
 
     def dehydrate_job_age(self, obj: models.Employee):
         return obj.job_age
+    
+    def dehydrate_job_age_group(self, obj: models.Employee):
+        return obj.job_age_group.title()
 
     def dehydrate_next_birthday(self, obj: models.Employee):
         return obj.next_birthday
@@ -277,6 +289,7 @@ class EmployeeResource(
             "birth_place",
             "birth_date",
             "age",
+            "age_group",
             "next_birthday",
             "national_id",
             "card_id",
@@ -299,6 +312,7 @@ class EmployeeResource(
             "city",
             "hire_date",
             "job_age",
+            "job_age_group",
             "next_job_anniversary",
             "notes",
             "cost_center",
