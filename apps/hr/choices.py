@@ -4,15 +4,15 @@ from django.utils.translation import gettext_lazy as _
 
 class AgeGroupChoices(TextChoices):
     CHILDREN = "children", _("children").title()
-    TEENAGERS = "teenagers", _("teenagers").title()
-    TWENTIES = "twenties", _("twenties").title()
-    THIRTIES = "thirties", _("thirties").title()
-    FORTIES = "forties", _("forties").title()
-    FIFTIES = "fifties", _("fifties").title()
-    SIXTIES = "sixties", _("sixties").title()
-    SEVENTIES = "seventies", _("seventies").title()
-    EIGHTIES = "eighties", _("eighties").title()
-    NINETIES = "nineties", _("nineties").title()
+    TEENAGERS = "10's", _("teenagers").title()
+    TWENTIES = "20's", _("twenties").title()
+    THIRTIES = "30's", _("thirties").title()
+    FORTIES = "40's", _("forties").title()
+    FIFTIES = "50's", _("fifties").title()
+    SIXTIES = "60's", _("sixties").title()
+    SEVENTIES = "70's", _("seventies").title()
+    EIGHTIES = "80's", _("eighties").title()
+    NINETIES = "90's", _("nineties").title()
     ABOVE_100 = "above 100", _("above 100").title()
 
 
