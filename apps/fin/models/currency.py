@@ -34,6 +34,7 @@ class Currency(AddCreateActivityMixin, AbstractUniqueNameModel):
     code = models.CharField(
         max_length=3,
         unique=True,
+        verbose_name=_("code"),
         help_text=_("ISO 4217 3-letter currency code"),
     )
     fraction_name = models.CharField(
@@ -42,6 +43,7 @@ class Currency(AddCreateActivityMixin, AbstractUniqueNameModel):
     )
     decimal_places = models.PositiveSmallIntegerField(
         default=2,
+        verbose_name=_("decimal places"),
         help_text=_(
             "standard number of decimal places for this currency",
         ),
