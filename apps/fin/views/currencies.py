@@ -37,7 +37,7 @@ class ListView(
     MultipleObjectMixin,
     View,
 ):
-    permission_required = "org.view_currency"
+    permission_required = "fin.view_currency"
     model = models.Currency
     filter_class = filters.CurrencyFilter
     resource_class = resources.CurrencyResource
@@ -50,27 +50,27 @@ class ListView(
                 method=self.bulk_delete,
                 template="components/blocks/modals/bulk-delete.html",
                 kwargs=("new_value",),
-                permissions=("org.delete_currency",),
+                permissions=("fin.delete_currency",),
             ),
         }
 
 
 class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
-    permission_required = "geo.view_currency"
+    permission_required = "fin.view_currency"
     model = models.Currency
 
 
 class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
-    permission_required = "org.add_currency"
+    permission_required = "fin.add_currency"
     form_class = forms.CurrencyForm
 
 
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
-    permission_required = "org.change_currency"
+    permission_required = "fin.change_currency"
     form_class = forms.CurrencyForm
 
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
-    permission_required = "org.delete_currency"
+    permission_required = "fin.delete_currency"
     deleter = utils.CurrencyDeleter
     model = models.Currency
