@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<c-blocks.table-filters>
+  <c-inputs.text :field="filter.form.name" />
+  <c-inputs.text :field="filter.form.symbol" />
+  <c-inputs.text :field="filter.form.code" />
+  <c-inputs.text :field="filter.form.fraction_name" />
+  <c-inputs.range-wrapper title="{% translate 'decimal places'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.decimal_places_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.decimal_places_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.is_primary" />
+  <c-inputs.text :field="filter.form.description" />
+</c-blocks.table-filters>

@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<c-forms.modal-create
+  form_title="{% translate 'add new currency'|title %}"
+  request_headers='{"modal": true, "target": "{{ request_parser.target }}", "dont-redirect": true}'
+  url="{{ create_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-inputs.text :field="form.name" />
+  <c-inputs.text :field="form.symbol" />
+  <c-inputs.text :field="form.code" />
+  <c-inputs.text :field="form.fraction_name" />
+  <c-inputs.text kind="number" :field="form.decimal_places" />
+  <c-inputs.text :field="form.description" />
+</c-forms.modal-create>

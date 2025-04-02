@@ -35,6 +35,7 @@ LOCAL_APPS = [
     "apps.org",
     "apps.edu",
     "apps.hr",
+    "apps.fin",
 ]
 
 THIRTY_PARTY_APPS = [

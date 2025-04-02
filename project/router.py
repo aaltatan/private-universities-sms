@@ -6,6 +6,9 @@ from apps.edu.views.school_kinds import APIViewSet as SchoolKindAPIViewSet
 from apps.edu.views.schools import APIViewSet as SchoolAPIViewSet
 from apps.edu.views.specializations import APIViewSet as SpecializationAPIViewSet
 
+# fin
+from apps.fin.views.currencies import APIViewSet as CurrencyAPIViewSet
+
 # geo
 from apps.geo.views.cities import APIViewSet as CityAPIViewSet
 from apps.geo.views.governorates import APIViewSet as GovernorateAPIViewSet
@@ -48,3 +51,5 @@ router.register(r"hr/employees", EmployeeAPIViewSet)
 router.register(r"hr/mobiles", MobileAPIViewSet)
 router.register(r"hr/phones", PhoneAPIViewSet)
 router.register(r"hr/emails", EmailAPIViewSet)
+# fin
+router.register(r"fin/currencies", CurrencyAPIViewSet)

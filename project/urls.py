@@ -9,6 +9,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from apps.edu.views import IndexView as EduIndexView
+from apps.fin.views import IndexView as FinIndexView
 from apps.geo.views import IndexView as GeoIndexView
 from apps.hr.views import IndexView as HRIndexView
 from apps.org.views import IndexView as OrgIndexView
@@ -156,7 +157,24 @@ urlpatterns = [
                 ),
             ]
         ),
-    )
+    ),
+    path(
+        "fin/",
+        include(
+            [
+                path(
+                    "",
+                    FinIndexView.as_view(),
+                    kwargs={"title": _("finance")},
+                ),
+                path(
+                    "currencies/",
+                    include("apps.fin.urls.currencies"),
+                    kwargs={"title": _("currencies")},
+                ),
+            ]
+        ),
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
