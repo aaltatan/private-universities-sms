@@ -3,7 +3,6 @@ from datetime import date
 from django.db import models
 from django.utils import timezone
 from django.db.models.signals import pre_delete, pre_save
-from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
@@ -15,6 +14,7 @@ from apps.core.validators import (
     two_chars_validator,
 )
 from apps.core.models import User
+from apps.core.models.abstracts import UrlsMixin
 from apps.edu.models import Degree, School, Specialization
 from apps.geo.models import City, Nationality
 from apps.org.models import CostCenter, Group, JobSubtype, Position, Status
@@ -22,7 +22,7 @@ from apps.org.models import CostCenter, Group, JobSubtype, Position, Status
 from ..managers import EmployeeManager
 
 
-class Employee(AddCreateActivityMixin, models.Model):
+class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
     class ReligionChoices(models.TextChoices):
         MUSLIM = "muslim", _("muslim").title()
         CHRISTIAN = "christian", _("christian").title()
@@ -308,44 +308,6 @@ class Employee(AddCreateActivityMixin, models.Model):
 
     def __str__(self) -> str:
         return self.get_fullname()
-
-    def get_activities_url(self) -> str:
-        app_label: str = self.__get_app_label()
-        model_name: str = self.__get_model_name()
-
-        base_url = reverse("core:activities", kwargs={"object_id": self.pk})
-
-        return f"{base_url}?app_label={app_label}&model={model_name}"
-
-    def get_absolute_url(self) -> str:
-        verbose_name_plural: str = self.__get_verbose_name_plural()
-        return reverse(
-            f"{verbose_name_plural}:details",
-            kwargs={"slug": self.slug},
-        )
-
-    def get_delete_url(self) -> str:
-        verbose_name_plural: str = self.__get_verbose_name_plural()
-        return reverse(
-            f"{verbose_name_plural}:delete",
-            kwargs={"slug": self.slug},
-        )
-
-    def get_update_url(self) -> str:
-        verbose_name_plural: str = self.__get_verbose_name_plural()
-        return reverse(
-            f"{verbose_name_plural}:update",
-            kwargs={"slug": self.slug},
-        )
-
-    def __get_verbose_name_plural(self) -> str:
-        return self._meta.codename_plural
-
-    def __get_app_label(self) -> str:
-        return self._meta.app_label
-
-    def __get_model_name(self) -> str:
-        return self._meta.model_name
 
 
 def employee_pre_save(sender, instance: Employee, *args, **kwargs):

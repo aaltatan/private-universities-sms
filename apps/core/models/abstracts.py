@@ -8,40 +8,7 @@ from ..validators import four_char_length_validator
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("icon", "codename_plural")
 
 
-class AbstractUniqueNameModel(models.Model):
-    """
-    Abstract model for models that have a unique name field and a slug field and optional description field.
-    """
-
-    name = models.CharField(
-        max_length=255,
-        unique=True,
-        validators=[four_char_length_validator],
-        verbose_name=_("name"),
-    )
-    description = models.TextField(
-        default="",
-        blank=True,
-        null=True,
-        verbose_name=_("description"),
-    )
-    ordering = models.PositiveIntegerField(default=0) # to order objects in inlines
-    slug = models.SlugField(
-        max_length=255,
-        unique=True,
-        null=True,
-        blank=True,
-        default=None,
-        allow_unicode=True,
-    )
-
-    class Meta:
-        abstract = True
-        ordering = ("name",)
-
-    def __str__(self) -> str:
-        return self.name
-
+class UrlsMixin:
     def get_activities_url(self) -> str:
         app_label: str = self.__get_app_label()
         model_name: str = self.__get_model_name()
@@ -79,3 +46,38 @@ class AbstractUniqueNameModel(models.Model):
 
     def __get_model_name(self) -> str:
         return self._meta.model_name
+
+
+class AbstractUniqueNameModel(UrlsMixin, models.Model):
+    """
+    Abstract model for models that have a unique name field and a slug field and optional description field.
+    """
+
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        validators=[four_char_length_validator],
+        verbose_name=_("name"),
+    )
+    description = models.TextField(
+        default="",
+        blank=True,
+        null=True,
+        verbose_name=_("description"),
+    )
+    ordering = models.PositiveIntegerField(default=0)  # to order objects in inlines
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        null=True,
+        blank=True,
+        default=None,
+        allow_unicode=True,
+    )
+
+    class Meta:
+        abstract = True
+        ordering = ("name",)
+
+    def __str__(self) -> str:
+        return self.name
