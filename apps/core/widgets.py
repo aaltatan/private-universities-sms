@@ -124,6 +124,26 @@ def get_numeric_widget(
     )
 
 
+def get_money_widget(
+    decimal_separator: str = ".",
+    thousands_separator: str = ",",
+    decimal_places: int = 4,
+    **attributes: dict[str, str],
+) -> TextInput:
+    """Get numeric field with x-mask attribute."""
+    if "placeholder" in attributes:
+        attributes["placeholder"] = attributes["placeholder"].title()
+    else:
+        attributes["placeholder"] = "0." + "0" * decimal_places
+
+    return TextInput(
+        attrs={
+            "x-mask:dynamic": f"$money($input, '{decimal_separator}', '{thousands_separator}', {decimal_places})",
+            **attributes,
+        },
+    )
+
+
 def get_text_widget(**attributes: dict[str, str]) -> TextInput:
     """Get text field."""
     if "placeholder" in attributes:
