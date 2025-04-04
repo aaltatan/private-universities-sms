@@ -103,9 +103,7 @@ def get_number_from_to_filters(
     """Get number range fields."""
 
     from_attributes.setdefault("placeholder", _("from").title())
-    from_attributes.setdefault("x-mask", "9999999999")
     to_attributes.setdefault("placeholder", _("to").title())
-    to_attributes.setdefault("x-mask", "9999999999")
 
     from_ = filters.NumberFilter(
         field_name=field_name,

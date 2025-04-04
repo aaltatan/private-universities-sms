@@ -1,0 +1,81 @@
+{% load widget_tweaks i18n %}
+
+<c-vars
+  :show_icon="False"
+  :show_label="True"
+  :show_help="True"
+  :has_add="False"
+  :themes="{
+    'text': 'text-input',
+    'select': 'select-input',
+  }"
+  theme="text"
+  icon="plus"
+  icon_size="20"
+  kind="number"
+  autofocus="false"
+  step="1"
+  min="0"
+  max="999999999999999"
+/>
+
+<div
+  role="group"
+  class="text-neutral-600 dark:text-neutral-300 [&:has(input[aria-invalid='true'])_label]:text-red-500"
+>
+  {% if has_add or show_label %}
+  <div class="relative">
+    {% if show_label %}
+    <label
+      for="{{ field.id_for_label }}"
+      class="flex w-fit items-center gap-1 pl-0.5 text-xs capitalize"
+    >
+      {{ field.label }}:
+      <span
+        class="text-[red] aria-hidden:hidden"
+        title="{% translate 'required field'|title %}"
+        aria-label="required field"
+        aria-hidden="{% if field.field.required %}false{% else %}true{% endif %}"
+      >
+        *
+      </span>
+    </label>
+    {% endif %}
+    <!--  -->
+    {% if has_add %}
+    <div class="absolute top-1/2 -translate-y-1/2 end-0" aria-label="create nested object">
+      {{ slot }}
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+  <!--  -->
+  {% if show_help %}
+  <small class="pl-0.5 text-neutral-500 mb-1 block first-letter:capitalize">
+    {{ field.help_text }}
+  </small>
+  {% endif %}
+  <!--  -->
+  {% if show_icon %}
+  <div class="relative">
+    <span class="absolute start-2 top-1/2 -translate-y-1/2">
+      {% heroicon_outline icon size=icon_size class="text-neutral-400 dark:text-neutral-500" %}
+    </span>
+    {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme
+    step=step style="padding-inline-start: 2.5rem" type=kind min=min max=max %}
+  </div>
+  {% else %}
+  <!--  -->
+  {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme
+  step=step type=kind min=min max=max %}
+  <!--  -->
+  {% endif %}
+  <!--  -->
+  {% if field.errors %}
+  <c-error.wrapper>
+    {% for error in field.errors %}
+    <c-error.error>{{ error }}</c-error.error>
+    {% endfor %}
+  </c-error.wrapper>
+  {% endif %}
+</div>
