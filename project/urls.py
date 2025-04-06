@@ -153,7 +153,6 @@ urlpatterns = [
                 path(
                     "employees/",
                     include("apps.hr.urls.employees"),
-                    kwargs={"title": _("employees")},
                 ),
             ]
         ),
@@ -170,7 +169,10 @@ urlpatterns = [
                 path(
                     "currencies/",
                     include("apps.fin.urls.currencies"),
-                    kwargs={"title": _("currencies")},
+                ),
+                path(
+                    "exchange-rates/",
+                    include("apps.fin.urls.exchange_rates"),
                 ),
             ]
         ),

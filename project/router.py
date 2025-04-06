@@ -8,6 +8,7 @@ from apps.edu.views.specializations import APIViewSet as SpecializationAPIViewSe
 
 # fin
 from apps.fin.views.currencies import APIViewSet as CurrencyAPIViewSet
+from apps.fin.views.exchange_rates import APIViewSet as ExchangeRateAPIViewSet
 
 # geo
 from apps.geo.views.cities import APIViewSet as CityAPIViewSet
@@ -53,3 +54,4 @@ router.register(r"hr/phones", PhoneAPIViewSet)
 router.register(r"hr/emails", EmailAPIViewSet)
 # fin
 router.register(r"fin/currencies", CurrencyAPIViewSet)
+router.register(r"fin/exchange-rates", ExchangeRateAPIViewSet)
