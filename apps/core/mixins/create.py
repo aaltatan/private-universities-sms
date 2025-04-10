@@ -215,10 +215,11 @@ class CreateMixin(ABC):
         """
         Returns the app links.
         """
+        app_label = self.get_app_label()
         verbose_name_plural = self.get_verbose_name_plural()
         return {
-            "index_url": reverse(f"{verbose_name_plural}:index"),
-            "create_url": reverse(f"{verbose_name_plural}:create"),
+            "index_url": reverse(f"{app_label}:{verbose_name_plural}:index"),
+            "create_url": reverse(f"{app_label}:{verbose_name_plural}:create"),
         }
 
     def get_html_ids(self) -> dict[str, str]:

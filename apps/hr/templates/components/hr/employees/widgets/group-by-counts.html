@@ -8,7 +8,7 @@
   </c-slot>
   <c-slot name="options">
     <form
-      hx-get="{% url 'employees:group-by-counts' %}"
+      hx-get="{% url 'hr:employees:group-by-counts' %}"
       hx-trigger="change"
       hx-target="#group-by-counts"
       hx-indicator="#group-by-counts div[role=spinner]"

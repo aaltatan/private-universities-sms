@@ -14,7 +14,7 @@
       theme="outline"
       padding="sm"
       size="20"
-      hx-get="{% url 'job_types:create' %}"
+      hx-get="{% url 'org:job_types:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
       @click.prevent="showModal"

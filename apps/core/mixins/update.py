@@ -306,9 +306,10 @@ class UpdateMixin(ABC):
         """
         Returns the app links.
         """
-        app_label = self.get_verbose_name_plural()
+        app_label = self.get_app_label()
+        verbose_name_plural = self.get_verbose_name_plural()
         return {
-            "index_url": reverse(f"{app_label}:index"),
+            "index_url": reverse(f"{app_label}:{verbose_name_plural}:index"),
             "update_url": self.obj.get_update_url(),
         }
 

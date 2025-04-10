@@ -2,15 +2,15 @@
   <div class="grid grid-cols-1 @min-[48rem]:grid-cols-2 @min-[80rem]:grid-cols-3 gap-2">
     {% if perms.hr.view_employee %}
     <c-skeletons.card
-      hx-get="{% url 'employees:upcoming-birthdays' %}?this=day"
+      hx-get="{% url 'hr:employees:upcoming-birthdays' %}?this=day"
       hx-trigger="revealed"
     />
     <c-skeletons.card
-      hx-get="{% url 'employees:upcoming-job-anniversaries' %}?this=day"
+      hx-get="{% url 'hr:employees:upcoming-job-anniversaries' %}?this=day"
       hx-trigger="revealed"
     />
     <c-skeletons.card
-      hx-get="{% url 'employees:group-by-counts' %}?group_by=gender"
+      hx-get="{% url 'hr:employees:group-by-counts' %}?group_by=gender"
       hx-trigger="revealed"
     />
     {% endif %}

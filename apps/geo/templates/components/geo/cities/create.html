@@ -14,7 +14,7 @@
       theme="outline"
       padding="sm"
       size="20"
-      hx-get="{% url 'governorates:create' %}"
+      hx-get="{% url 'geo:governorates:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
       @click.prevent="showModal"

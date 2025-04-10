@@ -14,7 +14,7 @@
       theme="outline"
       padding="sm"
       size="20"
-      hx-get="{% url 'school_kinds:create' %}"
+      hx-get="{% url 'edu:school_kinds:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
       @click.prevent="showModal"
@@ -31,7 +31,7 @@
       theme="outline"
       padding="sm"
       size="20"
-      hx-get="{% url 'nationalities:create' %}"
+      hx-get="{% url 'geo:nationalities:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
       @click.prevent="showModal"

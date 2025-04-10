@@ -38,7 +38,7 @@ def get_apps_links(
                 icon=getattr(model._meta, "icon", "star"),
                 text=getattr(model._meta, "verbose_name_plural", "some app"),
                 path=reverse_lazy(
-                    f"{model._meta.codename_plural}:{view_name}",
+                    f"{app_label}:{model._meta.codename_plural}:{view_name}",
                 ),
                 perm=f"{app_label}.view_{object_name}",
             )
