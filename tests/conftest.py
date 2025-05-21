@@ -2,9 +2,10 @@ import pytest
 from django.test import Client
 from rest_framework.test import APIClient
 
-from apps.core.models import Activity, User
 from apps.core.constants import PERMISSION
-from tests.utils import get_token_headers
+from apps.core.models import Activity, User
+
+from .utils import get_token_headers
 
 
 @pytest.fixture(autouse=True)

@@ -2,13 +2,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from apps.edu.urls import patterns as edu_patterns
-from apps.fin.urls import patterns as fin_patterns
 from apps.geo.urls import patterns as geo_patterns
 from apps.hr.urls import patterns as hr_patterns
 from apps.org.urls import patterns as org_patterns
@@ -30,7 +26,6 @@ urlpatterns = [
     path("org/", include((org_patterns, "org"))),
     path("edu/", include((edu_patterns, "edu"))),
     path("hr/", include((hr_patterns, "hr"))),
-    path("fin/", include((fin_patterns, "fin"))),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
