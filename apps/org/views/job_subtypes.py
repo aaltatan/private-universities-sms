@@ -62,7 +62,7 @@ class ListView(
 
 
 class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
-    permission_required = "geo.view_jobsubtype"
+    permission_required = "org.view_jobsubtype"
     model = models.JobSubtype
 
 
