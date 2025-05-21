@@ -19,8 +19,8 @@ def urls() -> dict[str, str]:
     return {
         "api": "/api/geo/governorates/",
         "autocomplete": reverse("core:autocomplete"),
-        "index": reverse("governorates:index"),
-        "create": reverse("governorates:create"),
+        "index": reverse("geo:governorates:index"),
+        "create": reverse("geo:governorates:create"),
     }
 
 

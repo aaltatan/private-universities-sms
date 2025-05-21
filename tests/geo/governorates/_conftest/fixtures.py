@@ -67,8 +67,8 @@ def counts() -> dict[str, int]:
 def urls() -> dict[str, str]:
     return {
         "api": f"/api/{APP_LABEL}/{SUBAPP_LABEL}/",
-        "index": reverse(f"{SUBAPP_LABEL}:index"),
-        "create": reverse(f"{SUBAPP_LABEL}:create"),
+        "index": reverse(f"{APP_LABEL}:{SUBAPP_LABEL}:index"),
+        "create": reverse(f"{APP_LABEL}:{SUBAPP_LABEL}:create"),
     }
 
 

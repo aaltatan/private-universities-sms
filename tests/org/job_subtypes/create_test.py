@@ -48,7 +48,7 @@ def test_create_page(
     assert description_input is not None
 
     assert create_job_type_btn is not None
-    assert get_nested_hx_path(create_job_type_btn) == reverse("job_types:create")
+    assert get_nested_hx_path(create_job_type_btn) == reverse("org:job_types:create")
     assert is_required_star_visible(form, "name")
     assert is_required_star_visible(form, "job_type")
 

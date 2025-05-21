@@ -124,7 +124,7 @@ def test_delete_activity(
     activity_model,
 ):
     path = reverse(
-        viewname="governorates:delete",
+        viewname="geo:governorates:delete",
         kwargs={"slug": "محافظة-ادلب"},
     )
     response = admin_client.post(path=path, headers={"hx-request": "true"})
@@ -178,7 +178,7 @@ def test_update_activity(
     }
     response = admin_client.post(
         path=reverse(
-            viewname="governorates:update",
+            viewname="geo:governorates:update",
             kwargs={"slug": "محافظة-حماه"},
         ),
         headers={"hx-request": "true"},

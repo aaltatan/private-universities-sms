@@ -67,8 +67,8 @@ def test_create_page(
 
     assert nationality_create_btn is not None
     assert kind_create_btn is not None
-    assert get_nested_hx_path(nationality_create_btn) == reverse("nationalities:create")
-    assert get_nested_hx_path(kind_create_btn) == reverse("school_kinds:create")
+    assert get_nested_hx_path(nationality_create_btn) == reverse("geo:nationalities:create")
+    assert get_nested_hx_path(kind_create_btn) == reverse("edu:school_kinds:create")
 
 
 @pytest.mark.django_db

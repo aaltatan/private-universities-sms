@@ -50,7 +50,7 @@ def test_create_page(
     assert description_input is not None
 
     assert create_governorate_btn is not None
-    assert get_nested_hx_path(create_governorate_btn) == reverse("governorates:create")
+    assert get_nested_hx_path(create_governorate_btn) == reverse("geo:governorates:create")
     assert is_required_star_visible(form, "name")
     assert is_required_star_visible(form, "kind", input_type="select")
     assert is_required_star_visible(form, "governorate")
