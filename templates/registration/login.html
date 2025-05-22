@@ -1,14 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load django_vite i18n widget_tweaks %}
+
+<!doctype html>
+<html lang="en" :class="{'dark': dark}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    {% vite_hmr_client %}
+    <!--  -->
+    {% vite_asset './assets/js/index.js' %}
+    <title>{% translate 'login'|title %}</title>
   </head>
-  <body>
-    <form action="/accounts/login/" method="post">
-      {% csrf_token %} {{ form.as_p }}
-      <button type="submit">Login</button>
-    </form>
+  <body class="h-screen">
+    <div class="flex h-full">
+      <!-- Login Form Section -->
+      <div class="w-full md:w-1/2 flex items-center justify-center p-8">
+        <div class="w-full max-w-md">
+          <h1 class="text-3xl font-medium text-neutral-800 mb-8">Login</h1>
+          <form action="/accounts/login/" method="post" class="space-y-6">
+            {% csrf_token %}
+            <!--  -->
+            {% if form.non_field_errors %}
+            <div class="my-6">
+              {% for error in form.non_field_errors %}
+              <c-alert>{{ error }}</c-alert>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <div>
+              <label
+                for="{{ form.username.id_for_label }}"
+                class="block text-sm font-normal text-neutral-700 mb-1"
+                >{% translate 'username'|title %}</label
+              >
+              {% render_field form.username class="text-input" placeholder="Enter your username" %}
+            </div>
+            <div>
+              <label
+                for="{{ form.password.id_for_label }}"
+                class="block text-sm font-normal text-neutral-700 mb-1"
+                >{% translate 'password'|title %}</label
+              >
+              {% render_field form.password class="text-input" placeholder="Enter your username" %}
+            </div>
+            <div>
+              <c-button width="full" hide_icon="True" type="submit" theme="primary" padding="lg">
+                {% translate 'login'|title %}
+              </c-button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="hidden md:block md:w-1/2 bg-neutral-200">
+        <div class="h-full w-full flex items-center justify-center overflow-hidden">
+          <img
+            src="{% vite_asset_url './assets/images/road.jpg' %}"
+            alt="green car"
+            class="h-full w-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
   </body>
 </html>
