@@ -1,0 +1,37 @@
+import django_filters as filters
+from django.utils.translation import gettext_lazy as _
+
+from apps.core.filters import (
+    BaseNameDescriptionFilter,
+    FilterComboboxMixin,
+    get_date_from_to_filters,
+)
+
+from .. import models
+
+
+class BasePeriodsFilter(BaseNameDescriptionFilter):
+    is_closed = filters.ChoiceFilter(
+        label=_("closed").title(),
+        choices=models.Period.ClosedChoices,
+    )
+    start_date_from, start_date_to = get_date_from_to_filters("start_date")
+
+    class Meta:
+        model = models.Period
+        fields = (
+            "name",
+            "year",
+            "start_date_from",
+            "start_date_to",
+            "is_closed",
+            "description",
+        )
+
+
+class APIPeriodsFilter(FilterComboboxMixin, BasePeriodsFilter):
+    pass
+
+
+class PeriodFilter(FilterComboboxMixin, BasePeriodsFilter):
+    pass

@@ -34,6 +34,7 @@ LOCAL_APPS = [
     "apps.geo",
     "apps.org",
     "apps.edu",
+    "apps.fin",
     "apps.hr",
 ]
 

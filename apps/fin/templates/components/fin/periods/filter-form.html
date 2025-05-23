@@ -1,0 +1,12 @@
+{% load i18n %}
+
+<c-blocks.table-filters>
+  <c-inputs.text :field="filter.form.name" />
+  <c-inputs.text :field="filter.form.year" />
+  <c-inputs.range-wrapper title="{% translate 'start date'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.start_date_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.start_date_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.is_closed" />
+  <c-inputs.text :field="filter.form.description" />
+</c-blocks.table-filters>

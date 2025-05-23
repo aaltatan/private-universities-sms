@@ -8,6 +8,7 @@ from apps.edu.urls import patterns as edu_patterns
 from apps.geo.urls import patterns as geo_patterns
 from apps.hr.urls import patterns as hr_patterns
 from apps.org.urls import patterns as org_patterns
+from apps.fin.urls import patterns as fin_patterns
 
 from .router import router
 
@@ -25,6 +26,7 @@ urlpatterns = [
     path("geo/", include((geo_patterns, "geo"))),
     path("org/", include((org_patterns, "org"))),
     path("edu/", include((edu_patterns, "edu"))),
+    path("fin/", include((fin_patterns, "fin"))),
     path("hr/", include((hr_patterns, "hr"))),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

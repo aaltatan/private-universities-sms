@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<c-forms.modal-update
+  form_title="{% translate 'update'|title %} {{ form.instance }}"
+  request_headers='{"modal": true, "target": "{{ request_parser.target }}", "dont-redirect": true}'
+  url="{{ update_url }}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-inputs.text :field="form.name" />
+  <c-inputs.text :field="form.year" />
+  <c-inputs.text :field="form.start_date" />
+  <c-inputs.text :field="form.is_closed" />
+  <c-inputs.text :field="form.description" />
+</c-forms.modal-update>

@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<c-forms.create
+  form_title="{% translate 'add new period' %}"
+  url="{{ create_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-inputs.text :field="form.name" />
+  <c-inputs.text :field="form.year" />
+  <c-inputs.text :field="form.start_date" />
+  <c-inputs.text :field="form.is_closed" />
+  <c-inputs.text :field="form.description" />
+</c-forms.create>

@@ -1,0 +1,146 @@
+{% load i18n widget_tweaks utils %}
+
+<c-blocks.table id="{{ table_id }}" :index_url="{{ index_url }}" :table_id="{{ table_id }}">
+  <c-slot name="search">
+    <c-table.filter-form trigger="search" class="w-full" prevent="True">
+      <c-inputs.text
+        :field="search_ordering_filter.form.q"
+        :show_label="False"
+        show_icon="True"
+        icon="magnifying-glass"
+        kind="search"
+        placeholder="{% translate 'search'|title %}"
+      />
+    </c-table.filter-form>
+  </c-slot>
+
+  <c-slot name="buttons_bar">
+    {% if can_create %}
+    <c-button
+      size="20"
+      kind="a"
+      href="{{ create_url }}{% querystring %}"
+      theme="primary"
+      title="{% translate 'add new'|title %}"
+      aria-label="create new object"
+    />
+    {% endif %}
+
+    <c-table.filter-form trigger="order-by-change">
+      {{ search_ordering_filter.form.ordering }}
+    </c-table.filter-form>
+
+    <c-button
+      icon="adjustments-horizontal"
+      size="20"
+      hx-get="{{ index_url }}{% querystring %}"
+      hx-vals='{"filters": true}'
+      hx-target="#overlay-sidebar-container"
+      hx-swap="innerHTML"
+      data-fields="name,description"
+      badge="True"
+      title="{% translate 'filters'|title %}"
+    />
+  </c-slot>
+
+  {% if can_delete %}
+  <c-slot name="actions">
+    <c-layout.contextmenu.section>
+      <c-layout.contextmenu.item color="danger" icon="trash">
+        <c-table.action-button
+          action_name="delete"
+          value="{% translate 'delete' %}"
+          hx-post="{{ index_url }}{% querystring %}"
+          hx-target="#modal-container"
+          hx-indicator="#modal-spinner"
+          aria-label="delete all objects"
+        />
+      </c-layout.contextmenu.item>
+    </c-layout.contextmenu.section>
+  </c-slot>
+  {% endif %}
+
+  <form hx-post="{{ index_url }}" id="{{ form_table_id }}">
+    <c-table.table>
+      <c-table.tr header="True">
+        <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
+        <c-table.th>{% translate 'options' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'name' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'description' }}</c-table.th>
+      </c-table.tr>
+      {% for obj in page %}
+      <c-table.tr>
+        <c-table.td-check :show_checkbox="can_delete" :obj="obj" idx="{{ forloop.counter }}" />
+        <c-table.td fixed="True">
+          {% if can_update or can_delete or can_view_activity %}
+          <c-layout.contextmenu button_padding="sm">
+            {% if can_update or can_view_activity %}
+            <c-layout.contextmenu.section>
+              {% if can_view_activity %}
+              <c-layout.contextmenu.item
+                icon="clock"
+                href="#"
+                hx-get="{{ obj.get_activities_url }}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="object activities"
+              >
+                {% translate 'activities' %}
+              </c-layout.contextmenu.item>
+              {% endif %}
+              <!--  -->
+              {% if can_update %}
+              <c-layout.contextmenu.item
+                icon="pencil"
+                href="{{ obj.get_update_url }}{% querystring %}"
+                aria-label="edit object"
+              >
+                {% translate 'edit' %}
+              </c-layout.contextmenu.item>
+              {% endif %}
+            </c-layout.contextmenu.section>
+            {% endif %}
+            <!--  -->
+            {% if can_delete %}
+            <c-layout.contextmenu.section>
+              <c-layout.contextmenu.item
+                color="danger"
+                icon="trash"
+                href="#"
+                hx-get="{{ obj.get_delete_url }}{% querystring %}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="delete object"
+              >
+                {% translate 'delete' %}
+              </c-layout.contextmenu.item>
+            </c-layout.contextmenu.section>
+            {% endif %}
+          </c-layout.contextmenu>
+          {% endif %}
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'name' }}">
+          <a
+            href="#"
+            hx-get="{{ obj.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.name }}
+          </a>
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'description' }}">
+          {{ obj.description }}
+        </c-table.td>
+      </c-table.tr>
+      {% empty %}
+      <c-table.empty-tr />
+      {% endfor %}
+    </c-table.table>
+  </form>
+</c-blocks.table>
