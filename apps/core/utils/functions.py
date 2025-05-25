@@ -1,5 +1,8 @@
+import math
 import re
 from datetime import datetime
+from decimal import Decimal
+from typing import Callable
 
 from django.apps import apps
 from django.conf import settings
@@ -9,6 +12,8 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 
 from apps.core.schemas import AppLink
+
+from ..constants import ROUND_METHOD
 
 
 def get_apps_links(
@@ -119,3 +124,20 @@ def calculate_age_in_years(
         age -= 1
 
     return age
+
+
+def round_to_nearest(
+    number: Decimal | int | float,
+    method: ROUND_METHOD = "ceil",
+    to_nearest: int = 100
+) -> Decimal:
+    """
+    rounds a number to the nearest value.
+    """
+    round_methods: dict[ROUND_METHOD, Callable] = {
+        "round": round,
+        "floor": math.floor,
+        "ceil": math.ceil,
+    }
+
+    return Decimal(round_methods[method](number / to_nearest)) * to_nearest

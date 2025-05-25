@@ -11,6 +11,7 @@ from .functions import (
     get_apps_links,
     get_differences,
     increase_slug_by_one,
+    round_to_nearest,
 )
 from .query import get_djangoql_query, get_keywords_query
 
@@ -27,4 +28,5 @@ __all__ = [
     "get_djangoql_query",
     "get_differences",
     "get_apps_links",
+    "round_to_nearest",
 ]
