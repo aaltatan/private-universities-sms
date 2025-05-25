@@ -1,0 +1,80 @@
+[
+  {
+    "model": "fin.taxbracket",
+    "pk": 1,
+    "fields": {
+      "tax": 1,
+      "amount_from": "0.00",
+      "amount_to": "279000.00",
+      "rate": "0.00",
+      "notes": "",
+      "ordering": 0,
+      "slug": "bf5bdc07b8804a9c9554e36c10a1b6d0"
+    }
+  },
+  {
+    "model": "fin.taxbracket",
+    "pk": 2,
+    "fields": {
+      "tax": 1,
+      "amount_from": "279001.00",
+      "amount_to": "449999.00",
+      "rate": "0.07",
+      "notes": "",
+      "ordering": 0,
+      "slug": "5e3a7264426340438554b63d19729c0d"
+    }
+  },
+  {
+    "model": "fin.taxbracket",
+    "pk": 3,
+    "fields": {
+      "tax": 1,
+      "amount_from": "450000.00",
+      "amount_to": "649999.00",
+      "rate": "0.09",
+      "notes": "",
+      "ordering": 0,
+      "slug": "6deec3c48933486ebebc3fc94ce0cc5a"
+    }
+  },
+  {
+    "model": "fin.taxbracket",
+    "pk": 4,
+    "fields": {
+      "tax": 1,
+      "amount_from": "650000.00",
+      "amount_to": "849999.00",
+      "rate": "0.11",
+      "notes": "",
+      "ordering": 0,
+      "slug": "40279669566348729f1e14e6c33b15e6"
+    }
+  },
+  {
+    "model": "fin.taxbracket",
+    "pk": 5,
+    "fields": {
+      "tax": 1,
+      "amount_from": "850000.00",
+      "amount_to": "1099999.00",
+      "rate": "0.13",
+      "notes": "",
+      "ordering": 0,
+      "slug": "a874c340254f4029b07111d58d285c15"
+    }
+  },
+  {
+    "model": "fin.taxbracket",
+    "pk": 6,
+    "fields": {
+      "tax": 1,
+      "amount_from": "1100000.00",
+      "amount_to": "50000000.00",
+      "rate": "0.15",
+      "notes": "",
+      "ordering": 0,
+      "slug": "9b6287c7c0d345d6b980b9c897a2e3ac"
+    }
+  }
+]

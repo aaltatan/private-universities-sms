@@ -1,0 +1,28 @@
+[
+  {
+    "model": "fin.period",
+    "pk": 1,
+    "fields": {
+      "name": "20241 - الفصل الدراسي الاول",
+      "description": "",
+      "ordering": 0,
+      "slug": "20241-الفصل-الدراسي-الاول",
+      "year": 1,
+      "start_date": "2024-09-18",
+      "is_closed": false
+    }
+  },
+  {
+    "model": "fin.period",
+    "pk": 2,
+    "fields": {
+      "name": "20242 - الفصل الدراسي الثاني",
+      "description": "",
+      "ordering": 0,
+      "slug": "20242-الفصل-الدراسي-الثاني",
+      "year": 1,
+      "start_date": "2025-03-15",
+      "is_closed": false
+    }
+  }
+]
