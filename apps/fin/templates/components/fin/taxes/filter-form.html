@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<c-blocks.table-filters>
+  <c-inputs.text :field="filter.form.name" />
+  <c-inputs.text :field="filter.form.fixed" />
+  <c-inputs.range-wrapper title="{% translate 'rate'|title %}">
+    <c-inputs.text :field="filter.form.rate_from" :show_label="False" />
+    <c-inputs.text :field="filter.form.rate_to" :show_label="False" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.description" />
+</c-blocks.table-filters>

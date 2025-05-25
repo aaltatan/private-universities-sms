@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<c-forms.update
+  form_title="{% translate 'update' %} {{ form.instance }}"
+  url="{{ update_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-inputs.text :field="form.name" />
+  <c-inputs.text :field="form.fixed" />
+  <c-inputs.text :field="form.rate" />
+  <c-inputs.text :field="form.rounded_to" />
+  <c-inputs.text :field="form.round_method" />
+  <c-inputs.text :field="form.description" />
+</c-forms.update>

@@ -7,4 +7,6 @@ patterns = [
     path("", IndexView.as_view(), kwargs={"title": _("financial")}),
     path("periods/", include("apps.fin.urls.periods")),
     path("years/", include("apps.fin.urls.years")),
+    path("taxes/", include("apps.fin.urls.taxes")),
+    path("tax-brackets/", include("apps.fin.urls.tax_brackets")),
 ]

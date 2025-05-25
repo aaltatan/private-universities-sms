@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<c-forms.modal-create
+  form_title="{% translate 'add new tax bracket'|title %}"
+  request_headers='{"modal": true, "target": "{{ request_parser.target }}", "dont-redirect": true}'
+  url="{{ create_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-inputs.text :field="form.tax" />
+  <c-inputs.text :field="form.amount_from" />
+  <c-inputs.text :field="form.amount_to" />
+  <c-inputs.text :field="form.rate" />
+  <c-inputs.text :field="form.notes" />
+</c-forms.modal-create>

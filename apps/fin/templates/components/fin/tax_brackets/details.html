@@ -1,0 +1,68 @@
+{% load i18n utils humanize %}
+
+<c-layout.modal width="xl">
+  <c-layout.modal.body :close_padding="buttons_padding">
+    <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
+    <c-slot name="body">
+      <c-table height="sm">
+        <c-table.table>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'tax' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.tax }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'amount_from' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.amount_from|intcomma:False }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'amount_to' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.amount_to|intcomma:False }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'rate' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.rate }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'notes' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.notes }}
+            </c-table.td>
+          </c-table.tr>
+        </c-table.table>
+      </c-table>
+    </c-slot>
+    <c-slot name="footer">
+      <c-button
+        theme="outline"
+        title="{% translate 'close'|title %}"
+        @click="hideModal"
+        :hide_icon="True"
+      >
+        {% translate 'close'|title %}
+      </c-button>
+    </c-slot>
+  </c-layout.modal.body>
+</c-layout.modal>

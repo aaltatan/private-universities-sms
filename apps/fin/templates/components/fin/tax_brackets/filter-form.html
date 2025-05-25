@@ -1,0 +1,18 @@
+{% load i18n %}
+
+<c-blocks.table-filters>
+  <c-inputs.text :field="filter.form.tax" />
+  <c-inputs.range-wrapper title="{% translate 'amount from'|title %}">
+    <c-inputs.text :field="filter.form.amount_from_from" :show_label="False" />
+    <c-inputs.text :field="filter.form.amount_from_to" :show_label="False" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'amount to'|title %}">
+    <c-inputs.text :field="filter.form.amount_to_from" :show_label="False" />
+    <c-inputs.text :field="filter.form.amount_to_to" :show_label="False" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'rate'|title %}">
+    <c-inputs.text :field="filter.form.rate_from" :show_label="False" />
+    <c-inputs.text :field="filter.form.rate_to" :show_label="False" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.notes" />
+</c-blocks.table-filters>
