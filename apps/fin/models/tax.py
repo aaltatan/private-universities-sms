@@ -12,6 +12,7 @@ from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search, round_to_nearest
 
 from ..constants import taxes as constants
+from ..choices import RoundMethodChoices
 
 
 class TaxManager(models.Manager):
@@ -30,11 +31,6 @@ class Tax(AddCreateActivityMixin, AbstractUniqueNameModel):
     class FixedChoices(models.TextChoices):
         FIXED = True, _("fixed").title()
         BRACKETS = False, _("brackets").title()
-
-    class RoundMethodChoices(models.TextChoices):
-        ROUND = "round", _("normal").title()
-        FLOOR = "floor", _("down").title()
-        CEIL = "ceil", _("up").title()
 
     objects: TaxManager = TaxManager()
 

@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.functions import Ceil, Floor, Round
 
 from apps.fin.models import Tax, TaxBracket
+from apps.fin.choices import RoundMethodChoices
 
 
 def db_calculate_tax_brackets(
@@ -34,12 +35,12 @@ def db_calculate_tax_brackets(
 
     result = models.Case(
         models.When(
-            tax__round_method=Tax.RoundMethodChoices.CEIL,
+            tax__round_method=RoundMethodChoices.CEIL,
             then=Ceil(models.F("result_with_fractions") / models.F("tax__rounded_to"))
             * models.F("tax__rounded_to"),
         ),
         models.When(
-            tax__round_method=Tax.RoundMethodChoices.FLOOR,
+            tax__round_method=RoundMethodChoices.FLOOR,
             then=Floor(models.F("result_with_fractions") / models.F("tax__rounded_to"))
             * models.F("tax__rounded_to"),
         ),
