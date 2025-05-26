@@ -61,16 +61,31 @@ class Tax(AddCreateActivityMixin, AbstractUniqueNameModel):
         default=RoundMethodChoices.CEIL,
     )
 
+    def _calculate_fixed(self, amount: Decimal | int | float) -> Decimal:
+        return amount * self.rate
+
+    def _calculate_brackets(self, amount: Decimal | int | float) -> Decimal:
+        brackets = self.brackets.all().order_by("amount_from")
+        tax = 0
+        for bracket in brackets:
+            if bracket.amount_from <= amount <= bracket.amount_to:
+                bracket_tax = bracket.rate * (amount - bracket.amount_from)
+                tax += bracket_tax
+                return tax
+            else:
+                tax += (bracket.amount_to - bracket.amount_from) * bracket.rate
+
+        return tax
+
     def calculate(self, amount: Decimal | int | float) -> Decimal:
         if self.fixed:
-            tax = amount * self.rate
-            return round_to_nearest(
-                number=tax,
-                method=self.round_method,
-                to_nearest=self.rounded_to,
-            )
+            tax = self._calculate_fixed(amount=amount)
+        else:
+            tax = self._calculate_brackets(amount=amount)
 
-        return Decimal(0)
+        return round_to_nearest(
+            number=tax, to_nearest=self.rounded_to, method=self.round_method
+        )
 
     class Meta:
         icon = "receipt-percent"
