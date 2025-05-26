@@ -1,4 +1,4 @@
-{% load i18n widget_tweaks utils humanize %}
+{% load i18n widget_tweaks utils humanize formats %}
 
 <c-blocks.table id="{{ table_id }}" :index_url="{{ index_url }}" :table_id="{{ table_id }}">
   <c-slot name="search">
@@ -142,7 +142,7 @@
           {{ obj.fixed|yesno|title }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'rate' }}">
-          {{ obj.rate }}
+          {{ obj.rate|percentage }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'rounded_to' }}">
           {{ obj.rounded_to|intcomma:False }}

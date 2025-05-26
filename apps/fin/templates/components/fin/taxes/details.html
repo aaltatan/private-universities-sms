@@ -1,4 +1,4 @@
-{% load i18n utils %}
+{% load i18n utils humanize formats %}
 
 <c-layout.modal width="xl">
   <c-layout.modal.body :close_padding="buttons_padding">
@@ -26,9 +26,7 @@
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'rate' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.rate }}
-            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.rate|percentage }} </c-table.td>
           </c-table.tr>
           <!--  -->
           <c-table.tr>
@@ -36,7 +34,7 @@
               {{ model|verbose_name:'rounded_to' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.rounded_to }}
+              {{ object.rounded_to|intcomma:False }}
             </c-table.td>
           </c-table.tr>
           <!--  -->
@@ -59,6 +57,26 @@
           </c-table.tr>
         </c-table.table>
       </c-table>
+      <!-- brackets table -->
+      {% if object.brackets.all %}
+      <c-separator> {% translate 'brackets'|title %} </c-separator>
+      <c-table height="sm">
+        <c-table.table>
+          {% for bracket in object.brackets.all %}
+          <c-table.tr>
+            <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
+            <c-table.td data-header="{% translate 'from'|title %}"> {{ bracket.amount_from|intcomma:False }} </c-table.td>
+            <c-table.td data-header="{% translate 'to'|title %}">
+              {{ bracket.amount_to|intcomma:False }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'rate'|title %}">
+              {{ bracket.rate|percentage }}
+            </c-table.td>
+          </c-table.tr>
+          {% endfor %}
+        </c-table.table>
+      </c-table>
+      {% endif %}
     </c-slot>
     <c-slot name="footer">
       <c-button

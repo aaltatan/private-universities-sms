@@ -22,6 +22,29 @@
           </c-table.tr>
         </c-table.table>
       </c-table>
+      <!-- periods table -->
+      {% if object.periods.all %}
+      <c-separator> {% translate 'periods'|title %} </c-separator>
+      <c-table height="sm">
+        <c-table.table>
+          {% for period in object.periods.all %}
+          <c-table.tr>
+            <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
+            <c-table.td data-header="{% translate 'name'|title %}"> {{ period }} </c-table.td>
+            <c-table.td data-header="{% translate 'start date'|title %}">
+              {{ period.start_date|date:'Y-m-d' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'is closed'|title %}">
+              {{ period.is_closed|yesno|title }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'description'|title %}">
+              {{ period.description }}
+            </c-table.td>
+          </c-table.tr>
+          {% endfor %}
+        </c-table.table>
+      </c-table>
+      {% endif %}
     </c-slot>
     <c-slot name="footer">
       <c-button
