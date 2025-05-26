@@ -7,8 +7,8 @@
   :form="form"
 >
   <c-inputs.text :field="form.tax" />
-  <c-inputs.text :field="form.amount_from" />
-  <c-inputs.text :field="form.amount_to" />
-  <c-inputs.text :field="form.rate" />
+  <c-inputs.number step="1" :field="form.amount_from" />
+  <c-inputs.number step="1" :field="form.amount_to" />
+  <c-inputs.number step="0.01" :field="form.rate" />
   <c-inputs.text :field="form.notes" />
 </c-forms.update>
