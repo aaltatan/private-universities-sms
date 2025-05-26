@@ -3,6 +3,7 @@ from .db import (
     db_calculate_age_in_years,
     db_get_age_groups,
     db_get_next_anniversary,
+    db_round_to_nearest,
 )
 from .deleter import Deleter
 from .functions import (
@@ -24,6 +25,7 @@ __all__ = [
     "db_calculate_age_in_years",
     "db_get_age_groups",
     "db_get_next_anniversary",
+    "db_round_to_nearest",
     "get_keywords_query",
     "get_djangoql_query",
     "get_differences",
