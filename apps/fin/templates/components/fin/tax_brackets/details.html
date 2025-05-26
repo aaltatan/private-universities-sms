@@ -1,4 +1,4 @@
-{% load i18n utils humanize %}
+{% load i18n utils humanize formats %}
 
 <c-layout.modal width="xl">
   <c-layout.modal.body :close_padding="buttons_padding">
@@ -39,7 +39,7 @@
               {{ model|verbose_name:'rate' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.rate }}
+              {{ object.rate|percentage }}
             </c-table.td>
           </c-table.tr>
           <!--  -->
