@@ -7,12 +7,12 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from apps.core import signals
+from apps.core.choices import RoundMethodChoices
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search, round_to_nearest
 
 from ..constants import taxes as constants
-from ..choices import RoundMethodChoices
 
 
 class TaxManager(models.Manager):
