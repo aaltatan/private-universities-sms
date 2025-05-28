@@ -1,9 +1,76 @@
-from typing import Iterable
+from typing import Iterable, Literal
 
 from django.db import models
-from django.db.models.functions import Cast, Concat, ExtractYear, Mod
+from django.db.models.functions import (
+    Cast,
+    Ceil,
+    Concat,
+    ExtractYear,
+    Floor,
+    Mod,
+    Round,
+)
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
+from ..choices import RoundMethodChoices
+
+
+def db_round_to_nearest(
+    *,
+    amount_field: str,
+    rounded_to: str | int,
+    round_method_field: str | None = None,
+    round_method: Literal["round", "floor", "ceil"] | None = None,
+):
+    """
+    a function to round a number to the nearest value.
+    Keyword arguments:
+        amount_field (str): The name of the field containing the amount to round.
+        rounded_to (str | int): The value to round to or the name of the field containing the value.
+        round_method_field (str): The name of the field containing the round method.
+        round_method (Literal["round", "floor", "ceil"] | None, optional): The round method to use. Defaults to None, if it used it will override the round_method_field.
+
+    Returns:
+        models.ExpressionWrapper: The rounded amount.
+    """
+    if round_method_field is None and round_method is None:
+        raise ValueError("round_method or round_method_field must be provided.")
+
+    if isinstance(rounded_to, int):
+        if rounded_to < 1:
+            raise ValueError("rounded_to must be greater than or equal to 1.")
+        rounded_to_field = models.Value(rounded_to)
+    else:
+        rounded_to_field = models.F(rounded_to)
+
+    amount = models.F(amount_field) / rounded_to_field
+
+    if round_method is None:
+        ceil_kwargs = {
+            round_method_field: RoundMethodChoices.CEIL,
+            "then": Ceil(amount) * rounded_to_field,
+        }
+        floor_kwargs = {
+            round_method_field: RoundMethodChoices.FLOOR,
+            "then": Floor(amount) * rounded_to_field,
+        }
+        round_logic = Round(amount) * rounded_to_field
+
+        return models.Case(
+            models.When(**ceil_kwargs),
+            models.When(**floor_kwargs),
+            default=round_logic,
+            output_field=models.DecimalField(),
+        )
+    else:
+        methods = {
+            "round": Round,
+            "floor": Floor,
+            "ceil": Ceil,
+        }
+
+        return methods[round_method](amount) * rounded_to_field
 
 
 def annotate_search(fields: Iterable[str]) -> Concat:

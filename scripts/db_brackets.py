@@ -1,8 +1,8 @@
 from decimal import Decimal
 
 from django.db import models
-from django.db.models.functions import Ceil, Floor, Round
 
+from apps.core.utils import db_round_to_nearest
 from apps.fin.models import Tax, TaxBracket
 
 
@@ -32,20 +32,10 @@ def db_calculate_tax_brackets(
         output_field=models.DecimalField(),
     )
 
-    result = models.Case(
-        models.When(
-            tax__round_method=Tax.RoundMethodChoices.CEIL,
-            then=Ceil(models.F("result_with_fractions") / models.F("tax__rounded_to"))
-            * models.F("tax__rounded_to"),
-        ),
-        models.When(
-            tax__round_method=Tax.RoundMethodChoices.FLOOR,
-            then=Floor(models.F("result_with_fractions") / models.F("tax__rounded_to"))
-            * models.F("tax__rounded_to"),
-        ),
-        default=Round(models.F("result_with_fractions") / models.F("tax__rounded_to"))
-        * models.F("tax__rounded_to"),
-        output_field=models.DecimalField(),
+    result = db_round_to_nearest(
+        amount_field="result_with_fractions",
+        rounded_to="tax__rounded_to",
+        round_method_field="tax__round_method",
     )
 
     tax_value = (
@@ -63,3 +53,10 @@ def db_calculate_tax_brackets(
     )
 
     return tax_value
+
+
+def run():
+    amount = 1_500_000
+    tax_object = Tax.objects.get(fixed=False)
+
+    print(db_calculate_tax_brackets(amount, tax_object))
