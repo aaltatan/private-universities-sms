@@ -1,0 +1,13 @@
+{% load active_link %}
+<c-vars url="#" text="xxxxx" :show_icon="False" icon="briefcase" />
+
+<li class="flex items-center rounded-md gap-2 w-full">
+  <a
+    x-bind:href="'{{ url }}' + (sidebarLinksQuerystring['{{ url }}'] || '')"
+    class="{% active_link url %} active:bg-black/5 active:text-neutral-900 active:dark:bg-white/5 active:dark:text-white flex items-center gap-2 px-2 py-1.5 text-sm font-medium rounded-md underline-offset-2 hover:bg-black/5 hover:text-neutral-900 focus:outline-hidden focus-visible:underline dark:text-neutral-300 dark:hover:bg-white/5 dark:hover:text-white w-full"
+  >
+    {% if show_icon %} {% heroicon_outline icon %} {% endif %}
+    <!--  -->
+    {{ text }}
+  </a>
+</li>

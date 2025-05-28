@@ -1,0 +1,46 @@
+<c-vars text="xxxxx" icon="globe-europe-africa" url="#" name="" />
+
+<div
+  x-data="{ 
+  isExpanded: $persist(false).as('{{ name }}-is-expanded'),
+  init() {
+    if ($el.querySelector('a.active')) {
+      this.isExpanded = true;
+    }
+  }
+}"
+  class="flex flex-col"
+>
+  <button
+    type="button"
+    x-on:click="isExpanded = ! isExpanded"
+    x-bind:aria-expanded="isExpanded ? 'true' : 'false'"
+    class="flex items-center justify-between gap-2 px-2 py-1.5 text-sm font-medium underline-offset-2 focus:outline-hidden focus-visible:underline rounded-md hover:bg-black/5 hover:text-neutral-900 dark:hover:text-white dark:hover:bg-white/5 cursor-pointer"
+  >
+    {% heroicon_outline icon %}
+
+    <span class="me-auto text-start">
+      {% if url != "#" %}
+      <a class="hover:underline" href="{{ url }}">{{ text }}</a>
+      {% else %}
+      <!--  -->
+      {{ text }}
+      <!--  -->
+      {% endif %}
+    </span>
+    <span
+      class="block size-5 transition-transform rotate-0 shrink-0"
+      x-bind:class="isExpanded ? 'rotate-180' : 'rotate-0'"
+    >
+      {% heroicon_outline "chevron-down" size="20" %}
+    </span>
+  </button>
+
+  <ul
+    x-cloak
+    x-collapse
+    x-show="isExpanded"
+  >
+    {{ slot }}
+  </ul>
+</div>

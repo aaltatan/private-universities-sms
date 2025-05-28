@@ -1,4 +1,4 @@
-{% load i18n heroicons active_link %}
+{% load i18n heroicons %}
 
 <div
   @keydown.esc.window="hideSidebar"
@@ -44,18 +44,125 @@
       placeholder="Alt ="
     />
 
-    <div class="flex flex-col gap-2 overflow-y-auto scroll pt-2 pb-6 px-2">
-      {% for link in sidebar_links %}
-      <a
-        :href="'{{ link.path }}' + (sidebarLinksQuerystring['{{ link.path }}'] || '')"
-        aria-hidden="false"
-        id="sidebar-link-{{ forloop.counter }}"
-        class="{% active_link link.path %} aria-hidden:hidden flex items-center rounded-md gap-2 p-2 text-sm underline-offset-2 text-neutral-700 font-medium hover:text-black dark:text-neutral-300 dark:hover:text-white focus:outline-none [&.active]:bg-neutral-200/60 [&.active]:dark:bg-neutral-900 hover:!bg-neutral-200/60 hover:dark:!bg-neutral-900 focus:ring-2 dark:ring-white ring-black"
+    <div class="flex flex-col gap-2 overflow-y-auto scroll pt-2 pb-6 px-1">
+      <c-layout.sidebar.item
+        show_icon="True"
+        icon="chart-pie"
+        url="{{ sidebar_links.core.dashboard.path }}"
+        text="{{ sidebar_links.core.dashboard.text }}"
+      />
+      <!-- geo -->
+      <c-layout.sidebar.collapsible-item
+        text="{% translate 'geographical'|title %}"
+        icon="globe-europe-africa"
+        url="/geo/"
+        name="geo"
       >
-        {% heroicon_outline link.icon %}
-        <span class="capitalize">{{ link.text }}</span>
-      </a>
-      {% endfor %}
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.geo.governorates.path }}"
+          text="{{ sidebar_links.geo.governorates.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.geo.cities.path }}"
+          text="{{ sidebar_links.geo.cities.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.geo.nationalities.path }}"
+          text="{{ sidebar_links.geo.nationalities.text }}"
+        />
+      </c-layout.sidebar.collapsible-item>
+      <!-- org -->
+      <c-layout.sidebar.collapsible-item
+        text="{% translate 'organization'|title %}"
+        icon="briefcase"
+        url="/org/"
+        name="org"
+      >
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.org.job_types.path }}"
+          text="{{ sidebar_links.org.job_types.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.org.job_subtypes.path }}"
+          text="{{ sidebar_links.org.job_subtypes.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.org.cost_centers.path }}"
+          text="{{ sidebar_links.org.cost_centers.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.org.positions.path }}"
+          text="{{ sidebar_links.org.positions.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.org.statuses.path }}"
+          text="{{ sidebar_links.org.statuses.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.org.groups.path }}"
+          text="{{ sidebar_links.org.groups.text }}"
+        />
+      </c-layout.sidebar.collapsible-item>
+      <!-- edu -->
+      <c-layout.sidebar.collapsible-item
+        text="{% translate 'educational'|title %}"
+        icon="academic-cap"
+        url="/edu/"
+        name="edu"
+      >
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.edu.school_kinds.path }}"
+          text="{{ sidebar_links.edu.school_kinds.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.edu.schools.path }}"
+          text="{{ sidebar_links.edu.schools.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.edu.degrees.path }}"
+          text="{{ sidebar_links.edu.degrees.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.edu.specializations.path }}"
+          text="{{ sidebar_links.edu.specializations.text }}"
+        />
+      </c-layout.sidebar.collapsible-item>
+      <!-- fin -->
+      <c-layout.sidebar.collapsible-item
+        text="{% translate 'financial'|title %}"
+        icon="currency-dollar"
+        url="/fin/"
+        name="fin"
+      >
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.fin.years.path }}"
+          text="{{ sidebar_links.fin.years.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.fin.periods.path }}"
+          text="{{ sidebar_links.fin.periods.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.fin.taxes.path }}"
+          text="{{ sidebar_links.fin.taxes.text }}"
+        />
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.fin.tax_brackets.path }}"
+          text="{{ sidebar_links.fin.tax_brackets.text }}"
+        />
+      </c-layout.sidebar.collapsible-item>
+      <!-- hr -->
+      <c-layout.sidebar.collapsible-item
+        text="{% translate 'human resources'|title %}"
+        icon="users"
+        url="/hr/"
+        name="hr"
+      >
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.hr.employees.path }}"
+          text="{{ sidebar_links.hr.employees.text }}"
+        />
+      </c-layout.sidebar.collapsible-item>
     </div>
   </nav>
 

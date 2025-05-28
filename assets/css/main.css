@@ -7,6 +7,7 @@
 @custom-variant hx-request (&.htmx-request);
 @custom-variant hx-swap (&.htmx-swapping);
 @custom-variant hx-settle (&.htmx-settling);
+@custom-variant active (&.active);
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
