@@ -138,17 +138,15 @@
           </a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'amount_from' }}">
-          {{ obj.amount_from|intcomma:False }}
+          {{ obj.amount_from|money }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'amount_to' }}">
-          {{ obj.amount_to|intcomma:False }}
+          {{ obj.amount_to|money }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'rate' }}">
           {{ obj.rate|percentage }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'notes' }}">
-          {{ obj.notes }}
-        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'notes' }}"> {{ obj.notes }} </c-table.td>
       </c-table.tr>
       {% empty %}
       <c-table.empty-tr />

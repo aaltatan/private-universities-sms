@@ -21,7 +21,7 @@
               {{ model|verbose_name:'amount_from' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.amount_from|intcomma:False }}
+              {{ object.amount_from|money }}
             </c-table.td>
           </c-table.tr>
           <!--  -->
@@ -30,7 +30,7 @@
               {{ model|verbose_name:'amount_to' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.amount_to|intcomma:False }}
+              {{ object.amount_to|money }}
             </c-table.td>
           </c-table.tr>
           <!--  -->

@@ -34,7 +34,7 @@
               {{ model|verbose_name:'rounded_to' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.rounded_to|intcomma:False }}
+              {{ object.rounded_to|money }}
             </c-table.td>
           </c-table.tr>
           <!--  -->
@@ -65,9 +65,9 @@
           {% for bracket in object.brackets.all %}
           <c-table.tr>
             <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
-            <c-table.td data-header="{% translate 'from'|title %}"> {{ bracket.amount_from|intcomma:False }} </c-table.td>
+            <c-table.td data-header="{% translate 'from'|title %}"> {{ bracket.amount_from|money }} </c-table.td>
             <c-table.td data-header="{% translate 'to'|title %}">
-              {{ bracket.amount_to|intcomma:False }}
+              {{ bracket.amount_to|money }}
             </c-table.td>
             <c-table.td data-header="{% translate 'rate'|title %}">
               {{ bracket.rate|percentage }}

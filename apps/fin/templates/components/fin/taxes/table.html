@@ -145,7 +145,7 @@
           {{ obj.rate|percentage }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'rounded_to' }}">
-          {{ obj.rounded_to|intcomma:False }}
+          {{ obj.rounded_to|money }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'round_method' }}">
           {{ obj.get_round_method_display }}
