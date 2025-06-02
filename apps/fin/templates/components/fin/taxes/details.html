@@ -26,7 +26,9 @@
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'rate' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.rate|percentage }} </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.rate|percentage }}
+            </c-table.td>
           </c-table.tr>
           <!--  -->
           <c-table.tr>
@@ -65,12 +67,14 @@
           {% for bracket in object.brackets.all %}
           <c-table.tr>
             <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
-            <c-table.td data-header="{% translate 'from'|title %}"> {{ bracket.amount_from|money }} </c-table.td>
+            <c-table.td data-header="{% translate 'from'|title %}">
+              {{ bracket.amount_from|money:True }}
+            </c-table.td>
             <c-table.td data-header="{% translate 'to'|title %}">
-              {{ bracket.amount_to|money }}
+              {{ bracket.amount_to|money:True }}
             </c-table.td>
             <c-table.td data-header="{% translate 'rate'|title %}">
-              {{ bracket.rate|percentage }}
+              {{ bracket.rate|percentage:True }}
             </c-table.td>
           </c-table.tr>
           {% endfor %}

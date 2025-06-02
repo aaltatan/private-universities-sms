@@ -44,7 +44,27 @@ class YearResource(BaseResource):
 
 
 class TaxResource(BaseResource):
-    def dehydrate_is_closed(self, obj: models.Tax):
+
+    fixed = fields.Field(
+        attribute="fixed",
+        column_name=_("fixed").title(),
+    )
+    rate = fields.Field(
+        attribute="rate",
+        column_name=_("rate").title(),
+        widget=widgets.DecimalWidget(coerce_to_string=False),
+    )
+    rounded_to = fields.Field(
+        attribute="rounded_to",
+        column_name=_("rounded to").title(),
+        widget=widgets.DecimalWidget(coerce_to_string=False),
+    )
+    round_method = fields.Field(
+        attribute="round_method",
+        column_name=_("round method").title(),
+    )
+
+    def dehydrate_fixed(self, obj: models.Tax):
         return self._dehydrate_boolean(obj.fixed)
 
     class Meta:
@@ -73,14 +93,17 @@ class TaxBracketResource(SerialResourceMixin, resources.ModelResource):
     amount_from = fields.Field(
         attribute="amount_from",
         column_name=_("amount from").title(),
+        widget=widgets.DecimalWidget(coerce_to_string=False),
     )
     amount_to = fields.Field(
         attribute="amount_to",
         column_name=_("amount to").title(),
+        widget=widgets.DecimalWidget(coerce_to_string=False),
     )
     rate = fields.Field(
         attribute="rate",
         column_name=_("rate").title(),
+        widget=widgets.DecimalWidget(coerce_to_string=False),
     )
     notes = fields.Field(
         attribute="notes",
