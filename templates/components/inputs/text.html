@@ -25,30 +25,35 @@
     {% if show_label %}
     <label
       for="{{ field.id_for_label }}"
-      class="flex w-fit items-center gap-1 pl-0.5 text-xs capitalize"
+      class="flex w-fit items-center gap-1 pl-0.5 text-xs capitalize font-medium my-1"
     >
-      {{ field.label }}:
+      <span>{{ field.label }}:</span>
       <span
-        class="text-[red] aria-hidden:hidden"
-        title="{% translate 'required field'|title %}"
+        class="aria-hidden:hidden"
         aria-label="required field"
-        aria-hidden="{% if field.field.required %}false{% else %}true{% endif %}"
-      >
-        *
-      </span>
+        aria-hidden="{% if field.field.required %}true{% else %}false{% endif %}"
+      >({% translate 'optional'|title %})</span>
     </label>
     {% endif %}
     <!--  -->
     {% if has_add %}
-    <div class="absolute top-1/2 -translate-y-1/2 end-0" aria-label="create nested object">{{ slot }}</div>
+    <div class="absolute top-1/2 -translate-y-1/2 end-0" aria-label="create nested object">
+      {{ slot }}
+    </div>
     {% endif %}
   </div>
   {% endif %}
   <!--  -->
   {% if show_help %}
-  <small class="pl-0.5 text-neutral-500 mb-1 block first-letter:capitalize">
+  <!--  -->
+  {% spaceless %}
+  <em
+    class="pl-0.5 my-1 text-xs text-neutral-400 dark:text-neutral-500 block first-letter:capitalize empty:hidden"
+  >
     {{ field.help_text }}
-  </small>
+  </em>
+  {% endspaceless %}
+  <!--  -->
   {% endif %}
   <!--  -->
   {% if show_icon %}

@@ -28,17 +28,15 @@
     {% if show_label %}
     <label
       for="{{ field.id_for_label }}"
-      class="flex w-fit items-center gap-1 pl-0.5 text-xs capitalize"
+      class="flex w-fit items-center gap-1 pl-0.5 text-xs capitalize font-medium my-1"
     >
-      {{ field.label }}:
+      <span>{{ field.label }}:</span>
       <span
-        class="text-[red] aria-hidden:hidden"
-        title="{% translate 'required field'|title %}"
+        class="aria-hidden:hidden"
         aria-label="required field"
-        aria-hidden="{% if field.field.required %}false{% else %}true{% endif %}"
+        aria-hidden="{% if field.field.required %}true{% else %}false{% endif %}"
+        >({% translate 'optional'|title %})</span
       >
-        *
-      </span>
     </label>
     {% endif %}
     <!--  -->
@@ -51,9 +49,15 @@
   {% endif %}
   <!--  -->
   {% if show_help %}
-  <small class="pl-0.5 text-neutral-500 mb-1 block first-letter:capitalize">
+  <!--  -->
+  {% spaceless %}
+  <em
+    class="pl-0.5 my-1 text-xs text-neutral-400 dark:text-neutral-500 block first-letter:capitalize empty:hidden"
+  >
     {{ field.help_text }}
-  </small>
+  </em>
+  {% endspaceless %}
+  <!--  -->
   {% endif %}
   <!--  -->
   {% if show_icon %}
