@@ -8,12 +8,12 @@ from .db import (
 from .deleter import Deleter
 from .functions import (
     calculate_age_in_years,
-    dict_to_css,
     get_apps_links,
     get_differences,
     increase_slug_by_one,
     round_to_nearest,
 )
+from .html import badge_component, dict_to_css
 from .query import get_djangoql_query, get_keywords_query
 
 __all__ = [
@@ -31,4 +31,5 @@ __all__ = [
     "get_differences",
     "get_apps_links",
     "round_to_nearest",
+    "badge_component",
 ]

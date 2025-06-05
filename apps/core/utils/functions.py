@@ -81,11 +81,6 @@ def increase_slug_by_one(slug: str) -> str:
     return increased_slug
 
 
-def dict_to_css(styles: dict[str, str]) -> str:
-    styles = [f"{key}: {value}; " for key, value in styles.items()]
-    return "".join(styles).strip()
-
-
 def get_differences(from_: dict, to: dict) -> dict:
     """
     Returns the differences between two dictionaries.
@@ -127,9 +122,7 @@ def calculate_age_in_years(
 
 
 def round_to_nearest(
-    number: Decimal | int | float,
-    method: ROUND_METHOD = "ceil",
-    to_nearest: int = 100
+    number: Decimal | int | float, method: ROUND_METHOD = "ceil", to_nearest: int = 100
 ) -> Decimal:
     """
     rounds a number to the nearest value.

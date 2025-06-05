@@ -1,10 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
 
 from .models import Activity, User
-from .utils import dict_to_css
+from .utils import badge_component
 
 admin.site.register(User, UserAdmin)
 
@@ -19,17 +18,7 @@ class ActivityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
             "delete": "red",
             "export": "blue",
         }
-        styles = {
-            "color": "white",
-            "border-radius": "0.25rem",
-            "padding": "0.125rem 0.25rem",
-            "font-size": "0.75rem",
-            "text-transform": "capitalize",
-        }
-        styles["background-color"] = colors[obj.kind]
-        return format_html(
-            f'<div style="{dict_to_css(styles)}">{obj.kind}</div>',
-        )
+        return badge_component(background_color=colors[obj.kind], text=obj.kind)
 
     list_per_page = 20
     list_display = (
@@ -58,6 +47,7 @@ class ActivityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "content_type",
         "object_id",
     )
+
 
 admin.site.site_header = "Private Universities Salaries Management System"
 admin.site.site_title = "PUSMS"
