@@ -31,6 +31,9 @@ class CityResource(BaseResource):
         column_name=_("kind").title(),
     )
 
+    def dehydrate_kind(self, obj: models.City):
+        return self._dehydrate_choices(obj, "kind")
+
     class Meta:
         model = models.City
         fields = (

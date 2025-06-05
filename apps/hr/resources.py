@@ -1,7 +1,11 @@
 from django.utils.translation import gettext as _
 from import_export import fields, resources, widgets
 
-from apps.core.resources import DehydrateBooleanMixin, SerialResourceMixin
+from apps.core.resources import (
+    DehydrateBooleanMixin,
+    DehydrateChoicesMixin,
+    SerialResourceMixin,
+)
 
 from . import models
 
@@ -9,6 +13,7 @@ from . import models
 class EmployeeResource(
     DehydrateBooleanMixin,
     SerialResourceMixin,
+    DehydrateChoicesMixin,
     resources.ModelResource,
 ):
     serial = fields.Field(
@@ -236,13 +241,13 @@ class EmployeeResource(
 
     def dehydrate_age(self, obj: models.Employee):
         return obj.age
-    
+
     def dehydrate_age_group(self, obj: models.Employee):
         return obj.age_group.title()
 
     def dehydrate_job_age(self, obj: models.Employee):
         return obj.job_age
-    
+
     def dehydrate_job_age_group(self, obj: models.Employee):
         return obj.job_age_group.title()
 
@@ -274,6 +279,18 @@ class EmployeeResource(
 
     def dehydrate_is_specialist(self, obj: models.Employee):
         return self._dehydrate_boolean(obj.specialization.is_specialist)
+
+    def dehydrate_gender(self, obj: models.Employee):
+        return self._dehydrate_choices(obj, "gender")
+
+    def dehydrate_martial_status(self, obj: models.Employee):
+        return self._dehydrate_choices(obj, "martial_status")
+
+    def dehydrate_military_status(self, obj: models.Employee):
+        return self._dehydrate_choices(obj, "military_status")
+
+    def dehydrate_religion(self, obj: models.Employee):
+        return self._dehydrate_choices(obj, "religion")
 
     class Meta:
         model = models.Employee

@@ -60,6 +60,9 @@ class GroupResource(BaseResource):
         column_name=_("employees count").title(),
     )
 
+    def dehydrate_kind(self, obj: models.Group):
+        return self._dehydrate_choices(obj, "kind")
+
     class Meta:
         model = models.Group
         fields = (

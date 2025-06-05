@@ -1,3 +1,4 @@
+from typing import Any
 from django.utils.translation import gettext as _
 from import_export import fields, resources
 
@@ -20,9 +21,15 @@ class DehydrateBooleanMixin:
         return _("yes").title() if is_true else _("no").title()
 
 
+class DehydrateChoicesMixin:
+    def _dehydrate_choices(self, obj: Any, field_name: str) -> str:
+        return getattr(obj, f"get_{field_name}_display")()
+
+
 class BaseResource(
-    DehydrateBooleanMixin,
     SerialResourceMixin,
+    DehydrateBooleanMixin,
+    DehydrateChoicesMixin,
     resources.ModelResource,
 ):
     """
