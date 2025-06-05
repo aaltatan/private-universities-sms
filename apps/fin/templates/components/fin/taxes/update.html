@@ -6,10 +6,5 @@
   :form_id="form_id"
   :form="form"
 >
-  <c-inputs.text :field="form.name" />
-  <c-inputs.text :field="form.fixed" />
-  <c-inputs.number step="0.01" :field="form.rate" />
-  <c-inputs.number :field="form.rounded_to" />
-  <c-inputs.text :field="form.round_method" />
-  <c-inputs.text :field="form.description" />
+  <c-fin.taxes.form-body />
 </c-forms.update>
