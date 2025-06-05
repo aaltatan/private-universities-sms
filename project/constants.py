@@ -8,7 +8,7 @@ from django.urls import reverse
 
 def constants(request: HttpRequest) -> dict[str, Any]:
     data = {
-        "project_name": "Salaries Management System",
+        "project_name": "Salaries Management",
         "settings": {
             "messages_timeout": settings.MESSAGES_TIMEOUT,
             "per_page_array": settings.PER_PAGE_ARRAY,
@@ -95,6 +95,10 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                 "tax_brackets": {
                     "text": _("tax brackets").title(),
                     "path": reverse("fin:tax_brackets:index"),
+                },
+                "compensations": {
+                    "text": _("compensations").title(),
+                    "path": reverse("fin:compensations:index"),
                 },
             },
             "hr": {

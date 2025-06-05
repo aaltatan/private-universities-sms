@@ -1,3 +1,4 @@
+from .compensation import CompensationSerializer, CreateUpdateCompensationSerializer
 from .period import CreateUpdatePeriodSerializer, PeriodSerializer
 from .tax import TaxSerializer
 from .tax_bracket import CreateUpdateTaxBracketSerializer, TaxBracketSerializer
@@ -10,4 +11,6 @@ __all__ = [
     "TaxSerializer",
     "TaxBracketSerializer",
     "CreateUpdateTaxBracketSerializer",
+    "CompensationSerializer",
+    "CreateUpdateCompensationSerializer",
 ]

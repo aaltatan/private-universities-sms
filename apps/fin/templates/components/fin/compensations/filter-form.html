@@ -1,0 +1,23 @@
+{% load i18n %}
+
+<c-blocks.table-filters>
+  <c-inputs.text :field="filter.form.name" />
+  <c-inputs.text :field="filter.form.calculation_method" />
+  <c-inputs.range-wrapper title="{% translate 'value'|title %}">
+    <c-inputs.text :field="filter.form.value_from" :show_label="False" />
+    <c-inputs.text :field="filter.form.value_to" :show_label="False" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'min value'|title %}">
+    <c-inputs.text :field="filter.form.min_value_from" :show_label="False" />
+    <c-inputs.text :field="filter.form.min_value_to" :show_label="False" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'max value'|title %}">
+    <c-inputs.text :field="filter.form.max_value_from" :show_label="False" />
+    <c-inputs.text :field="filter.form.max_value_to" :show_label="False" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.tax" />
+  <c-inputs.text :field="filter.form.tax_classification" />
+  <c-inputs.text :field="filter.form.affected_by_working_days" />
+  <c-inputs.text :field="filter.form.is_active" />
+  <c-inputs.text :field="filter.form.description" />
+</c-blocks.table-filters>

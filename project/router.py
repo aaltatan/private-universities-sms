@@ -7,10 +7,11 @@ from apps.edu.views.schools import APIViewSet as SchoolAPIViewSet
 from apps.edu.views.specializations import APIViewSet as SpecializationAPIViewSet
 
 # fin
+from apps.fin.views.compensations import APIViewSet as CompensationAPIViewSet
 from apps.fin.views.periods import APIViewSet as PeriodAPIViewSet
-from apps.fin.views.years import APIViewSet as YearAPIViewSet
-from apps.fin.views.taxes import APIViewSet as TaxAPIViewSet
 from apps.fin.views.tax_brackets import APIViewSet as TaxBracketAPIViewSet
+from apps.fin.views.taxes import APIViewSet as TaxAPIViewSet
+from apps.fin.views.years import APIViewSet as YearAPIViewSet
 
 # geo
 from apps.geo.views.cities import APIViewSet as CityAPIViewSet
@@ -59,3 +60,4 @@ router.register(r"fin/periods", PeriodAPIViewSet)
 router.register(r"fin/years", YearAPIViewSet)
 router.register(r"fin/taxes", TaxAPIViewSet)
 router.register(r"fin/tax-brackets", TaxBracketAPIViewSet)
+router.register(r"fin/compensations", CompensationAPIViewSet)

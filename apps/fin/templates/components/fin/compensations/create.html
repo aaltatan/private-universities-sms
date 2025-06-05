@@ -1,0 +1,10 @@
+{% load i18n %}
+
+<c-forms.create
+  form_title="{% translate 'add new compensation'|title %}"
+  url="{{ create_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-fin.compensations.form-body />
+</c-forms.create>

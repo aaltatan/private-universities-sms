@@ -1,0 +1,137 @@
+{% load i18n utils humanize formats %}
+
+<c-layout.modal width="xl">
+  <c-layout.modal.body :close_padding="buttons_padding">
+    <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
+    <c-slot name="body">
+      <c-table height="sm">
+        <c-table.table>
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'name' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.name }} </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'calculation_method' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.get_calculation_method_display }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'value' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.value|money }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'min_value' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.min_value|money }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'max_value' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.max_value|money }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'tax' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.tax }} </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'tax_classification' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.get_tax_classification_display }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'rounded_to' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.rounded_to|money }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'round_method' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.get_round_method_display }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'affected_by_working_days' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.affected_by_working_days|yesno|title }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'is_active' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.is_active|yesno|title }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          {% if object.formula %}
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'formula' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              <pre>{{ object.formula }}</pre>
+            </c-table.td>
+          </c-table.tr>
+          {% endif %}
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'description' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.description }}
+            </c-table.td>
+          </c-table.tr>
+        </c-table.table>
+      </c-table>
+    </c-slot>
+    <c-slot name="footer">
+      <c-button
+        theme="outline"
+        title="{% translate 'close'|title %}"
+        @click="hideModal"
+        :hide_icon="True"
+      >
+        {% translate 'close'|title %}
+      </c-button>
+    </c-slot>
+  </c-layout.modal.body>
+</c-layout.modal>

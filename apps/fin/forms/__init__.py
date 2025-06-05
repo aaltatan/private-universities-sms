@@ -1,7 +1,7 @@
+from .compensation import CompensationForm
 from .period import PeriodForm
-from .year import YearForm
 from .tax import TaxForm
 from .tax_bracket import TaxBracketForm
+from .year import YearForm
 
-
-__all__ = ["PeriodForm", "YearForm", "TaxForm", "TaxBracketForm"]
+__all__ = ["CompensationForm", "PeriodForm", "YearForm", "TaxForm", "TaxBracketForm"]
