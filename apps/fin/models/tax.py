@@ -20,9 +20,11 @@ class TaxManager(models.Manager):
         return (
             super()
             .get_queryset()
-            .prefetch_related("brackets")
+            .prefetch_related("brackets", "compensations")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
+                brackets_count=models.Count("brackets"),
+                compensations_count=models.Count("compensations"),
             )
         )
 

@@ -51,6 +51,24 @@
           <!--  -->
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'brackets count'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.brackets_count }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {% translate 'compensations count'|title %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.compensations_count }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'description' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
@@ -75,6 +93,22 @@
             </c-table.td>
             <c-table.td data-header="{% translate 'rate'|title %}">
               {{ bracket.rate|percentage:True }}
+            </c-table.td>
+          </c-table.tr>
+          {% endfor %}
+        </c-table.table>
+      </c-table>
+      {% endif %}
+      <!-- compensations table -->
+      {% if object.compensations.all %}
+      <c-separator> {% translate 'compensations'|title %} </c-separator>
+      <c-table height="sm">
+        <c-table.table>
+          {% for compensation in object.compensations.all %}
+          <c-table.tr>
+            <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ compensation.name }}
             </c-table.td>
           </c-table.tr>
           {% endfor %}

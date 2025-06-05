@@ -70,6 +70,8 @@
         <c-table.th>{{ model|verbose_name:'rate' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'rounded_to' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'round_method' }}</c-table.th>
+        <c-table.th>{% translate 'brackets count'|title %}</c-table.th>
+        <c-table.th>{% translate 'compensations count'|title %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'description' }}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
@@ -149,6 +151,12 @@
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'round_method' }}">
           {{ obj.get_round_method_display }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'brackets count'|title %}">
+          {{ obj.brackets_count }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'compensations count'|title %}">
+          {{ obj.compensations_count }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'description' }}">
           {{ obj.description }}
