@@ -166,12 +166,8 @@ def get_email_widget(**attributes: dict[str, str]) -> TextInput:
 def get_url_widget(**attributes: dict[str, str]) -> TextInput:
     """Get url field."""
     if "placeholder" not in attributes:
-        attributes.setdefault("placeholder", _("https://example.com"))
-    return TextInput(
-        attrs={
-            **attributes,
-        },
-    )
+        attributes.setdefault("placeholder", "https://example.com")
+    return TextInput(attrs=attributes)
 
 
 def get_date_widget(
