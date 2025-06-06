@@ -1,0 +1,10 @@
+{% load i18n %}
+
+<c-forms.create
+  form_title="{% translate 'add new voucher kind' %}"
+  url="{{ create_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-fin.voucher_kinds.form-body />
+</c-forms.create>

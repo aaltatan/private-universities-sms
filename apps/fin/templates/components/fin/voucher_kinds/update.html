@@ -1,0 +1,10 @@
+{% load i18n %}
+
+<c-forms.update
+  form_title="{% translate 'update' %} {{ form.instance }}"
+  url="{{ update_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-fin.voucher_kinds.form-body />
+</c-forms.update>

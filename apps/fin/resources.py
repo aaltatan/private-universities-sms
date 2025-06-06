@@ -214,3 +214,9 @@ class CompensationResource(BaseResource):
             "description",
             "slug",
         )
+
+
+class VoucherKindResource(BaseResource):
+    class Meta:
+        model = models.VoucherKind
+        fields = ("serial", "name", "description", "slug")

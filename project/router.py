@@ -11,6 +11,7 @@ from apps.fin.views.compensations import APIViewSet as CompensationAPIViewSet
 from apps.fin.views.periods import APIViewSet as PeriodAPIViewSet
 from apps.fin.views.tax_brackets import APIViewSet as TaxBracketAPIViewSet
 from apps.fin.views.taxes import APIViewSet as TaxAPIViewSet
+from apps.fin.views.voucher_kinds import APIViewSet as VoucherKindAPIViewSet
 from apps.fin.views.years import APIViewSet as YearAPIViewSet
 
 # geo
@@ -61,3 +62,4 @@ router.register(r"fin/years", YearAPIViewSet)
 router.register(r"fin/taxes", TaxAPIViewSet)
 router.register(r"fin/tax-brackets", TaxBracketAPIViewSet)
 router.register(r"fin/compensations", CompensationAPIViewSet)
+router.register(r"fin/voucher-kinds", VoucherKindAPIViewSet)

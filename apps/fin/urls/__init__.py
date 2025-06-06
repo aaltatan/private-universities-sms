@@ -10,4 +10,5 @@ patterns = [
     path("taxes/", include("apps.fin.urls.taxes")),
     path("tax-brackets/", include("apps.fin.urls.tax_brackets")),
     path("compensations/", include("apps.fin.urls.compensations")),
+    path("voucher-kinds/", include("apps.fin.urls.voucher_kinds")),
 ]

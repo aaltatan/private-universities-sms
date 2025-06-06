@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<c-forms.modal-create
+  form_title="{% translate 'add new voucher kind'|title %}"
+  request_headers='{"modal": true, "target": "{{ request_parser.target }}", "dont-redirect": true}'
+  url="{{ create_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-fin.voucher_kinds.form-body />
+</c-forms.modal-create>
