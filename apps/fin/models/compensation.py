@@ -163,11 +163,6 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
                     _("value must be greater than 0."),
                 )
 
-            if self.min_value > self.max_value:
-                raise ValidationError(
-                    _("min value must be less than max value."),
-                )
-
             if self.min_value > self.value:
                 raise ValidationError(
                     _("min value must be less than value."),
@@ -177,6 +172,11 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
                 raise ValidationError(
                     _("max value must be greater than value."),
                 )
+
+        if self.min_value >= self.max_value:
+            raise ValidationError(
+                _("min value must be less than max value."),
+            )
 
         if self.calculation_method == self.CalculationChoices.FORMULA:
             if self.formula == "":
