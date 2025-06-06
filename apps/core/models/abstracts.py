@@ -84,3 +84,22 @@ class AbstractUniqueNameModel(UrlsMixin, models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
+class TimeStampAbstractModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class SoftDeleteAbstractModel(models.Model):
+    is_deleted = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+
+    def delete(self, using=None, keep_parents=False):
+        self.is_deleted = True
+        self.save()
