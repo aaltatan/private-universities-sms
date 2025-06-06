@@ -1,0 +1,134 @@
+[
+  {
+    "model": "fin.compensation",
+    "pk": 1,
+    "fields": {
+      "name": "ساعة مراقبة - تفرغ كلي",
+      "description": "",
+      "ordering": 0,
+      "slug": "ساعة-مراقبة-تفرغ-كلي",
+      "calculation_method": "fixed",
+      "tax": 2,
+      "tax_classification": "withholding_tax_applicable",
+      "round_method": "ceil",
+      "rounded_to": 1,
+      "value": "1000.0000",
+      "min_value": "0.0000",
+      "max_value": "500000000.0000",
+      "affected_by_working_days": false,
+      "is_active": true,
+      "formula": "",
+      "accounting_id": "31"
+    }
+  },
+  {
+    "model": "fin.compensation",
+    "pk": 2,
+    "fields": {
+      "name": "تعويض الجنس",
+      "description": "",
+      "ordering": 0,
+      "slug": "تعويض-الجنس",
+      "calculation_method": "formula",
+      "tax": 2,
+      "tax_classification": "withholding_tax_applicable",
+      "round_method": "ceil",
+      "rounded_to": 100,
+      "value": "0.0000",
+      "min_value": "0.0000",
+      "max_value": "500000000.0000",
+      "affected_by_working_days": true,
+      "is_active": true,
+      "formula": "20_000 if obj.gender == 'male' else 10_000",
+      "accounting_id": "31"
+    }
+  },
+  {
+    "model": "fin.compensation",
+    "pk": 3,
+    "fields": {
+      "name": "تعويض العمر الوظيفي",
+      "description": "",
+      "ordering": 0,
+      "slug": "تعويض-العمر-الوظيفي",
+      "calculation_method": "formula",
+      "tax": 2,
+      "tax_classification": "withholding_tax_applicable",
+      "round_method": "ceil",
+      "rounded_to": 500,
+      "value": "0.0000",
+      "min_value": "0.0000",
+      "max_value": "500000000.0000",
+      "affected_by_working_days": false,
+      "is_active": true,
+      "formula": "11_000 * obj.job_age",
+      "accounting_id": "31"
+    }
+  },
+  {
+    "model": "fin.compensation",
+    "pk": 4,
+    "fields": {
+      "name": "الراتب المقطوع",
+      "description": "",
+      "ordering": 0,
+      "slug": "الراتب-المقطوع",
+      "calculation_method": "by_input",
+      "tax": 1,
+      "tax_classification": "salary",
+      "round_method": "ceil",
+      "rounded_to": 1,
+      "value": "0.0000",
+      "min_value": "0.0000",
+      "max_value": "500000000.0000",
+      "affected_by_working_days": true,
+      "is_active": true,
+      "formula": "",
+      "accounting_id": "31"
+    }
+  },
+  {
+    "model": "fin.compensation",
+    "pk": 5,
+    "fields": {
+      "name": "تعويض المسؤولية",
+      "description": "",
+      "ordering": 0,
+      "slug": "تعويض-المسؤولية",
+      "calculation_method": "by_input",
+      "tax": null,
+      "tax_classification": "withholding_tax_not_applicable",
+      "round_method": "ceil",
+      "rounded_to": 1,
+      "value": "0.0000",
+      "min_value": "0.0000",
+      "max_value": "500000000.0000",
+      "affected_by_working_days": false,
+      "is_active": false,
+      "formula": "",
+      "accounting_id": "31"
+    }
+  },
+  {
+    "model": "fin.compensation",
+    "pk": 6,
+    "fields": {
+      "name": "ساعة تدريسية",
+      "description": "",
+      "ordering": 0,
+      "slug": "ساعة-تدريسية",
+      "calculation_method": "by_input",
+      "tax": 2,
+      "tax_classification": "withholding_tax_applicable",
+      "round_method": "ceil",
+      "rounded_to": 1,
+      "value": "0.0000",
+      "min_value": "8000.0000",
+      "max_value": "40000.0000",
+      "affected_by_working_days": false,
+      "is_active": true,
+      "formula": "",
+      "accounting_id": "31"
+    }
+  }
+]

@@ -18,7 +18,7 @@
     "fields": {
       "tax": 1,
       "amount_from": "279001.00",
-      "amount_to": "449999.00",
+      "amount_to": "450000.00",
       "rate": "0.07",
       "notes": "",
       "ordering": 0,
@@ -30,8 +30,8 @@
     "pk": 3,
     "fields": {
       "tax": 1,
-      "amount_from": "450000.00",
-      "amount_to": "649999.00",
+      "amount_from": "450001.00",
+      "amount_to": "650000.00",
       "rate": "0.09",
       "notes": "",
       "ordering": 0,
@@ -43,8 +43,8 @@
     "pk": 4,
     "fields": {
       "tax": 1,
-      "amount_from": "650000.00",
-      "amount_to": "849999.00",
+      "amount_from": "650001.00",
+      "amount_to": "850000.00",
       "rate": "0.11",
       "notes": "",
       "ordering": 0,
@@ -56,8 +56,8 @@
     "pk": 5,
     "fields": {
       "tax": 1,
-      "amount_from": "850000.00",
-      "amount_to": "1099999.00",
+      "amount_from": "850001.00",
+      "amount_to": "1100000.00",
       "rate": "0.13",
       "notes": "",
       "ordering": 0,
@@ -69,7 +69,7 @@
     "pk": 6,
     "fields": {
       "tax": 1,
-      "amount_from": "1100000.00",
+      "amount_from": "1100001.00",
       "amount_to": "50000000.00",
       "rate": "0.15",
       "notes": "",
