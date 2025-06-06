@@ -201,6 +201,8 @@ class CompensationResource(BaseResource):
             "round_method",
             "rounded_to",
             "value",
+            "min_value",
+            "max_value",
             "formula",
             "affected_by_working_days",
             "is_active",
