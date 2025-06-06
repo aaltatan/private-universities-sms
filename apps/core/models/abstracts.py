@@ -100,6 +100,9 @@ class SoftDeleteAbstractModel(models.Model):
     class Meta:
         abstract = True
 
-    def delete(self, using=None, keep_parents=False):
-        self.is_deleted = True
-        self.save()
+    def delete(self, using=None, keep_parents=False, permanent=False):
+        if permanent:
+            super().delete(using=None, keep_parents=False)
+        else:
+            self.is_deleted = True
+            self.save()
