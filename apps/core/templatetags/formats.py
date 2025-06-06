@@ -16,8 +16,9 @@ def format_string(
     if in_table:
         return mark_safe(
             f"""
-            <pre class='rtl:hidden font-medium'>{right_result}</pre>
-            <pre class='ltr:hidden font-medium'>{left_result}</pre>
+            <pre class='rtl:hidden @max-lg:hidden font-medium'>{right_result}</pre>
+            <pre class='ltr:hidden @max-lg:hidden font-medium'>{left_result}</pre>
+            <pre class='@lg:hidden font-medium'>{value}</pre>
             """,
         )
     else:
