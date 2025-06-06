@@ -130,6 +130,14 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         </ul>
         """,
     )
+    accounting_id = models.CharField(
+        verbose_name=_("accounting id"),
+        help_text=_("accounting id in accounting system (in chart of accounts)"),
+        blank=True,
+        null=True,
+        max_length=15,
+        default="31",
+    )
 
     objects: CompensationManager = CompensationManager()
 

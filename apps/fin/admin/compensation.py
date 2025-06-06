@@ -27,8 +27,8 @@ class CompensationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "formula",
         ("round_method", "rounded_to"),
         ("tax", "tax_classification"),
-        "affected_by_working_days",
-        "is_active",
+        ("affected_by_working_days", "is_active"),
+        "accounting_id",
         "description",
     )
     list_display_links = ("id", "name")

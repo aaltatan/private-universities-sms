@@ -114,6 +114,15 @@
           <!--  -->
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'accounting_id' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.accounting_id }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'description' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">

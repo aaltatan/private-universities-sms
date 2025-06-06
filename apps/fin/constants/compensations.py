@@ -12,6 +12,7 @@ ORDERING_FIELDS: dict[str, str] = {
     "max_value": _("max value"),
     "affected_by_working_days": _("affected by working days"),
     "is_active": _("is active"),
+    "accounting_id": _("accounting id"),
     "description": _("description"),
 }
 

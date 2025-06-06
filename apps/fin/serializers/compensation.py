@@ -27,6 +27,7 @@ class CompensationSerializer(serializers.ModelSerializer):
             "tax_classification",
             "affected_by_working_days",
             "is_active",
+            "accounting_id",
             "description",
         )
 
@@ -50,5 +51,6 @@ class CreateUpdateCompensationSerializer(serializers.ModelSerializer):
             "max_value",
             "affected_by_working_days",
             "formula",
+            "accounting_id",
             "description",
         )

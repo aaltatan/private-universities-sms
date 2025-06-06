@@ -174,6 +174,10 @@ class CompensationResource(BaseResource):
         attribute="formula",
         column_name=_("formula").title(),
     )
+    accounting_id = fields.Field(
+        attribute="accounting_id",
+        column_name=_("accounting id").title(),
+    )
 
     def dehydrate_calculation_method(self, obj: models.Compensation):
         return self._dehydrate_choices(obj, "calculation_method")
@@ -206,6 +210,7 @@ class CompensationResource(BaseResource):
             "formula",
             "affected_by_working_days",
             "is_active",
+            "accounting_id",
             "description",
             "slug",
         )

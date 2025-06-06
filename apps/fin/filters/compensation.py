@@ -46,6 +46,7 @@ class BaseCompensationFilter(BaseQSearchFilter, BaseNameDescriptionFilter):
             "round_method",
             "affected_by_working_days",
             "is_active",
+            "accounting_id",
             "description",
         )
 

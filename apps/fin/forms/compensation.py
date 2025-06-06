@@ -34,6 +34,7 @@ class BaseCompensationForm(forms.ModelForm):
             "tax_classification",
             "affected_by_working_days",
             "is_active",
+            "accounting_id",
             "description",
         )
         widgets = {
@@ -42,6 +43,7 @@ class BaseCompensationForm(forms.ModelForm):
             "min_value": widgets.get_number_widget(placeholder=_("e.g. 0")),
             "max_value": widgets.get_number_widget(placeholder=_("e.g. 50000")),
             "rounded_to": widgets.get_number_widget(placeholder=_("e.g. 100")),
+            "accounting_id": widgets.get_text_widget(placeholder=_("e.g. 3111")),
             "description": widgets.get_textarea_widget(),
         }
 

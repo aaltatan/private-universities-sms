@@ -74,6 +74,7 @@
         <c-table.th>{{ model|verbose_name:'tax_classification' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'affected_by_working_days' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'is_active' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'accounting_id' }}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
       <c-table.tr>
@@ -178,6 +179,9 @@
           {% else %}
           <c-badge theme="red"> {% translate 'not activated'|title %} </c-badge>
           {% endif %}
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'accounting_id' }}">
+          {{ obj.accounting_id|default:"-" }}
         </c-table.td>
       </c-table.tr>
       {% empty %}
