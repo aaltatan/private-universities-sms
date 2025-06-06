@@ -15,7 +15,7 @@ class CostCenterForm(forms.ModelForm):
         model = models.CostCenter
         fields = ("name", "accounting_id", "description")
         widgets = {
-            "name": get_text_widget(placeholder=_("cost center name")),
+            "name": get_text_widget(placeholder=_("e.g. Architecture")),
             "accounting_id": get_numeric_widget(
                 placeholder=_("cost center id"),
             ),

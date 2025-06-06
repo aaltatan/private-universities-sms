@@ -30,13 +30,14 @@ class Degree(AddCreateActivityMixin, AbstractUniqueNameModel):
 
     order = models.IntegerField(
         verbose_name=_("order"),
-        help_text=_("order of degree"),
+        help_text=_(
+            "for sorting purposes, you can use the same order for different degrees"
+        ),
         default=1,
     )
     is_academic = models.BooleanField(
         verbose_name=_("is academic"),
         default=True,
-        help_text=_("is an academic degree"),
     )
 
     objects: DegreeManager = DegreeManager()

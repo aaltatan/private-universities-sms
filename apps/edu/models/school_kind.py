@@ -37,12 +37,10 @@ class SchoolKind(AddCreateActivityMixin, AbstractUniqueNameModel):
     is_governmental = models.BooleanField(
         verbose_name=_("is governmental"),
         default=True,
-        help_text=_("is it governmental or private"),
     )
     is_virtual = models.BooleanField(
         verbose_name=_("is virtual"),
         default=False,
-        help_text=_("is it virtual or ordinary"),
     )
 
     objects: SchoolKindManager = SchoolKindManager()

@@ -24,14 +24,16 @@ class BaseSchoolForm(forms.ModelForm):
             "description",
         )
         widgets = {
-            "name": widgets.get_text_widget(placeholder=_("school name")),
+            "name": widgets.get_text_widget(
+                placeholder=_("e.g. AlWatniya Private University")
+            ),
             "description": widgets.get_textarea_widget(),
             "email": widgets.get_email_widget(),
             "phone": widgets.get_text_widget(
-                placeholder=_("phone number").title(),
+                placeholder=_("e.g. 0947302503"),
             ),
             "address": widgets.get_text_widget(
-                placeholder=_("address").title(),
+                placeholder=_("e.g. Warsaw, Poland"),
             ),
         }
 

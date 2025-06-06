@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext as _
 
-from apps.core.widgets import get_textarea_widget
+from apps.core import widgets
 
 from .. import models
 
@@ -11,7 +11,6 @@ class BaseTaxBracketForm(forms.ModelForm):
     tax = forms.ModelChoiceField(
         queryset=models.Tax.objects.filter(fixed=False),
         label=_("tax"),
-        help_text=_("tax"),
     )
 
     class Meta:
@@ -24,7 +23,10 @@ class BaseTaxBracketForm(forms.ModelForm):
             "notes",
         )
         widgets = {
-            "notes": get_textarea_widget(),
+            "amount_from": widgets.get_number_widget(placeholder=_("e.g. 1000")),
+            "amount_to": widgets.get_number_widget(placeholder=_("e.g. 50000")),
+            "rate": widgets.get_number_widget(placeholder=_("e.g. 0.1")),
+            "notes": widgets.get_textarea_widget(),
         }
 
 

@@ -131,63 +131,49 @@ class EmployeeForm(forms.ModelForm):
         model = models.Employee
         exclude = ("slug", "ordering")
         widgets = {
-            "firstname": get_text_widget(placeholder=_("first name").title()),
-            "lastname": get_text_widget(placeholder=_("last name").title()),
-            "father_name": get_text_widget(
-                placeholder=_("father name").title(),
-            ),
-            "mother_name": get_text_widget(
-                placeholder=_("mother name").title(),
-            ),
-            "birth_place": get_text_widget(
-                placeholder=_("birth place").title(),
-            ),
-            "birth_date": get_date_widget(
-                placeholder=_("birth date").title(),
-            ),
+            "firstname": get_text_widget(placeholder=_("e.g. John")),
+            "lastname": get_text_widget(placeholder=_("e.g. Doe")),
+            "father_name": get_text_widget(placeholder=_("e.g. John")),
+            "mother_name": get_text_widget(placeholder=_("e.g. Jane")),
+            "birth_place": get_text_widget(placeholder=_("e.g. Cairo")),
+            "birth_date": get_date_widget(placeholder=_("e.g. 1990-01-01")),
             "national_id": get_numeric_widget(
                 x_mask="9" * 12,
-                placeholder=_("national id").title(),
+                placeholder="0123456789",
             ),
-            "passport_id": get_numeric_widget(
-                placeholder=_("passport id").title(),
-            ),
-            "card_id": get_numeric_widget(
-                placeholder=_("card id").title(),
-            ),
+            "passport_id": get_numeric_widget(placeholder="0123456789"),
+            "card_id": get_numeric_widget(placeholder="0123456789"),
             "civil_registry_office": get_input_datalist(
                 model=models.Employee,
                 field_name="civil_registry_office",
-                placeholder=_("civil registry office").title(),
+                placeholder=_("e.g. Cairo"),
             ),
             "registry_office_name": get_input_datalist(
                 model=models.Employee,
                 field_name="registry_office_name",
-                placeholder=_("registry office name").title(),
+                placeholder=_("e.g. Cairo"),
             ),
-            "registry_office_id": get_numeric_widget(
-                placeholder=_("registry office id").title()
-            ),
+            "registry_office_id": get_numeric_widget(placeholder="3123"),
             "face_color": get_input_datalist(
                 model=models.Employee,
                 field_name="face_color",
-                placeholder=_("face color").title(),
+                placeholder=_("e.g. White"),
             ),
             "eyes_color": get_input_datalist(
                 model=models.Employee,
                 field_name="eyes_color",
-                placeholder=_("eyes color").title(),
+                placeholder=_("e.g. Blue"),
             ),
             "address": get_text_widget(
-                placeholder=_("address").title(),
+                placeholder=_("e.g. 123 Main Street, Cairo"),
             ),
             "current_address": get_text_widget(
-                placeholder=_("current address").title()
+                placeholder=_("e.g. 123 Main Street, Cairo"),
             ),
             "special_signs": get_textarea_widget(
-                placeholder=_("special signs").title()
+                placeholder=_("e.g. Glasses"),
             ),
-            "card_date": get_date_widget(placeholder=_("card date").title()),
-            "hire_date": get_date_widget(placeholder=_("hire date").title()),
-            "notes": get_textarea_widget(placeholder=_("notes").title()),
+            "card_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
+            "hire_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
+            "notes": get_textarea_widget(placeholder=_("some notes")),
         }

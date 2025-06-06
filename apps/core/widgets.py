@@ -8,6 +8,7 @@ from django.forms.widgets import (
     SelectMultiple,
     Textarea,
     TextInput,
+    NumberInput,
 )
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
@@ -146,9 +147,12 @@ def get_money_widget(
 
 def get_text_widget(**attributes: dict[str, str]) -> TextInput:
     """Get text field."""
-    if "placeholder" in attributes:
-        attributes["placeholder"] = attributes["placeholder"].title()
     return TextInput(attrs=attributes)
+
+
+def get_number_widget(**attributes: dict[str, str]) -> TextInput:
+    """Get text field."""
+    return NumberInput(attrs=attributes)
 
 
 def get_email_widget(**attributes: dict[str, str]) -> TextInput:

@@ -11,6 +11,6 @@ class JobTypeForm(forms.ModelForm):
         model = models.JobType
         fields = ("name", "description")
         widgets = {
-            "name": get_text_widget(placeholder=_("job type name")),
+            "name": get_text_widget(placeholder=_("e.g. Software Developer")),
             "description": get_textarea_widget(),
         }

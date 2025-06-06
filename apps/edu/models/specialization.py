@@ -31,7 +31,6 @@ class Specialization(AddCreateActivityMixin, AbstractUniqueNameModel):
     is_specialist = models.BooleanField(
         verbose_name=_("is specialist"),
         default=True,
-        help_text=_("is a specialist or supporter"),
     )
 
     objects: SpecializationManager = SpecializationManager()

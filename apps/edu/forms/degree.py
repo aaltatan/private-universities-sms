@@ -11,13 +11,13 @@ class DegreeForm(forms.ModelForm):
         choices=models.Degree.AcademicChoices,
         label=_("is academic"),
         initial=models.Degree.AcademicChoices.ACADEMIC,
-        help_text=_("is it academic or applied"),
     )
 
     class Meta:
         model = models.Degree
         fields = ("name", "order", "is_academic", "description")
         widgets = {
-            "name": widgets.get_text_widget(placeholder=_("degree name")),
+            "name": widgets.get_text_widget(placeholder=_("e.g. Bachelor")),
+            "order": widgets.get_number_widget(placeholder=_("e.g. 1")),
             "description": widgets.get_textarea_widget(),
         }

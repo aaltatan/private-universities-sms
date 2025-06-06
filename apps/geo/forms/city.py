@@ -11,7 +11,7 @@ class BaseCityForm(forms.ModelForm):
         model = models.City
         fields = ("name", "governorate", "kind", "description")
         widgets = {
-            "name": get_text_widget(placeholder=_("city name")),
+            "name": get_text_widget(placeholder=_("e.g. Hamah")),
             "description": get_textarea_widget(),
         }
 

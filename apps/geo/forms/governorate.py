@@ -11,6 +11,6 @@ class GovernorateForm(forms.ModelForm):
         model = models.Governorate
         fields = ("name", "description")
         widgets = {
-            "name": get_text_widget(placeholder=_("governorate name")),
+            "name": get_text_widget(placeholder=_("e.g. Al-Bayda")),
             "description": get_textarea_widget(),
         }

@@ -11,7 +11,7 @@ class BaseJobSubtypeForm(forms.ModelForm):
         model = models.JobSubtype
         fields = ("name", "job_type", "description")
         widgets = {
-            "name": get_text_widget(placeholder=_("job subtype name")),
+            "name": get_text_widget(placeholder=_("e.g. Software Developer")),
             "description": get_textarea_widget(),
         }
 

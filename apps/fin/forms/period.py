@@ -10,15 +10,14 @@ class BasePeriodForm(forms.ModelForm):
     is_closed = forms.ChoiceField(
         choices=models.Period.ClosedChoices,
         label=_("is closed"),
-        help_text=_("is it closed or not"),
     )
 
     class Meta:
         model = models.Period
         fields = ("name", "year", "start_date", "is_closed", "description")
         widgets = {
-            "name": get_text_widget(placeholder=_("period name")),
-            "start_date": get_date_widget(placeholder=_("start date")),
+            "name": get_text_widget(placeholder=_("e.g. 20221 - First Chapter")),
+            "start_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
             "description": get_textarea_widget(),
         }
 

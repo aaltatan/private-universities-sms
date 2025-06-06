@@ -32,7 +32,6 @@ class Nationality(AddCreateActivityMixin, AbstractUniqueNameModel):
     is_local = models.BooleanField(
         verbose_name=_("is local"),
         default=False,
-        help_text=_("is it local or foreign"),
     )
 
     objects: NationalityManager = NationalityManager()

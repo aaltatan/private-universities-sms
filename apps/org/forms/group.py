@@ -11,6 +11,6 @@ class GroupForm(forms.ModelForm):
         model = models.Group
         fields = ("name", "kind", "description")
         widgets = {
-            "name": get_text_widget(placeholder=_("group name")),
+            "name": get_text_widget(placeholder=_("e.g. Financial Department")),
             "description": get_textarea_widget(),
         }

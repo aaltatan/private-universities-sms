@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext as _
 
-from apps.core.widgets import get_text_widget, get_textarea_widget
+from apps.core import widgets
 
 from .. import models
 
@@ -10,12 +10,10 @@ class BaseCompensationForm(forms.ModelForm):
     calculation_method = forms.ChoiceField(
         choices=models.Compensation.CalculationUserChoices,
         label=_("calculation method"),
-        help_text=_("calculation method"),
     )
     affected_by_working_days = forms.ChoiceField(
         choices=models.Compensation.AffectedByWorkingDaysChoices,
         label=_("affected by working days"),
-        help_text=_("whether compensation value is affected by working days"),
     )
     is_active = forms.ChoiceField(
         choices=models.Compensation.AffectedByWorkingDaysChoices,
@@ -39,8 +37,12 @@ class BaseCompensationForm(forms.ModelForm):
             "description",
         )
         widgets = {
-            "name": get_text_widget(placeholder=_("compensation name")),
-            "description": get_textarea_widget(),
+            "name": widgets.get_text_widget(placeholder=_("e.g. Salary")),
+            "value": widgets.get_number_widget(placeholder=_("e.g. 1000")),
+            "min_value": widgets.get_number_widget(placeholder=_("e.g. 0")),
+            "max_value": widgets.get_number_widget(placeholder=_("e.g. 50000")),
+            "rounded_to": widgets.get_number_widget(placeholder=_("e.g. 100")),
+            "description": widgets.get_textarea_widget(),
         }
 
 

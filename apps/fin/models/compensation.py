@@ -111,7 +111,6 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
     affected_by_working_days = models.BooleanField(
         verbose_name=_("affected by working days"),
         default=False,
-        help_text=_("whether compensation value is affected by working days"),
     )
     is_active = models.BooleanField(
         default=True,

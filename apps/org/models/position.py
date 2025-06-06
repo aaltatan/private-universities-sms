@@ -26,7 +26,7 @@ class PositionManager(models.Manager):
 class Position(AddCreateActivityMixin, AbstractUniqueNameModel):
     order = models.IntegerField(
         verbose_name=_('order'),
-        help_text=_('order of position'),
+        help_text=_('for sorting purposes, you can use the same order for different positions'),
         default=1,
     )
 

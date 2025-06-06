@@ -11,7 +11,7 @@ class BaseYearForm(forms.ModelForm):
         model = models.Year
         fields = ("name", "description")
         widgets = {
-            "name": get_text_widget(placeholder=_("year name")),
+            "name": get_text_widget(placeholder=_("e.g. 2022")),
             "description": get_textarea_widget(),
         }
 
