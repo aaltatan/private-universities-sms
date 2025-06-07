@@ -1,20 +1,20 @@
 from datetime import date
 
 from django.db import models
-from django.utils import timezone
 from django.db.models.signals import pre_delete, pre_save
+from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
-from apps.core import signals
+from apps.core import signals, validators
 from apps.core.mixins import AddCreateActivityMixin
+from apps.core.models import User
+from apps.core.models.abstracts import UrlsMixin
 from apps.core.validators import (
     numeric_validator,
     two_chars_validator,
 )
-from apps.core.models import User
-from apps.core.models.abstracts import UrlsMixin
 from apps.edu.models import Degree, School, Specialization
 from apps.geo.models import City, Nationality
 from apps.org.models import CostCenter, Group, JobSubtype, Position, Status
@@ -202,12 +202,28 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         null=True,
         blank=True,
         verbose_name=_("profile"),
+        validators=[
+            validators.image_extension_validator,
+            validators.validate_file_mimetype(
+                accepted_mimetypes=["image/jpeg", "image/png"],
+            ),
+        ],
     )
     identity_document = models.FileField(
         upload_to="identities",
         null=True,
         blank=True,
         verbose_name=_("identity document"),
+        validators=[
+            validators.pdf_image_extension_validator,
+            validators.validate_file_mimetype(
+                accepted_mimetypes=[
+                    "application/pdf",
+                    "image/jpeg",
+                    "image/png",
+                ],
+            ),
+        ],
     )
     # org
     cost_center = models.ForeignKey(

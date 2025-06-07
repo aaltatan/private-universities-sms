@@ -87,7 +87,19 @@ class EmployeeForm(forms.ModelForm):
     )
     profile = forms.ImageField(
         required=False,
-        widget=AvatarWidget(attrs={"accept": "image/*"}),
+        widget=AvatarWidget(
+            attrs={
+                "accept": ".jpg,.jpeg,.png",
+            }
+        ),
+    )
+    identity_document = forms.FileField(
+        required=False,
+        widget=forms.widgets.FileInput(
+            attrs={
+                "accept": ".pdf,.jpg,.jpeg,.png",
+            }
+        ),
     )
 
     def clean_birth_date(self):
