@@ -1,4 +1,8 @@
-from django.core.validators import MinLengthValidator, RegexValidator
+from django.core.validators import (
+    MinLengthValidator,
+    RegexValidator,
+    FileExtensionValidator,
+)
 from django.utils.translation import gettext_lazy as _
 
 
@@ -25,4 +29,9 @@ syrian_mobile_validator = RegexValidator(
 syrian_phone_validator = RegexValidator(
     regex=r"^0\d{2}\d{6,7}$",
     message=_("the field must be syrian phone number like 0332756651."),
+)
+
+document_extension_validator = FileExtensionValidator(
+    allowed_extensions=["pdf", "png", "jpg", "jpeg"],
+    message=_("the field must be a valid pdf, png, jpg or jpeg file."),
 )
