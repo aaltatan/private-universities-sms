@@ -75,15 +75,20 @@ class Tax(AddCreateActivityMixin, AbstractUniqueNameModel):
 
         return tax
 
-    def calculate(self, amount: Decimal | int | float) -> Decimal:
+    def calculate(
+        self, amount: Decimal | int | float, rounded: bool = False
+    ) -> Decimal:
         if self.fixed:
             tax = self._calculate_fixed(amount=amount)
         else:
             tax = self._calculate_brackets(amount=amount)
 
-        return round_to_nearest(
-            number=tax, to_nearest=self.rounded_to, method=self.round_method
-        )
+        if rounded:
+            return round_to_nearest(
+                number=tax, to_nearest=self.rounded_to, method=self.round_method
+            )
+        else:
+            return tax
 
     class Meta:
         icon = "receipt-percent"
