@@ -62,7 +62,7 @@
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'tax' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.tax }} </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.tax|default:"-" }} </c-table.td>
           </c-table.tr>
           <!--  -->
           <c-table.tr>
