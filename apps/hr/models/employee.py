@@ -204,9 +204,7 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         verbose_name=_("profile"),
         validators=[
             validators.image_extension_validator,
-            validators.validate_file_mimetype(
-                accepted_mimetypes=["image/jpeg", "image/png"],
-            ),
+            validators.validate_image_mimetype,
         ],
     )
     identity_document = models.FileField(
@@ -216,13 +214,7 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         verbose_name=_("identity document"),
         validators=[
             validators.pdf_image_extension_validator,
-            validators.validate_file_mimetype(
-                accepted_mimetypes=[
-                    "application/pdf",
-                    "image/jpeg",
-                    "image/png",
-                ],
-            ),
+            validators.validate_pdf_image_mimetype,
         ],
     )
     # org
