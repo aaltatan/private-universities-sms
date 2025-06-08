@@ -205,10 +205,15 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
                 )
 
     def __str__(self) -> str:
+        result = self.name
+
         if self.calculation_method == self.CalculationChoices.FIXED:
-            return f"{self.name} - {self.value:,.2f}"
-        else:
-            return self.name
+            result += f" ({self.value:,.2f})"
+
+        if self.is_active is False:
+            result += _(" (not activated)")
+
+        return result
 
     class Meta:
         icon = "banknotes"
