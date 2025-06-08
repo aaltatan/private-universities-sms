@@ -1,5 +1,3 @@
-from typing import Any, Callable
-
 import magic
 from django.core.exceptions import ValidationError
 from django.core.validators import (
@@ -45,23 +43,19 @@ image_extension_validator = FileExtensionValidator(
 )
 
 
-def validate_file_mimetype(
-    accepted_mimetypes: list[str], message: str = _("Unsupported file type.")
-) -> Callable[[Any], None]:
-    """
-    Validates the file mimetype.
+def validate_pdf_image_mimetype(file) -> None:
+    accepted_mimetypes = ["application/pdf", "image/jpeg", "image/png"]
+    file_mimetype = magic.from_buffer(file.read(1024), mime=True)
+    if file_mimetype not in accepted_mimetypes:
+        raise ValidationError(
+            _("file must be a valid pdf, png, jpg or jpeg file."),
+        )
 
-    Args:
-        accepted_mimetypes (list[str]): The list of accepted mimetypes.
-        message (str): The error message.
 
-    Returns:
-        Callable[[Any], None]: The validation function.
-    """
-
-    def _validate_file_mimetype(file) -> None:
-        file_mimetype = magic.from_buffer(file.read(1024), mime=True)
-        if file_mimetype not in accepted_mimetypes:
-            raise ValidationError(message)
-
-    return _validate_file_mimetype
+def validate_image_mimetype(file) -> None:
+    accepted_mimetypes = ["image/jpeg", "image/png"]
+    file_mimetype = magic.from_buffer(file.read(1024), mime=True)
+    if file_mimetype not in accepted_mimetypes:
+        raise ValidationError(
+            _("file must be a valid jpg, jpeg or png file."),
+        )
