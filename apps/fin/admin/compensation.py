@@ -21,7 +21,7 @@ class CompensationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "is_active",
     )
     fields = (
-        "name",
+        ("name", "shortname"),
         "calculation_method",
         ("value", "min_value", "max_value"),
         "formula",

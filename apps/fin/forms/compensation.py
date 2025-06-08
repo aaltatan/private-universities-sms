@@ -24,6 +24,7 @@ class BaseCompensationForm(forms.ModelForm):
         model = models.Compensation
         fields = (
             "name",
+            "shortname",
             "calculation_method",
             "value",
             "min_value",
@@ -39,6 +40,7 @@ class BaseCompensationForm(forms.ModelForm):
         )
         widgets = {
             "name": widgets.get_text_widget(placeholder=_("e.g. Salary")),
+            "shortname": widgets.get_text_widget(placeholder=_("e.g. Salary")),
             "value": widgets.get_number_widget(placeholder=_("e.g. 1000")),
             "min_value": widgets.get_number_widget(placeholder=_("e.g. 0")),
             "max_value": widgets.get_number_widget(placeholder=_("e.g. 50000")),

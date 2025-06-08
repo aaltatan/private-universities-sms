@@ -16,6 +16,7 @@ class CompensationSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
+            "shortname",
             "calculation_method",
             "round_method",
             "rounded_to",
@@ -41,6 +42,7 @@ class CreateUpdateCompensationSerializer(serializers.ModelSerializer):
         model = models.Compensation
         fields = (
             "name",
+            "shortname",
             "calculation_method",
             "tax",
             "tax_classification",

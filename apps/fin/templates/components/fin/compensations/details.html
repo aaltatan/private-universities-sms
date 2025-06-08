@@ -15,6 +15,15 @@
           <!--  -->
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'shortname' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              {{ object.shortname }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'calculation_method' }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">

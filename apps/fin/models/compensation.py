@@ -56,6 +56,13 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         )
         OTHERS = "others", _("others").title()
 
+    shortname = models.CharField(
+        max_length=255,
+        verbose_name=_("short name"),
+        blank=True,
+        default="",
+        help_text=_("to use it in services like sms, whatsapp, etc."),
+    )
     calculation_method = models.CharField(
         verbose_name=_("calculation method"),
         max_length=10,
@@ -141,9 +148,17 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
 
     objects: CompensationManager = CompensationManager()
 
-    def calculate_value(
-        self, value: Decimal | int | float = 0, obj: Any = None
-    ) -> Decimal:
+    def calculate(self, value: Decimal | int | float = 0, obj: Any = None) -> Decimal:
+        """
+        a method to calculate compensation value
+
+        Args:
+            value (Decimal | int | float): value to calculate
+            obj (Any): an object to calculate value
+
+        Returns:
+            Decimal: calculated value
+        """
         if not self.is_active:
             return Decimal(0)
 
@@ -160,9 +175,6 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
                 result = 0
 
         return round_to_nearest(result, self.round_method, self.rounded_to)
-
-    def calculate_tax(self, value: Decimal) -> Decimal:
-        return self.tax.calculate(value)
 
     def clean(self):
         if self.calculation_method == self.CalculationChoices.FIXED:
@@ -218,6 +230,7 @@ class ActivitySerializer(serializers.ModelSerializer):
         model = Compensation
         fields = (
             "name",
+            "shortname",
             "calculation_method",
             "tax",
             "tax_classification",

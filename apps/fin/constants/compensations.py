@@ -4,6 +4,7 @@ from django.utils.translation import gettext as _
 ORDERING_FIELDS: dict[str, str] = {
     "id": _("id"),
     "name": _("name"),
+    "shortname": _("short name"),
     "calculation_method": _("calculation method"),
     "tax": _("tax"),
     "tax_classification": _("tax classification"),
@@ -16,7 +17,4 @@ ORDERING_FIELDS: dict[str, str] = {
     "description": _("description"),
 }
 
-SEARCH_FIELDS: tuple[str] = (
-    "name",
-    "description",
-)
+SEARCH_FIELDS: tuple[str] = ("name", "description")

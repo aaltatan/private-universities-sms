@@ -34,6 +34,7 @@ class BaseCompensationFilter(BaseQSearchFilter, BaseNameDescriptionFilter):
         model = models.Compensation
         fields = (
             "name",
+            "shortname",
             "calculation_method",
             "value_from",
             "value_to",

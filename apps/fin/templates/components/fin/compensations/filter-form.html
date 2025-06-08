@@ -2,6 +2,7 @@
 
 <c-blocks.table-filters>
   <c-inputs.text :field="filter.form.name" />
+  <c-inputs.text :field="filter.form.shortname" />
   <c-inputs.text :field="filter.form.calculation_method" />
   <c-inputs.range-wrapper title="{% translate 'value'|title %}">
     <c-inputs.text :field="filter.form.value_from" :show_label="False" />

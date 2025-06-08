@@ -126,6 +126,10 @@ class TaxBracketResource(SerialResourceMixin, resources.ModelResource):
 
 
 class CompensationResource(BaseResource):
+    shortname = fields.Field(
+        attribute="shortname",
+        column_name=_("short name").title(),
+    )
     calculation_method = fields.Field(
         attribute="calculation_method",
         column_name=_("calculation method").title(),
@@ -199,6 +203,7 @@ class CompensationResource(BaseResource):
         fields = (
             "serial",
             "name",
+            "shortname",
             "calculation_method",
             "tax",
             "tax_classification",
