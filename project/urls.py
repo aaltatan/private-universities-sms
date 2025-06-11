@@ -5,11 +5,12 @@ from django.urls import include, path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from apps.edu.urls import patterns as edu_patterns
+from apps.fin.urls import patterns as fin_patterns
 from apps.geo.urls import patterns as geo_patterns
 from apps.hr.urls import patterns as hr_patterns
 from apps.org.urls import patterns as org_patterns
-from apps.fin.urls import patterns as fin_patterns
 
+# from apps.trans.urls import patterns as trans_patterns
 from .router import router
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
     path("edu/", include((edu_patterns, "edu"))),
     path("fin/", include((fin_patterns, "fin"))),
     path("hr/", include((hr_patterns, "hr"))),
+    # path("trans/", include((trans_patterns, "trans"))),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

@@ -1,0 +1,56 @@
+{% extends "admin/base_site.html" %}
+<!--  -->
+{% load i18n l10n admin_urls static %}
+
+<!--  -->
+{% block extrahead %}
+<!--  -->
+{{ block.super }}
+<!--  -->
+{{ media }}
+<script src="{% static 'admin/js/cancel.js' %}" async></script>
+{% endblock %}
+
+<!--  -->
+{% block bodyclass %}
+<!--  -->
+{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} delete-confirmation
+<!--  -->
+{% endblock %}
+
+<!--  -->
+{% block content %}
+<div class="content">
+  <p>
+    {% blocktrans %}You're about to migrate these {{ objects|length }} vouchers:{% endblocktrans %}
+  </p>
+
+  <h2>{% translate "vouchers"|capfirst %}</h2>
+  <ul>
+    {% for vouchers in objects %}
+    <li>{{ vouchers }}</li>
+    {% endfor %}
+  </ul>
+
+  <form method="post" action=".">
+    {% csrf_token %}
+    <div>
+      {% for obj in objects %}
+      <input type="hidden" name="{{ action_checkbox_name }}" value="{{ obj.pk|unlocalize }}" />
+      {% endfor %}
+      <p>
+        {% translate 'please enter the accounting journal sequence for each voucher.
+        (optional)'|capfirst %}
+      </p>
+      <input type="text" name="accounting_journal_sequence" placeholder="e.g. JOV0001" value="JOV0001" />
+      <br />
+      <br />
+      <!-- you must select action to perform -->
+      <input type="hidden" name="action" value="migrate" />
+      <input type="hidden" name="post" value="yes" />
+      <input type="submit" value="{% translate 'yes'|title %}" />
+      <a href="#" class="button cancel-link">{% translate "No, take me back" %}</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

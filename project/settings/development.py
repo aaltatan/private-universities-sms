@@ -6,7 +6,7 @@ INSTALLED_APPS += [
 ]
 
 MIDDLEWARE += [
-    'silk.middleware.SilkyMiddleware',
+    "silk.middleware.SilkyMiddleware",
 ]
 
 INTERNAL_IPS = [

@@ -1,0 +1,72 @@
+{% load i18n widget_tweaks %}
+
+<!--  -->
+{% if cities_formset.forms %}
+<c-forms.update
+  form_title="{% translate 'update' %} {{ form.instance }}"
+  url="{{ update_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+  width="xl"
+>
+  <c-forms.wrapper cols="2">
+    <c-inputs.text :field="form.name" />
+    <c-inputs.text :field="form.description" />
+  </c-forms.wrapper>
+  <div
+    x-data="formset({
+      totalForms: {{ cities_formset.management_form.TOTAL_FORMS.value }},
+      emptyFormId: 'cities-empty-form',
+      tableId: 'cities-formset-table',
+    })"
+  >
+    <c-geo.governorates.cities.management-form />
+    <c-error.wrapper>
+      {% for error in cities_formset.non_form_errors %}
+      <c-error.error>{{ error }}</c-error.error>
+      {% endfor %}
+    </c-error.wrapper>
+    <c-table height="none" id="cities-formset-table">
+      <c-table.table>
+        <c-table.tr header="True">
+          <c-table.th alignment="center"> # </c-table.th>
+          <c-table.th alignment="center"> {% translate 'name' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'kind' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'description' %} </c-table.th>
+          {% if perms.geo.delete_city %}
+          <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
+          {% endif %}
+        </c-table.tr>
+        <tbody x-sort="sortHandler();resetSerials();">
+          {% for form in cities_formset %}
+          <c-geo.governorates.cities.inline :form="form" />
+          {% endfor %}
+        </tbody>
+      </c-table.table>
+    </c-table>
+    {% if perms.geo.add_city %}
+    <div class="my-2">
+      <c-button @click.prevent="addNewForm" width="full">{% translate 'add new row' %} </c-button>
+    </div>
+    {% endif %}
+  </div>
+</c-forms.update>
+{% else %}
+<c-forms.update
+  form_title="{% translate 'update' %} {{ form.instance }}"
+  url="{{ update_url }}{% querystring %}"
+  :form_id="form_id"
+  :form="form"
+>
+  <c-inputs.text :field="form.name" />
+  <c-inputs.text :field="form.description" />
+</c-forms.update>
+{% endif %}
+
+<table>
+  <c-geo.governorates.cities.inline
+    row_id="cities-empty-form"
+    :hide="True"
+    :form="cities_formset.empty_form"
+  />
+</table>
