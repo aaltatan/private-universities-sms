@@ -90,3 +90,10 @@ class EmployeeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     @admin.display(description="Fullname")
     def fullname(self, obj: models.Employee):
         return f"{obj.firstname} {obj.father_name} {obj.lastname}"
+
+    def get_queryset(self, request):
+        return self.model.objects.queryset_adjustments(
+            date_annotations=False,
+            name_annotations=False,
+            search_annotations=False,
+        )

@@ -7,6 +7,7 @@ from .queryset import EmployeeQuerySet
 
 from apps.core.constants import DATE_UNITS
 
+
 class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
     def get_counts_grouped_by(self, group_by: str = "gender"):
         return (
@@ -50,22 +51,34 @@ class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
                 Defaults to "day".
         """
         return self.get_queryset().get_upcoming_job_anniversaries(date=date, this=this)
-    
-    def with_date_annotations(self):
+
+    def queryset_adjustments(
+        self,
+        *,
+        select_related: bool = True,
+        prefetch_related: bool = True,
+        search_annotations: bool = True,
+        name_annotations: bool = True,
+        date_annotations: bool = True,
+    ):
         queryset = self.get_queryset()
-        queryset = self._annotate_dates(queryset)
+
+        if select_related:
+            queryset = self._select_related(queryset)
+
+        if prefetch_related:
+            queryset = self._prefetch_related(queryset)
+
+        if search_annotations:
+            queryset = self._annotate_search(queryset)
+
+        if name_annotations:
+            queryset = self._annotate_names(queryset)
+
+        if date_annotations:
+            queryset = self._annotate_dates(queryset)
 
         return queryset
 
     def get_queryset(self) -> EmployeeQuerySet:
-        queryset = EmployeeQuerySet(self.model, using=self._db)
-
-        # optimizations
-        queryset = self._select_related(queryset)
-        queryset = self._prefetch_related(queryset)
-
-        # annotations
-        queryset = self._annotate_search(queryset)
-        queryset = self._annotate_names(queryset)
-
-        return queryset
+        return EmployeeQuerySet(self.model, using=self._db)

@@ -20,7 +20,7 @@ class APIViewSet(
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
 ):
-    queryset = models.Employee.objects.all()
+    queryset = models.Employee.objects.queryset_adjustments().all()
     serializer_class = serializers.EmployeeSerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
@@ -56,7 +56,7 @@ class ListView(
     resource_class = resources.EmployeeResource
     deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
-    queryset = models.Employee.objects.with_date_annotations()
+    queryset = models.Employee.objects.queryset_adjustments()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -77,6 +77,9 @@ class ListView(
 class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
     permission_required = "hr.view_employee"
     model = models.Employee
+
+    def get_queryset(self):
+        return self.model.objects.queryset_adjustments()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
