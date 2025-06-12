@@ -18,7 +18,6 @@ class OptimizationMixin:
             "degree",
             "school",
             "school__kind",
-            "school__nationality",
             "specialization",
         )
 
