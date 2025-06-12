@@ -51,6 +51,7 @@ class ListMixin(ABC):
     def get_actions(self) -> dict[str, Action]:
         pass
 
+    queryset: QuerySet | None = None
     template_name: str | None = None
     table_template_name: str | None = None
     filter_form_template_name: str | None = None
@@ -93,7 +94,7 @@ class ListMixin(ABC):
         context = self.filter_context_data()
 
         response = render(self.request, template_name, context)
-        response['Hx-Trigger'] = 'open-overlay-sidebar'
+        response["Hx-Trigger"] = "open-overlay-sidebar"
 
         return response
 
@@ -252,20 +253,23 @@ class ListMixin(ABC):
         """
         Returns the queryset.
         """
-        model = self.get_model_class()
-        default_ordering = model._meta.ordering
-        qs = model.objects.all().order_by(*default_ordering)
+        if self.queryset is None:
+            model = self.get_model_class()
+            default_ordering = model._meta.ordering
+            queryset = model.objects.all().order_by(*default_ordering)
+        else:
+            queryset = self.queryset
 
         request: HttpRequest = self.request
         SearchOrderingFilter = self.get_search_ordering_filter_class()
 
-        search_ordering_filter = SearchOrderingFilter(request.GET, qs)
-        qs = search_ordering_filter.qs
+        search_ordering_filter = SearchOrderingFilter(request.GET, queryset)
+        queryset = search_ordering_filter.qs
 
-        filter_obj = self.filter_class(request.GET, qs)
-        qs = filter_obj.qs
+        filter_obj = self.filter_class(request.GET, queryset)
+        queryset = filter_obj.qs
 
-        return qs
+        return queryset
 
     def get_permissions(self) -> dict[str, bool]:
         """
