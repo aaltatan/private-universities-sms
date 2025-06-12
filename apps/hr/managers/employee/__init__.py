@@ -50,6 +50,12 @@ class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
                 Defaults to "day".
         """
         return self.get_queryset().get_upcoming_job_anniversaries(date=date, this=this)
+    
+    def with_date_annotations(self):
+        queryset = self.get_queryset()
+        queryset = self._annotate_dates(queryset)
+
+        return queryset
 
     def get_queryset(self) -> EmployeeQuerySet:
         queryset = EmployeeQuerySet(self.model, using=self._db)
@@ -61,6 +67,5 @@ class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
         # annotations
         queryset = self._annotate_search(queryset)
         queryset = self._annotate_names(queryset)
-        queryset = self._annotate_dates(queryset)
 
         return queryset

@@ -56,6 +56,7 @@ class ListView(
     resource_class = resources.EmployeeResource
     deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
+    queryset = models.Employee.objects.with_date_annotations()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
