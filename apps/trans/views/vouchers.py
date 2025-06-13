@@ -6,7 +6,7 @@ from rest_framework import filters as rest_filters
 from rest_framework import viewsets
 
 from apps.core import filter_backends, mixins
-from apps.core.inline import InlineFormsetFactory
+# from apps.core.inline import InlineFormsetFactory
 from apps.core.schemas import Action
 from apps.core.utils import Deleter
 
@@ -19,14 +19,14 @@ class APIViewSet(
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
 ):
-    queryset = models.Governorate.objects.all().order_by("name")
-    serializer_class = serializers.GovernorateSerializer
+    queryset = models.Voucher.objects.all().order_by("voucher_serial")
+    serializer_class = serializers.VoucherSerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
         django_filters.DjangoFilterBackend,
         rest_filters.OrderingFilter,
     ]
-    filterset_class = filters.APIGovernoratesFilter
+    filterset_class = filters.APIVoucherFilter
     ordering_fields = constants.ORDERING_FIELDS
     search_fields = constants.SEARCH_FIELDS
     deleter = Deleter
@@ -39,10 +39,10 @@ class ListView(
     MultipleObjectMixin,
     View,
 ):
-    permission_required = "geo.view_governorate"
-    model = models.Governorate
-    filter_class = filters.GovernorateFilter
-    resource_class = resources.GovernorateResource
+    permission_required = "trans.view_voucher"
+    model = models.Voucher
+    filter_class = filters.VoucherFilter
+    resource_class = resources.VoucherResource
     deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
 
@@ -52,38 +52,38 @@ class ListView(
                 method=self.bulk_delete,
                 template="components/blocks/modals/bulk-delete.html",
                 kwargs=("new_value",),
-                permissions=("geo.delete_governorate",),
+                permissions=("trans.delete_voucher",),
             ),
         }
 
 
 class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
-    permission_required = "geo.view_governorate"
-    model = models.Governorate
+    permission_required = "trans.view_voucher"
+    model = models.Voucher
 
 
 class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
-    permission_required = "geo.add_governorate"
-    form_class = forms.GovernorateForm
+    permission_required = "trans.add_voucher"
+    form_class = forms.VoucherForm
 
 
-class CityInline(InlineFormsetFactory):
-    model = models.City
-    form_class = forms.CityForm
-    fields = ("name", "kind", "description")
+# class VoucherTransactionInline(InlineFormsetFactory):
+#     model = models.VoucherTransaction
+#     form_class = forms.VoucherTransactionForm
+#     fields = ("name", "kind", "description")
 
-    @classmethod
-    def get_queryset(cls, obj: models.Governorate):
-        return obj.cities.all().order_by("ordering", "id")
+#     @classmethod
+#     def get_queryset(cls, obj: models.Voucher):
+#         return obj.transactions.all().order_by("ordering", "id")
 
 
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
-    permission_required = "geo.change_governorate"
-    form_class = forms.GovernorateForm
-    inlines = (CityInline,)
+    permission_required = "trans.change_voucher"
+    form_class = forms.VoucherForm
+    # inlines = (VoucherTransactionInline,)
 
 
 class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
-    permission_required = "geo.delete_governorate"
+    permission_required = "trans.delete_voucher"
     deleter = Deleter
-    model = models.Governorate
+    model = models.Voucher

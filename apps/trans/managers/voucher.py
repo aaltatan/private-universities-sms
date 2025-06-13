@@ -17,8 +17,29 @@ class BaseVoucherManager(models.Manager):
     annotations = {
         "search": annotate_search(constants.SEARCH_FIELDS),
         "transactions_count": models.Count("transactions"),
-        "total": models.Sum(
-            models.F("transactions__quantity") * models.F("transactions__value")
+        "total": models.ExpressionWrapper(
+            models.Sum(
+                models.F("transactions__quantity") * models.F("transactions__value")
+            ),
+            output_field=models.DecimalField(decimal_places=4, max_digits=20),
+        ),
+        "quantity_total": models.ExpressionWrapper(
+            models.Sum(
+                models.F("transactions__quantity"),
+            ),
+            output_field=models.DecimalField(decimal_places=4, max_digits=20),
+        ),
+        "value_total": models.ExpressionWrapper(
+            models.Sum(
+                models.F("transactions__value"),
+            ),
+            output_field=models.DecimalField(decimal_places=4, max_digits=20),
+        ),
+        "tax_total": models.ExpressionWrapper(
+            models.Sum(
+                models.F("transactions__tax"),
+            ),
+            output_field=models.DecimalField(decimal_places=4, max_digits=20),
         ),
         "net": models.Sum(
             (models.F("transactions__quantity") * models.F("transactions__value"))

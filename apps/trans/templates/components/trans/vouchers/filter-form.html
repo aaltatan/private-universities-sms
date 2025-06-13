@@ -1,14 +1,52 @@
 {% load i18n %}
 
 <c-blocks.table-filters>
-  <c-inputs.text :field="filter.form.name" />
-  <c-inputs.range-wrapper title="{% translate 'cities count'|title %}">
-    <c-inputs.text :show_label="False" :field="filter.form.cities_count_from" />
-    <c-inputs.text :show_label="False" :field="filter.form.cities_count_to" />
+  <c-inputs.text :field="filter.form.voucher_serial" />
+  <c-inputs.text :field="filter.form.title" />
+  <c-inputs.range-wrapper title="{% translate 'created at'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.created_at_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.created_at_to" />
   </c-inputs.range-wrapper>
-  <c-inputs.range-wrapper title="{% translate 'employees count'|title %}">
-    <c-inputs.text :show_label="False" :field="filter.form.employees_count_from" />
-    <c-inputs.text :show_label="False" :field="filter.form.employees_count_to" />
+  <c-inputs.range-wrapper title="{% translate 'updated at'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.updated_at_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.updated_at_to" />
   </c-inputs.range-wrapper>
-  <c-inputs.text :field="filter.form.description" />
+  <c-inputs.range-wrapper title="{% translate 'date'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.date_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.date_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'transactions count'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.transactions_count_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.transactions_count_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'total'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.total_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.total_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'net'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.net_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.net_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.kind" />
+  <c-inputs.text :field="filter.form.month" />
+  <c-inputs.text :field="filter.form.quarter" />
+  <c-inputs.text :field="filter.form.period" />
+  <c-inputs.text :field="filter.form.is_closed_period" />
+  <c-inputs.text :field="filter.form.notes" />
+  <c-inputs.text :field="filter.form.serial_id" />
+  <c-inputs.range-wrapper title="{% translate 'serial date'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.serial_date_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.serial_date_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'approve date'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.approve_date_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.approve_date_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'due date'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.due_date_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.due_date_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.accounting_journal_sequence" />
+  <c-inputs.text :field="filter.form.is_audited" />
+  <c-inputs.text :field="filter.form.is_migrated" />
 </c-blocks.table-filters>

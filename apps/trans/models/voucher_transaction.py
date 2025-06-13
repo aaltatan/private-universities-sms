@@ -78,6 +78,9 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
     objects: VoucherTransactionManager = VoucherTransactionManager()
 
     def calculate_compensation_value(self):
+        if not self.employee.status.is_payable:
+            return Decimal(0)
+
         return self.compensation.calculate(self.value, self.employee)
 
     def calculate_tax(self, value: Decimal | int | float | None = None):

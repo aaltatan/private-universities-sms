@@ -199,6 +199,7 @@ class VoucherProxy(Voucher):
         proxy = True
         verbose_name = _("voucher proxy")
         verbose_name_plural = _("all vouchers")
+        codename_plural = "proxy_vouchers"
 
 
 class ActivitySerializer(serializers.ModelSerializer):

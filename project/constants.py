@@ -111,12 +111,12 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                     "path": reverse("hr:employees:index"),
                 },
             },
-            # "trans": {
-            #     "vouchers": {
-            #         "text": _("vouchers").title(),
-            #         "path": reverse("trans:vouchers:index"),
-            #     },
-            # },
+            "trans": {
+                "vouchers": {
+                    "text": _("vouchers").title(),
+                    "path": reverse("trans:vouchers:index"),
+                },
+            },
         },
     }
     return data

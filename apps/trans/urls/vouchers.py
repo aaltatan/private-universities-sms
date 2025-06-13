@@ -1,9 +1,9 @@
 from django.urls import path
 from django.utils.translation import gettext as _
 
-from ..views import transactions as views
+from ..views import vouchers as views
 
-app_name = "transactions"
+app_name = "vouchers"
 
 
 urlpatterns = [
@@ -11,7 +11,7 @@ urlpatterns = [
         route="",
         view=views.ListView.as_view(),
         name="index",
-        kwargs={"title": _("transactions")},
+        kwargs={"title": _("vouchers")},
     ),
     path(
         route="details/<str:slug>/",

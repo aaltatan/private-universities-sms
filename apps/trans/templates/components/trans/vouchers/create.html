@@ -1,10 +1,12 @@
 {% load i18n %}
 
 <c-forms.create
-  form_title="{% translate 'add new governorate' %}"
+  form_title="{% translate 'add new voucher' %}"
   url="{{ create_url }}{% querystring %}"
   :form_id="form_id"
   :form="form"
+  width="none"
+  encoding="multipart"
 >
-  <c-geo.governorates.form-body />
+  <c-trans.vouchers.form-body />
 </c-forms.create>

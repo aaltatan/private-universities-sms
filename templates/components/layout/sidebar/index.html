@@ -171,6 +171,18 @@
           text="{{ sidebar_links.hr.employees.text }}"
         />
       </c-layout.sidebar.collapsible-item>
+      <!-- trans -->
+      <c-layout.sidebar.collapsible-item
+        text="{% translate 'transactions'|title %}"
+        icon="book-open"
+        url="/trans/"
+        name="trans"
+      >
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.trans.vouchers.path }}"
+          text="{{ sidebar_links.trans.vouchers.text }}"
+        />
+      </c-layout.sidebar.collapsible-item>
     </div>
   </nav>
 

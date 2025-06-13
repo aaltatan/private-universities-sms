@@ -33,6 +33,9 @@ from apps.org.views.job_types import APIViewSet as JobTypeAPIViewSet
 from apps.org.views.positions import APIViewSet as PositionAPIViewSet
 from apps.org.views.statuses import APIViewSet as StatusAPIViewSet
 
+# trans
+from apps.trans.views.vouchers import APIViewSet as VoucherAPIViewSet
+
 router = routers.DefaultRouter()
 
 # geo
@@ -63,3 +66,5 @@ router.register(r"fin/taxes", TaxAPIViewSet)
 router.register(r"fin/tax-brackets", TaxBracketAPIViewSet)
 router.register(r"fin/compensations", CompensationAPIViewSet)
 router.register(r"fin/voucher-kinds", VoucherKindAPIViewSet)
+# trans
+router.register(r"trans/vouchers", VoucherAPIViewSet)

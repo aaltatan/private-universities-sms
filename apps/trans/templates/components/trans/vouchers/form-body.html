@@ -1,2 +1,21 @@
-<c-inputs.text :field="form.name" />
-<c-inputs.text :field="form.description" />
+<c-forms.wrapper cols="4">
+  <c-inputs.text :field="form.title" />
+  <c-inputs.text :field="form.date" />
+  <c-inputs.text :field="form.due_date" />
+  <c-inputs.text :field="form.notes" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="4">
+  <c-inputs.text :field="form.kind" />
+  <c-inputs.text :field="form.month" />
+  <c-inputs.text :field="form.quarter" />
+  <c-inputs.text :field="form.period" />
+</c-forms.wrapper>
+<c-forms.wrapper cols="4">
+  <c-inputs.text :field="form.serial_id" />
+  <c-inputs.text :field="form.serial_date" />
+  <c-inputs.text :field="form.approve_date" />
+</c-forms.wrapper>
+{% comment %}
+<c-inputs.text :field="form.document" />
+{% endcomment %}
+{{ form.document }}

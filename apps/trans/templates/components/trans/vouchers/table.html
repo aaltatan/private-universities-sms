@@ -1,4 +1,4 @@
-{% load i18n widget_tweaks utils %}
+{% load i18n widget_tweaks utils formats %}
 
 <c-blocks.table id="{{ table_id }}" :index_url="{{ index_url }}" :table_id="{{ table_id }}">
   <c-slot name="search">
@@ -37,7 +37,7 @@
       hx-vals='{"filters": true}'
       hx-target="#overlay-sidebar-container"
       hx-swap="innerHTML"
-      data-fields="name,cities_count_from,cities_count_to,description,employees_count_from,employees_count_to"
+      data-fields="voucher_serial,title,created_at_from,created_at_to,updated_at_from,updated_at_to,date_from,date_to,transactions_count_from,transactions_count_to,total_from,total_to,net_from,net_to,kind,month,quarter,period,is_closed_period,notes,serial_id,serial_date_from,serial_date_to,approve_date_from,approve_date_to,due_date_from,due_date_to,accounting_journal_sequence,is_audited,is_migrated,"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -65,10 +65,13 @@
       <c-table.tr header="True">
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'name' }}</c-table.th>
-        <c-table.th>{% translate 'cities count' %}</c-table.th>
-        <c-table.th>{% translate 'employees count' %}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'description' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'voucher_serial' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'title' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'date' }}</c-table.th>
+        <c-table.th>{% translate 'total' %}</c-table.th>
+        <c-table.th>{% translate 'transactions count' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'kind' }}</c-table.th>
+        <c-table.th>{% translate 'information' %}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
       <c-table.tr>
@@ -123,7 +126,7 @@
           </c-layout.contextmenu>
           {% endif %}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'name' }}">
+        <c-table.td data-header="{{ model|verbose_name:'voucher_serial' }}">
           <a
             href="#"
             hx-get="{{ obj.get_absolute_url }}{% querystring %}"
@@ -133,17 +136,47 @@
             class="hover:underline cursor-pointer"
             aria-label="object details"
           >
-            {{ obj.name }}
+            {{ obj.voucher_serial }}
           </a>
         </c-table.td>
-        <c-table.td data-header="{% translate 'cities count' %}">
-          {{ obj.cities_count }}
+        <c-table.td data-header="{{ model|verbose_name:'title' }}"> {{ obj.title }} </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'date' }}">
+          {{ obj.date|date:'Y-m-d' }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'employees count' %}">
-          {{ obj.employees_count }}
+        <c-table.td data-header="{% translate 'total' %}"> {{ obj.total|money:True }} </c-table.td>
+        <c-table.td data-header="{% translate 'transactions count' %}">
+          {{ obj.transactions_count }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'description' }}">
-          {{ obj.description }}
+        <c-table.td data-header="{{ model|verbose_name:'kind' }}"> {{ obj.kind }} </c-table.td>
+        <c-table.td data-header="{% translate 'information' %}">
+          <div class="flex items-center gap-2">
+            <div
+              title="{% if obj.is_audited %}{% translate 'audited'|capfirst %}{% else %}{% translate 'not audited'|capfirst %}{% endif %}"
+            >
+              {% if obj.is_audited %}
+              <!--  -->
+              {% heroicon_outline 'check-badge' size="18" class="text-green-500" %}
+              <!--  -->
+              {% else %}
+              <!--  -->
+              {% heroicon_outline 'no-symbol' size="18" class="text-red-500" %}
+              <!--  -->
+              {% endif %}
+            </div>
+            <div
+              title="{% if obj.is_migrated %}{% translate 'migrated'|capfirst %}{% else %}{% translate 'not migrated'|capfirst %}{% endif %}"
+            >
+              {% if obj.is_migrated %}
+              <!--  -->
+              {% heroicon_outline 'lock-closed' size="18" %}
+              <!--  -->
+              {% else %}
+              <!--  -->
+              {% heroicon_outline 'lock-open' size="18" %}
+              <!--  -->
+              {% endif %}
+            </div>
+          </div>
         </c-table.td>
       </c-table.tr>
       {% empty %}

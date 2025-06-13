@@ -1,50 +1,50 @@
 {% load i18n widget_tweaks %}
 
 <!--  -->
-{% if cities_formset.forms %}
+{% if transactions_formset.forms %}
 <c-forms.update
   form_title="{% translate 'update' %} {{ form.instance }}"
   url="{{ update_url }}{% querystring %}"
   :form_id="form_id"
   :form="form"
-  width="xl"
+  width="none"
+  encoding="multipart"
 >
-  <c-forms.wrapper cols="2">
-    <c-inputs.text :field="form.name" />
-    <c-inputs.text :field="form.description" />
-  </c-forms.wrapper>
+  <c-trans.vouchers.form-body />
   <div
     x-data="formset({
-      totalForms: {{ cities_formset.management_form.TOTAL_FORMS.value }},
-      emptyFormId: 'cities-empty-form',
-      tableId: 'cities-formset-table',
+      totalForms: {{ transactions_formset.management_form.TOTAL_FORMS.value }},
+      emptyFormId: 'transactions-empty-form',
+      tableId: 'transactions-formset-table',
     })"
   >
-    <c-geo.governorates.cities.management-form />
+    <c-trans.vouchers.transactions.management-form />
     <c-error.wrapper>
-      {% for error in cities_formset.non_form_errors %}
+      {% for error in transactions_formset.non_form_errors %}
       <c-error.error>{{ error }}</c-error.error>
       {% endfor %}
     </c-error.wrapper>
-    <c-table height="none" id="cities-formset-table">
+    <c-table height="none" id="transactions-formset-table">
       <c-table.table>
         <c-table.tr header="True">
           <c-table.th alignment="center"> # </c-table.th>
-          <c-table.th alignment="center"> {% translate 'name' %} </c-table.th>
-          <c-table.th alignment="center"> {% translate 'kind' %} </c-table.th>
-          <c-table.th alignment="center"> {% translate 'description' %} </c-table.th>
-          {% if perms.geo.delete_city %}
+          <c-table.th alignment="center"> {% translate 'employee' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'compensation' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'quantity' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'value' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'total' %} </c-table.th>
+          {% if perms.trans.delete_city %}
           <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
           {% endif %}
         </c-table.tr>
         <tbody x-sort="sortHandler();resetSerials();">
-          {% for form in cities_formset %}
-          <c-geo.governorates.cities.inline :form="form" />
+          {% for form in transactions_formset %}
+          <c-trans.vouchers.transactions.inline :form="form" />
           {% endfor %}
         </tbody>
       </c-table.table>
     </c-table>
-    {% if perms.geo.add_city %}
+    {% if perms.trans.add_city %}
     <div class="my-2">
       <c-button @click.prevent="addNewForm" width="full">{% translate 'add new row' %} </c-button>
     </div>
@@ -58,15 +58,14 @@
   :form_id="form_id"
   :form="form"
 >
-  <c-inputs.text :field="form.name" />
-  <c-inputs.text :field="form.description" />
+  <c-trans.vouchers.form-body />
 </c-forms.update>
 {% endif %}
 
 <table>
-  <c-geo.governorates.cities.inline
-    row_id="cities-empty-form"
+  <c-trans.vouchers.transactions.inline
+    row_id="transactions-empty-form"
     :hide="True"
-    :form="cities_formset.empty_form"
+    :form="transactions_formset.empty_form"
   />
 </table>

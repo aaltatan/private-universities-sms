@@ -5,5 +5,5 @@ from ..views import IndexView
 
 patterns = [
     path("", IndexView.as_view(), kwargs={"title": _("transactions")}),
-    # path("governorates/", include("apps.geo.urls.governorates")),
+    path("vouchers/", include("apps.trans.urls.vouchers")),
 ]
