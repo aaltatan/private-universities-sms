@@ -10,7 +10,7 @@ from apps.core.filters import (
 from .. import models
 
 
-class BaseCitiesFilter(BaseNameDescriptionFilter):
+class BaseCityFilter(BaseNameDescriptionFilter):
     employees_count_from, employees_count_to = get_number_from_to_filters(
         "employees_count",
     )
@@ -27,7 +27,7 @@ class BaseCitiesFilter(BaseNameDescriptionFilter):
         )
 
 
-class APICitiesFilter(FilterComboboxMixin, BaseCitiesFilter):
+class APICityFilter(FilterComboboxMixin, BaseCityFilter):
     governorate = get_combobox_choices_filter(
         model=models.City,
         field_name="governorate__name",
@@ -36,7 +36,7 @@ class APICitiesFilter(FilterComboboxMixin, BaseCitiesFilter):
     )
 
 
-class CityFilter(FilterComboboxMixin, BaseCitiesFilter):
+class CityFilter(FilterComboboxMixin, BaseCityFilter):
     governorate = get_combobox_choices_filter(
         model=models.City,
         field_name="governorate__name",

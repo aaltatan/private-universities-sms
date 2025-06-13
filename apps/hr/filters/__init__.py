@@ -2,9 +2,9 @@ from .email import APIEmailFilter, EmailFilter
 from .employee import (
     APIEmployeeFilter,
     EmployeeFilter,
-    GroupedByCountsFilter,
-    UpcomingBirthdaysFilter,
-    UpcomingJobAnniversariesFilter,
+    GroupedByCountFilter,
+    UpcomingBirthdayFilter,
+    UpcomingJobAnniversaryFilter,
 )
 from .mobile import APIMobileFilter, MobileFilter
 from .phone import APIPhoneFilter, PhoneFilter
@@ -14,9 +14,9 @@ __all__ = [
     "EmailFilter",
     "APIEmployeeFilter",
     "EmployeeFilter",
-    "GroupedByCountsFilter",
-    "UpcomingBirthdaysFilter",
-    "UpcomingJobAnniversariesFilter",
+    "GroupedByCountFilter",
+    "UpcomingBirthdayFilter",
+    "UpcomingJobAnniversaryFilter",
     "APIMobileFilter",
     "MobileFilter",
     "APIPhoneFilter",

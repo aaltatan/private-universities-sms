@@ -1,21 +1,21 @@
-from .compensation import APICompensationsFilter, CompensationFilter
-from .period import APIPeriodsFilter, PeriodFilter
-from .tax import APITaxesFilter, TaxFilter
-from .tax_bracket import APITaxBracketsFilter, TaxBracketFilter
-from .voucher_kind import APIVoucherKindsFilter, VoucherKindFilter
-from .year import APIYearsFilter, YearFilter
+from .compensation import APICompensationFilter, CompensationFilter
+from .period import APIPeriodFilter, PeriodFilter
+from .tax import APITaxFilter, TaxFilter
+from .tax_bracket import APITaxBracketFilter, TaxBracketFilter
+from .voucher_kind import APIVoucherKindFilter, VoucherKindFilter
+from .year import APIYearFilter, YearFilter
 
 __all__ = [
-    "APICompensationsFilter",
+    "APICompensationFilter",
     "CompensationFilter",
-    "APIPeriodsFilter",
+    "APIPeriodFilter",
     "PeriodFilter",
-    "APIYearsFilter",
+    "APIYearFilter",
     "YearFilter",
-    "APITaxesFilter",
+    "APITaxFilter",
     "TaxFilter",
-    "APITaxBracketsFilter",
+    "APITaxBracketFilter",
     "TaxBracketFilter",
-    "APIVoucherKindsFilter",
+    "APIVoucherKindFilter",
     "VoucherKindFilter",
 ]

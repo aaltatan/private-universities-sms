@@ -10,7 +10,7 @@ from apps.core.filters import (
 from .. import models
 
 
-class BaseTaxesFilter(BaseNameDescriptionFilter):
+class BaseTaxFilter(BaseNameDescriptionFilter):
     fixed = filters.ChoiceFilter(
         label=_("fixed").title(),
         choices=models.Tax.FixedChoices,
@@ -28,9 +28,9 @@ class BaseTaxesFilter(BaseNameDescriptionFilter):
         )
 
 
-class APITaxesFilter(FilterComboboxMixin, BaseTaxesFilter):
+class APITaxFilter(FilterComboboxMixin, BaseTaxFilter):
     pass
 
 
-class TaxFilter(FilterComboboxMixin, BaseTaxesFilter):
+class TaxFilter(FilterComboboxMixin, BaseTaxFilter):
     pass

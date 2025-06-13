@@ -17,7 +17,7 @@ from .. import choices, models
 from ..managers import EmployeeQuerySet
 
 
-class GroupedByCountsFilter(filters.FilterSet):
+class GroupedByCountFilter(filters.FilterSet):
     group_by = filters.TypedChoiceFilter(
         label=_("group by").title(),
         choices=choices.CountsGroupedByChoices,
@@ -32,7 +32,7 @@ class GroupedByCountsFilter(filters.FilterSet):
         fields = ("group_by",)
 
 
-class UpcomingBirthdaysFilter(filters.FilterSet):
+class UpcomingBirthdayFilter(filters.FilterSet):
     this = filters.TypedChoiceFilter(
         label=_("this").title(),
         choices=choices.DateUnitsChoices,
@@ -47,7 +47,7 @@ class UpcomingBirthdaysFilter(filters.FilterSet):
         fields = ("this",)
 
 
-class UpcomingJobAnniversariesFilter(filters.FilterSet):
+class UpcomingJobAnniversaryFilter(filters.FilterSet):
     this = filters.TypedChoiceFilter(
         label=_("this").title(),
         choices=choices.DateUnitsChoices,

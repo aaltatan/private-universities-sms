@@ -6,15 +6,15 @@ from apps.core.filters import (
 from .. import models
 
 
-class BaseVoucherKindsFilter(BaseNameDescriptionFilter):
+class BaseVoucherKindFilter(BaseNameDescriptionFilter):
     class Meta:
         model = models.VoucherKind
         fields = ("name", "description")
 
 
-class APIVoucherKindsFilter(FilterComboboxMixin, BaseVoucherKindsFilter):
+class APIVoucherKindFilter(FilterComboboxMixin, BaseVoucherKindFilter):
     pass
 
 
-class VoucherKindFilter(FilterComboboxMixin, BaseVoucherKindsFilter):
+class VoucherKindFilter(FilterComboboxMixin, BaseVoucherKindFilter):
     pass

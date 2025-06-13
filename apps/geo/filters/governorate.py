@@ -3,7 +3,7 @@ from apps.core.filters import BaseNameDescriptionFilter, get_number_from_to_filt
 from .. import models
 
 
-class BaseGovernoratesFilter(BaseNameDescriptionFilter):
+class BaseGovernorateFilter(BaseNameDescriptionFilter):
     cities_count_from, cities_count_to = get_number_from_to_filters("cities_count")
     employees_count_from, employees_count_to = get_number_from_to_filters(
         "employees_count",
@@ -21,9 +21,9 @@ class BaseGovernoratesFilter(BaseNameDescriptionFilter):
         )
 
 
-class APIGovernoratesFilter(BaseGovernoratesFilter):
+class APIGovernorateFilter(BaseGovernorateFilter):
     pass
 
 
-class GovernorateFilter(BaseGovernoratesFilter):
+class GovernorateFilter(BaseGovernorateFilter):
     pass

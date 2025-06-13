@@ -6,15 +6,15 @@ from apps.core.filters import (
 from .. import models
 
 
-class BaseYearsFilter(BaseNameDescriptionFilter):
+class BaseYearFilter(BaseNameDescriptionFilter):
     class Meta:
         model = models.Year
         fields = ("name", "description")
 
 
-class APIYearsFilter(FilterComboboxMixin, BaseYearsFilter):
+class APIYearFilter(FilterComboboxMixin, BaseYearFilter):
     pass
 
 
-class YearFilter(FilterComboboxMixin, BaseYearsFilter):
+class YearFilter(FilterComboboxMixin, BaseYearFilter):
     pass

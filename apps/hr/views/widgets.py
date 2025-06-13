@@ -15,7 +15,7 @@ class UpcomingBirthdaysView(PermissionRequiredMixin, FiltersetMixin, ListView):
         search_annotations=False,
         select_related=False,
     ).all()
-    filterset_class = filters.UpcomingBirthdaysFilter
+    filterset_class = filters.UpcomingBirthdayFilter
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -31,7 +31,7 @@ class UpcomingJobAnniversariesView(PermissionRequiredMixin, FiltersetMixin, List
         search_annotations=False,
         select_related=False,
     ).all()
-    filterset_class = filters.UpcomingJobAnniversariesFilter
+    filterset_class = filters.UpcomingJobAnniversaryFilter
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,4 +47,4 @@ class GroupByCountsView(PermissionRequiredMixin, FiltersetMixin, ListView):
         name_annotations=False,
         search_annotations=False,
     ).all()
-    filterset_class = filters.GroupedByCountsFilter
+    filterset_class = filters.GroupedByCountFilter

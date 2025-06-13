@@ -52,7 +52,7 @@ class BaseCompensationFilter(BaseQSearchFilter, BaseNameDescriptionFilter):
         )
 
 
-class APICompensationsFilter(BaseCompensationFilter):
+class APICompensationFilter(BaseCompensationFilter):
     pass
 
 

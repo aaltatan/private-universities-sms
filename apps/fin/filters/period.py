@@ -10,7 +10,7 @@ from apps.core.filters import (
 from .. import models
 
 
-class BasePeriodsFilter(BaseNameDescriptionFilter):
+class BasePeriodFilter(BaseNameDescriptionFilter):
     is_closed = filters.ChoiceFilter(
         label=_("closed").title(),
         choices=models.Period.ClosedChoices,
@@ -29,9 +29,9 @@ class BasePeriodsFilter(BaseNameDescriptionFilter):
         )
 
 
-class APIPeriodsFilter(FilterComboboxMixin, BasePeriodsFilter):
+class APIPeriodFilter(FilterComboboxMixin, BasePeriodFilter):
     pass
 
 
-class PeriodFilter(FilterComboboxMixin, BasePeriodsFilter):
+class PeriodFilter(FilterComboboxMixin, BasePeriodFilter):
     pass

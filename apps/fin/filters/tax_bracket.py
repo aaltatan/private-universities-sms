@@ -11,7 +11,7 @@ from apps.core.filters import (
 from .. import models
 
 
-class BaseTaxBracketsFilter(BaseNameDescriptionFilter):
+class BaseTaxBracketFilter(BaseNameDescriptionFilter):
     tax = filters.ModelChoiceFilter(
         field_name="tax__name",
         queryset=models.Tax.objects.filter(fixed=False),
@@ -36,9 +36,9 @@ class BaseTaxBracketsFilter(BaseNameDescriptionFilter):
         )
 
 
-class APITaxBracketsFilter(FilterComboboxMixin, BaseTaxBracketsFilter):
+class APITaxBracketFilter(FilterComboboxMixin, BaseTaxBracketFilter):
     pass
 
 
-class TaxBracketFilter(FilterComboboxMixin, BaseTaxBracketsFilter):
+class TaxBracketFilter(FilterComboboxMixin, BaseTaxBracketFilter):
     pass

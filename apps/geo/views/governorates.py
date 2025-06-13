@@ -26,7 +26,7 @@ class APIViewSet(
         django_filters.DjangoFilterBackend,
         rest_filters.OrderingFilter,
     ]
-    filterset_class = filters.APIGovernoratesFilter
+    filterset_class = filters.APIGovernorateFilter
     ordering_fields = constants.ORDERING_FIELDS
     search_fields = constants.SEARCH_FIELDS
     deleter = Deleter

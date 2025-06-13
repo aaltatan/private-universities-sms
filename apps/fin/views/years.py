@@ -25,7 +25,7 @@ class APIViewSet(
         django_filters.DjangoFilterBackend,
         rest_filters.OrderingFilter,
     ]
-    filterset_class = filters.APIYearsFilter
+    filterset_class = filters.APIYearFilter
     ordering_fields = constants.ORDERING_FIELDS
     search_fields = constants.SEARCH_FIELDS
     deleter = Deleter

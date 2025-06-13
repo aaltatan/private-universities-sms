@@ -1,12 +1,12 @@
-from .city import APICitiesFilter, CityFilter
-from .governorate import APIGovernoratesFilter, GovernorateFilter
+from .city import APICityFilter, CityFilter
+from .governorate import APIGovernorateFilter, GovernorateFilter
 from .nationality import APINationalityFilter, NationalityFilter
 
 __all__ = [
     "CityFilter",
-    "APICitiesFilter",
+    "APICityFilter",
     "GovernorateFilter",
-    "APIGovernoratesFilter",
+    "APIGovernorateFilter",
     "NationalityFilter",
     "APINationalityFilter",
 ]
