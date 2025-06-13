@@ -260,7 +260,7 @@
           x-data="combineTitle({
             '{% translate 'fullname'|title %}': '{{ obj.fullname }}',
             '{% translate 'age'|title %}': '{{ obj.birth_date|timesince }}',
-            '{% translate 'age group'|title %}': '{{ obj.age_group|title }}',
+            '{% translate 'age group'|title %}': `{{ obj.age_group|title }}`,
             '{% translate 'next birthday'|title %}': '{{ obj.next_birthday|date:'Y-m-d' }}',
             '{% translate 'until next birthday'|title %}': '{{ obj.next_birthday|timeuntil:now }}',
           })"
