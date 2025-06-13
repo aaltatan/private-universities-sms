@@ -147,7 +147,11 @@ class EmployeeForm(forms.ModelForm):
             "lastname": get_text_widget(placeholder=_("e.g. Doe")),
             "father_name": get_text_widget(placeholder=_("e.g. John")),
             "mother_name": get_text_widget(placeholder=_("e.g. Jane")),
-            "birth_place": get_text_widget(placeholder=_("e.g. Cairo")),
+            "birth_place": get_input_datalist(
+                model=models.Employee,
+                field_name="birth_place",
+                placeholder=_("e.g. Hama"),
+            ),
             "birth_date": get_date_widget(placeholder=_("e.g. 1990-01-01")),
             "national_id": get_numeric_widget(
                 x_mask="9" * 12,
@@ -182,7 +186,9 @@ class EmployeeForm(forms.ModelForm):
             "current_address": get_text_widget(
                 placeholder=_("e.g. 123 Main Street, Cairo"),
             ),
-            "special_signs": get_textarea_widget(
+            "special_signs": get_input_datalist(
+                model=models.Employee,
+                field_name="special_signs",
                 placeholder=_("e.g. Glasses"),
             ),
             "card_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
