@@ -10,7 +10,11 @@ from .. import filters, models
 class UpcomingBirthdaysView(PermissionRequiredMixin, FiltersetMixin, ListView):
     permission_required = "hr.view_employee"
     template_name = "components/hr/employees/widgets/upcoming-birthdays.html"
-    queryset = models.Employee.objects.all()
+    queryset = models.Employee.objects.queryset_adjustments(
+        prefetch_related=False,
+        search_annotations=False,
+        select_related=False,
+    ).all()
     filterset_class = filters.UpcomingBirthdaysFilter
 
     def get_context_data(self, **kwargs):
@@ -22,7 +26,11 @@ class UpcomingBirthdaysView(PermissionRequiredMixin, FiltersetMixin, ListView):
 class UpcomingJobAnniversariesView(PermissionRequiredMixin, FiltersetMixin, ListView):
     permission_required = "hr.view_employee"
     template_name = "components/hr/employees/widgets/upcoming-job-anniversaries.html"
-    queryset = models.Employee.objects.all()
+    queryset = models.Employee.objects.queryset_adjustments(
+        prefetch_related=False,
+        search_annotations=False,
+        select_related=False,
+    ).all()
     filterset_class = filters.UpcomingJobAnniversariesFilter
 
     def get_context_data(self, **kwargs):
@@ -34,5 +42,9 @@ class UpcomingJobAnniversariesView(PermissionRequiredMixin, FiltersetMixin, List
 class GroupByCountsView(PermissionRequiredMixin, FiltersetMixin, ListView):
     permission_required = "hr.view_employee"
     template_name = "components/hr/employees/widgets/group-by-counts.html"
-    queryset = models.Employee.objects.all()
+    queryset = models.Employee.objects.queryset_adjustments(
+        prefetch_related=False,
+        name_annotations=False,
+        search_annotations=False,
+    ).all()
     filterset_class = filters.GroupedByCountsFilter
