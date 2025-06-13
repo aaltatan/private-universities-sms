@@ -22,8 +22,7 @@ class VoucherTransactionAdmin(
         "net",
     )
     fields = (
-        ("created_at", "updated_at"),
-        "voucher",
+        ("voucher", "created_at", "updated_at"),
         ("employee", "compensation"),
         ("quantity", "value", "tax"),
     )
@@ -38,6 +37,7 @@ class VoucherTransactionAdmin(
         "slug",
         "tax",
         "ordering",
+        "voucher",
     )
     # resource_classes = (resources.VoucherResource,)
 
