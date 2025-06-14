@@ -1,4 +1,10 @@
+import json
+
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models import QuerySet
+from django.contrib import messages
+from django.http import HttpResponse
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, View
 from django.views.generic.list import MultipleObjectMixin
 from django_filters import rest_framework as django_filters
@@ -6,6 +12,7 @@ from rest_framework import filters as rest_filters
 from rest_framework import viewsets
 
 from apps.core import filter_backends, mixins
+
 # from apps.core.inline import InlineFormsetFactory
 from apps.core.schemas import Action
 from apps.core.utils import Deleter
@@ -46,6 +53,30 @@ class ListView(
     deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
 
+    def bulk_audit(self, qs: QuerySet, **kwargs):
+        response = HttpResponse()
+
+        if not qs.filter(updated_by=self.request.user).exists():
+            response["Hx-Location"] = json.dumps(
+                {
+                    "path": self.request.get_full_path(),
+                    "target": f"#{self.get_html_ids()['table_id']}",
+                }
+            )
+            qs.update(is_audited=True, audited_by=self.request.user)
+            message = _("vouchers audited successfully").title()
+            messages.success(self.request, message)
+        else:
+            response["Hx-Retarget"] = "#no-content"
+            response["HX-Reswap"] = "innerHTML"
+            message = _(
+                "you can't audit your the vouchers that you have created or updated"
+            ).title()
+            messages.error(self.request, message)
+
+        response["HX-Trigger"] = "messages"
+        return response
+
     def get_actions(self) -> dict[str, Action]:
         return {
             "delete": Action(
@@ -53,6 +84,11 @@ class ListView(
                 template="components/blocks/modals/bulk-delete.html",
                 kwargs=("new_value",),
                 permissions=("trans.delete_voucher",),
+            ),
+            "audit": Action(
+                method=self.bulk_audit,
+                template="components/trans/vouchers/modals/bulk-audit.html",
+                permissions=("trans.audit_voucher",),
             ),
         }
 

@@ -56,6 +56,16 @@
           aria-label="delete all objects"
         />
       </c-layout.contextmenu.item>
+      <c-layout.contextmenu.item icon="check-circle">
+        <c-table.action-button
+          action_name="audit"
+          value="{% translate 'audit' %}"
+          hx-post="{{ index_url }}{% querystring %}"
+          hx-target="#modal-container"
+          hx-indicator="#modal-spinner"
+          aria-label="audit all objects"
+        />
+      </c-layout.contextmenu.item>
     </c-layout.contextmenu.section>
   </c-slot>
   {% endif %}

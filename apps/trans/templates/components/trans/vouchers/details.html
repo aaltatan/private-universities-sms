@@ -30,6 +30,7 @@
               {{ object.date|date:'Y-m-d' }}
             </c-table.td>
           </c-table.tr>
+          {% if object.due_date %}
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'due_date' }}
@@ -38,6 +39,7 @@
               {{ object.due_date|date:'Y-m-d' }}
             </c-table.td>
           </c-table.tr>
+          {% endif %}
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'created_at' }}
@@ -100,6 +102,7 @@
               {{ object.period }}
             </c-table.td>
           </c-table.tr>
+          {% if object.notes %}
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'notes' }}
@@ -108,6 +111,9 @@
               {{ object.notes }}
             </c-table.td>
           </c-table.tr>
+          {% endif %}
+          <!--  -->
+          {% if object.serial_id %}
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'serial_id' }}
@@ -116,6 +122,9 @@
               {{ object.serial_id }}
             </c-table.td>
           </c-table.tr>
+          {% endif %}
+          <!--  -->
+          {% if object.serial_date %}
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'serial_date' }}
@@ -124,6 +133,9 @@
               {{ object.serial_date|date:'Y-m-d' }}
             </c-table.td>
           </c-table.tr>
+          {% endif %}
+          <!--  -->
+          {% if object.approve_date %}
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'approve_date' }}
@@ -132,6 +144,9 @@
               {{ object.approve_date|date:'Y-m-d' }}
             </c-table.td>
           </c-table.tr>
+          {% endif %}
+          <!--  -->
+          {% if object.document %}
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'document' }}
@@ -140,6 +155,9 @@
               {{ object.document|default:'-' }}
             </c-table.td>
           </c-table.tr>
+          {% endif %}
+          <!--  -->
+          {% if object.accounting_journal_sequence %}
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'accounting_journal_sequence' }}
@@ -148,6 +166,7 @@
               {{ object.accounting_journal_sequence }}
             </c-table.td>
           </c-table.tr>
+          {% endif %}
           <c-table.tr>
             <c-table.td data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'is_audited' }}
