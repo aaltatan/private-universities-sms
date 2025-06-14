@@ -281,6 +281,10 @@ class ListMixin(ABC):
             "can_update": self.get_permission("change"),
             "can_delete": self.get_permission("delete"),
             "can_export": self.get_permission("export"),
+            "can_audit": self.get_permission("audit"),
+            "can_unaudit": self.get_permission("unaudit"),
+            "can_migrate": self.get_permission("migrate"),
+            "can_unmigrate": self.get_permission("unmigrate"),
             "can_view_activity": self.get_permission("view_activity"),
         }
 
