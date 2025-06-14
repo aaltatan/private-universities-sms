@@ -13,6 +13,7 @@ class VoucherTransactionManager(models.Manager):
             .select_related(
                 "voucher",
                 "employee",
+                "employee__status",
                 "compensation",
             )
             .annotate(
