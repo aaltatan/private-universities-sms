@@ -5,6 +5,8 @@ from django.http import HttpRequest
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
+from ..utils import VoucherAuditor, VoucherDeleter
+
 
 @admin.action(description="Undo delete selected vouchers")
 def undo_delete(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
@@ -15,9 +17,13 @@ def undo_delete(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
 
 @admin.action(description="Delete selected Vouchers (SOFT)")
 def soft_delete(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
-    qs.update(is_deleted=True)
-    message = _("vouchers deleted successfully").title()
-    modeladmin.message_user(request, message, level=messages.SUCCESS)
+    deleter = VoucherDeleter(request=request, queryset=qs)
+
+    deleter.action()
+    message = deleter.get_message()
+    level = messages.SUCCESS if deleter.has_executed else messages.ERROR
+
+    modeladmin.message_user(request, message, level=level)
 
 
 @admin.action(
@@ -66,16 +72,13 @@ def unmigrate(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
     permissions=["audit_voucher"],
 )
 def audit(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
-    if qs.filter(updated_by=request.user).exists():
-        message = _(
-            "you can't audit your the vouchers that you have created or updated"
-        ).title()
-        modeladmin.message_user(request, message, level=messages.ERROR)
-        return
+    auditor = VoucherAuditor(request=request, queryset=qs)
 
-    qs.update(is_audited=True, audited_by=request.user)
-    message = _("vouchers audited successfully").title()
-    modeladmin.message_user(request, message, level=messages.SUCCESS)
+    auditor.action()
+    message = auditor.get_message()
+    level = messages.SUCCESS if auditor.has_executed else messages.ERROR
+
+    modeladmin.message_user(request, message, level=level)
 
 
 @admin.action(
