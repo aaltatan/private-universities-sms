@@ -11,7 +11,10 @@ class BaseVoucherManager(models.Manager):
     select_related_list = (
         "kind",
         "period",
+        "period__year",
         "created_by",
+        "updated_by",
+        "audited_by",
     )
     prefetch_related_list = ("transactions",)
     annotations = {
