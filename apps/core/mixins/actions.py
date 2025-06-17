@@ -24,10 +24,10 @@ class BulkDeleteMixin:
                 "the deleter class must be a subclass of Deleter.",
             )
 
-        deleter: Deleter = self.deleter(queryset=qs)
-        deleter.delete()
+        deleter: Deleter = self.deleter(request=self.request, queryset=qs)
+        deleter.action()
 
-        if deleter.has_deleted:
+        if deleter.has_executed:
             response = HttpResponse(status=204)
             response["Hx-Location"] = json.dumps(
                 {
@@ -78,10 +78,10 @@ class BulkDeleteAPIMixin:
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        deleter: Deleter = self.deleter(queryset=qs)
-        deleter.delete()
+        deleter: Deleter = self.deleter(request=self.request, queryset=qs)
+        deleter.action()
 
-        if deleter.has_deleted:
+        if deleter.has_executed:
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(

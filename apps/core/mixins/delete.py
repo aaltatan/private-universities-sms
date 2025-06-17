@@ -67,11 +67,11 @@ class DeleteMixin(ABC):
         model = self.get_model_class()
         self.obj = get_object_or_404(model, slug=slug)
 
-        deleter: Deleter = self.deleter(obj=self.obj)
+        deleter: Deleter = self.deleter(request=self.request, obj=self.obj)
 
-        deleter.delete()
+        deleter.action()
 
-        if deleter.has_deleted:
+        if deleter.has_executed:
             response = HttpResponse(status=204)
             querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
             messages.success(request, deleter.get_message())

@@ -99,10 +99,10 @@ def custom_deleter():
         error_obj_msg = "error obj message"
         error_qs_msg = "error qs message"
 
-        def check_obj_deleting_possibility(self, obj: Status) -> bool:
+        def check_obj_executing_possibility(self, obj: Status) -> bool:
             return obj.pk not in [1, 2]
 
-        def check_queryset_deleting_possibility(self, qs) -> bool:
+        def check_queryset_executing_possibility(self, qs) -> bool:
             return not qs.filter(pk__in=[1, 2]).exists()
 
     return CustomDeleter

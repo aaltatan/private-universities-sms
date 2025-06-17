@@ -24,10 +24,10 @@ class APIMixin(ABC):
 
         instance = self.get_object()
 
-        deleter: Deleter = self.deleter(obj=instance)
-        deleter.delete()
+        deleter: Deleter = self.deleter(request=self.request, obj=instance)
+        deleter.action()
 
-        if deleter.has_deleted:
+        if deleter.has_executed:
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(

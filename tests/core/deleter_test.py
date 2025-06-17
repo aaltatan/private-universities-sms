@@ -13,10 +13,10 @@ class CustomDeleter(Deleter[Model]):
     success_qs_msg = "success qs message"
     error_qs_msg = "error qs message"
 
-    def check_obj_deleting_possibility(self, obj: Model) -> bool:
+    def check_obj_executing_possibility(self, obj: Model) -> bool:
         return False
 
-    def check_queryset_deleting_possibility(self, qs: QuerySet) -> bool:
+    def check_queryset_executing_possibility(self, qs: QuerySet) -> bool:
         return False
 
 
@@ -32,8 +32,8 @@ def test_deleter_class_with_obj_error_status(model: type[Model]):
     obj = model.objects.filter(name__contains="حماه").first()
     deleter: Deleter = Deleter(obj=obj)
 
-    assert deleter.delete() is None
-    assert deleter.has_deleted is False
+    assert deleter.action() is None
+    assert deleter.has_executed is False
     assert deleter.get_message() == "{} cannot be deleted.".format("محافظة حماه")
     assert model.objects.count() == 4
 
@@ -43,8 +43,8 @@ def test_deleter_class_with_obj_success_status(model: type[Model]):
     obj = model.objects.filter(name__contains="دلب").first()
     deleter: Deleter = Deleter(obj=obj)
 
-    assert deleter.delete() == (1, {"geo.Governorate": 1})
-    assert deleter.has_deleted is True
+    assert deleter.action() == (1, {"geo.Governorate": 1})
+    assert deleter.has_executed is True
     assert deleter.get_message() == "{} has been deleted successfully.".format(
         "محافظة ادلب"
     )
@@ -56,8 +56,8 @@ def test_deleter_class_with_qs_error_status(model: type[Model]):
     qs = model.objects.all()
     deleter: Deleter = Deleter(queryset=qs)
 
-    assert deleter.delete() is None
-    assert deleter.has_deleted is False
+    assert deleter.action() is None
+    assert deleter.has_executed is False
     assert (
         deleter.get_message()
         == "selected objects CANNOT be deleted because they are related to other objects."
@@ -70,8 +70,8 @@ def test_deleter_class_with_qs_error_status_2(model: type[Model]):
     qs = model.objects.filter(pk__in=[1, 2])
     deleter: Deleter = Deleter(queryset=qs)
 
-    assert deleter.delete() is None
-    assert deleter.has_deleted is False
+    assert deleter.action() is None
+    assert deleter.has_executed is False
     assert (
         deleter.get_message()
         == "selected objects CANNOT be deleted because they are related to other objects."
@@ -84,8 +84,8 @@ def test_deleter_class_with_qs_success_status(model: type[Model]):
     qs = model.objects.filter(pk__in=[3, 4])
     deleter: Deleter = Deleter(queryset=qs)
 
-    assert deleter.delete() == (2, {"geo.Governorate": 2})
-    assert deleter.has_deleted is True
+    assert deleter.action() == (2, {"geo.Governorate": 2})
+    assert deleter.has_executed is True
     assert deleter.get_message() == "2 selected objects have been deleted successfully."
     assert model.objects.count() == 2
 
@@ -145,11 +145,11 @@ def test_deleter_class_with_obj_with_custom_message(
         deleter = CustomMessagesDeleter(queryset=qs)
 
     if deleted_object is None:
-        assert deleter.delete() is None
+        assert deleter.action() is None
     else:
-        assert deleter.delete() == deleted_object
+        assert deleter.action() == deleted_object
 
-    assert deleter.has_deleted is has_deleted
+    assert deleter.has_executed is has_deleted
     assert deleter.get_message() == message
     assert model.objects.count() == count
 
@@ -160,8 +160,8 @@ def test_deleter_class_with_obj_with_custom_checking(model: type[Model]):
     for obj in qs:
         deleter = CustomDeleter(obj=obj)
 
-        assert deleter.delete() is None
-        assert deleter.has_deleted is False
+        assert deleter.action() is None
+        assert deleter.has_executed is False
         assert deleter.get_message() == "error obj message"
         assert model.objects.count() == 4
 
@@ -171,8 +171,8 @@ def test_deleter_class_with_qs_with_custom_checking(model: type[Model]):
     qs = model.objects.all()
     deleter = CustomDeleter(queryset=qs)
 
-    assert deleter.delete() is None
-    assert deleter.has_deleted is False
+    assert deleter.action() is None
+    assert deleter.has_executed is False
     assert deleter.get_message() == "error qs message"
     assert model.objects.count() == 4
 

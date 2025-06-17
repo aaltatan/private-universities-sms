@@ -104,10 +104,10 @@ def custom_deleter():
         error_obj_msg = "error obj message"
         error_qs_msg = "error qs message"
 
-        def check_obj_deleting_possibility(self, obj: JobSubtype) -> bool:
+        def check_obj_executing_possibility(self, obj: JobSubtype) -> bool:
             return False
 
-        def check_queryset_deleting_possibility(self, qs) -> bool:
+        def check_queryset_executing_possibility(self, qs) -> bool:
             return False
 
     return CustomDeleter
