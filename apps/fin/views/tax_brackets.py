@@ -71,7 +71,7 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     form_class = forms.TaxBracketForm
 
 
-class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
+class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     permission_required = "fin.delete_taxbracket"
-    deleter = Deleter
+    behavior = Deleter
     model = models.TaxBracket

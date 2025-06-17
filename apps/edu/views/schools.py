@@ -76,7 +76,7 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     form_class = forms.SchoolForm
 
 
-class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
+class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     permission_required = "edu.delete_school"
-    deleter = Deleter
+    behavior = Deleter
     model = models.School

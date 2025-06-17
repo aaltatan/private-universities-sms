@@ -9,10 +9,10 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from ..utils import Deleter
+from ..utils import ActionBehavior
 
 
-class DeleteMixin(ABC):
+class BehaviorMixin(ABC):
     @property
     @abstractmethod
     def model(self) -> type[Model]:
@@ -20,19 +20,19 @@ class DeleteMixin(ABC):
 
     @property
     @abstractmethod
-    def deleter(self) -> Deleter:
+    def behavior(self) -> type[ActionBehavior]:
         pass
 
     modal_template_name: str | None = None
 
     def __init__(self):
-        if getattr(self, "deleter", None) is None:
+        if getattr(self, "behavior", None) is None:
             raise AttributeError(
-                "you must define a deleter class for the ListView.",
+                "you must define a behavior class for the ListView.",
             )
-        if not issubclass(self.deleter, Deleter):
+        if not issubclass(self.behavior, ActionBehavior):
             raise TypeError(
-                "the deleter class must be a subclass of Deleter.",
+                "the behavior class must be a subclass of ActionBehavior.",
             )
 
     def get(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
@@ -42,7 +42,7 @@ class DeleteMixin(ABC):
         if not request.htmx:
             messages.error(
                 request,
-                _("you can't delete this object because you are not using htmx."),
+                _("you can't execute this action because you are not using htmx."),
             )
             raise Http404()
 
@@ -60,21 +60,21 @@ class DeleteMixin(ABC):
         if not request.htmx:
             messages.error(
                 request,
-                _("you can't delete this object because you are not using htmx."),
+                _("you can't execute this action because you are not using htmx."),
             )
             raise Http404()
 
         model = self.get_model_class()
         self.obj = get_object_or_404(model, slug=slug)
 
-        deleter: Deleter = self.deleter(request=self.request, obj=self.obj)
+        behavior: ActionBehavior = self.behavior(request=self.request, obj=self.obj)
 
-        deleter.action()
+        behavior.action()
 
-        if deleter.has_executed:
+        if behavior.has_executed:
             response = HttpResponse(status=204)
             querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
-            messages.success(request, deleter.get_message())
+            messages.success(request, behavior.get_message())
             response["Hx-Location"] = json.dumps(
                 {
                     "path": self.get_app_urls()["index_url"] + querystring,
@@ -85,7 +85,7 @@ class DeleteMixin(ABC):
             response = HttpResponse(status=200)
             response["Hx-Retarget"] = "#no-content"
             response["HX-Reswap"] = "innerHTML"
-            messages.error(request, deleter.get_message())
+            messages.error(request, behavior.get_message())
 
         response["HX-Trigger"] = "messages"
 

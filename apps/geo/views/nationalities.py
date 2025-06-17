@@ -71,7 +71,7 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     form_class = forms.NationalityForm
 
 
-class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
+class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     permission_required = "geo.delete_nationality"
-    deleter = Deleter
+    behavior = Deleter
     model = models.Nationality

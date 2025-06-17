@@ -76,7 +76,7 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     form_class = forms.JobSubtypeForm
 
 
-class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
+class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     permission_required = "org.delete_jobsubtype"
-    deleter = Deleter
+    behavior = Deleter
     model = models.JobSubtype

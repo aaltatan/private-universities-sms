@@ -157,7 +157,14 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     # inlines = (VoucherTransactionInline,)
 
 
-class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
+class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     permission_required = "trans.delete_voucher"
-    deleter = VoucherDeleter
+    behavior = VoucherDeleter
     model = models.Voucher
+
+
+class AuditView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
+    permission_required = "trans.audit_voucher"
+    behavior = VoucherAuditor
+    model = models.Voucher
+    modal_template_name = "components/trans/vouchers/modals/audit.html"

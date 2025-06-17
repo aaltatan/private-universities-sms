@@ -37,4 +37,10 @@ urlpatterns = [
         name="delete",
         kwargs={"title": _("delete")},
     ),
+    path(
+        route="audit/<str:slug>/",
+        view=views.AuditView.as_view(),
+        name="audit",
+        kwargs={"title": _("audit")},
+    ),
 ]

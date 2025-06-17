@@ -83,7 +83,7 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     inlines = (CityInline,)
 
 
-class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
+class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     permission_required = "geo.delete_governorate"
-    deleter = Deleter
+    behavior = Deleter
     model = models.Governorate

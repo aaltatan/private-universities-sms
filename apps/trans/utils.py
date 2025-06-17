@@ -1,12 +1,12 @@
 from django.utils.translation import gettext_lazy as _
 from django.db.models import ProtectedError
 
-from apps.core.utils import ActionBehavioral
+from apps.core.utils import ActionBehavior
 
 from .models import Voucher
 
 
-class VoucherDeleter(ActionBehavioral[Voucher]):
+class VoucherDeleter(ActionBehavior[Voucher]):
     success_obj_msg = _("voucher deleted successfully")
     error_obj_msg = _(
         "you can't delete this voucher because it is related to other objects."
@@ -39,7 +39,7 @@ class VoucherDeleter(ActionBehavioral[Voucher]):
             self._handle_executing_error()
 
 
-class VoucherAuditor(ActionBehavioral[Voucher]):
+class VoucherAuditor(ActionBehavior[Voucher]):
     success_obj_msg = _("voucher audited successfully")
     error_obj_msg = _(
         "you can't audit your the vouchers that you have created or updated"

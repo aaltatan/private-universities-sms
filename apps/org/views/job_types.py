@@ -83,7 +83,7 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     inlines = (JobSubtypeInline,)
 
 
-class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
+class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     permission_required = "org.delete_jobtype"
-    deleter = Deleter
+    behavior = Deleter
     model = models.JobType

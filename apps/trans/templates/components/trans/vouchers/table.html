@@ -114,6 +114,20 @@
                 {% translate 'edit' %}
               </c-layout.contextmenu.item>
               {% endif %}
+              <!--  -->
+              {% if can_audit %}
+              <c-layout.contextmenu.item
+                icon="check-circle"
+                href="#"
+                hx-get="{{ obj.get_audit_url }}{% querystring %}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="audit object"
+              >
+                {% translate 'audit' %}
+              </c-layout.contextmenu.item>
+              {% endif %}
             </c-layout.contextmenu.section>
             {% endif %}
             <!--  -->

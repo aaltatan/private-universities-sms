@@ -128,7 +128,7 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     inlines = (MobileInline, PhoneInline, EmailInline)
 
 
-class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
+class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     permission_required = "hr.delete_employee"
-    deleter = Deleter
+    behavior = Deleter
     model = models.Employee

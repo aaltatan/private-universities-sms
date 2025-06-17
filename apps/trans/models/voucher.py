@@ -3,6 +3,7 @@ import uuid
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
+from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 from rest_framework import serializers
@@ -172,6 +173,15 @@ class Voucher(
             raise ValidationError(
                 _("approve date cannot be later than date"),
             )
+        
+    def get_absolute_url(self):
+        return super().get_absolute_url()
+
+    def get_audit_url(self):
+        return reverse(
+            "trans:vouchers:audit",
+            kwargs={"slug": self.slug},
+        )
 
     def __str__(self):
         return f"{self.title} ({self.voucher_serial})"

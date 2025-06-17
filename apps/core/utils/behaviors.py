@@ -11,7 +11,7 @@ STATUS = Literal["success", "error"]
 T = TypeVar("T", bound=Model)
 
 
-class ActionBehavioral(Generic[T]):
+class ActionBehavior(Generic[T]):
     """
     A class that handles the deletion of objects.
     """
@@ -101,7 +101,7 @@ class ActionBehavioral(Generic[T]):
         }
 
 
-class Deleter(ActionBehavioral[T]):
+class Deleter(ActionBehavior[T]):
     success_obj_msg = _("object has been deleted successfully.")
     error_obj_msg = _(
         "you can't delete this object because it is related to other objects."

@@ -76,7 +76,7 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     form_class = forms.CompensationForm
 
 
-class DeleteView(PermissionRequiredMixin, mixins.DeleteMixin, View):
+class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     permission_required = "fin.delete_compensation"
-    deleter = Deleter
+    behavior = Deleter
     model = models.Compensation
