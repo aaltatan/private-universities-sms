@@ -24,7 +24,7 @@
 >
   {% heroicon_outline icons|get_item:message.tags size="32" class=message.tags %}
   <!--  -->
-  {{ message }}
+  {{ message|capfirst }}
   <c-button @click="close" icon="x-mark" size="16" rounded="full" theme="outline" />
 </li>
 {% endfor %}
