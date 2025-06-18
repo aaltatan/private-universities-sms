@@ -1,12 +1,12 @@
-from django import forms
 from django.utils.translation import gettext as _
 
 from apps.core.widgets import get_numeric_widget
+from apps.core.forms import CustomModelForm
 
 from .. import models
 
 
-class PhoneForm(forms.ModelForm):
+class PhoneForm(CustomModelForm):
     class Meta:
         model = models.Phone
         fields = ("number", "kind")

@@ -1,12 +1,12 @@
-from django import forms
 from django.utils.translation import gettext as _
 
 from apps.core.widgets import get_text_widget, get_textarea_widget
+from apps.core.forms import CustomModelForm
 
 from .. import models
 
 
-class JobTypeForm(forms.ModelForm):
+class JobTypeForm(CustomModelForm):
     class Meta:
         model = models.JobType
         fields = ("name", "description")

@@ -2,11 +2,12 @@ from django import forms
 from django.utils.translation import gettext as _
 
 from apps.core import widgets
+from apps.core.forms import CustomModelForm
 
 from .. import models
 
 
-class SpecializationForm(forms.ModelForm):
+class SpecializationForm(CustomModelForm):
     is_specialist = forms.ChoiceField(
         choices=models.Specialization.SpecialistChoices,
         label=_("is specialist"),

@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from apps.core.fields import get_autocomplete_field
+from apps.core.forms import CustomModelForm
 from apps.core.models import User
 from apps.core.utils import calculate_age_in_years
 from apps.core.widgets import (
@@ -17,14 +18,14 @@ from apps.core.widgets import (
     get_text_widget,
     get_textarea_widget,
 )
-from apps.edu.models import School, Specialization
+from apps.edu.models import School, Specialization, Degree
 from apps.geo.models import City, Nationality
-from apps.org.models import Group, Position
+from apps.org.models import Group, Position, CostCenter, JobSubtype, Status
 
 from .. import models
 
 
-class EmployeeForm(forms.ModelForm):
+class EmployeeForm(CustomModelForm):
     city = get_autocomplete_field(
         City.objects.all(),
         to_field_name="name",
@@ -50,6 +51,42 @@ class EmployeeForm(forms.ModelForm):
         app_label="org",
         model_name="Position",
         object_name="position",
+        field_name="search",
+    )
+    cost_center = get_autocomplete_field(
+        CostCenter.objects.all(),
+        to_field_name="name",
+        widget_attributes={"placeholder": _("search cost centers")},
+        app_label="org",
+        model_name="CostCenter",
+        object_name="cost_center",
+        field_name="search",
+    )
+    job_subtype = get_autocomplete_field(
+        JobSubtype.objects.all(),
+        to_field_name="name",
+        widget_attributes={"placeholder": _("search job subtypes")},
+        app_label="org",
+        model_name="JobSubtype",
+        object_name="job_subtype",
+        field_name="search",
+    )
+    status = get_autocomplete_field(
+        Status.objects.all(),
+        to_field_name="name",
+        widget_attributes={"placeholder": _("search statuses")},
+        app_label="org",
+        model_name="Status",
+        object_name="status",
+        field_name="search",
+    )
+    degree = get_autocomplete_field(
+        Degree.objects.all(),
+        to_field_name="name",
+        widget_attributes={"placeholder": _("search degrees")},
+        app_label="edu",
+        model_name="Degree",
+        object_name="degree",
         field_name="search",
     )
     school = get_autocomplete_field(

@@ -1,12 +1,12 @@
-from django import forms
 from django.utils.translation import gettext as _
 
 from apps.core import widgets
+from apps.core.forms import CustomModelForm
 
 from .. import models
 
 
-class PositionForm(forms.ModelForm):
+class PositionForm(CustomModelForm):
     class Meta:
         model = models.Position
         fields = ("name", "order", "description")

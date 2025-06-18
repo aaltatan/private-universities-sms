@@ -1,12 +1,13 @@
 from django import forms
 from django.utils.translation import gettext as _
 
+from apps.core.forms import CustomModelForm
 from apps.core.widgets import get_text_widget, get_textarea_widget
 
 from .. import models
 
 
-class StatusForm(forms.ModelForm):
+class StatusForm(CustomModelForm):
     is_payable = forms.ChoiceField(
         choices=models.Status.PayableChoices,
         label=_("is payable"),

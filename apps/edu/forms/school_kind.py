@@ -2,11 +2,12 @@ from django import forms
 from django.utils.translation import gettext as _
 
 from apps.core import widgets
+from apps.core.forms import CustomModelForm
 
 from .. import models
 
 
-class SchoolKindForm(forms.ModelForm):
+class SchoolKindForm(CustomModelForm):
     is_governmental = forms.ChoiceField(
         choices=models.SchoolKind.OwnershipChoices,
         label=_("is governmental"),

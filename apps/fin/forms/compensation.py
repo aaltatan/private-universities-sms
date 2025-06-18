@@ -1,12 +1,13 @@
 from django import forms
 from django.utils.translation import gettext as _
 
-from apps.core import widgets
+from apps.core import widgets, fields
+from apps.core.forms import CustomModelForm
 
 from .. import models
 
 
-class BaseCompensationForm(forms.ModelForm):
+class BaseCompensationForm(CustomModelForm):
     calculation_method = forms.ChoiceField(
         choices=models.Compensation.CalculationUserChoices,
         label=_("calculation method"),
@@ -18,6 +19,16 @@ class BaseCompensationForm(forms.ModelForm):
     is_active = forms.ChoiceField(
         choices=models.Compensation.AffectedByWorkingDaysChoices,
         label=_("is active"),
+    )
+    tax = fields.get_autocomplete_field(
+        models.Tax.objects.all(),
+        to_field_name="name",
+        widget_attributes={"placeholder": _("search taxes")},
+        app_label="fin",
+        model_name="Tax",
+        object_name="tax",
+        field_name="search",
+        field_attributes={"required": False},
     )
 
     class Meta:

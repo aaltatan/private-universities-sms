@@ -2,12 +2,12 @@ from django import forms
 from django.utils.translation import gettext as _
 
 from apps.core import widgets
+from apps.core.forms import CustomModelForm
 
 from .. import models
 
 
-class BaseTaxBracketForm(forms.ModelForm):
-
+class BaseTaxBracketForm(CustomModelForm):
     tax = forms.ModelChoiceField(
         queryset=models.Tax.objects.filter(fixed=False),
         label=_("tax"),

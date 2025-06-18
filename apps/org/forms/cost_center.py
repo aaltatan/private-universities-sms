@@ -1,6 +1,6 @@
-from django import forms
 from django.utils.translation import gettext as _
 
+from apps.core.forms import CustomModelForm
 from apps.core.widgets import (
     get_numeric_widget,
     get_text_widget,
@@ -10,7 +10,7 @@ from apps.core.widgets import (
 from .. import models
 
 
-class CostCenterForm(forms.ModelForm):
+class CostCenterForm(CustomModelForm):
     class Meta:
         model = models.CostCenter
         fields = ("name", "accounting_id", "description")

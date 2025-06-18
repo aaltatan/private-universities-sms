@@ -1,11 +1,10 @@
-from django import forms
-
+from apps.core.forms import CustomModelForm
 from apps.core.widgets import get_email_widget
 
 from .. import models
 
 
-class EmailForm(forms.ModelForm):
+class EmailForm(CustomModelForm):
     class Meta:
         model = models.Email
         fields = ("email", "kind")

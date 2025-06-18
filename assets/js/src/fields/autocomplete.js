@@ -6,8 +6,7 @@ export function autocomplete(data = { url, initial, eventName }) {
     isListOpen: false,
     async init() {
       if (data.initial) {
-        let isNumeric = data.initial.match(/^\d+$/i);
-        this.keywords = isNumeric ? await this.getInitialValue() : data.initial;
+        this.keywords = data.initial;
       }
     },
     openList() {
