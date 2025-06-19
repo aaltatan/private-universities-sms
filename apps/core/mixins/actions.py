@@ -9,7 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from ..utils import Deleter
+from ..utils import ActionBehavior
 
 
 class BulkDeleteMixin:
@@ -19,12 +19,15 @@ class BulkDeleteMixin:
                 "you must define a deleter class for the ListView.",
             )
 
-        if not issubclass(self.deleter, Deleter):
+        if not issubclass(self.deleter, ActionBehavior):
             raise TypeError(
-                "the deleter class must be a subclass of Deleter.",
+                "the deleter class must be a subclass of ActionBehavior.",
             )
 
-        deleter: Deleter = self.deleter(request=self.request, queryset=qs)
+        deleter: ActionBehavior = self.deleter(
+            request=self.request,
+            queryset=qs,
+        )
         deleter.action()
 
         if deleter.has_executed:
@@ -64,9 +67,9 @@ class BulkDeleteAPIMixin:
                 "you must define a deleter class for the ListView.",
             )
 
-        if not issubclass(self.deleter, Deleter):
+        if not issubclass(self.deleter, ActionBehavior):
             raise TypeError(
-                "the deleter class must be a subclass of Deleter.",
+                "the deleter class must be a subclass of ActionBehavior.",
             )
 
         ids = request.data.get("ids", [])
@@ -78,7 +81,10 @@ class BulkDeleteAPIMixin:
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        deleter: Deleter = self.deleter(request=self.request, queryset=qs)
+        deleter: ActionBehavior = self.deleter(
+            request=self.request,
+            queryset=qs,
+        )
         deleter.action()
 
         if deleter.has_executed:

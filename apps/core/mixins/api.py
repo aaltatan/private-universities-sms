@@ -3,28 +3,31 @@ from abc import ABC, abstractmethod
 from rest_framework import status
 from rest_framework.response import Response
 
-from ..utils import Deleter
+from ..utils import ActionBehavior
 
 
 class APIMixin(ABC):
     @property
     @abstractmethod
-    def deleter(self) -> Deleter:
+    def behavior(self) -> ActionBehavior:
         pass
 
     def destroy(self, request, *args, **kwargs):
-        if getattr(self, "deleter", None) is None:
+        if getattr(self, "behavior", None) is None:
             raise AttributeError(
-                "you must define a deleter class for the ListView.",
+                "you must define a behavior class for the ListView.",
             )
-        if not issubclass(self.deleter, Deleter):
+        if not issubclass(self.behavior, ActionBehavior):
             raise TypeError(
-                "the deleter class must be a subclass of Deleter.",
+                "the behavior class must be a subclass of ActionBehavior.",
             )
 
         instance = self.get_object()
 
-        deleter: Deleter = self.deleter(request=self.request, obj=instance)
+        deleter: ActionBehavior = self.behavior(
+            request=self.request,
+            obj=instance,
+        )
         deleter.action()
 
         if deleter.has_executed:
