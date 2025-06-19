@@ -100,6 +100,12 @@ class CreateMixin(ABC):
 
         return response
 
+    def perform_create(self, form: ModelForm) -> None:
+        """
+        Performs the create action, you can add custom logic here.
+        """
+        return form.save()
+
     def get_form_valid_response(
         self,
         request: HttpRequest,
@@ -109,7 +115,7 @@ class CreateMixin(ABC):
         """
         Returns the form valid response.
         """
-        obj = form.save()
+        obj = self.perform_create(form)
         messages.success(
             request,
             _("{} has been created successfully").format(obj),

@@ -120,6 +120,24 @@ class UpdateMixin(ABC):
         """
         pass
 
+    def perform_update(
+        self,
+        form: ModelForm,
+        formsets: list[BaseInlineFormSet],
+    ) -> Any:
+        """
+        action for performing update.
+        """
+        obj = form.save()
+        for formset in formsets:
+            for form in formset.forms:
+                if form.is_valid():
+                    item = form.save(commit=False)
+                    item.ordering = form.cleaned_data.get("ORDER") or 1_000_000
+            formset.save()
+
+        return obj
+
     def get_form_valid_response(
         self,
         request: HttpRequest,
@@ -130,13 +148,7 @@ class UpdateMixin(ABC):
         """
         Returns the form valid response.
         """
-        obj = form.save()
-        for formset in formsets:
-            for form in formset.forms:
-                if form.is_valid():
-                    item = form.save(commit=False)
-                    item.ordering = form.cleaned_data.get("ORDER") or 1_000_000
-            formset.save()
+        obj = self.perform_update(form=form, formsets=formsets)
 
         messages.success(
             request,
