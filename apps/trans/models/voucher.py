@@ -173,7 +173,7 @@ class Voucher(
             raise ValidationError(
                 _("approve date cannot be later than date"),
             )
-        
+
     def get_absolute_url(self):
         return super().get_absolute_url()
 
@@ -188,7 +188,7 @@ class Voucher(
 
     class Meta:
         icon = "document-check"
-        ordering = ("-date", "created_at", "voucher_serial")
+        ordering = ("-date", "-created_at", "voucher_serial")
         codename_plural = "vouchers"
         verbose_name = _("voucher").title()
         verbose_name_plural = _("vouchers").title()
@@ -215,10 +215,14 @@ class VoucherProxy(Voucher):
 class ActivitySerializer(serializers.ModelSerializer):
     kind = serializers.CharField(source="kind.name")
     period = serializers.CharField(source="period.name")
-    updated_by = serializers.CharField(source="updated_by.username")
+    audited_by = serializers.SerializerMethodField()
+    updated_by = serializers.SerializerMethodField()
+
+    def get_updated_by(self, obj):
+        return obj.updated_by.username if obj.updated_by else ""
 
     def get_audited_by(self, obj):
-        return obj.audited_by.username or ""
+        return obj.audited_by.username if obj.audited_by else ""
 
     class Meta:
         model = Voucher

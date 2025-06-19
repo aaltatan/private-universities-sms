@@ -74,8 +74,7 @@ class VoucherProxyAdmin(
     ImportExportModelAdmin,
     admin.ModelAdmin,
 ):
-    list_display = LIST_DISPLAY
-    list_display_links = LIST_DISPLAY_LINKS
+    list_display = [*LIST_DISPLAY, "is_deleted"]
     search_fields = constants.SEARCH_FIELDS
     list_per_page = LIST_PER_PAGE
     fields = FIELDS

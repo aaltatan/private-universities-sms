@@ -1,6 +1,8 @@
 import re
+from decimal import Decimal
 
 from django.db import models, transaction
+from django.db.models.functions import Coalesce
 
 from apps.core.utils import annotate_search
 
@@ -21,32 +23,32 @@ class BaseVoucherManager(models.Manager):
         "search": annotate_search(constants.SEARCH_FIELDS),
         "transactions_count": models.Count("transactions"),
         "total": models.ExpressionWrapper(
-            models.Sum(
-                models.F("transactions__quantity") * models.F("transactions__value")
+            Coalesce(
+                models.Sum(
+                    models.F("transactions__quantity") * models.F("transactions__value")
+                ),
+                Decimal(0),
             ),
             output_field=models.DecimalField(decimal_places=4, max_digits=20),
         ),
         "quantity_total": models.ExpressionWrapper(
-            models.Sum(
-                models.F("transactions__quantity"),
-            ),
+            Coalesce(models.Sum(models.F("transactions__quantity")), Decimal(0)),
             output_field=models.DecimalField(decimal_places=4, max_digits=20),
         ),
         "value_total": models.ExpressionWrapper(
-            models.Sum(
-                models.F("transactions__value"),
-            ),
+            Coalesce(models.Sum(models.F("transactions__value")), Decimal(0)),
             output_field=models.DecimalField(decimal_places=4, max_digits=20),
         ),
         "tax_total": models.ExpressionWrapper(
-            models.Sum(
-                models.F("transactions__tax"),
-            ),
+            Coalesce(models.Sum(models.F("transactions__tax")), Decimal(0)),
             output_field=models.DecimalField(decimal_places=4, max_digits=20),
         ),
-        "net": models.Sum(
-            (models.F("transactions__quantity") * models.F("transactions__value"))
-            - models.F("transactions__tax")
+        "net": Coalesce(
+            models.Sum(
+                (models.F("transactions__quantity") * models.F("transactions__value"))
+                - models.F("transactions__tax")
+            ),
+            Decimal(0),
         ),
     }
 

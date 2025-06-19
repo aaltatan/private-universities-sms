@@ -20,11 +20,13 @@ class VoucherTransactionAdmin(
         "total",
         "formatted_tax",
         "net",
+        "ordering",
     )
     fields = (
         ("voucher", "created_at", "updated_at"),
         ("employee", "compensation"),
         ("quantity", "value", "tax"),
+        ("notes",),
     )
     list_display_links = ("voucher",)
     search_fields = constants.SEARCH_FIELDS

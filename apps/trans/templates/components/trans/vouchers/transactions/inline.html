@@ -1,0 +1,46 @@
+{% load i18n widget_tweaks formats %}
+
+<c-vars row_id="" :hide="False" />
+
+<c-table.tr x-sort:item="{{ forloop.counter }}" :hide="{{ hide }}" :id="row_id" hx-disable="true">
+  <c-table.td data-header="#" :fixed="True"> # </c-table.td>
+  <c-table.td data-header="{% translate 'employee' %}">
+    {{ form.id }}
+    <!--  -->
+    {{ form.ORDER }}
+    <c-inputs.text :show_help="False" :show_label="False" :field="form.employee" />
+  </c-table.td>
+  <c-table.td data-header="{% translate 'compensation' %}">
+    <c-inputs.text :show_help="False" :show_label="False" :field="form.compensation" />
+  </c-table.td>
+  <c-table.td data-header="{% translate 'quantity' %}">
+    <c-inputs.number step="1" :show_help="False" :show_label="False" :field="form.quantity" />
+  </c-table.td>
+  <c-table.td data-header="{% translate 'value' %}">
+    <c-inputs.number step="1" :show_help="False" :show_label="False" :field="form.value" />
+  </c-table.td>
+  <c-table.td data-header="{% translate 'total' %}">
+    {{ form.instance.total|money:True }}
+  </c-table.td>
+  <c-table.td data-header="{% translate 'tax' %}">
+    {{ form.instance.tax|money:True }}
+  </c-table.td>
+  <c-table.td data-header="{% translate 'net' %}">
+    {{ form.instance.net|money:True }}
+  </c-table.td>
+  <c-table.td data-header="{% translate 'net' %}">
+    {% if form.instance.compensation %}{{ form.instance }}{% endif %}
+  </c-table.td>
+  <c-table.td data-header="{% translate 'notes' %}">
+    <c-inputs.text :show_help="False" :show_label="False" :field="form.notes" />
+  </c-table.td>
+  {% if perms.trans.delete_vouchertransaction %}
+  <c-table.td :fixed="True" data-header="{% translate 'delete' %}">
+    <div class="relative flex items-center justify-center">
+      {% render_field form.DELETE class="checkbox-input peer" %}
+      <!--  -->
+      {% heroicon_outline "check" class="checkbox-icon" %}
+    </div>
+  </c-table.td>
+  {% endif %}
+</c-table.tr>

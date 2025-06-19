@@ -47,8 +47,8 @@ def money(
     decimal_places: int = 2,
     chars_width: int = 15,
 ) -> str:
-    if value == "":
-        return "0"
+    if not value:
+        return _format_string("0", in_table=in_table, chars_width=chars_width)
 
     if not isinstance(value, str):
         if value < 0:

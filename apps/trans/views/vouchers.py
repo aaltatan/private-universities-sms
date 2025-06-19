@@ -15,6 +15,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from apps.core import filter_backends, mixins
+from apps.core.inline import InlineFormsetFactory
 
 # from apps.core.inline import InlineFormsetFactory
 from apps.core.schemas import Action
@@ -140,21 +141,29 @@ class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
     permission_required = "trans.add_voucher"
     form_class = forms.VoucherForm
 
+    def perform_create(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        obj.updated_by = self.request.user
+        obj.save()
+        return obj
 
-# class VoucherTransactionInline(InlineFormsetFactory):
-#     model = models.VoucherTransaction
-#     form_class = forms.VoucherTransactionForm
-#     fields = ("name", "kind", "description")
 
-#     @classmethod
-#     def get_queryset(cls, obj: models.Voucher):
-#         return obj.transactions.all().order_by("ordering", "id")
+class VoucherTransactionInline(InlineFormsetFactory):
+    model = models.VoucherTransaction
+    form_class = forms.VoucherTransactionForm
+    fields = ("employee", "compensation", "quantity", "value", "notes")
+    extra = 10
+
+    @classmethod
+    def get_queryset(cls, obj: models.VoucherTransaction):
+        return obj.transactions.all().order_by("ordering", "id")
 
 
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "trans.change_voucher"
     form_class = forms.VoucherForm
-    # inlines = (VoucherTransactionInline,)
+    inlines = (VoucherTransactionInline,)
 
 
 class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):

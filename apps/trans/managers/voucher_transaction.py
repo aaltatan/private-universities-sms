@@ -1,4 +1,7 @@
+from decimal import Decimal
+
 from django.db import models
+from django.db.models.functions import Coalesce
 
 from apps.core.utils import annotate_search
 
@@ -18,7 +21,7 @@ class VoucherTransactionManager(models.Manager):
             )
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
-                total=models.F("quantity") * models.F("value"),
-                net=models.F("total") - models.F("tax"),
+                total=Coalesce(models.F("quantity") * models.F("value"), Decimal(0)),
+                net=Coalesce(models.F("total") - models.F("tax"), Decimal(0)),
             )
         )

@@ -15,7 +15,4 @@
   <c-inputs.text :field="form.serial_date" />
   <c-inputs.text :field="form.approve_date" />
 </c-forms.wrapper>
-{% comment %}
-<c-inputs.text :field="form.document" />
-{% endcomment %}
-{{ form.document }}
+<c-inputs.file :field="form.document" />

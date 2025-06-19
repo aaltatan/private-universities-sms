@@ -117,9 +117,26 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
                         "value must be less than or equal to compensation max value ({:,.2f})"
                     ).format(self.compensation.max_value),
                 )
+            
+    def get_total(self) -> Decimal:
+        return self.quantity * self.value
+            
+    @property
+    def information(self):
+        if self.quantity == 1:
+            return f"{self.compensation.name} - {self.value:,.2f}"
+        return f"{self.compensation.name} - {self.total:,.2f} ({self.quantity:,.2f} × {self.value:,.2f})"
+
+    @property
+    def tax_information(self):
+        if self.compensation.tax.fixed:
+            return f"{self.get_total():,.2f} - {self.tax:,.2f}"
+        else:
+            return f"{self.get_total():,.2f} - {self.tax:,.2f} ({self.compensation.tax.name})"
+        
 
     def __str__(self):
-        return f"{self.compensation.name} - ({self.value})"
+        return self.tax_information
 
     class Meta:
         icon = "circle-stack"

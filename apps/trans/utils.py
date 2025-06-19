@@ -1,5 +1,4 @@
 from django.utils.translation import gettext_lazy as _
-from django.db.models import ProtectedError
 
 from apps.core.utils import ActionBehavior
 
@@ -31,12 +30,13 @@ class VoucherDeleter(ActionBehavior[Voucher]):
         if not status:
             return self._handle_executing_error()
 
-        try:
-            self.has_executed = True
+        self.has_executed = True
+
+        if self._kind == "obj":
             self._obj.is_deleted = True
-            return
-        except ProtectedError:
-            self._handle_executing_error()
+            self._obj.save()
+        elif self._kind == "qs":
+            self._obj.update(is_deleted=True)
 
 
 class VoucherAuditor(ActionBehavior[Voucher]):
