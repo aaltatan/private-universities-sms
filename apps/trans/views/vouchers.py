@@ -16,8 +16,6 @@ from rest_framework.response import Response
 
 from apps.core import filter_backends, mixins
 from apps.core.inline import InlineFormsetFactory
-
-# from apps.core.inline import InlineFormsetFactory
 from apps.core.schemas import Action
 
 from .. import filters, forms, models, resources, serializers
@@ -153,7 +151,6 @@ class VoucherTransactionInline(InlineFormsetFactory):
     model = models.VoucherTransaction
     form_class = forms.VoucherTransactionForm
     fields = ("employee", "compensation", "quantity", "value", "notes")
-    extra = 10
 
     @classmethod
     def get_queryset(cls, obj: models.VoucherTransaction):
@@ -164,6 +161,23 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "trans.change_voucher"
     form_class = forms.VoucherForm
     inlines = (VoucherTransactionInline,)
+
+    def perform_update(self, form, formsets):
+        obj = form.save(commit=False)
+        for formset in formsets:
+            last_order = 1
+            for form in formset.forms:
+                if form.is_valid() and form.cleaned_data:
+                    item = form.save(commit=False)
+                    item.ordering = form.cleaned_data.get("ORDER") or last_order
+                    item.save()
+                    last_order += 1
+            formset.save()
+
+        obj.updated_by = self.request.user
+        obj.save()
+
+        return obj
 
 
 class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
