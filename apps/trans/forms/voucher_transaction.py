@@ -1,33 +1,33 @@
 from django.utils.translation import gettext as _
 
-# from apps.core.fields import get_autocomplete_field
+from apps.core.fields import get_autocomplete_field
 from apps.core.forms import CustomModelForm
 from apps.core.widgets import get_textarea_widget, get_number_widget
-# from apps.fin.models import Compensation
-# from apps.hr.models import Employee
+from apps.fin.models import Compensation
+from apps.hr.models import Employee
 
 from .. import models
 
 
 class BaseVoucherTransactionForm(CustomModelForm):
-    # employee = get_autocomplete_field(
-    #     Employee.objects.all(),
-    #     to_field_name="fullname",
-    #     widget_attributes={"placeholder": _("search employees")},
-    #     app_label="core",
-    #     model_name="Employee",
-    #     object_name="employee",
-    #     field_name="search",
-    # )
-    # compensation = get_autocomplete_field(
-    #     Compensation.objects.all(),
-    #     to_field_name="name",
-    #     widget_attributes={"placeholder": _("search compensations")},
-    #     app_label="core",
-    #     model_name="Compensation",
-    #     object_name="compensation",
-    #     field_name="search",
-    # )
+    employee = get_autocomplete_field(
+        Employee.objects.all(),
+        to_field_name="firstname",
+        widget_attributes={"placeholder": _("search employees")},
+        app_label="hr",
+        model_name="Employee",
+        object_name="employee",
+        field_name="search",
+    )
+    compensation = get_autocomplete_field(
+        Compensation.objects.all(),
+        to_field_name="name",
+        widget_attributes={"placeholder": _("search compensations")},
+        app_label="fin",
+        model_name="Compensation",
+        object_name="compensation",
+        field_name="search",
+    )
 
     class Meta:
         model = models.VoucherTransaction
