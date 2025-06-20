@@ -1,7 +1,5 @@
 {% load i18n widget_tweaks %}
 
-<!--  -->
-{% if cities_formset.forms %}
 <c-forms.update
   form_title="{% translate 'update' %} {{ form.instance }}"
   url="{{ update_url }}{% querystring %}"
@@ -51,17 +49,6 @@
     {% endif %}
   </div>
 </c-forms.update>
-{% else %}
-<c-forms.update
-  form_title="{% translate 'update' %} {{ form.instance }}"
-  url="{{ update_url }}{% querystring %}"
-  :form_id="form_id"
-  :form="form"
->
-  <c-inputs.text :field="form.name" />
-  <c-inputs.text :field="form.description" />
-</c-forms.update>
-{% endif %}
 
 <table>
   <c-geo.governorates.cities.inline

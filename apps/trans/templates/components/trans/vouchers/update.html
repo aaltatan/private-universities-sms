@@ -1,7 +1,5 @@
 {% load i18n widget_tweaks %}
 
-<!--  -->
-{% if voucher_transactions_formset.forms %}
 <c-forms.update
   form_title="{% translate 'update' %} {{ form.instance }}"
   url="{{ update_url }}{% querystring %}"
@@ -54,18 +52,6 @@
     {% endif %}
   </div>
 </c-forms.update>
-{% else %}
-<c-forms.update
-  form_title="{% translate 'update' %} {{ form.instance }}"
-  url="{{ update_url }}{% querystring %}"
-  :form_id="form_id"
-  :form="form"
-  width="none"
-  encoding="multipart"
->
-  <c-trans.vouchers.form-body />
-</c-forms.update>
-{% endif %}
 
 <table>
   <c-trans.vouchers.transactions.inline
