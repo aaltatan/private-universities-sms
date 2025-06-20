@@ -51,13 +51,14 @@
   <!--  -->
   {% if show_help %}
   <!--  -->
-  {% spaceless %}
+  {% if show_help %}
   <em
-    class="pl-0.5 my-1 text-xs text-neutral-400 dark:text-neutral-500 block first-letter:capitalize empty:hidden"
+    class="pl-0.5 my-1 text-xs text-neutral-400 dark:text-neutral-500 block empty:hidden whitespace-nowrap line-clamp-1"
+    title="{{ field.help_text|capfirst }}"
   >
-    {{ field.help_text }}
+    {{ field.help_text|capfirst }}
   </em>
-  {% endspaceless %}
+  {% endif %}
   <!--  -->
   {% endif %}
   <!--  -->
