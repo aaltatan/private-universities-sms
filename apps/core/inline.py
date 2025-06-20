@@ -1,14 +1,34 @@
 from abc import ABC, abstractmethod
 from typing import Iterable
 
+from django.contrib import messages
 from django.db.models import Model
-from django.forms import ModelForm, HiddenInput
+from django.forms import HiddenInput, ModelForm
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.http import HttpRequest
 
+from apps.core.utils.behaviors import ActionBehavior
 
-class InlineFormset(BaseInlineFormSet):
+
+class CustomBaseInlineFormSet(ABC, BaseInlineFormSet):
+    @abstractmethod
+    def delete_existing(self, obj, commit=True):
+        pass
+
+
+class InlineFormset(CustomBaseInlineFormSet):
     ordering_widget = HiddenInput
+
+    def delete_existing(self, obj, commit=True):
+        if commit:
+            deleter = self.deleter_class(self.request, obj=obj)
+            deleter.action()
+            message = deleter.get_message()
+
+            if deleter.has_executed:
+                messages.success(self.request, message)
+            else:
+                messages.error(self.request, message)
 
 
 class InlineFormsetFactory(ABC):
@@ -25,6 +45,11 @@ class InlineFormsetFactory(ABC):
     @property
     @abstractmethod
     def fields(self) -> Iterable[str]:
+        pass
+
+    @property
+    @abstractmethod
+    def deleter(self) -> ActionBehavior:
         pass
 
     custom_formset_class: InlineFormset | None = None
@@ -54,6 +79,17 @@ class InlineFormsetFactory(ABC):
     def get_queryset(self, obj: Model):
         pass
 
+    def get_inline_formset_class(self, request: HttpRequest) -> type[InlineFormset]:
+        if self.custom_formset_class:
+            inline_class = self.custom_formset_class
+        else:
+            inline_class = InlineFormset
+
+        inline_class.deleter_class = self.deleter
+        inline_class.request = request
+
+        return inline_class
+
     def get_formset_class(
         self,
         request: HttpRequest,
@@ -68,14 +104,10 @@ class InlineFormsetFactory(ABC):
             "fields": self.fields,
             "can_order": True,
             "max_num": max_num if max_num is not None else self.max_num,
+            "formset": self.get_inline_formset_class(request),
             "can_delete": request.user.has_perm(
                 f"{self.app_label}.delete_{self.object_name}",
             ),
         }
-
-        if self.custom_formset_class:
-            kwargs["formset"] = self.custom_formset_class
-        else:
-            kwargs["formset"] = InlineFormset
 
         return inlineformset_factory(**kwargs)

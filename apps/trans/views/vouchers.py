@@ -16,6 +16,7 @@ from rest_framework.response import Response
 
 from apps.core import filter_backends, mixins
 from apps.core.inline import InlineFormsetFactory
+from apps.core.utils import Deleter
 from apps.core.schemas import Action
 
 from .. import filters, forms, models, resources, serializers
@@ -151,6 +152,7 @@ class VoucherTransactionInline(InlineFormsetFactory):
     model = models.VoucherTransaction
     form_class = forms.VoucherTransactionForm
     fields = ("employee", "compensation", "quantity", "value", "notes")
+    deleter = Deleter
 
     @classmethod
     def get_queryset(cls, obj: models.VoucherTransaction):

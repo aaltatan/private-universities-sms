@@ -71,6 +71,7 @@ class JobSubtypeInline(InlineFormsetFactory):
     model = models.JobSubtype
     form_class = forms.JobSubtypeForm
     fields = ("name", "description")
+    deleter = Deleter
 
     @classmethod
     def get_queryset(cls, obj: models.JobType):

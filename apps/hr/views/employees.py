@@ -96,6 +96,7 @@ class MobileInline(InlineFormsetFactory):
     model = models.Mobile
     form_class = forms.MobileForm
     fields = ("number", "has_whatsapp", "kind", "notes")
+    deleter = Deleter
 
     @classmethod
     def get_queryset(cls, obj: models.Employee):
@@ -106,6 +107,7 @@ class PhoneInline(InlineFormsetFactory):
     model = models.Phone
     form_class = forms.PhoneForm
     fields = ("number", "kind", "notes")
+    deleter = Deleter
 
     @classmethod
     def get_queryset(cls, obj: models.Employee):
@@ -116,6 +118,7 @@ class EmailInline(InlineFormsetFactory):
     model = models.Email
     form_class = forms.EmailForm
     fields = ("email", "kind", "notes")
+    deleter = Deleter
 
     @classmethod
     def get_queryset(cls, obj: models.Employee):
