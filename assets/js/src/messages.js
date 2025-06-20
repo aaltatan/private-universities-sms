@@ -1,4 +1,4 @@
-export function messages(timeout) {
+export function messages(timeout, autoclose = true) {
   return {
     timer: null,
     open: true,
@@ -6,7 +6,9 @@ export function messages(timeout) {
       this.open = false;
     },
     init() {
-      this.timer = setTimeout(() => this.close(), +timeout);
+      if (autoclose) {
+        this.timer = setTimeout(() => this.close(), +timeout);
+      }
     },
     destroy() {
       clearTimeout(this.timer);

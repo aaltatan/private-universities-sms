@@ -3,7 +3,6 @@ import threading
 from django.contrib import messages
 from django.contrib.auth.middleware import LoginRequiredMiddleware
 from django.http import HttpRequest
-from django.utils.safestring import mark_safe
 
 
 class ExceptionHandlingMiddleware:
@@ -15,17 +14,8 @@ class ExceptionHandlingMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
         if self.exception:
-            messages.error(
-                request,
-                mark_safe(
-                    f"""
-                     <span class='font-medium'>
-                        Error ({response.status_code}): 
-                     </span>
-                     <span class='text-lg'>{self.exception}</span>
-                    """
-                ),
-            )
+            message = f"Error ({response.status_code}): {self.exception}"
+            messages.error(request, message, extra_tags="do_not_close")
             response["Hx-Trigger"] = "messages"
             self.exception = None
         return response

@@ -17,15 +17,25 @@
 {% if messages %}
 <!--  -->
 {% for message in messages %}
+<!--  -->
+{% comment %}
+<!-- 
+Attributes (extra_tags):
+  do_not_close: do not close the message after timeout
+-->
+{% endcomment %}
 <li
-  class="flex items-center gap-1 w-full rounded-md p-4 text-xs ring-2 {{ ring_colors|get_item:message.tags }}"
-  x-data="messages('{{ settings.messages_timeout }}000')"
+  class="w-full realtive rounded-md p-4 text-xs ring-2 {{ ring_colors|get_item:message.level_tag }}"
+  x-data="messages(
+    '{{ settings.messages_timeout }}000', 
+    {% if message.extra_tags == 'do_not_close' %}false{% else %}true{% endif %},
+  )"
   x-show="open"
 >
-  {% heroicon_outline icons|get_item:message.tags size="32" class=message.tags %}
-  <!--  -->
+  <div class="absolute top-1 right-1 flex items-center gap-1">
+    <c-button @click="close" icon="x-mark" size="16" rounded="full" theme="outline" />
+  </div>
   <div>{{ message|capfirst }}</div>
-  <c-button @click="close" icon="x-mark" size="16" rounded="full" theme="outline" />
 </li>
 {% endfor %}
 <!--  -->
