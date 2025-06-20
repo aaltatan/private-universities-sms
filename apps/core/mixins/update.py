@@ -130,10 +130,13 @@ class UpdateMixin(ABC):
         """
         obj = form.save()
         for formset in formsets:
+            last_order = 1
             for form in formset.forms:
-                if form.is_valid():
+                if form.is_valid() and form.cleaned_data:
                     item = form.save(commit=False)
-                    item.ordering = form.cleaned_data.get("ORDER") or 1_000_000
+                    item.ordering = form.cleaned_data.get("ORDER") or last_order
+                    item.save()
+                    last_order += 1
             formset.save()
 
         return obj
@@ -225,18 +228,12 @@ class UpdateMixin(ABC):
 
         if self.inlines:
             for inline_class in self.inlines:
-                extra: int | None = None
-
                 inline: InlineFormsetFactory = inline_class()
                 key = f"{inline.codename_plural}_formset"
-
-                if not self.request.user.has_perm(inline.add_permission):
-                    extra = 0
 
                 Formset = inline.get_formset_class(
                     request=self.request,
                     parent_model=self.get_model_class(),
-                    extra=extra,
                 )
 
                 kwargs = {

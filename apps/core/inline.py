@@ -28,7 +28,6 @@ class InlineFormsetFactory(ABC):
         pass
 
     custom_formset_class: InlineFormset | None = None
-    extra: int = 1
     max_num: int = 1000
 
     @property
@@ -59,14 +58,13 @@ class InlineFormsetFactory(ABC):
         self,
         request: HttpRequest,
         parent_model: Model,
-        extra: int | None = None,
         max_num: int | None = None,
     ) -> type[InlineFormset]:
         kwargs = {
             "parent_model": parent_model,
             "model": self.model,
             "form": self.form_class,
-            "extra": extra if extra is not None else self.extra,
+            "extra": 0,
             "fields": self.fields,
             "can_order": True,
             "max_num": max_num if max_num is not None else self.max_num,
