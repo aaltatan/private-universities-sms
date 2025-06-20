@@ -213,6 +213,9 @@
             <c-table.th data-header="{% translate 'net'|title %}">
               {% translate 'net'|title %}
             </c-table.th>
+            <c-table.th data-header="{% translate 'notes'|title %}">
+              {% translate 'notes'|title %}
+            </c-table.th>
           </c-table.tr>
           {% for transaction in object.transactions.all %}
           <c-table.tr>
@@ -241,6 +244,9 @@
             <c-table.td data-header="{% translate 'net'|title %}">
               {{ transaction.net|money:True }}
             </c-table.td>
+            <c-table.td data-header="{% translate 'notes'|title %}">
+              {{ transaction.notes }}
+            </c-table.td>
           </c-table.tr>
           {% endfor %}
           <c-table.tr bolded="True">
@@ -259,6 +265,8 @@
             </c-table.td>
             <c-table.td data-header="{% translate 'net'|title %}">
               {{ object.net|money:True }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'net'|title %}">
             </c-table.td>
           </c-table.tr>
         </c-table.table>
