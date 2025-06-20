@@ -1,7 +1,7 @@
 <c-forms.wrapper cols="4">
   <c-inputs.text :field="form.title" />
-  <c-inputs.text :field="form.date" />
-  <c-inputs.text :field="form.due_date" />
+  <c-inputs.text :show_icon="True" icon="calendar" :field="form.date" />
+  <c-inputs.text :show_icon="True" icon="calendar" :field="form.due_date" />
   <c-inputs.text :field="form.notes" />
 </c-forms.wrapper>
 <c-forms.wrapper cols="4">
@@ -12,7 +12,7 @@
 </c-forms.wrapper>
 <c-forms.wrapper cols="3">
   <c-inputs.text :field="form.serial_id" />
-  <c-inputs.text :field="form.serial_date" />
-  <c-inputs.text :field="form.approve_date" />
+  <c-inputs.text :show_icon="True" icon="calendar" :field="form.serial_date" />
+  <c-inputs.text :show_icon="True" icon="calendar" :field="form.approve_date" />
 </c-forms.wrapper>
 <c-inputs.file :field="form.document" />
