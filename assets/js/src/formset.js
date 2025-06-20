@@ -28,6 +28,11 @@ export function formset({ totalForms = 0, emptyFormId = "empty-form", tableId = 
       let reg = /__prefix__/g;
       emptyForm.innerHTML = emptyForm.innerHTML.replace(reg, this.totalForms);
 
+      let autocompleteFields = emptyForm.querySelectorAll("input[x-ref='autocompleteInput']");
+      autocompleteFields.forEach((field) => {
+        htmx.process(field);
+      });
+
       document.querySelector(`#${tableId} tbody[x-sort]`).appendChild(emptyForm);
       emptyForm.querySelector(`input:not([type='hidden'], select)`).focus();
 
