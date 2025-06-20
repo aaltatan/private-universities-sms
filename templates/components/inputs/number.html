@@ -79,7 +79,7 @@
   {% if field.errors %}
   <c-error.wrapper>
     {% for error in field.errors %}
-    <c-error.error>{{ error }}</c-error.error>
+    <c-error.error>{{ error|capfirst }}</c-error.error>
     {% endfor %}
   </c-error.wrapper>
   {% endif %}
