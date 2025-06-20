@@ -1,5 +1,7 @@
+from decimal import Decimal
+
 from django.utils.translation import gettext as _
-from import_export import fields, resources
+from import_export import fields, resources, widgets
 
 from apps.core.resources import (
     DehydrateBooleanMixin,
@@ -68,6 +70,36 @@ class VoucherResource(
         attribute="period",
         column_name=_("period").title(),
     )
+    total = fields.Field(
+        attribute="total",
+        column_name=_("total").title(),
+        widget=widgets.NumberWidget(coerce_to_string=False),
+    )
+    transactions_count = fields.Field(
+        attribute="total",
+        column_name=_("transactions count").title(),
+        widget=widgets.NumberWidget(coerce_to_string=False),
+    )
+    quantity_total = fields.Field(
+        attribute="quantity_total",
+        column_name=_("quantity total").title(),
+        widget=widgets.NumberWidget(coerce_to_string=False),
+    )
+    value_total = fields.Field(
+        attribute="value_total",
+        column_name=_("value total").title(),
+        widget=widgets.NumberWidget(coerce_to_string=False),
+    )
+    tax_total = fields.Field(
+        attribute="tax_total",
+        column_name=_("tax total").title(),
+        widget=widgets.NumberWidget(coerce_to_string=False),
+    )
+    net = fields.Field(
+        attribute="net",
+        column_name=_("net").title(),
+        widget=widgets.NumberWidget(coerce_to_string=False),
+    )
     notes = fields.Field(
         attribute="notes",
         column_name=_("notes").title(),
@@ -121,6 +153,24 @@ class VoucherResource(
     def dehydrate_quarter(self, obj) -> str:
         return self._dehydrate_choices(obj, "quarter")
 
+    def dehydrate_total(self, obj) -> Decimal:
+        return obj.total
+
+    def dehydrate_transactions_count(self, obj) -> Decimal:
+        return obj.transactions_count
+    
+    def dehydrate_quantity_total(self, obj) -> Decimal:
+        return obj.quantity_total
+
+    def dehydrate_value_total(self, obj) -> Decimal:
+        return obj.value_total
+
+    def dehydrate_tax_total(self, obj) -> Decimal:
+        return obj.tax_total
+
+    def dehydrate_net(self, obj) -> Decimal:
+        return obj.net
+
     class Meta:
         model = models.Voucher
         fields = (
@@ -137,6 +187,12 @@ class VoucherResource(
             "month",
             "quarter",
             "period",
+            "total",
+            "transactions_count",
+            "quantity_total",
+            "value_total",
+            "tax_total",
+            "net",
             "notes",
             "serial_id",
             "serial_date",
