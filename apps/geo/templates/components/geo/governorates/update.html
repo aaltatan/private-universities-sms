@@ -37,7 +37,7 @@
           <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
           {% endif %}
         </c-table.tr>
-        <tbody x-sort="sortHandler();resetSerials();">
+        <tbody x-sort="sortHandler()">
           {% for form in cities_formset %}
           <c-geo.governorates.cities.inline :form="form" />
           {% endfor %}

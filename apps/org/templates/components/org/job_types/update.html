@@ -36,7 +36,7 @@
           <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
           {% endif %}
         </c-table.tr>
-        <tbody x-sort="sortHandler();resetSerials();">
+        <tbody x-sort="sortHandler()">
           {% for form in job_subtypes_formset %}
           <c-org.job_types.job_subtypes.inline :form="form" />
           {% endfor %}

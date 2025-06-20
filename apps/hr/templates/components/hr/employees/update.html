@@ -34,7 +34,7 @@
           <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
           {% endif %}
         </c-table.tr>
-        <tbody x-sort="sortHandler();resetSerials();">
+        <tbody x-sort="sortHandler()">
           {% for form in mobiles_formset %}
           <c-hr.employees.mobiles.inline :form="form" />
           {% endfor %}
@@ -71,7 +71,7 @@
           <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
           {% endif %}
         </c-table.tr>
-        <tbody x-sort="sortHandler();resetSerials();">
+        <tbody x-sort="sortHandler()">
           {% for form in phones_formset %}
           <c-hr.employees.phones.inline :form="form" />
           {% endfor %}
@@ -108,7 +108,7 @@
           <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
           {% endif %}
         </c-table.tr>
-        <tbody x-sort="sortHandler();resetSerials();">
+        <tbody x-sort="sortHandler()">
           {% for form in emails_formset %}
           <c-hr.employees.emails.inline :form="form" />
           {% endfor %}

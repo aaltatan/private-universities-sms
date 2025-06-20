@@ -2,12 +2,22 @@ export function formset({ totalForms = 0, emptyFormId = "empty-form", tableId = 
   return {
     totalForms: totalForms,
     init() {
+      this.sortHandler();
+    },
+    sortHandler() {
+      this.resetOrderInputs();
       this.resetSerials();
     },
     resetSerials() {
       let serials = document.querySelectorAll(`#${tableId} td[data-header='#']`);
       serials.forEach((serial, idx) => {
         serial.innerHTML = idx + 1;
+      });
+    },
+    resetOrderInputs() {
+      let orders = document.querySelectorAll(`#${tableId} input[id$='-ORDER']`);
+      orders.forEach((order, idx) => {
+        order.value = idx + 1;
       });
     },
     addNewForm() {
@@ -22,15 +32,7 @@ export function formset({ totalForms = 0, emptyFormId = "empty-form", tableId = 
       emptyForm.querySelector(`input:not([type='hidden'], select)`).focus();
 
       this.totalForms++;
-      this.resetSerials();
-    },
-    sortHandler() {
-      let orders = document.querySelectorAll("input[id$='-ORDER']");
-      orders.forEach((order, idx) => {
-        if (order.value) {
-          order.value = idx + 1;
-        }
-      });
+      this.sortHandler();
     },
   };
 }
