@@ -3,7 +3,7 @@
 <c-vars row_id="" :hide="False" />
 
 <c-table.tr x-sort:item="{{ forloop.counter }}" :hide="{{ hide }}" :id="row_id" hx-disable="true">
-  <c-table.td data-header="#" :fixed="True"> # </c-table.td>
+  <c-table.td x-sort:handle data-header="#" :fixed="True"> # </c-table.td>
   <c-table.td data-header="{% translate 'name' %}">
     {{ form.id }}
     <!--  -->
