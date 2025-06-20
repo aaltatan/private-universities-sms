@@ -20,6 +20,7 @@ class CityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display_links = ("id", "name")
     search_fields = constants.SEARCH_FIELDS
     list_per_page = 20
+    ordering = ("ordering", "id")
     list_filter = ("governorate__name",)
     autocomplete_fields = ("governorate",)
     actions = ("reset_ordering",)
