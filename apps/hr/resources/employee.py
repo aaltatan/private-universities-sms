@@ -7,7 +7,7 @@ from apps.core.resources import (
     SerialResourceMixin,
 )
 
-from . import models
+from .. import models
 
 
 class EmployeeResource(
@@ -375,78 +375,3 @@ class BaseInfoResource(SerialResourceMixin, resources.ModelResource):
 
     def dehydrate_employee_name(self, obj: models.Mobile):
         return obj.employee.get_fullname()
-
-
-class MobileResource(
-    BaseInfoResource,
-    DehydrateBooleanMixin,
-    resources.ModelResource,
-):
-    number = fields.Field(
-        attribute="number",
-        column_name=_("number").title(),
-    )
-    has_whatsapp = fields.Field(
-        attribute="has_whatsapp",
-        column_name=_("has whatsapp").title(),
-    )
-    whatsapp_url = fields.Field(
-        column_name=_("whatsapp url").title(),
-    )
-
-    def dehydrate_has_whatsapp(self, obj: models.Mobile):
-        return self._dehydrate_boolean(obj.has_whatsapp)
-
-    def dehydrate_whatsapp_url(self, obj: models.Mobile):
-        if obj.has_whatsapp:
-            return obj.get_whatsapp_url()
-        return ""
-
-    class Meta:
-        model = models.Mobile
-        fields = (
-            "serial",
-            "employee_name",
-            "employee_national_id",
-            "number",
-            "kind",
-            "has_whatsapp",
-            "whatsapp_url",
-            "notes",
-        )
-
-
-class PhoneResource(BaseInfoResource, resources.ModelResource):
-    number = fields.Field(
-        attribute="number",
-        column_name=_("number").title(),
-    )
-
-    class Meta:
-        model = models.Phone
-        fields = (
-            "serial",
-            "employee_name",
-            "employee_national_id",
-            "number",
-            "kind",
-            "notes",
-        )
-
-
-class EmailResource(BaseInfoResource, resources.ModelResource):
-    email = fields.Field(
-        attribute="email",
-        column_name=_("email").title(),
-    )
-
-    class Meta:
-        model = models.Email
-        fields = (
-            "serial",
-            "employee_name",
-            "employee_national_id",
-            "email",
-            "kind",
-            "notes",
-        )

@@ -9,7 +9,7 @@ from apps.core.resources import (
     SerialResourceMixin,
 )
 
-from . import models
+from .. import models
 
 
 class VoucherResource(
@@ -158,7 +158,7 @@ class VoucherResource(
 
     def dehydrate_transactions_count(self, obj) -> Decimal:
         return obj.transactions_count
-    
+
     def dehydrate_quantity_total(self, obj) -> Decimal:
         return obj.quantity_total
 
