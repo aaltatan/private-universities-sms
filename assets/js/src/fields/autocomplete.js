@@ -3,10 +3,12 @@ import { getCookie } from "../utils";
 export function autocomplete(data = { url, initial, eventName }) {
   return {
     keywords: "",
+    title: "",
     isListOpen: false,
     async init() {
       if (data.initial) {
         this.keywords = data.initial;
+        this.title = data.initial;
       }
     },
     openList() {
@@ -26,6 +28,7 @@ export function autocomplete(data = { url, initial, eventName }) {
     },
     handleSelectOption(pk) {
       this.keywords = pk;
+      this.title = pk;
       this.closeList();
     },
     reset() {

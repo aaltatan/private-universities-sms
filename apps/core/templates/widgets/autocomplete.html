@@ -13,6 +13,7 @@ class="relative"
     <input
     @keypress.debounce.750="handleRequest"
     @keydown.enter.prevent=""
+    :title="title"
     x-model="keywords"
     x-ref="autocompleteInput"
     hx-get="{% url 'core:autocomplete' %}?{{ widget.attrs.querystring }}"
