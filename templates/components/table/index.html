@@ -9,13 +9,35 @@
   }"
   :overflow="True"
   :bordered="True"
+  :relative_to_table_container="False"
+  :containers="{
+    'sm': 'sm',
+    'md': 'md',
+    'lg': 'lg',
+    'xl': 'xl',
+    '2xl': '2xl',
+    '3xl': '3xl',
+    '4xl': '4xl',
+    '5xl': '5xl',
+  }"
+  container="lg"
   height="base"
 />
 
-<div id="{{ id }}" class="relative hx-swap:opacity-80 select-none" x-data="tableCheckAll">
+<div
+  id="{{ id }}"
+  class="relative hx-swap:opacity-80 select-none @container/table 
+  @{{ containers|get_item:container }}{% if relative_to_table_container %}/table{% endif %}:tb-th:!table-cell
+  @{{ containers|get_item:container }}{% if relative_to_table_container %}/table{% endif %}:tb-td:!table-cell
+  @{{ containers|get_item:container }}{% if relative_to_table_container %}/table{% endif %}:tb-td:before:!content-['']
+  "
+  x-data="tableCheckAll"
+>
   <div
     class="flex items-center justify-between flex-col gap-2 sm:gap-1 sm:flex-row mb-2 empty:hidden"
-  >{{ header }}</div>
+  >
+    {{ header }}
+  </div>
 
   <div
     class="relative {% if overflow %}overflow-auto{% endif %} w-full rounded-md scroll {{ heights|get_item:height }} {% if bordered %}border border-neutral-300 dark:border-neutral-800{% endif %}"

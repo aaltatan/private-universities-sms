@@ -9,9 +9,7 @@
 
 <th
   scope="col"
-  class="p-2 hidden @lg:table-cell sticky top-0 -translate-y-0.5 z-10 border-neutral-300 bg-white text-neutral-900 dark:border-neutral-800 dark:bg-neutral-950 dark:text-white text-xs border-b font-semibold tracking-tighter"
+  class="p-2 hidden sticky top-0 -translate-y-0.5 z-10 border-neutral-300 bg-white text-neutral-900 dark:border-neutral-800 dark:bg-neutral-950 dark:text-white text-xs border-b font-semibold tracking-tighter"
 >
-  <div class="flex items-center {{ alignments|get_item:alignment }} capitalize">
-    {{ slot }}
-  </div>
+  <div class="flex items-center {{ alignments|get_item:alignment }} capitalize">{{ slot }}</div>
 </th>

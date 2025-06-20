@@ -9,6 +9,8 @@
 @custom-variant hx-settle (&.htmx-settling);
 @custom-variant active (&.active);
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant tb-td (& table td);
+@custom-variant tb-th (& table th);
 
 @layer base {
   .checkbox-input::before {

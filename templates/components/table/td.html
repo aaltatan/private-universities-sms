@@ -1,7 +1,7 @@
 <c-vars :fixed="False" :wrap="False" />
 
 <td
-  class="px-2 text-start py-1 {% if not wrap %}whitespace-nowrap{% endif %} text-xs {% if not fixed %} flex before:content-[attr(data-header)':'] {% endif %} items-center gap-2 px-2 py-1 before:font-medium before:capitalize @lg:table-cell @lg:before:content-['']"
+  class="{% if not wrap %}whitespace-nowrap{% endif %} {% if not fixed %} flex before:content-[attr(data-header)':'] {% endif %} items-center text-xs text-start gap-2 px-2 py-1 before:font-medium before:capitalize"
   {{ attrs }}
 >
   <div class="w-full">{{ slot }}</div>

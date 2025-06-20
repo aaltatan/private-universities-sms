@@ -22,7 +22,12 @@
       <c-error.error>{{ error }}</c-error.error>
       {% endfor %}
     </c-error.wrapper>
-    <c-table height="none" id="transactions-formset-table">
+    <c-table
+      height="none"
+      id="transactions-formset-table"
+      relative_to_table_container="True"
+      container="5xl"
+    >
       <c-table.table>
         <c-table.tr header="True">
           <c-table.th alignment="center"> # </c-table.th>
