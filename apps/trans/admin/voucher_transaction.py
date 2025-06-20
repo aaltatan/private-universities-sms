@@ -29,6 +29,7 @@ class VoucherTransactionAdmin(
         ("notes",),
     )
     list_display_links = ("voucher",)
+    list_filter = ("voucher__voucher_serial",)
     search_fields = constants.SEARCH_FIELDS
     autocomplete_fields = ("employee", "compensation", "voucher")
     list_per_page = 20
