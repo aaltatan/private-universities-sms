@@ -164,15 +164,20 @@ class Voucher(
         self.document.delete()
 
     def clean(self):
-        if self.due_date and self.due_date < self.date:
-            raise ValidationError(
+        errors: dict[str, ValidationError] = {}
+
+        if getattr(self, "due_date", None) and self.due_date < self.date:
+            errors["due_date"] = ValidationError(
                 _("due date cannot be earlier than date"),
             )
 
-        if self.approve_date and self.approve_date > self.date:
-            raise ValidationError(
+        if getattr(self, "approve_date", None) and self.approve_date > self.date:
+            errors["approve_date"] = ValidationError(
                 _("approve date cannot be later than date"),
             )
+
+        if errors:
+            raise ValidationError(errors)
 
     def get_absolute_url(self):
         return super().get_absolute_url()

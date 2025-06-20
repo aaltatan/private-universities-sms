@@ -101,26 +101,32 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 
     def clean(self):
         if (
-            self.compensation
+            getattr(self, "compensation", None)
             and self.compensation.calculation_method
             == self.compensation.CalculationChoices.BY_INPUT
         ):
+            errors: dict[str, ValidationError] = {}
+
             if self.value < self.compensation.min_value:
-                raise ValidationError(
+                errors["value"] = ValidationError(
                     _(
                         "value must be greater than or equal to compensation min value ({:,.2f})"
                     ).format(self.compensation.min_value),
                 )
+
             if self.value > self.compensation.max_value:
-                raise ValidationError(
+                errors["value"] = ValidationError(
                     _(
                         "value must be less than or equal to compensation max value ({:,.2f})"
                     ).format(self.compensation.max_value),
                 )
-            
+
+            if errors:
+                raise ValidationError(errors)
+
     def get_total(self) -> Decimal:
         return self.quantity * self.value
-            
+
     @property
     def information(self):
         if self.quantity == 1:
@@ -133,10 +139,9 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
             return f"{self.get_total():,.2f} - {self.tax:,.2f}"
         else:
             return f"{self.get_total():,.2f} - {self.tax:,.2f} ({self.compensation.tax.name})"
-        
 
     def __str__(self):
-        return self.tax_information
+        return self.uuid.hex
 
     class Meta:
         icon = "circle-stack"

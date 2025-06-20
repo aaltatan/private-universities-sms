@@ -75,10 +75,15 @@ class TaxBracket(AddCreateActivityMixin, UrlsMixin, models.Model):
     objects: TaxBracketManager = TaxBracketManager()
 
     def clean(self):
-        if self.amount_from >= self.amount_to:
-            raise ValidationError(
-                _("amount from must be less than amount to."),
+        errors: dict[str, ValidationError] = {}
+
+        if self.amount_from == self.amount_to:
+            errors["amount_from"] = ValidationError(
+                _("amount from must be greater than amount to."),
             )
+
+        if errors:
+            raise ValidationError(errors)
 
     def __str__(self) -> str:
         return f"{self.tax.name} - {self.amount_from} - {self.amount_to}"

@@ -177,32 +177,37 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         return round_to_nearest(result, self.round_method, self.rounded_to)
 
     def clean(self):
+        errors: dict[str, ValidationError] = {}
+
         if self.calculation_method == self.CalculationChoices.FIXED:
             if self.value == 0:
-                raise ValidationError(
+                errors["value"] = ValidationError(
                     _("value must be greater than 0."),
                 )
 
             if self.min_value > self.value:
-                raise ValidationError(
+                errors["value"] = ValidationError(
                     _("min value must be less than value."),
                 )
 
             if self.max_value < self.value:
-                raise ValidationError(
+                errors["value"] = ValidationError(
                     _("max value must be greater than value."),
                 )
 
         if self.min_value >= self.max_value:
-            raise ValidationError(
+            errors["min_value"] = ValidationError(
                 _("min value must be less than max value."),
             )
 
         if self.calculation_method == self.CalculationChoices.FORMULA:
             if self.formula == "":
-                raise ValidationError(
+                errors["formula"] = ValidationError(
                     _("formula must be filled."),
                 )
+
+        if errors:
+            raise ValidationError(errors)
 
     def __str__(self) -> str:
         result = self.name
