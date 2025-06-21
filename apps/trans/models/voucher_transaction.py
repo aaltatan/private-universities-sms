@@ -78,9 +78,6 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
     objects: VoucherTransactionManager = VoucherTransactionManager()
 
     def calculate_compensation_value(self):
-        if not self.employee.status.is_payable:
-            return Decimal(0)
-
         return self.compensation.calculate(self.value, self.employee)
 
     def calculate_tax(self, value: Decimal | int | float | None = None):
@@ -100,13 +97,21 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
         return tax
 
     def clean(self):
+        errors: dict[str, ValidationError] = {}
+
+        if getattr(self, "employee", None) and self.employee.status.is_payable is False:
+            errors["employee"] = ValidationError(
+                _("the employee ({}) is {}").format(
+                    self.employee.fullname,
+                    self.employee.status.name,
+                )
+            )
+
         if (
             getattr(self, "compensation", None)
             and self.compensation.calculation_method
             == self.compensation.CalculationChoices.BY_INPUT
         ):
-            errors: dict[str, ValidationError] = {}
-
             if self.value < self.compensation.min_value:
                 errors["value"] = ValidationError(
                     _(
@@ -121,8 +126,8 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
                     ).format(self.compensation.max_value),
                 )
 
-            if errors:
-                raise ValidationError(errors)
+        if errors:
+            raise ValidationError(errors)
 
     def get_total(self) -> Decimal:
         return self.quantity * self.value
