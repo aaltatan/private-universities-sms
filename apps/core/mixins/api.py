@@ -9,22 +9,22 @@ from ..utils import ActionBehavior
 class APIMixin(ABC):
     @property
     @abstractmethod
-    def behavior(self) -> ActionBehavior:
+    def deleter(self) -> ActionBehavior:
         pass
 
     def destroy(self, request, *args, **kwargs):
-        if getattr(self, "behavior", None) is None:
+        if getattr(self, "deleter", None) is None:
             raise AttributeError(
-                "you must define a behavior class for the ListView.",
+                "you must define a deleter class for the ListView.",
             )
-        if not issubclass(self.behavior, ActionBehavior):
+        if not issubclass(self.deleter, ActionBehavior):
             raise TypeError(
-                "the behavior class must be a subclass of ActionBehavior.",
+                "the deleter class must be a subclass of ActionBehavior.",
             )
 
         instance = self.get_object()
 
-        deleter: ActionBehavior = self.behavior(
+        deleter: ActionBehavior = self.deleter(
             request=self.request,
             obj=instance,
         )
