@@ -183,6 +183,18 @@
               {{ object.is_migrated|yesno|title }}
             </c-table.td>
           </c-table.tr>
+          {% if object.document %}
+          <c-table.tr>
+            <c-table.td data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'document' }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'value'|title %}">
+              <c-external-link href="{{ object.document.url }}" target="_blank">
+                {{ object.document.name }}
+              </c-external-link>
+            </c-table.td>
+          </c-table.tr>
+          {% endif %}
         </c-table.table>
       </c-table>
       <!-- transactions table -->
