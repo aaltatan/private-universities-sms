@@ -195,6 +195,9 @@
             <c-table.th data-header="{% translate 'employee'|title %}">
               {% translate 'employee'|title %}
             </c-table.th>
+            <c-table.th data-header="{% translate 'cost center'|title %}">
+              {% translate 'cost center'|title %}
+            </c-table.th>
             <c-table.th data-header="{% translate 'compensation'|title %}">
               {% translate 'compensation'|title %}
             </c-table.th>
@@ -222,11 +225,11 @@
             <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
             <c-table.td data-header="{% translate 'employee'|title %}">
               <span> {{ transaction.employee }}</span>
-              {% if not transaction.employee.status.is_payable %}
-              <span class="text-red-500"> ({{ transaction.employee.status }}) </span>
-              {% endif %}
             </c-table.td>
-            <c-table.td data-header="{% translate 'compensation'|title %}">
+            <c-table.td :wrap="True" data-header="{% translate 'cost center'|title %}">
+              {{ transaction.employee.cost_center }}
+            </c-table.td>
+            <c-table.td :wrap="True" data-header="{% translate 'compensation'|title %}">
               {{ transaction.compensation }}
             </c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
@@ -244,13 +247,13 @@
             <c-table.td data-header="{% translate 'net'|title %}">
               {{ transaction.net|money:True }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'notes'|title %}">
+            <c-table.td :warp="True" data-header="{% translate 'notes'|title %}">
               {{ transaction.notes }}
             </c-table.td>
           </c-table.tr>
           {% endfor %}
           <c-table.tr bolded="True">
-            <c-table.td colspan="3" data-header="#"></c-table.td>
+            <c-table.td colspan="4" data-header="#"></c-table.td>
             <c-table.td data-header="{% translate 'value'|title %}">
               {{ object.quantity_total|money:True }}
             </c-table.td>
@@ -266,8 +269,7 @@
             <c-table.td data-header="{% translate 'net'|title %}">
               {{ object.net|money:True }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'net'|title %}">
-            </c-table.td>
+            <c-table.td data-header="{% translate 'net'|title %}"> </c-table.td>
           </c-table.tr>
         </c-table.table>
       </c-table>

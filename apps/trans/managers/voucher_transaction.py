@@ -17,6 +17,7 @@ class VoucherTransactionManager(models.Manager):
                 "voucher",
                 "employee",
                 "employee__status",
+                "employee__cost_center",
                 "compensation",
             )
             .annotate(
