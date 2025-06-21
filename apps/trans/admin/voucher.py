@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.http import HttpRequest
 from import_export.admin import ImportExportModelAdmin
 
-from .. import models  # , resources
+from .. import models, resources
 from ..constants import vouchers as constants
 from . import _actions
 
@@ -68,23 +68,6 @@ class VoucherAdminMixin:
         return obj.transactions_count
 
 
-@admin.register(models.VoucherProxy)
-class VoucherProxyAdmin(
-    VoucherAdminMixin,
-    ImportExportModelAdmin,
-    admin.ModelAdmin,
-):
-    list_display = [*LIST_DISPLAY, "is_deleted"]
-    search_fields = constants.SEARCH_FIELDS
-    list_per_page = LIST_PER_PAGE
-    fields = FIELDS
-    readonly_fields = READONLY_FIELDS
-    actions = (_actions.undo_delete,)
-
-    def delete_model(self, request, obj):
-        return obj.delete(permanent=True)
-
-
 class VoucherTransactionInline(admin.TabularInline):
     parent_model = models.Voucher
     model = models.VoucherTransaction
@@ -99,6 +82,24 @@ class VoucherTransactionInline(admin.TabularInline):
     autocomplete_fields = ("employee", "compensation")
 
 
+@admin.register(models.VoucherProxy)
+class VoucherProxyAdmin(
+    VoucherAdminMixin,
+    ImportExportModelAdmin,
+    admin.ModelAdmin,
+):
+    list_display = [*LIST_DISPLAY, "is_deleted"]
+    search_fields = constants.SEARCH_FIELDS
+    list_per_page = LIST_PER_PAGE
+    fields = FIELDS
+    readonly_fields = READONLY_FIELDS
+    actions = (_actions.undo_delete,)
+    inlines = (VoucherTransactionInline,)
+
+    def delete_model(self, request, obj):
+        return obj.delete(permanent=True)
+
+
 @admin.register(models.Voucher)
 class VoucherAdmin(VoucherAdminMixin, ImportExportModelAdmin, admin.ModelAdmin):
     list_display = LIST_DISPLAY
@@ -107,7 +108,7 @@ class VoucherAdmin(VoucherAdminMixin, ImportExportModelAdmin, admin.ModelAdmin):
     list_per_page = LIST_PER_PAGE
     fields = FIELDS
     readonly_fields = READONLY_FIELDS
-    # resource_classes = (resources.VoucherResource,)
+    resource_classes = (resources.VoucherResource,)
     inlines = (VoucherTransactionInline,)
     actions = (
         _actions.audit,
