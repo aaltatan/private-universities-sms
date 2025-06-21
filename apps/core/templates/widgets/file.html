@@ -3,7 +3,7 @@
 <input
   type="{{ widget.type }}"
   name="{{ widget.name }}"
-  class="w-full overflow-clip rounded-md border border-neutral-300 dark:border-neutral-800 aria-[invalid]:file:text-red-500 aria-[invalid]:border-red-500 bg-white dark:bg-black aria-[invalid]:text-red-500 file:mr-4 file:border-none file:bg-neutral-50 file:p-2 file:text-xs text-xs file:text-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75 dark:file:bg-neutral-900 dark:file:text-white dark:focus-visible:outline-white"
+  class="w-full overflow-clip rounded-md border border-neutral-300 dark:border-neutral-800 aria-[invalid]:file:text-red-500 aria-[invalid]:border-red-500 bg-white dark:bg-black aria-[invalid]:text-red-500 file:border-none file:bg-neutral-50 file:p-2 file:text-xs text-xs file:text-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75 dark:file:bg-neutral-900 dark:file:text-white dark:focus-visible:outline-white"
   {% for name, value in widget.attrs.items %}
   {% if value is not False %} 
   {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}{% endif %}
