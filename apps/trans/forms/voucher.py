@@ -2,7 +2,12 @@ from django.utils.translation import gettext as _
 
 from apps.core.fields import get_autocomplete_field
 from apps.core.forms import CustomModelForm
-from apps.core.widgets import get_date_widget, get_text_widget, get_textarea_widget
+from apps.core.widgets import (
+    get_date_widget,
+    get_file_widget,
+    get_text_widget,
+    get_textarea_widget,
+)
 from apps.fin.models import Period, VoucherKind
 
 from .. import models
@@ -61,6 +66,7 @@ class BaseVoucherForm(CustomModelForm):
                 fill_onfocus=False,
             ),
             "notes": get_textarea_widget(placeholder=_("some notes")),
+            "document": get_file_widget(placeholder=_("voucher document")),
         }
 
 

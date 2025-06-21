@@ -1,0 +1,54 @@
+{% load i18n %}
+
+<input
+  type="{{ widget.type }}"
+  name="{{ widget.name }}"
+  class="w-full overflow-clip rounded-md border border-neutral-300 dark:border-neutral-800 aria-[invalid]:file:text-red-500 aria-[invalid]:border-red-500 bg-white dark:bg-black aria-[invalid]:text-red-500 file:mr-4 file:border-none file:bg-neutral-50 file:p-2 file:text-xs text-xs file:text-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75 dark:file:bg-neutral-900 dark:file:text-white dark:focus-visible:outline-white"
+  {% for name, value in widget.attrs.items %}
+  {% if value is not False %} 
+  {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}{% endif %}
+  {% endfor %}
+/>
+{% if widget.is_initial %}
+<div class="flex items-center gap-1 border border-neutral-300 dark:border-neutral-700 rounded-md my-1 overflow-hidden">
+  {% if not widget.required %}
+  <label
+    for="{{ widget.checkbox_id }}"
+    class="inline-flex items-center bg-neutral-50 dark:file:bg-neutral-900 justify-between gap-2 p-2 text-xs font-medium text-neutral-600 dark:bg-black dark:text-neutral-300 has-checked:text-neutral-900 dark:has-checked:text-white has-disabled:opacity-75 has-disabled:cursor-not-allowed cursor-pointer"
+  >
+    <span class="relative flex items-center">
+      <input
+        type="checkbox"
+        class="before:content[''] peer relative size-4 appearance-none overflow-hidden rounded-sm border border-neutral-300 bg-white before:absolute before:inset-0 checked:border-black checked:before:bg-black focus:outline-2 focus:outline-offset-2 focus:outline-neutral-800 checked:focus:outline-black active:outline-offset-0 disabled:cursor-not-allowed dark:border-neutral-700 dark:bg-neutral-950 dark:checked:border-white dark:checked:before:bg-white dark:focus:outline-neutral-300 dark:checked:focus:outline-white"
+        name="{{ widget.checkbox_name }}"
+        id="{{ widget.checkbox_id }}"
+        {% if widget.attrs.disabled %} disabled{% endif %}
+        {% if widget.attrs.checked %} checked{% endif %} 
+      />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        stroke="currentColor"
+        fill="none"
+        stroke-width="4"
+        class="pointer-events-none invisible absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 text-neutral-100 peer-checked:visible dark:text-black"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+      </svg>
+    </span>
+    <span class="!text-black dark:!text-white">{% translate 'delete'|capfirst %}</span>
+  </label>
+  {% endif %}
+  <em class="px-2 text-xs block empty:hidden whitespace-nowrap line-clamp-1">
+    <a
+      target="_blank"
+      class="hover:underline"
+      href="{{ widget.value.url }}"
+      title="{{ widget.value }}"
+    >
+      {{ widget.value }}
+    </a>
+  </em>
+</div>
+{% endif %}

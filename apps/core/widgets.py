@@ -2,13 +2,14 @@ from typing import Iterable
 
 from django.db import models
 from django.forms.widgets import (
+    ClearableFileInput,
     DateInput,
     FileInput,
     Input,
+    NumberInput,
     SelectMultiple,
     Textarea,
     TextInput,
-    NumberInput,
 )
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
@@ -89,6 +90,17 @@ class OrderingWidget(RenderMixin, SelectMultiple):
     """
 
     template_name = "widgets/ordering.html"
+
+
+class FileWidget(ClearableFileInput):
+    template_name = "widgets/file.html"
+
+
+def get_file_widget(
+    **attributes: dict[str, str],
+) -> FileWidget:
+    """Get file field."""
+    return FileWidget(attrs=attributes)
 
 
 def get_textarea_widget(

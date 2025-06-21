@@ -15,4 +15,6 @@
   <c-inputs.text :show_icon="True" icon="calendar" :field="form.serial_date" />
   <c-inputs.text :show_icon="True" icon="calendar" :field="form.approve_date" />
 </c-forms.wrapper>
-<c-inputs.file :field="form.document" />
+<c-forms.wrapper cols="2">
+  <c-inputs.file :field="form.document" />
+</c-forms.wrapper>
