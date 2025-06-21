@@ -47,6 +47,7 @@ class BaseCompensationForm(CustomModelForm):
             "affected_by_working_days",
             "is_active",
             "accounting_id",
+            "document",
             "description",
         )
         widgets = {
@@ -58,6 +59,7 @@ class BaseCompensationForm(CustomModelForm):
             "rounded_to": widgets.get_number_widget(placeholder=_("e.g. 100")),
             "accounting_id": widgets.get_text_widget(placeholder=_("e.g. 3111")),
             "description": widgets.get_textarea_widget(),
+            "document": widgets.get_file_widget(),
         }
 
 

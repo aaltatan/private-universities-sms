@@ -8,7 +8,7 @@ from django.db.models.signals import pre_delete, pre_save
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
-from apps.core import signals
+from apps.core import signals, validators
 from apps.core.choices import RoundMethodChoices
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
@@ -136,6 +136,16 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
             <li>- You can use underscores (_) to separate numbers as thousands</li>
         </ul>
         """,
+    )
+    document = models.FileField(
+        upload_to="compensations",
+        verbose_name=_("document"),
+        blank=True,
+        null=True,
+        validators=[
+            validators.pdf_image_extension_validator,
+            validators.validate_pdf_image_mimetype,
+        ],
     )
     accounting_id = models.CharField(
         verbose_name=_("accounting id"),
