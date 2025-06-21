@@ -58,10 +58,12 @@ class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
         select_related: bool = True,
         prefetch_related: bool = True,
         search_annotations: bool = True,
-        name_annotations: bool = True,
         date_annotations: bool = True,
     ):
         queryset = self.get_queryset()
+
+        if select_related:
+            queryset = self._select_related(queryset)
 
         if prefetch_related:
             queryset = self._prefetch_related(queryset)
@@ -77,5 +79,4 @@ class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
     def get_queryset(self) -> EmployeeQuerySet:
         queryset = EmployeeQuerySet(self.model, using=self._db)
         queryset = self._annotate_search(queryset)
-        queryset = self._annotate_names(queryset)
         return queryset

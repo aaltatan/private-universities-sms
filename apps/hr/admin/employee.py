@@ -40,6 +40,7 @@ class EmployeeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display_links = ("id", "fullname")
     search_fields = constants.SEARCH_FIELDS
     fields = (
+        ("autocomplete", "slug"),
         ("profile",),
         ("firstname", "lastname", "father_name", "mother_name"),
         ("birth_place", "birth_date"),
@@ -59,6 +60,7 @@ class EmployeeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         ("degree", "school", "specialization"),
         ("user",),
     )
+    readonly_fields = ("autocomplete", "slug")
     autocomplete_fields = (
         "nationality",
         "city",
@@ -87,13 +89,8 @@ class EmployeeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     inlines = (MobileInline, PhoneInline, EmailInline)
     resource_classes = (resources.EmployeeResource,)
 
-    @admin.display(description="Fullname")
-    def fullname(self, obj: models.Employee):
-        return f"{obj.firstname} {obj.father_name} {obj.lastname}"
-
     def get_queryset(self, request):
         return self.model.objects.queryset_adjustments(
             date_annotations=False,
-            name_annotations=False,
             search_annotations=False,
         )

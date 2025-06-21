@@ -61,10 +61,7 @@ class Email(AddCreateActivityMixin, models.Model):
 
 
 class ActivitySerializer(serializers.ModelSerializer):
-    employee = serializers.SerializerMethodField()
-
-    def get_employee(self, obj: Email):
-        return obj.employee.get_fullname()
+    employee = serializers.CharField(source="employee.fullname")
 
     class Meta:
         model = Email

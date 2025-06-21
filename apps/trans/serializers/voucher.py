@@ -51,7 +51,7 @@ class VoucherSerializer(serializers.ModelSerializer):
             )
 
     class TransactionsSerializer(serializers.ModelSerializer):
-        employee = serializers.SerializerMethodField()
+        employee = serializers.CharField(source="employee.fullname")
         compensation = serializers.SerializerMethodField()
         total = serializers.SerializerMethodField()
         net = serializers.SerializerMethodField()
@@ -61,9 +61,6 @@ class VoucherSerializer(serializers.ModelSerializer):
         
         def get_net(self, obj):
             return obj.net
-
-        def get_employee(self, obj):
-            return obj.employee.get_fullname()
 
         def get_compensation(self, obj):
             return str(obj.compensation)

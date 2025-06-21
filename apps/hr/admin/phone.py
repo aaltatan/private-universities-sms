@@ -6,18 +6,12 @@ from .. import models, resources
 
 @admin.register(models.Phone)
 class PhoneAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ("id", "number", "fullname")
+    list_display = ("id", "number", "employee__fullname")
     list_display_links = ("id", "number")
     autocomplete_fields = ("employee",)
     list_per_page = 20
     search_fields = (
-        "employee__firstname",
-        "employee__father_name",
-        "employee__lastname",
+        "employee__fullname",
         "number",
     )
     resource_classes = (resources.PhoneResource,)
-
-    @admin.display(description="Fullname")
-    def fullname(self, obj: models.Phone):
-        return obj.employee.get_fullname()

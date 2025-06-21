@@ -8,27 +8,13 @@ from .. import models, resources
 
 @admin.register(models.Mobile)
 class MobileAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = (
-        "id",
-        "number",
-        "has_whatsapp",
-        "fullname",
-    )
+    list_display = ("id", "number", "has_whatsapp", "employee__fullname")
     list_display_links = ("id", "number")
-    search_fields = (
-        "employee__firstname",
-        "employee__father_name",
-        "employee__lastname",
-        "number",
-    )
+    search_fields = ("employee__fullname", "number")
     autocomplete_fields = ("employee",)
     list_per_page = 20
     actions = ("remove_whatsapp", "add_whatsapp")
     resource_classes = (resources.MobileResource,)
-
-    @admin.display(description="Fullname")
-    def fullname(self, obj: models.Mobile):
-        return obj.employee.get_fullname()
 
     @admin.action(description="Remove has_whatsapp from selected Mobiles")
     def remove_whatsapp(self, request: HttpRequest, queryset: QuerySet):

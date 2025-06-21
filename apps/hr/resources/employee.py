@@ -21,9 +21,11 @@ class EmployeeResource(
         dehydrate_method="dehydrate_serial",
     )
     fullname = fields.Field(
+        attribute="fullname",
         column_name=_("fullname").title(),
     )
     shortname = fields.Field(
+        attribute="shortname",
         column_name=_("shortname").title(),
     )
     firstname = fields.Field(
@@ -39,6 +41,7 @@ class EmployeeResource(
         column_name=_("father name").title(),
     )
     father_fullname = fields.Field(
+        attribute="father_fullname",
         column_name=_("father fullname").title(),
     )
     mother_name = fields.Field(
@@ -230,15 +233,6 @@ class EmployeeResource(
         column_name=_("specialist?").title(),
     )
 
-    def dehydrate_fullname(self, obj: models.Employee):
-        return obj.get_fullname()
-
-    def dehydrate_shortname(self, obj: models.Employee):
-        return obj.get_shortname()
-
-    def dehydrate_father_fullname(self, obj: models.Employee):
-        return obj.get_father_fullname()
-
     def dehydrate_age(self, obj: models.Employee):
         return obj.age
 
@@ -372,6 +366,3 @@ class BaseInfoResource(SerialResourceMixin, resources.ModelResource):
         attribute="notes",
         column_name=_("notes").title(),
     )
-
-    def dehydrate_employee_name(self, obj: models.Mobile):
-        return obj.employee.get_fullname()

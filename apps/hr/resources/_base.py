@@ -10,6 +10,7 @@ class BaseInfoResource(SerialResourceMixin, resources.ModelResource):
         dehydrate_method="dehydrate_serial",
     )
     employee_name = fields.Field(
+        attribute="employee__fullname",
         column_name=_("employee name").title(),
     )
     employee_national_id = fields.Field(
@@ -24,6 +25,3 @@ class BaseInfoResource(SerialResourceMixin, resources.ModelResource):
         attribute="notes",
         column_name=_("notes").title(),
     )
-
-    def dehydrate_employee_name(self, obj):
-        return obj.employee.get_fullname()

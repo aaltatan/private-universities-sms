@@ -116,9 +116,9 @@ class EmployeeSerializer(serializers.ModelSerializer):
             model = models.Phone
             fields = ("id", "number", "kind", "notes")
 
-    fullname = serializers.SerializerMethodField()
-    shortname = serializers.SerializerMethodField()
-    father_fullname = serializers.SerializerMethodField()
+    fullname = serializers.CharField()
+    shortname = serializers.CharField()
+    father_fullname = serializers.CharField()
     age = serializers.IntegerField()
     age_group = serializers.CharField()
     next_birthday = serializers.DateField()
@@ -139,15 +139,6 @@ class EmployeeSerializer(serializers.ModelSerializer):
     mobiles = MobileSerializer(many=True, read_only=True)
     phones = PhoneSerializer(many=True, read_only=True)
     emails = EmailSerializer(many=True, read_only=True)
-
-    def get_fullname(self, obj: models.Employee):
-        return obj.get_fullname()
-
-    def get_shortname(self, obj: models.Employee):
-        return obj.get_shortname()
-
-    def get_father_fullname(self, obj: models.Employee):
-        return obj.get_father_fullname()
 
     class Meta:
         model = models.Employee

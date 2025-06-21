@@ -65,7 +65,7 @@
       <c-table.tr header="True">
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
-        <c-table.th>{% translate 'fullname' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'fullname' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'cost_center' }}</c-table.th>
         <c-table.th>{% translate 'job type' %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'job_subtype' }}</c-table.th>
@@ -82,7 +82,7 @@
       {% for obj in page %}
       <c-table.tr
         x-data="combineTitle({
-          '{% translate 'fullname'|title %}': '{{ obj.fullname }}',
+          '{{ model|verbose_name:'fullname' }}': '{{ obj.fullname }}',
           '{{ model|verbose_name:'mother_name' }}': '{{ obj.mother_name }}',
           '{{ model|verbose_name:'birth_place' }}': '{{ obj.birth_place }}',
           '{{ model|verbose_name:'national_id' }}': '{{ obj.national_id }}',
@@ -140,7 +140,7 @@
           </c-layout.contextmenu>
           {% endif %}
         </c-table.td>
-        <c-table.td data-header="{% translate 'fullname' %}">
+        <c-table.td data-header="{{ model|verbose_name:'fullname' }}">
           <a
             href="#"
             hx-get="{{ obj.get_absolute_url }}{% querystring %}"
@@ -258,7 +258,7 @@
         <c-table.td
           data-header="{{ model|verbose_name:'birth_date' }}"
           x-data="combineTitle({
-            '{% translate 'fullname'|title %}': '{{ obj.fullname }}',
+            '{{ model|verbose_name:'fullname' }}': '{{ obj.fullname }}',
             '{% translate 'age'|title %}': '{{ obj.birth_date|timesince }}',
             '{% translate 'age group'|title %}': `{{ obj.age_group|title }}`,
             '{% translate 'next birthday'|title %}': '{{ obj.next_birthday|date:'Y-m-d' }}',
@@ -297,7 +297,7 @@
         <c-table.td
           data-header="{{ model|verbose_name:'hire_date' }}"
           x-data="combineTitle({
-            '{% translate 'fullname'|title %}': '{{ obj.fullname }}',
+            '{{ model|verbose_name:'fullname' }}': '{{ obj.fullname }}',
             '{% translate 'job age'|title %}': '{{ obj.hire_date|timesince }}',
             '{% translate 'job age group'|title %}': '{{ obj.job_age_group|capfirst }}',
             '{% translate 'next job anniversary'|title %}': '{{ obj.next_nth_job_anniversary|date:'Y-m-d' }}',

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
-from django.db.models.functions import Concat, Floor
+from django.db.models.functions import Floor
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -19,23 +19,6 @@ class AnnotationMixin:
     def _annotate_search(self, queryset: models.QuerySet):
         return queryset.annotate(
             search=annotate_search(constants.SEARCH_FIELDS),
-        )
-
-    def _annotate_names(self, queryset: models.QuerySet):
-        return queryset.annotate(
-            fullname=Concat(
-                models.F("firstname"),
-                models.Value(" "),
-                models.F("father_name"),
-                models.Value(" "),
-                models.F("lastname"),
-            ),
-            shortname=Concat(
-                models.F("firstname"), models.Value(" "), models.F("lastname")
-            ),
-            father_fullname=Concat(
-                models.F("father_name"), models.Value(" "), models.F("lastname")
-            ),
         )
 
     def _annotate_dates(self, queryset: models.QuerySet):

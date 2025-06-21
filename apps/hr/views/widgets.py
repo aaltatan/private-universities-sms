@@ -44,7 +44,6 @@ class GroupByCountsView(PermissionRequiredMixin, FiltersetMixin, ListView):
     template_name = "components/hr/employees/widgets/group-by-counts.html"
     queryset = models.Employee.objects.queryset_adjustments(
         prefetch_related=False,
-        name_annotations=False,
         search_annotations=False,
     ).all()
     filterset_class = filters.GroupedByCountFilter

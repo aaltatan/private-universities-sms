@@ -1,6 +1,7 @@
 from datetime import date
 
 from django.db import models
+from django.db.models.functions import Concat
 from django.db.models.signals import pre_delete, pre_save
 from django.utils import timezone
 from django.utils.text import slugify
@@ -60,6 +61,46 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         max_length=255,
         verbose_name=_("father name"),
         validators=[two_chars_validator],
+    )
+    fullname = models.GeneratedField(
+        expression=Concat(
+            models.F("firstname"),
+            models.Value(" "),
+            models.F("father_name"),
+            models.Value(" "),
+            models.F("lastname"),
+        ),
+        verbose_name=_("full name"),
+        output_field=models.CharField(max_length=255),
+        db_persist=False,
+    )
+    shortname = models.GeneratedField(
+        expression=Concat(
+            models.F("firstname"),
+            models.Value(" "),
+            models.F("lastname"),
+        ),
+        verbose_name=_("short name"),
+        output_field=models.CharField(max_length=255),
+        db_persist=False,
+    )
+    father_fullname = models.GeneratedField(
+        expression=Concat(
+            models.F("father_name"),
+            models.Value(" "),
+            models.F("lastname"),
+        ),
+        verbose_name=_("father full name"),
+        output_field=models.CharField(max_length=255),
+        db_persist=False,
+    )
+    autocomplete = models.CharField(
+        max_length=1000,
+        default="",
+        blank=True,
+        verbose_name=_("autocomplete"),
+        help_text=_("for autocomplete search"),
+        editable=False,
     )
     mother_name = models.CharField(
         max_length=255,
@@ -300,14 +341,12 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
             ("view_activity_employee", "Can view employee activity"),
         )
 
-    def get_fullname(self) -> str:
-        return f"{self.firstname} {self.father_name} {self.lastname}"
-
-    def get_father_fullname(self) -> str:
-        return f"{self.father_name} {self.lastname}"
-
-    def get_shortname(self) -> str:
-        return f"{self.firstname} {self.lastname}"
+    def get_autocomplete(self) -> str:
+        return (
+            f"{self.fullname} [{self.national_id}]"
+            if self.status.is_payable
+            else f"{self.fullname} [{self.national_id}] ({self.status.name})"
+        )
 
     def get_next_birthday(self) -> date:
         return timezone.datetime(
@@ -315,7 +354,7 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         ).date()
 
     def __str__(self) -> str:
-        return self.get_fullname()
+        return self.get_autocomplete()
 
 
 def employee_pre_save(sender, instance: Employee, *args, **kwargs):
@@ -332,6 +371,8 @@ def employee_pre_save(sender, instance: Employee, *args, **kwargs):
 
     if instance.gender == instance.GenderChoices.FEMALE.value:
         instance.military_status = instance.MilitaryStatus.EXCUSED.value
+
+    instance.autocomplete = instance.get_autocomplete()
 
 
 def employee_post_delete(sender, instance: Employee, *args, **kwargs):

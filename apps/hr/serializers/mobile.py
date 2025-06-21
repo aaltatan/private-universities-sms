@@ -5,10 +5,9 @@ from .. import models
 
 class MobileSerializer(serializers.ModelSerializer):
     employee_id = serializers.IntegerField(source="employee.id", read_only=True)
-    fullname = serializers.SerializerMethodField(read_only=True)
-
-    def get_fullname(self, obj: models.Mobile):
-        return obj.employee.get_fullname()
+    fullname = serializers.SerializerMethodField(
+        source="employee.fullname", read_only=True
+    )
 
     class Meta:
         model = models.Mobile
