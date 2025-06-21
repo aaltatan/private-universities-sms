@@ -19,13 +19,25 @@
   <c-table.td :wrap="True" data-header="{% translate 'value' %}">
     <c-inputs.number step="1" :show_help="False" :show_label="False" :field="form.value" />
   </c-table.td>
-  <c-table.td :wrap="True" data-header="{% translate 'total' %}">
+  <c-table.td
+    title="{{ form.instance.total_information }}"
+    :wrap="True"
+    data-header="{% translate 'total' %}"
+  >
     {{ form.instance.total|money:True }}
   </c-table.td>
-  <c-table.td :wrap="True" data-header="{% translate 'tax' %}">
+  <c-table.td
+    title="{{ form.instance.tax_information }}"
+    :wrap="True"
+    data-header="{% translate 'tax' %}"
+  >
     {{ form.instance.tax|money:True }}
   </c-table.td>
-  <c-table.td :wrap="True" data-header="{% translate 'net' %}">
+  <c-table.td
+    title="{{ form.instance.net_information }}"
+    :wrap="True"
+    data-header="{% translate 'net' %}"
+  >
     {{ form.instance.net|money:True }}
   </c-table.td>
   <c-table.td :wrap="True" data-header="{% translate 'notes' %}">

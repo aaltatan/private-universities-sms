@@ -128,17 +128,44 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
         return self.quantity * self.value
 
     @property
-    def information(self):
+    def total_information(self):
         if self.quantity == 1:
             return f"{self.compensation.name} - {self.value:,.2f}"
-        return f"{self.compensation.name} - {self.total:,.2f} ({self.quantity:,.2f} × {self.value:,.2f})"
+        return f"{self.quantity:,.2f} × {self.value:,.2f} {self.compensation.name}"
 
     @property
     def tax_information(self):
         if self.compensation.tax.fixed:
-            return f"{self.get_total():,.2f} - {self.tax:,.2f}"
+            tax_without_round = self.compensation.tax.rate * self.get_total()
+            difference = self.tax - tax_without_round
+
+            result = (
+                f"{self.get_total():,.2f} × {self.compensation.tax.rate * 100:,.2f} %"
+            )
+            if difference < 0:
+                result = f"({result})"
+                result += f" - {difference:,.2f}"
+            if difference > 0:
+                result = f"({result})"
+                result += f" + {difference:,.2f}"
         else:
-            return f"{self.get_total():,.2f} - {self.tax:,.2f} ({self.compensation.tax.name})"
+            if self.quantity == 1:
+                result = _("{} on {:,.2f}").format(
+                    self.compensation.tax.name, self.value
+                )
+            else:
+                result = _("{} on {:,.2f} ({:,.2f} × {:,.2f})").format(
+                    self.compensation.tax.name,
+                    self.value,
+                    self.tax / self.quantity,
+                    self.quantity,
+                )
+
+        return result
+
+    @property
+    def net_information(self):
+        return f"[{self.total_information}] - [{self.tax_information}]"
 
     def __str__(self):
         return self.uuid.hex
@@ -161,10 +188,7 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 class ActivitySerializer(serializers.ModelSerializer):
     voucher = serializers.CharField(source="voucher.voucher_serial")
     compensation = serializers.CharField(source="compensation.name")
-    employee = serializers.SerializerMethodField()
-
-    def get_employee(self, obj: VoucherTransaction):
-        return obj.employee.get_fullname()
+    employee = serializers.CharField(source="employee.fullname")
 
     class Meta:
         model = VoucherTransaction
