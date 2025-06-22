@@ -354,7 +354,7 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         ).date()
 
     def __str__(self) -> str:
-        return self.fullname
+        return f"{self.firstname} {self.father_name} {self.lastname}"
 
 
 def employee_pre_save(sender, instance: Employee, *args, **kwargs):
