@@ -54,7 +54,13 @@
     </c-table>
     {% if perms.trans.add_vouchertransaction %}
     <div class="my-2">
-      <c-button @click.prevent="addNewForm" width="full">{% translate 'add new row' %} </c-button>
+      <c-button
+        @keyup.alt.n.prevent.window="addNewForm"
+        @keyup.alt.ى.prevent.window="addNewForm"
+        @click.prevent="addNewForm"
+        width="full"
+        >{% translate 'add new row' %}
+      </c-button>
     </div>
     {% endif %}
   </div>
