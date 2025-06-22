@@ -5,12 +5,14 @@
     "fields": {
       "name": "جامعة حماه",
       "description": "",
+      "ordering": 0,
       "slug": "جامعة-حماه",
       "nationality": 1,
       "kind": 1,
       "website": null,
       "email": null,
-      "phone": null
+      "phone": null,
+      "address": ""
     }
   },
   {
@@ -19,12 +21,14 @@
     "fields": {
       "name": "جامعة حمص",
       "description": "",
+      "ordering": 0,
       "slug": "جامعة-حمص",
       "nationality": 1,
       "kind": 1,
       "website": null,
       "email": null,
-      "phone": null
+      "phone": null,
+      "address": ""
     }
   },
   {
@@ -33,12 +37,14 @@
     "fields": {
       "name": "جامعة حلب",
       "description": "",
+      "ordering": 0,
       "slug": "جامعة-حلب",
       "nationality": 1,
       "kind": 1,
       "website": null,
       "email": null,
-      "phone": null
+      "phone": null,
+      "address": ""
     }
   },
   {
@@ -47,12 +53,14 @@
     "fields": {
       "name": "جامعة اللاذقية",
       "description": "",
+      "ordering": 0,
       "slug": "جامعة-اللاذقية",
       "nationality": 1,
       "kind": 1,
       "website": null,
       "email": null,
-      "phone": null
+      "phone": null,
+      "address": ""
     }
   },
   {
@@ -61,12 +69,14 @@
     "fields": {
       "name": "جامعة دمشق",
       "description": "",
+      "ordering": 0,
       "slug": "جامعة-دمشق",
       "nationality": 1,
       "kind": 1,
       "website": null,
       "email": null,
-      "phone": null
+      "phone": null,
+      "address": ""
     }
   },
   {
@@ -75,12 +85,14 @@
     "fields": {
       "name": "الجامعة الوطنية الخاصة",
       "description": "",
+      "ordering": 0,
       "slug": "الجامعة-الوطنية-الخاصة",
       "nationality": 1,
       "kind": 2,
       "website": null,
       "email": null,
-      "phone": null
+      "phone": null,
+      "address": ""
     }
   },
   {
@@ -89,12 +101,14 @@
     "fields": {
       "name": "الجامعة العربية الخاصة للعلوم والتكنولوجيا",
       "description": "",
+      "ordering": 0,
       "slug": "الجامعة-العربية-الخاصة-للعلوم-والتكنولوجيا",
       "nationality": 1,
       "kind": 2,
       "website": null,
       "email": null,
-      "phone": null
+      "phone": null,
+      "address": ""
     }
   },
   {
@@ -103,12 +117,30 @@
     "fields": {
       "name": "جامعة القلمون الخاصة",
       "description": "",
+      "ordering": 0,
       "slug": "جامعة-القلمون-الخاصة",
       "nationality": 1,
       "kind": 2,
       "website": null,
       "email": null,
-      "phone": null
+      "phone": null,
+      "address": ""
+    }
+  },
+  {
+    "model": "edu.school",
+    "pk": 9,
+    "fields": {
+      "name": "غير معروف",
+      "description": "",
+      "ordering": 0,
+      "slug": "غير-معروف",
+      "nationality": 1,
+      "kind": 1,
+      "website": "",
+      "email": null,
+      "phone": null,
+      "address": null
     }
   }
 ]

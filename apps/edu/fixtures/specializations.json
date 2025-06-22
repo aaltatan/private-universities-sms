@@ -5,6 +5,7 @@
     "fields": {
       "name": "طب الأسنان",
       "description": "",
+      "ordering": 0,
       "slug": "طب-الأسنان",
       "is_specialist": true
     }
@@ -15,6 +16,7 @@
     "fields": {
       "name": "الهندسة المعمارية",
       "description": "",
+      "ordering": 0,
       "slug": "الهندسة-المعمارية",
       "is_specialist": true
     }
@@ -25,6 +27,7 @@
     "fields": {
       "name": "الهندسة المدنية",
       "description": "",
+      "ordering": 0,
       "slug": "الهندسة-المدنية",
       "is_specialist": true
     }
@@ -35,6 +38,7 @@
     "fields": {
       "name": "هندسة الاتصالات",
       "description": "",
+      "ordering": 0,
       "slug": "هندسة-الاتصالات",
       "is_specialist": true
     }
@@ -45,6 +49,7 @@
     "fields": {
       "name": "هندسة الحاسوب",
       "description": "",
+      "ordering": 0,
       "slug": "هندسة-الحاسوب",
       "is_specialist": true
     }
@@ -55,6 +60,7 @@
     "fields": {
       "name": "الهندسة المعلوماتية",
       "description": "",
+      "ordering": 0,
       "slug": "الهندسة-المعلوماتية",
       "is_specialist": true
     }
@@ -65,6 +71,7 @@
     "fields": {
       "name": "الصيدلة",
       "description": "",
+      "ordering": 0,
       "slug": "الصيدلة",
       "is_specialist": true
     }
@@ -75,6 +82,7 @@
     "fields": {
       "name": "ادارة الاعمال",
       "description": "",
+      "ordering": 0,
       "slug": "ادارة-الاعمال",
       "is_specialist": true
     }
@@ -85,6 +93,7 @@
     "fields": {
       "name": "المحاسبة",
       "description": "",
+      "ordering": 0,
       "slug": "المحاسبة",
       "is_specialist": true
     }
@@ -95,6 +104,7 @@
     "fields": {
       "name": "التسويق",
       "description": "",
+      "ordering": 0,
       "slug": "التسويق",
       "is_specialist": true
     }
@@ -105,6 +115,7 @@
     "fields": {
       "name": "الفنون الجميلة",
       "description": "",
+      "ordering": 0,
       "slug": "الفنون-الجميلة",
       "is_specialist": false
     }
@@ -115,6 +126,7 @@
     "fields": {
       "name": "الرياضيات",
       "description": "",
+      "ordering": 0,
       "slug": "الرياضيات",
       "is_specialist": false
     }
@@ -125,6 +137,7 @@
     "fields": {
       "name": "الهندسة الميكانيكية",
       "description": "",
+      "ordering": 0,
       "slug": "الهندسة-الميكانيكية",
       "is_specialist": false
     }
@@ -135,6 +148,7 @@
     "fields": {
       "name": "اللغة العربية",
       "description": "",
+      "ordering": 0,
       "slug": "اللغة-العربية",
       "is_specialist": false
     }
@@ -145,6 +159,7 @@
     "fields": {
       "name": "اللغة الانكليزية",
       "description": "",
+      "ordering": 0,
       "slug": "اللغة-الانكليزية",
       "is_specialist": false
     }
@@ -155,6 +170,7 @@
     "fields": {
       "name": "الهندسة الكهربائية",
       "description": "",
+      "ordering": 0,
       "slug": "الهندسة-الكهربائية",
       "is_specialist": false
     }
@@ -165,6 +181,7 @@
     "fields": {
       "name": "الفيزياء",
       "description": "",
+      "ordering": 0,
       "slug": "الفيزياء",
       "is_specialist": false
     }
@@ -175,6 +192,7 @@
     "fields": {
       "name": "الكيمياء",
       "description": "",
+      "ordering": 0,
       "slug": "الكيمياء",
       "is_specialist": false
     }
@@ -185,6 +203,7 @@
     "fields": {
       "name": "الطب البشري",
       "description": "",
+      "ordering": 0,
       "slug": "الطب-البشري",
       "is_specialist": false
     }
@@ -195,6 +214,7 @@
     "fields": {
       "name": "التمويل والمصارف",
       "description": "",
+      "ordering": 0,
       "slug": "التمويل-والمصارف",
       "is_specialist": false
     }
@@ -205,6 +225,7 @@
     "fields": {
       "name": "الحقوق",
       "description": "",
+      "ordering": 0,
       "slug": "الحقوق",
       "is_specialist": false
     }
@@ -215,6 +236,7 @@
     "fields": {
       "name": "العلوم",
       "description": "",
+      "ordering": 0,
       "slug": "العلوم",
       "is_specialist": false
     }
@@ -225,6 +247,7 @@
     "fields": {
       "name": "الكلية التطبيقية",
       "description": "",
+      "ordering": 0,
       "slug": "الكلية-التطبيقية",
       "is_specialist": false
     }
@@ -235,6 +258,7 @@
     "fields": {
       "name": "التربية",
       "description": "",
+      "ordering": 0,
       "slug": "التربية",
       "is_specialist": false
     }
@@ -245,6 +269,7 @@
     "fields": {
       "name": "التاريخ",
       "description": "",
+      "ordering": 0,
       "slug": "التاريخ",
       "is_specialist": false
     }
@@ -255,6 +280,7 @@
     "fields": {
       "name": "علم الاجتماع",
       "description": "",
+      "ordering": 0,
       "slug": "علم-الاجتماع",
       "is_specialist": false
     }
@@ -265,6 +291,7 @@
     "fields": {
       "name": "التعويضات السنية",
       "description": "",
+      "ordering": 0,
       "slug": "التعويضات-السنية",
       "is_specialist": false
     }
@@ -275,7 +302,96 @@
     "fields": {
       "name": "المراقبين الفنيين",
       "description": "",
+      "ordering": 0,
       "slug": "المراقبين-الفنيين",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 29,
+    "fields": {
+      "name": "غير معروف",
+      "description": "",
+      "ordering": 0,
+      "slug": "غير-معروف",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 30,
+    "fields": {
+      "name": "الاحصاء",
+      "description": "",
+      "ordering": 0,
+      "slug": "الاحصاء",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 31,
+    "fields": {
+      "name": "الاقتصاد",
+      "description": "",
+      "ordering": 0,
+      "slug": "الاقتصاد",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 32,
+    "fields": {
+      "name": "الطب البيطري",
+      "description": "",
+      "ordering": 0,
+      "slug": "الطب-البيطري",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 33,
+    "fields": {
+      "name": "الهندسة الطبية",
+      "description": "",
+      "ordering": 0,
+      "slug": "الهندسة-الطبية",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 34,
+    "fields": {
+      "name": "تقانة المعلومات",
+      "description": "",
+      "ordering": 0,
+      "slug": "تقانة-المعلومات",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 35,
+    "fields": {
+      "name": "العلوم الطبية",
+      "description": "",
+      "ordering": 0,
+      "slug": "العلوم-الطبية",
+      "is_specialist": false
+    }
+  },
+  {
+    "model": "edu.specialization",
+    "pk": 36,
+    "fields": {
+      "name": "التربية الموسيقية",
+      "description": "",
+      "ordering": 0,
+      "slug": "التربية-الموسيقية",
       "is_specialist": false
     }
   }
