@@ -56,7 +56,8 @@ class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
         self,
         *,
         select_related: bool = True,
-        prefetch_related: bool = True,
+        prefetch_related_groups: bool = True,
+        prefetch_related_contact: bool = True,
         search_annotations: bool = True,
         date_annotations: bool = True,
     ):
@@ -65,8 +66,11 @@ class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
         if select_related:
             queryset = self._select_related(queryset)
 
-        if prefetch_related:
-            queryset = self._prefetch_related(queryset)
+        if prefetch_related_groups:
+            queryset = self._prefetch_related_groups(queryset)
+
+        if prefetch_related_contact:
+            queryset = self._prefetch_related_contact(queryset)
 
         if search_annotations:
             queryset = self._annotate_search(queryset)

@@ -347,6 +347,11 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
             ("export_employee", "Can export employee"),
             ("view_activity_employee", "Can view employee activity"),
         )
+        indexes = [
+            models.Index(fields=["firstname", "father_name", "lastname"]),
+            models.Index(fields=["birth_date"]),
+            models.Index(fields=["hire_date"]),
+        ]
 
     def get_next_birthday(self) -> date:
         return timezone.datetime(

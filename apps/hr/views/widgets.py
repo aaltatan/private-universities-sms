@@ -11,7 +11,7 @@ class UpcomingBirthdaysView(PermissionRequiredMixin, FiltersetMixin, ListView):
     permission_required = "hr.view_employee"
     template_name = "components/hr/employees/widgets/upcoming-birthdays.html"
     queryset = models.Employee.objects.queryset_adjustments(
-        prefetch_related=False,
+        prefetch_related_groups=False,
         search_annotations=False,
         select_related=False,
     ).all()
@@ -27,7 +27,7 @@ class UpcomingJobAnniversariesView(PermissionRequiredMixin, FiltersetMixin, List
     permission_required = "hr.view_employee"
     template_name = "components/hr/employees/widgets/upcoming-job-anniversaries.html"
     queryset = models.Employee.objects.queryset_adjustments(
-        prefetch_related=False,
+        prefetch_related_groups=False,
         search_annotations=False,
         select_related=False,
     ).all()
@@ -43,7 +43,8 @@ class GroupByCountsView(PermissionRequiredMixin, FiltersetMixin, ListView):
     permission_required = "hr.view_employee"
     template_name = "components/hr/employees/widgets/group-by-counts.html"
     queryset = models.Employee.objects.queryset_adjustments(
-        prefetch_related=False,
+        prefetch_related_groups=False,
+        prefetch_related_contact=False,
         search_annotations=False,
     ).all()
     filterset_class = filters.GroupedByCountFilter

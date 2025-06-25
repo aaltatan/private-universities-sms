@@ -18,13 +18,12 @@ class OptimizationMixin:
             "degree",
             "school",
             "school__kind",
+            "school__nationality",
             "specialization",
         )
 
-    def _prefetch_related(self, queryset: models.QuerySet):
-        return queryset.prefetch_related(
-            "groups",
-            "emails",
-            "phones",
-            "mobiles",
-        )
+    def _prefetch_related_contact(self, queryset: models.QuerySet):
+        return queryset.prefetch_related("emails", "phones", "mobiles")
+
+    def _prefetch_related_groups(self, queryset: models.QuerySet):
+        return queryset.prefetch_related("groups")
