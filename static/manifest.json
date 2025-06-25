@@ -1,0 +1,15 @@
+{
+  "assets/favicon.ico": {
+    "file": "assets/favicon-gtPS5QXg.ico",
+    "src": "assets/favicon.ico"
+  },
+  "assets/js/index.js": {
+    "file": "assets/assets-BO5i-nww.js",
+    "name": "assets",
+    "src": "assets/js/index.js",
+    "isEntry": true,
+    "css": [
+      "assets/assets-3cERH75i.css"
+    ]
+  }
+}
