@@ -1,5 +1,6 @@
-from django.utils.translation import gettext as _
+from typing import Literal
 
+from django.utils.translation import gettext as _
 
 ORDERING_FIELDS: dict[str, str] = {
     "id": _("id"),
@@ -46,3 +47,24 @@ SEARCH_FIELDS: tuple[str] = (
     "national_id",
     "cost_center__name",
 )
+
+SELECT_RELATED_FIELDS = Literal[
+    # geo
+    "city",
+    "city__governorate",
+    "nationality",
+    # org
+    "cost_center",
+    "position",
+    "status",
+    "job_subtype",
+    "job_subtype__job_type",
+    # edu
+    "degree",
+    "school",
+    "school__kind",
+    "school__nationality",
+    "specialization",
+]
+
+PREFETCH_RELATED_FIELDS = Literal["emails", "phones", "mobiles", "groups"]

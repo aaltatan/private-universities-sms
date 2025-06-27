@@ -20,7 +20,32 @@ class APIViewSet(
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
 ):
-    queryset = models.Employee.objects.queryset_adjustments().all()
+    queryset = models.Employee.objects.queryset_adjustments(
+        select_related=[
+            # geo
+            "city",
+            "city__governorate",
+            "nationality",
+            # org
+            "cost_center",
+            "position",
+            "status",
+            "job_subtype",
+            "job_subtype__job_type",
+            # edu
+            "degree",
+            "school",
+            "school__kind",
+            "school__nationality",
+            "specialization",
+        ],
+        prefetch_related=[
+            "emails",
+            "phones",
+            "mobiles",
+            "groups",
+        ],
+    ).all()
     serializer_class = serializers.EmployeeSerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
@@ -57,7 +82,22 @@ class ListView(
     deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
     queryset = models.Employee.objects.queryset_adjustments(
-        prefetch_related_contact=False,
+        select_related=[
+            # geo
+            "city",
+            "city__governorate",
+            # org
+            "cost_center",
+            "position",
+            "status",
+            "job_subtype",
+            "job_subtype__job_type",
+            # edu
+            "degree",
+            "specialization",
+        ],
+        prefetch_related=["groups"],
+        date_annotations=False,
     )
 
     def get_context_data(self, **kwargs):
@@ -81,7 +121,32 @@ class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
     model = models.Employee
 
     def get_queryset(self):
-        return self.model.objects.queryset_adjustments()
+        return self.model.objects.queryset_adjustments(
+            select_related=[
+                # geo
+                "city",
+                "city__governorate",
+                "nationality",
+                # org
+                "cost_center",
+                "position",
+                "status",
+                "job_subtype",
+                "job_subtype__job_type",
+                # edu
+                "degree",
+                "school",
+                "school__kind",
+                "school__nationality",
+                "specialization",
+            ],
+            prefetch_related=[
+                "emails",
+                "phones",
+                "mobiles",
+                "groups",
+            ],
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

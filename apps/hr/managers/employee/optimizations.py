@@ -1,29 +1,18 @@
 from django.db import models
 
+from ...constants.employee import (
+    PREFETCH_RELATED_FIELDS,
+    SELECT_RELATED_FIELDS,
+)
+
 
 class OptimizationMixin:
-    def _select_related(self, queryset: models.QuerySet):
-        return queryset.select_related(
-            # geo
-            "city",
-            "city__governorate",
-            "nationality",
-            # org
-            "cost_center",
-            "position",
-            "status",
-            "job_subtype",
-            "job_subtype__job_type",
-            # edu
-            "degree",
-            "school",
-            "school__kind",
-            "school__nationality",
-            "specialization",
-        )
+    def _select_related(
+        self, queryset: models.QuerySet, fields: list[SELECT_RELATED_FIELDS]
+    ):
+        return queryset.select_related(*fields)
 
-    def _prefetch_related_contact(self, queryset: models.QuerySet):
-        return queryset.prefetch_related("emails", "phones", "mobiles")
-
-    def _prefetch_related_groups(self, queryset: models.QuerySet):
-        return queryset.prefetch_related("groups")
+    def _prefetch_related(
+        self, queryset: models.QuerySet, fields: list[PREFETCH_RELATED_FIELDS]
+    ):
+        return queryset.prefetch_related(*fields)

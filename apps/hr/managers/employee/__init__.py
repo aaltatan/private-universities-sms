@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils import timezone
 
+from apps.core.constants import DATE_UNITS
+
+from ...constants.employee import PREFETCH_RELATED_FIELDS, SELECT_RELATED_FIELDS
 from .annotations import AnnotationMixin
 from .optimizations import OptimizationMixin
 from .queryset import EmployeeQuerySet
-
-from apps.core.constants import DATE_UNITS
 
 
 class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
@@ -55,22 +56,18 @@ class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
     def queryset_adjustments(
         self,
         *,
-        select_related: bool = True,
-        prefetch_related_groups: bool = True,
-        prefetch_related_contact: bool = True,
+        select_related: list[SELECT_RELATED_FIELDS] | None = None,
+        prefetch_related: list[PREFETCH_RELATED_FIELDS] | None = None,
         search_annotations: bool = True,
         date_annotations: bool = True,
     ):
         queryset = self.get_queryset()
 
         if select_related:
-            queryset = self._select_related(queryset)
+            queryset = self._select_related(queryset, select_related)
 
-        if prefetch_related_groups:
-            queryset = self._prefetch_related_groups(queryset)
-
-        if prefetch_related_contact:
-            queryset = self._prefetch_related_contact(queryset)
+        if prefetch_related:
+            queryset = self._prefetch_related(queryset, prefetch_related)
 
         if search_annotations:
             queryset = self._annotate_search(queryset)

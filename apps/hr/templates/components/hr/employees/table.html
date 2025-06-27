@@ -80,15 +80,7 @@
         <c-table.th>{{ model|verbose_name:'status' }}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
-      <c-table.tr
-        x-data="combineTitle({
-          '{{ model|verbose_name:'fullname' }}': '{{ obj.fullname }}',
-          '{{ model|verbose_name:'mother_name' }}': '{{ obj.mother_name }}',
-          '{{ model|verbose_name:'birth_place' }}': '{{ obj.birth_place }}',
-          '{{ model|verbose_name:'national_id' }}': '{{ obj.national_id }}',
-        })"
-        ::title="title"
-      >
+      <c-table.tr :title="obj.fullname">
         <c-table.td-check :show_checkbox="can_delete" :obj="obj" idx="{{ forloop.counter }}" />
         <c-table.td fixed="True">
           {% if can_update or can_delete or can_view_activity %}
@@ -260,9 +252,6 @@
           x-data="combineTitle({
             '{{ model|verbose_name:'fullname' }}': '{{ obj.fullname }}',
             '{% translate 'age'|title %}': '{{ obj.birth_date|timesince }}',
-            '{% translate 'age group'|title %}': `{{ obj.age_group|title }}`,
-            '{% translate 'next birthday'|title %}': '{{ obj.next_birthday|date:'Y-m-d' }}',
-            '{% translate 'until next birthday'|title %}': '{{ obj.next_birthday|timeuntil:now }}',
           })"
           ::title="title"
         >
@@ -299,9 +288,6 @@
           x-data="combineTitle({
             '{{ model|verbose_name:'fullname' }}': '{{ obj.fullname }}',
             '{% translate 'job age'|title %}': '{{ obj.hire_date|timesince }}',
-            '{% translate 'job age group'|title %}': '{{ obj.job_age_group|capfirst }}',
-            '{% translate 'next job anniversary'|title %}': '{{ obj.next_nth_job_anniversary|date:'Y-m-d' }}',
-            '{% translate 'until next job anniversary'|title %}': '{{ obj.next_nth_job_anniversary|timeuntil:now }}',
           })"
           ::title="title"
         >
