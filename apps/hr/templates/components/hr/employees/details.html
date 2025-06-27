@@ -6,12 +6,12 @@
     <c-slot name="body">
       <div class="grid grid-cols-1 @md:grid-cols-4 gap-2">
         <a
-          href="{% if object.profile %}{{ object.profile.url }}{% else %}{% vite_asset_url 'assets/images/user.png' %}{% endif %}"
+          href="{% if object.profile %}{{ object.profile.url }}{% else %}{% vite_asset_url 'assets/user.png' %}{% endif %}"
           target="_blank"
           class="block"
         >
           <img
-            src="{% if object.profile %}{{ object.profile.url }}{% else %}{% vite_asset_url 'assets/images/user.png' %}{% endif %}"
+            src="{% if object.profile %}{{ object.profile.url }}{% else %}{% vite_asset_url 'assets/user.png' %}{% endif %}"
             class="size-48 rounded-full object-cover block border border-neutral-300 dark:border-neutral-800"
             alt="avatar"
           />
