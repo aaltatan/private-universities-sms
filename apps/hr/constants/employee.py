@@ -3,9 +3,11 @@ from django.utils.translation import gettext as _
 
 ORDERING_FIELDS: dict[str, str] = {
     "id": _("id"),
+    "fullname": _("full name"),
     "firstname": _("first name"),
     "lastname": _("last name"),
     "father_name": _("father name"),
+    "father_fullname": _("father full name"),
     "mother_name": _("mother name"),
     "birth_place": _("birth place"),
     "birth_date": _("birth date"),
