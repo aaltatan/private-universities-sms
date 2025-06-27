@@ -2,7 +2,7 @@ import uuid
 
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.signals import pre_delete, pre_save
+from django.db.models.signals import post_delete, pre_delete, pre_save
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
@@ -159,10 +159,6 @@ class Voucher(
     objects: VoucherManager = VoucherManager()
     all_objects: VoucherProxyManager = VoucherProxyManager()
 
-    def delete(self, using=None, keep_parents=False, permanent=False):
-        super().delete(using, keep_parents, permanent)
-        self.document.delete()
-
     def clean(self):
         errors: dict[str, ValidationError] = {}
 
@@ -267,8 +263,13 @@ def generate_voucher_serial(sender, instance: Voucher, *args, **kwargs):
         instance.voucher_serial = Klass.all_objects.get_next_voucher_serial()
 
 
+def voucher_post_delete(sender, instance: Voucher, *args, **kwargs):
+    instance.document.delete()
+
+
 pre_save.connect(generate_voucher_serial, sender=Voucher)
 pre_save.connect(slugify_voucher, sender=Voucher)
 pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=Voucher)
 pre_delete.connect(signals.add_delete_activity(ActivitySerializer), sender=Voucher)
 pre_delete.connect(signals.add_delete_activity(ActivitySerializer), sender=VoucherProxy)
+post_delete.connect(voucher_post_delete, sender=Voucher)

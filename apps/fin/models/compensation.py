@@ -4,7 +4,7 @@ from typing import Any
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models.signals import pre_delete, pre_save
+from django.db.models.signals import post_delete, pre_delete, pre_save
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
@@ -272,7 +272,12 @@ def clean_value(sender: Any, instance: Compensation, *args, **kwargs) -> None:
         instance.value = 0
 
 
+def compensation_post_delete(sender, instance: Compensation, *args, **kwargs):
+    instance.document.delete()
+
+
 pre_save.connect(signals.slugify_name, sender=Compensation)
 pre_save.connect(clean_value, sender=Compensation)
 pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=Compensation)
 pre_delete.connect(signals.add_delete_activity(ActivitySerializer), sender=Compensation)
+post_delete.connect(compensation_post_delete, sender=Compensation)
