@@ -1,4 +1,4 @@
-import magic
+import puremagic
 from django.core.exceptions import ValidationError
 from django.core.validators import (
     FileExtensionValidator,
@@ -45,7 +45,7 @@ image_extension_validator = FileExtensionValidator(
 
 def validate_pdf_image_mimetype(file) -> None:
     accepted_mimetypes = ["application/pdf", "image/jpeg", "image/png"]
-    file_mimetype = magic.from_buffer(file.read(1024), mime=True)
+    file_mimetype = puremagic.from_stream(file, mime=True)
     if file_mimetype not in accepted_mimetypes:
         raise ValidationError(
             _("file must be a valid pdf, png, jpg or jpeg file."),
@@ -54,7 +54,7 @@ def validate_pdf_image_mimetype(file) -> None:
 
 def validate_image_mimetype(file) -> None:
     accepted_mimetypes = ["image/jpeg", "image/png"]
-    file_mimetype = magic.from_buffer(file.read(1024), mime=True)
+    file_mimetype = puremagic.from_stream(file, mime=True)
     if file_mimetype not in accepted_mimetypes:
         raise ValidationError(
             _("file must be a valid jpg, jpeg or png file."),
