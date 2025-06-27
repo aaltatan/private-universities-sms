@@ -64,7 +64,7 @@
         type="search"
         x-ref="comboBoxSearch"
         @search="searchHandler"
-        @keyup="searchHandler"
+        @input="searchHandler"
         x-model="keywords"
         placeholder="{% translate 'search'|title %} ..."
         {% for name,value in widget.attrs.items%}
