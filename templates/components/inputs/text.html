@@ -6,6 +6,7 @@
   :show_help="True"
   :has_add="False"
   :enabled="True"
+  :auto_focus="True"
   :themes="{
     'text': 'text-input',
     'select': 'select-input',
@@ -14,7 +15,6 @@
   icon="plus"
   icon_size="20"
   kind="text"
-  autofocus="false"
 />
 
 <div
@@ -60,13 +60,28 @@
     <span class="absolute start-2 top-1/2 -translate-y-1/2">
       {% heroicon_outline icon size=icon_size class="text-neutral-400 dark:text-neutral-500" %}
     </span>
-    {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme
-    style="padding-inline-start: 2.5rem" type=kind %}
+    {% if auto_focus %}
+    <!--  -->
+    {% render_field field autofocus="true" class=themes|get_item:theme style="padding-inline-start:2.5rem" type=kind %}
+    <!--  -->
+    {% else %}
+    <!--  -->
+    {% render_field field class=themes|get_item:theme style="padding-inline-start:2.5rem" type=kind
+    %}
+    <!--  -->
+    {% endif %}
   </div>
   {% else %}
   <!--  -->
-  {% render_field field autocomplete="true" autofocus=autofocus class=themes|get_item:theme
-  type=kind %}
+  {% if auto_focus %}
+  <!--  -->
+  {% render_field field autofocus="true" class=themes|get_item:theme type=kind %}
+  <!--  -->
+  {% else %}
+  <!--  -->
+  {% render_field field class=themes|get_item:theme type=kind %}
+  <!--  -->
+  {% endif %}
   <!--  -->
   {% endif %}
   <!--  -->
