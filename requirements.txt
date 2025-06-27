@@ -26,10 +26,10 @@ mysqlclient==2.2.7
 openpyxl==3.1.5
 pillow==11.2.1
 ply==3.11
+puremagic==1.29
 pycparser==2.22
 pyjwt==2.10.1
 python-decouple==3.8
-python-magic-bin==0.4.14
 sqlparse==0.5.3
 tablib==3.7.0
 typing-extensions==4.12.2
