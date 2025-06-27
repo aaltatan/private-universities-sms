@@ -201,12 +201,7 @@
   <c-inputs.text :field="form.degree" />
   {% endif %}
 </c-forms.wrapper>
-<c-forms.wrapper>
-  <c-inputs.text :field="form.user" />
-</c-forms.wrapper>
-<c-forms.wrapper>
-  <c-inputs.m2m :field="form.groups" />
-</c-forms.wrapper>
-<c-forms.wrapper>
-  <c-inputs.text :field="form.notes" />
-</c-forms.wrapper>
+<c-inputs.file :field="form.identity_document" />
+<c-inputs.text :field="form.user" />
+<c-inputs.m2m :field="form.groups" />
+<c-inputs.text :field="form.notes" />

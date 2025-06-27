@@ -13,14 +13,15 @@ from apps.core.widgets import (
     AvatarWidget,
     SelectMultipleWidget,
     get_date_widget,
+    get_file_widget,
     get_input_datalist,
     get_numeric_widget,
     get_text_widget,
     get_textarea_widget,
 )
-from apps.edu.models import School, Specialization, Degree
+from apps.edu.models import Degree, School, Specialization
 from apps.geo.models import City, Nationality
-from apps.org.models import Group, Position, CostCenter, JobSubtype, Status
+from apps.org.models import CostCenter, Group, JobSubtype, Position, Status
 
 from .. import models
 
@@ -130,14 +131,6 @@ class EmployeeForm(CustomModelForm):
             }
         ),
     )
-    identity_document = forms.FileField(
-        required=False,
-        widget=forms.widgets.FileInput(
-            attrs={
-                "accept": ".pdf,.jpg,.jpeg,.png",
-            }
-        ),
-    )
 
     def clean_birth_date(self):
         birth_date: datetime = self.cleaned_data.get("birth_date")
@@ -231,4 +224,5 @@ class EmployeeForm(CustomModelForm):
             "card_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
             "hire_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
             "notes": get_textarea_widget(placeholder=_("some notes")),
+            "identity_document": get_file_widget(),
         }

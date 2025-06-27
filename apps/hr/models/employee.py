@@ -380,6 +380,7 @@ def employee_pre_save(sender, instance: Employee, *args, **kwargs):
 
 def employee_post_delete(sender, instance: Employee, *args, **kwargs):
     instance.profile.delete()
+    instance.identity_document.delete()
 
 
 class ActivitySerializer(serializers.ModelSerializer):
