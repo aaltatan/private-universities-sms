@@ -8,6 +8,7 @@ import Alpine from "alpinejs";
 import htmx from "htmx.org";
 import "../css/main.css";
 import "../favicon.ico";
+import "../images/road.jpg";
 
 window.htmx = htmx;
 window.Alpine = Alpine;

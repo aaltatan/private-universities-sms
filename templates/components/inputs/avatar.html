@@ -2,15 +2,16 @@
 
 <div class="relative w-fit mx-auto my-4">
   <a
-    href="{% if instance.profile %}{{ instance.profile.url }}{% else %}{% vite_asset_url 'assets/user.png' %}{% endif %}"
-    target="_blank"
+    href="{% if instance.profile %}{{ instance.profile.url }}{% else %}#{% endif %}"
+    target="{% if instance.profile %}_blank{% else %}_self{% endif %}"
   >
-    <img
-      src="{% if instance.profile %}{{ instance.profile.url }}{% else %}{% vite_asset_url 'assets/user.png' %}{% endif %}"
-      alt="{% translate 'user profile'|title %}"
+  <img
+      src="{% if instance.profile %}{{ instance.profile.url }}{% endif %}"
+      alt="{% translate 'user profile'|capfirst %}"
       class="rounded-full object-cover size-28 block border border-neutral-300 dark:border-neutral-800"
       x-ref="filePreview"
     />
+  <!--  -->
   </a>
   <label class="absolute bottom-0 end-0" for="{{ field.id_for_label }}">
     <c-button
