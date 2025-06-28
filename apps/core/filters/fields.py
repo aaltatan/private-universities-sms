@@ -67,6 +67,7 @@ def get_combobox_choices_filter(
 def get_text_filter(
     label: str,
     exact: bool = False,
+    field_name: str | None = None,
     method_name: str = "filter_text",
     widget_type: Literal["text", "email", "url"] = "text",
     **widget_attributes: dict[str, str],
@@ -91,6 +92,9 @@ def get_text_filter(
         kwargs["lookup_expr"] = "exact"
     else:
         kwargs["method"] = method_name
+
+    if field_name is not None:
+        kwargs["field_name"] = field_name
 
     return filters.CharFilter(**kwargs)
 
