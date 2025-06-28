@@ -31,6 +31,7 @@ class IndexMixin(ABC):
                 "email",
                 "phone",
                 "mobile",
+                "voucherproxy",
             ],
         )
 
