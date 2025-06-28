@@ -4,6 +4,7 @@ from typing import Any, Iterable, Literal
 
 from django.conf import settings
 from django.core.paginator import EmptyPage, Page, PageNotAnInteger, Paginator
+from django.urls import NoReverseMatch
 from django.db.models import Model, QuerySet
 from django.http import (
     HttpRequest,
@@ -367,9 +368,16 @@ class ListMixin(ABC):
         """
         app_label = self.get_app_label()
         verbose_name_plural: str = self.get_verbose_name_plural()
+
+        # in case of no create view
+        try:
+            create_url = reverse(f"{app_label}:{verbose_name_plural}:create")
+        except NoReverseMatch:
+            create_url = None
+
         return {
             "index_url": reverse(f"{app_label}:{verbose_name_plural}:index"),
-            "create_url": reverse(f"{app_label}:{verbose_name_plural}:create"),
+            "create_url": create_url,
         }
 
     def get_html_ids(self) -> dict[str, str]:
