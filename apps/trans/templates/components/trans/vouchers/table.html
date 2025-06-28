@@ -44,9 +44,10 @@
     />
   </c-slot>
 
-  {% if can_delete %}
+  {% if can_delete or can_audit %}
   <c-slot name="actions">
     <c-layout.contextmenu.section>
+      {% if can_delete %}
       <c-layout.contextmenu.item color="danger" icon="trash">
         <c-table.action-button
           action_name="delete"
@@ -57,6 +58,9 @@
           aria-label="delete all objects"
         />
       </c-layout.contextmenu.item>
+      {% endif %}
+      <!--  -->
+      {% if can_audit %}
       <c-layout.contextmenu.item icon="check-circle">
         <c-table.action-button
           action_name="audit"
@@ -67,6 +71,7 @@
           aria-label="audit all objects"
         />
       </c-layout.contextmenu.item>
+      {% endif %}
     </c-layout.contextmenu.section>
   </c-slot>
   {% endif %}
@@ -90,7 +95,7 @@
         <c-table.td fixed="True">
           {% if can_update or can_delete or can_view_activity %}
           <c-layout.contextmenu button_padding="sm">
-            {% if can_update or can_view_activity %}
+            {% if can_update or can_view_activity or can_audit %}
             <c-layout.contextmenu.section>
               {% if can_view_activity %}
               <c-layout.contextmenu.item

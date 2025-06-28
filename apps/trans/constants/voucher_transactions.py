@@ -6,7 +6,7 @@ ORDERING_FIELDS: dict[str, str] = {
     "voucher__voucher_serial": _("voucher voucher_serial"),
     "voucher__date": _("voucher date"),
     "voucher__kind": _("voucher kind"),
-    "employee__firstname": _("employee firstname"),
+    "employee__fullname": _("employee fullname"),
     "compensation__name": _("compensation name"),
     "ordering": _("ordering"),
 }

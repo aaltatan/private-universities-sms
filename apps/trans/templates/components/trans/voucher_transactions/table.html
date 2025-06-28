@@ -1,0 +1,129 @@
+{% load i18n widget_tweaks utils formats %}
+
+<c-blocks.table id="{{ table_id }}" :index_url="{{ index_url }}" :table_id="{{ table_id }}">
+  <c-slot name="search">
+    <c-table.filter-form trigger="search" class="w-full" prevent="True">
+      <c-inputs.text
+        :field="search_ordering_filter.form.q"
+        :show_label="False"
+        show_icon="True"
+        icon="magnifying-glass"
+        kind="search"
+        placeholder="{% translate 'search'|title %}"
+        :auto_focus="False"
+      />
+    </c-table.filter-form>
+  </c-slot>
+
+  <c-slot name="buttons_bar">
+    <c-table.filter-form trigger="order-by-change">
+      {{ search_ordering_filter.form.ordering }}
+    </c-table.filter-form>
+
+    <c-button
+      icon="adjustments-horizontal"
+      size="20"
+      hx-get="{{ index_url }}{% querystring %}"
+      hx-vals='{"filters": true}'
+      hx-target="#overlay-sidebar-container"
+      hx-swap="innerHTML"
+      data-fields="voucher_serial,title,created_at_from,created_at_to,updated_at_from,updated_at_to,date_from,date_to,transactions_count_from,transactions_count_to,total_from,total_to,net_from,net_to,kind,month,quarter,period,is_closed_period,notes,serial_id,serial_date_from,serial_date_to,approve_date_from,approve_date_to,due_date_from,due_date_to,accounting_journal_sequence,is_audited,is_migrated,"
+      badge="True"
+      title="{% translate 'filters'|title %}"
+    />
+  </c-slot>
+
+  <form hx-post="{{ index_url }}" id="{{ form_table_id }}">
+    <c-table.table>
+      <c-table.tr header="True">
+        <c-table.th>#</c-table.th>
+        <c-table.th>{% translate 'voucher serial'|capfirst %}</c-table.th>
+        <c-table.th>{% translate 'title'|capfirst %}</c-table.th>
+        <c-table.th>{% translate 'date'|capfirst %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'employee' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'compensation' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'quantity' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'value' }}</c-table.th>
+        <c-table.th>{% translate 'total' %}</c-table.th>
+        <c-table.th>{% translate 'tax' %}</c-table.th>
+        <c-table.th>{% translate 'net' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'notes' }}</c-table.th>
+        <c-table.th>{% translate 'information' %}</c-table.th>
+      </c-table.tr>
+      {% for obj in page %}
+      <c-table.tr>
+        <c-table.td>{{ forloop.counter }}</c-table.td>
+        <c-table.td data-header="{% translate 'voucher serial'|capfirst %}">
+          <a
+            href="#"
+            hx-get="{{ obj.voucher.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.voucher.voucher_serial }}
+          </a>
+        </c-table.td>
+        <c-table.td :wrap="True" data-header="{% translate 'title'|capfirst %}">
+          {{ obj.voucher.title }}
+        </c-table.td>
+        <c-table.td :wrap="True" data-header="{% translate 'date'|capfirst %}">
+          {{ obj.voucher.date|date:'Y-m-d' }}
+        </c-table.td>
+        <c-table.td :wrap="True" data-header="{{ model|verbose_name:'employee' }}">
+          {{ obj.employee.fullname }}
+        </c-table.td>
+        <c-table.td :wrap="True" data-header="{{ model|verbose_name:'compensation' }}">
+          {{ obj.compensation.name }}
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'quantity' }}">
+          {{ obj.quantity|money:True }}
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'value' }}">
+          {{ obj.value|money:True }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'total' %}"> {{ obj.total|money:True }} </c-table.td>
+        <c-table.td data-header="{% translate 'tax' %}"> {{ obj.tax|money:True }} </c-table.td>
+        <c-table.td data-header="{% translate 'net' %}"> {{ obj.net|money:True }} </c-table.td>
+        <c-table.td :wrap="True" data-header="{{ model|verbose_name:'notes' }}">
+          {{ obj.notes }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'information' %}">
+          <div class="flex items-center gap-2">
+            <div
+              title="{% if obj.voucher.is_audited %}{% translate 'audited'|capfirst %}{% else %}{% translate 'not audited'|capfirst %}{% endif %}"
+            >
+              {% if obj.voucher.is_audited %}
+              <!--  -->
+              {% heroicon_outline 'check-badge' size="18" class="text-green-500" %}
+              <!--  -->
+              {% else %}
+              <!--  -->
+              {% heroicon_outline 'no-symbol' size="18" class="text-red-500" %}
+              <!--  -->
+              {% endif %}
+            </div>
+            <div
+              title="{% if obj.voucher.is_migrated %}{% translate 'migrated'|capfirst %}{% else %}{% translate 'not migrated'|capfirst %}{% endif %}"
+            >
+              {% if obj.voucher.is_migrated %}
+              <!--  -->
+              {% heroicon_outline 'lock-closed' size="18" %}
+              <!--  -->
+              {% else %}
+              <!--  -->
+              {% heroicon_outline 'lock-open' size="18" %}
+              <!--  -->
+              {% endif %}
+            </div>
+          </div>
+        </c-table.td>
+      </c-table.tr>
+      {% empty %}
+      <c-table.empty-tr />
+      {% endfor %}
+    </c-table.table>
+  </form>
+</c-blocks.table>

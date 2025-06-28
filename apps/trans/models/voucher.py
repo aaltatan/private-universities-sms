@@ -24,6 +24,14 @@ class Voucher(
     SoftDeleteAbstractModel,
     TimeStampAbstractModel,
 ):
+    class AuditedChoices(models.TextChoices):
+        YES = True, _("audited").title()
+        NO = False, _("not audited").title()
+
+    class MigratedChoices(models.TextChoices):
+        YES = True, _("migrated").title()
+        NO = False, _("not migrated").title()
+
     uuid = models.UUIDField(
         default=uuid.uuid4,
         editable=False,
