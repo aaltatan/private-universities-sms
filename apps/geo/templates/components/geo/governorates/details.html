@@ -7,24 +7,26 @@
       <c-table height="sm">
         <c-table.table>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'name' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.name }} </c-table.td>
+            <c-table.td data-header="{{ model|verbose_name:'name' }}">
+              {{ object.name }}
+            </c-table.td>
           </c-table.tr>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {% translate 'employees count'|title %}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
+            <c-table.td data-header="{% translate 'employees count'|title %}">
               {{ object.employees_count }}
             </c-table.td>
           </c-table.tr>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'description' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
+            <c-table.td data-header="{{ model|verbose_name:'description' }}">
               {{ object.description }}
             </c-table.td>
           </c-table.tr>
@@ -35,12 +37,22 @@
       <c-separator> {% translate 'cities'|title %} </c-separator>
       <c-table height="sm">
         <c-table.table>
+          <c-table.tr>
+            <c-table.th>#</c-table.th>
+            <c-table.th>{% translate 'name'|title %}</c-table.th>
+            <c-table.th>{% translate 'kind'|title %}</c-table.th>
+            <c-table.th>{% translate 'description'|title %}</c-table.th>
+          </c-table.tr>
           {% for city in object.cities.all %}
           <c-table.tr>
             <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
             <c-table.td data-header="{% translate 'name'|title %}"> {{ city }} </c-table.td>
-            <c-table.td data-header="{% translate 'kind'|title %}"> {{ city.get_kind_display }} </c-table.td>
-            <c-table.td data-header="{% translate 'description'|title %}"> {{ city.description }} </c-table.td>
+            <c-table.td data-header="{% translate 'kind'|title %}">
+              {{ city.get_kind_display }}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'description'|title %}">
+              {{ city.description }}
+            </c-table.td>
           </c-table.tr>
           {% endfor %}
         </c-table.table>

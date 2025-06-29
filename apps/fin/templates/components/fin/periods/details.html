@@ -7,38 +7,42 @@
       <c-table height="sm">
         <c-table.table>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'name' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.name }} </c-table.td>
+            <c-table.td data-header="{{ model|verbose_name:'name' }}">
+              {{ object.name }}
+            </c-table.td>
           </c-table.tr>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'year' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.year }} </c-table.td>
+            <c-table.td data-header="{{ model|verbose_name:'year' }}">
+              {{ object.year }}
+            </c-table.td>
           </c-table.tr>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'start_date'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'start_date'|title %}">
               {{ model|verbose_name:'start_date' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
+            <c-table.td data-header="{{ model|verbose_name:'start_date' }}">
               {{ object.start_date|date:'Y-m-d' }}
             </c-table.td>
           </c-table.tr>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'is_closed'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'is_closed'|title %}">
               {{ model|verbose_name:'is_closed' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
+            <c-table.td data-header="{{ model|verbose_name:'is_closed' }}">
               {{ object.is_closed|yesno|title }}
             </c-table.td>
           </c-table.tr>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'description' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
+            <c-table.td data-header="{{ model|verbose_name:'description' }}">
               {{ object.description }}
             </c-table.td>
           </c-table.tr>
