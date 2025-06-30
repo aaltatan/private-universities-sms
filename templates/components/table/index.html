@@ -40,16 +40,17 @@
   </div>
 
   <div
+    id="table-spinner"
+    class="hx-request:opacity-100 w-full h-full opacity-0 absolute inset-0 hx-request:z-50 -z-50 flex items-center justify-center dark:bg-black/50 bg-white/50 p-4 pb-8 sm:items-center lg:p-8 duration-150"
+  >
+    {% heroicon_outline "arrow-path" class="animate-spin" %}
+  </div>
+
+  <div
     class="relative {% if overflow %}overflow-auto{% endif %} w-full rounded-md scroll {{ heights|get_item:height }} {% if bordered %}border border-neutral-300 dark:border-neutral-800{% endif %}"
   >
-    <div
-      id="table-spinner"
-      class="hx-request:opacity-100 opacity-0 absolute inset-0 hx-request:z-50 -z-50 flex items-center justify-center dark:bg-black/50 bg-white/50 p-4 pb-8 sm:items-center lg:p-8 duration-150"
-    >
-      {% heroicon_outline "arrow-path" class="animate-spin" %}
-    </div>
-
     {{ slot }}
   </div>
+
   {{ pagination }}
 </div>

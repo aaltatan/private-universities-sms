@@ -183,8 +183,11 @@ class Voucher(
         if errors:
             raise ValidationError(errors)
 
-    def get_absolute_url(self):
-        return super().get_absolute_url()
+    def migrate(self):
+        """Migrate the voucher and generate a journal entry."""
+        transactions = self.transactions.all()
+        for transaction in transactions:
+            transaction.migrate()
 
     def get_audit_url(self):
         return reverse(

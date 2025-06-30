@@ -7,32 +7,34 @@
       <c-table height="sm">
         <c-table.table>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'name' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}"> {{ object.name }} </c-table.td>
+            <c-table.td data-header="{{ model|verbose_name:'name' }}">
+              {{ object.name }}
+            </c-table.td>
           </c-table.tr>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'order' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
+            <c-table.td data-header="{{ model|verbose_name:'order' }}">
               {{ object.order }}
             </c-table.td>
           </c-table.tr>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {% translate 'employees count'|title %}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
+            <c-table.td data-header="{% translate 'employees count'|title %}">
               {{ object.employees_count }}
             </c-table.td>
           </c-table.tr>
           <c-table.tr>
-            <c-table.td data-header="{% translate 'name'|title %}">
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'description' }}
             </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
+            <c-table.td data-header="{{ model|verbose_name:'description' }}">
               {{ object.description }}
             </c-table.td>
           </c-table.tr>

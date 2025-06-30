@@ -1,7 +1,30 @@
-<c-vars :fixed="False" :wrap="False" />
+<c-vars
+  :fixed="False"
+  :wrap="False"
+  :header="False"
+  :relative_to_table_container="False"
+  :containers="{
+    'sm': 'sm',
+    'md': 'md',
+    'lg': 'lg',
+    'xl': 'xl',
+    '2xl': '2xl',
+    '3xl': '3xl',
+    '4xl': '4xl',
+    '5xl': '5xl',
+  }"
+  container="lg"
+/>
 
 <td
-  class="{% if not wrap %}whitespace-nowrap{% endif %} {% if not fixed %} flex before:content-[attr(data-header)':'] {% endif %} items-center text-xs text-start gap-2 px-2 py-1 before:font-medium before:capitalize"
+  class="
+  {% if not wrap %}whitespace-nowrap{% endif %}
+  {% if not fixed %}flex before:content-[attr(data-header)':']{% endif %}
+  {% if header %}
+    hidden 
+    @{{ containers|get_item:container }}{% if relative_to_table_container %}/table{% endif %}:!table-cell
+  {% endif %}
+  items-center text-xs text-start gap-2 px-2 py-1 before:font-medium before:capitalize"
   {{ attrs }}
 >
   <div class="w-full">{{ slot }}</div>

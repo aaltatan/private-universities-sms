@@ -1,6 +1,8 @@
 import uuid
 from decimal import Decimal
+from typing import Literal
 
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
@@ -16,6 +18,7 @@ from apps.hr.models import Employee
 
 from ..managers import VoucherTransactionManager
 from .voucher import Voucher
+from .journal_entry import JournalEntry
 
 
 class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
@@ -129,6 +132,60 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
         if errors:
             raise ValidationError(errors)
 
+    def __migrate(
+        self,
+        calculate_for: Literal["tax", "compensation"] = "compensation",
+    ):
+        kwargs = {
+            "date": self.voucher.date,
+            "month": self.voucher.month,
+            "quarter": self.voucher.quarter,
+            "period": self.voucher.period,
+            "employee": self.employee,
+            "cost_center": self.employee.cost_center,
+            "voucher": self.voucher,
+            "notes": self.notes,
+        }
+
+        if calculate_for == "compensation":
+            kwargs["content_type"] = ContentType.objects.get_for_model(
+                self.compensation.__class__,
+            )
+            kwargs["fiscal_object_id"] = self.compensation.id
+
+            amount = self.get_total()
+
+            if amount < 0:
+                kwargs["credit"] = abs(amount)
+            else:
+                kwargs["debit"] = amount
+
+            kwargs["explanation"] = self.total_information
+
+        else:
+            kwargs["content_type"] = ContentType.objects.get_for_model(
+                self.compensation.tax.__class__,
+            )
+            kwargs["fiscal_object_id"] = self.compensation.tax.id
+
+            amount = self.tax
+
+            if amount < 0:
+                kwargs["debit"] = abs(amount)
+            else:
+                kwargs["credit"] = amount
+
+            kwargs["explanation"] = self.tax_information
+
+        JournalEntry.objects.create(**kwargs)
+
+    def migrate(self):
+        """Migrate the voucher transaction and generate a journal entry."""
+        self.__migrate(calculate_for="compensation")
+
+        if self.tax != 0:
+            self.__migrate(calculate_for="tax")
+
     def get_total(self) -> Decimal:
         return self.quantity * self.value
 
@@ -140,6 +197,10 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 
     @property
     def tax_information(self):
+        result = 0
+        if self.compensation.tax is None:
+            return result
+
         if self.compensation.tax.fixed:
             tax_without_round = self.compensation.tax.rate * self.get_total()
             difference = self.tax - tax_without_round

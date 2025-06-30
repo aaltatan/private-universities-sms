@@ -20,442 +20,442 @@
           <c-table height="none">
             <c-table.table>
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'fullname' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'fullname' }}">
                   {{ object.fullname }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'shortname' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'shortname' }}">
                   {{ object.shortname }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'firstname' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'firstname' }}">
                   {{ object.firstname }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'lastname' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'lastname' }}">
                   {{ object.lastname }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'father_name' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'father_name' }}">
                   {{ object.father_name }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'father_fullname' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'father_fullname' }}">
                   {{ object.father_fullname }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'mother_name' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'mother_name' }}">
                   {{ object.mother_name }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'birth_place' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'birth_place' }}">
                   {{ object.birth_place }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'birth_date' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'birth_date' }}">
                   {{ object.birth_date|date:'Y-m-d' }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'age'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'age'|title %}">
                   {{ object.birth_date|timesince }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'age group'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'age group'|title %}">
                   {{ object.age_group|title }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'next birthday'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'next birthday'|title %}">
                   {{ object.next_birthday|date:'Y-m-d' }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'until next birthday'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'until next birthday'|title %}">
                   {{ object.next_birthday|timeuntil:now }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'national_id' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'national_id' }}">
                   {{ object.national_id }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'passport_id' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'passport_id' }}">
                   {{ object.passport_id|default_if_none:"" }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'card_id' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'card_id' }}">
                   {{ object.card_id }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'civil_registry_office' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'civil_registry_office' }}">
                   {{ object.civil_registry_office }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'registry_office_name' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'registry_office_name' }}">
                   {{ object.registry_office_name }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'registry_office_id' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'registry_office_id' }}">
                   {{ object.registry_office_id }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'gender' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'gender' }}">
                   {{ object.get_gender_display }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'face_color' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'face_color' }}">
                   {{ object.face_color }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'eyes_color' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'eyes_color' }}">
                   {{ object.eyes_color }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'address' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'address' }}">
                   {{ object.address }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'special_signs' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'special_signs' }}">
                   {{ object.special_signs }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'card_date' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'card_date' }}">
                   {{ object.card_date|date:'Y-m-d' }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'martial_status' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'martial_status' }}">
                   {{ object.get_martial_status_display }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'military_status' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'military_status' }}">
                   {{ object.get_military_status_display }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'religion' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'religion' }}">
                   {{ object.get_religion_display }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'current_address' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'current_address' }}">
                   {{ object.current_address }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'nationality' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'nationality' }}">
                   {{ object.nationality }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'governorate'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'governorate'|title %}">
                   {{ object.city.governorate }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'city' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'city' }}">
                   {{ object.city }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'hire_date' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'hire_date' }}">
                   {{ object.hire_date|date:'Y-m-d' }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'job age'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'job age'|title %}">
                   {{ object.hire_date|timesince }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'job age group'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'job age group'|title %}">
                   {{ object.job_age_group|capfirst }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'next job anniversary'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'next job anniversary'|title %}">
                   {{ object.next_nth_job_anniversary|date:'Y-m-d' }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'until next job anniversary'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'until next job anniversary'|title %}">
                   {{ object.next_nth_job_anniversary|timeuntil:now }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'notes' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'notes' }}">
                   {{ object.notes }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'cost_center' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'cost_center' }}">
                   {{ object.cost_center }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'position' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'position' }}">
                   {{ object.position }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'status' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'status' }}">
                   {{ object.status }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'job type'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'job type'|title %}">
                   {{ object.job_subtype.job_type }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'job_subtype' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'job_subtype' }}">
                   {{ object.job_subtype }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'groups' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'groups' }}">
                   {% for group in object.groups.all %} {{ group }}, {% endfor %}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'degree' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'degree' }}">
                   {{ object.degree }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'academic?'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'academic?'|title %}">
                   {{ object.degree.is_academic|yesno|title }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'school' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'school' }}">
                   {{ object.school }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'name'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {{ model|verbose_name:'specialization' }}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{{ model|verbose_name:'specialization' }}">
                   {{ object.specialization }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
               <c-table.tr>
-                <c-table.td data-header="{% translate 'specialist?'|title %}">
+                <c-table.td :header="True" data-header="{% translate 'specialist?'|title %}">
                   {% translate 'specialist?'|title %}
                 </c-table.td>
-                <c-table.td data-header="{% translate 'value'|title %}">
+                <c-table.td data-header="{% translate 'specialist?'|title %}">
                   {{ object.specialization.is_specialist|yesno|title }}
                 </c-table.td>
               </c-table.tr>
@@ -466,6 +466,11 @@
           <c-separator> {% translate 'mobiles'|title %} </c-separator>
           <c-table height="none">
             <c-table.table>
+              <c-table.tr>
+                <c-table.th>{% translate 'number'|title %}</c-table.th>
+                <c-table.th>{% translate 'link'|title %}</c-table.th>
+                <c-table.th>{% translate 'kind'|title %}</c-table.th>
+              </c-table.tr>
               {% for number in object.mobiles.all %}
               <c-table.tr>
                 <c-table.td data-header="{% translate 'number'|title %}">
@@ -500,6 +505,10 @@
           {% if object.phones.all %}
           <c-separator> {% translate 'phones'|title %} </c-separator>
           <c-table height="none">
+            <c-table.tr>
+              <c-table.th>{% translate 'number'|title %}</c-table.th>
+              <c-table.th>{% translate 'kind'|title %}</c-table.th>
+            </c-table.tr>
             <c-table.table>
               {% for number in object.phones.all %}
               <c-table.tr>
@@ -521,6 +530,10 @@
           <c-separator> {% translate 'emails'|title %} </c-separator>
           <c-table height="none">
             <c-table.table>
+              <c-table.tr>
+                <c-table.th>{% translate 'number'|title %}</c-table.th>
+                <c-table.th>{% translate 'kind'|title %}</c-table.th>
+              </c-table.tr>
               {% for email in object.emails.all %}
               <c-table.tr>
                 <c-table.td data-header="{% translate 'email'|title %}">
