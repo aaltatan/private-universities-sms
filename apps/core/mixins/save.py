@@ -5,10 +5,23 @@ from ..models import Activity
 
 
 class AddCreateActivityMixin:
-    def save(self, *args, **kwargs):
+    def save(
+        self,
+        *args,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ):
         request = RequestMiddleware.get_current_request()
         adding: bool = self._state.adding
-        super().save(*args, **kwargs)
+        super().save(
+            *args,
+            force_insert=force_insert,
+            force_update=force_update,
+            using=using,
+            update_fields=update_fields,
+        )
         if request and self.pk is not None and adding:
             Activity.objects.create(
                 user=request.user,
