@@ -67,6 +67,7 @@
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'name' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'shortname' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'calculation_method' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'value' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'rounded_to' }}</c-table.th>
@@ -145,6 +146,9 @@
               {% endif %}
             </div>
           </a>
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'shortname' }}">
+          {{ obj.shortname }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'calculation_method' }}">
           {% if obj.calculation_method == "by_input" %}
