@@ -29,7 +29,7 @@
   {% if form.non_field_errors %}
   <div class="my-6">
     {% for error in form.non_field_errors %}
-    <c-alert>{{ error }}</c-alert>
+    <c-alert>{{ error|capfirst }}</c-alert>
     {% endfor %}
   </div>
   {% endif %}
