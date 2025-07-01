@@ -9,6 +9,7 @@ import htmx from "htmx.org";
 import "../css/main.css";
 import "../favicon.ico";
 import "../images/road.jpg";
+import "../images/user.png";
 
 window.htmx = htmx;
 window.Alpine = Alpine;

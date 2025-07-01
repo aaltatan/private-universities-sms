@@ -67,6 +67,7 @@
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'name' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'shortname' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'calculation_method' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'value' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'rounded_to' }}</c-table.th>
@@ -146,6 +147,9 @@
             </div>
           </a>
         </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'shortname' }}">
+          {{ obj.shortname }}
+        </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'calculation_method' }}">
           {% if obj.calculation_method == "by_input" %}
           <!--  -->
@@ -167,7 +171,19 @@
           {{ obj.get_round_method_display }}
         </c-table.td>
         <c-table.td wrap="True" data-header="{{ model|verbose_name:'tax' }}">
-          {{ obj.tax|default:"-" }}
+          <a
+            href="#"
+            hx-get="{{ obj.tax.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            <div class="flex items-center gap-2">
+              {{ obj.tax|default:"-" }}
+            </div>
+          </a>
         </c-table.td>
         <c-table.td wrap="True" data-header="{{ model|verbose_name:'tax_classification' }}">
           {{ obj.get_tax_classification_display }}

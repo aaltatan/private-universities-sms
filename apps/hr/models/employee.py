@@ -12,6 +12,7 @@ from apps.core import signals, validators
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import User
 from apps.core.models.abstracts import UrlsMixin
+from apps.core.utils import calculate_age_in_years
 from apps.core.validators import (
     numeric_validator,
     two_chars_validator,
@@ -353,6 +354,12 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
             models.Index(fields=["hire_date"]),
         ]
 
+    def get_age(self) -> int:
+        return calculate_age_in_years(self.birth_date)
+
+    def get_job_age(self) -> int:
+        return calculate_age_in_years(self.hire_date)
+
     def get_next_birthday(self) -> date:
         return timezone.datetime(
             timezone.now().year, self.birth_date.month, self.birth_date.day
@@ -363,16 +370,9 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
 
 
 def employee_pre_save(sender, instance: Employee, *args, **kwargs):
-    value = (
-        instance.firstname
-        + " "
-        + instance.father_name
-        + " "
-        + instance.lastname
-        + "-"
-        + instance.national_id
+    instance.slug = slugify(
+        f"{instance.fullname}-{instance.national_id}", allow_unicode=True
     )
-    instance.slug = slugify(value, allow_unicode=True)
 
     if instance.gender == instance.GenderChoices.FEMALE.value:
         instance.military_status = instance.MilitaryStatus.EXCUSED.value

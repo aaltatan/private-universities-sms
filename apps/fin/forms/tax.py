@@ -12,6 +12,10 @@ class BaseTaxForm(CustomModelForm):
         choices=models.Tax.FixedChoices,
         label=_("fixed"),
     )
+    affected_by_working_days = forms.ChoiceField(
+        choices=models.Tax.AffectedByWorkingDaysChoices,
+        label=_("affected by working days"),
+    )
 
     class Meta:
         model = models.Tax
@@ -21,6 +25,7 @@ class BaseTaxForm(CustomModelForm):
             "rate",
             "rounded_to",
             "round_method",
+            "affected_by_working_days",
             "description",
         )
         widgets = {

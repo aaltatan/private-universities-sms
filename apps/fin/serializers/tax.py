@@ -13,5 +13,6 @@ class TaxSerializer(serializers.ModelSerializer):
             "rate",
             "rounded_to",
             "round_method",
+            "affected_by_working_days",
             "description",
         )

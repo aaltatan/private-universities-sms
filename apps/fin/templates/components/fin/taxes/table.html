@@ -71,6 +71,7 @@
         <c-table.th>{{ model|verbose_name:'rate' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'rounded_to' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'round_method' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'affected_by_working_days' }}</c-table.th>
         <c-table.th>{% translate 'brackets count'|title %}</c-table.th>
         <c-table.th>{% translate 'compensations count'|title %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'description' }}</c-table.th>
@@ -152,6 +153,9 @@
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'round_method' }}">
           {{ obj.get_round_method_display }}
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'fixed' }}">
+          {{ obj.affected_by_working_days|yesno|title }}
         </c-table.td>
         <c-table.td data-header="{% translate 'brackets count'|title %}">
           {{ obj.brackets_count }}

@@ -9,7 +9,7 @@ from .. import models
 
 class BaseCompensationForm(CustomModelForm):
     calculation_method = forms.ChoiceField(
-        choices=models.Compensation.CalculationUserChoices,
+        choices=models.Compensation.CalculationChoices,
         label=_("calculation method"),
     )
     affected_by_working_days = forms.ChoiceField(
@@ -38,6 +38,7 @@ class BaseCompensationForm(CustomModelForm):
             "shortname",
             "calculation_method",
             "value",
+            "formula",
             "min_value",
             "max_value",
             "round_method",
@@ -60,6 +61,12 @@ class BaseCompensationForm(CustomModelForm):
             "accounting_id": widgets.get_text_widget(placeholder=_("e.g. 3111")),
             "description": widgets.get_textarea_widget(),
             "document": widgets.get_file_widget(),
+            "formula": widgets.get_textarea_widget(
+                rows=4,
+                placeholder=_(
+                    "e.g. 1000 if obj.gender == 'male' else 1000",
+                ),
+            ),
         }
 
 

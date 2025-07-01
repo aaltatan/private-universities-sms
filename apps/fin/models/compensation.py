@@ -10,6 +10,7 @@ from rest_framework import serializers
 
 from apps.core import signals, validators
 from apps.core.choices import RoundMethodChoices
+from apps.core.exceptions import FormulaNotValid
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search, round_to_nearest
@@ -59,8 +60,6 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
     shortname = models.CharField(
         max_length=255,
         verbose_name=_("short name"),
-        blank=True,
-        default="",
         help_text=_("to use it in services like sms, whatsapp, etc."),
     )
     calculation_method = models.CharField(
@@ -181,8 +180,8 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
                 # formula should like this
                 # `2000 if obj.gender == "male" else 1000`
                 result = eval(self.formula)
-            except:  # noqa: E722
-                result = 0
+            except Exception as e:
+                raise FormulaNotValid(*e.args)
 
         return round_to_nearest(result, self.round_method, self.rounded_to)
 

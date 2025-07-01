@@ -55,7 +55,7 @@
     class="pl-0.5 my-1 text-xs text-neutral-400 dark:text-neutral-500 block empty:hidden whitespace-nowrap line-clamp-1"
     title="{{ field.help_text|capfirst }}"
   >
-    {{ field.help_text|capfirst }}
+    {{ field.help_text|capfirst|safe }}
   </em>
   {% endif %}
   <!--  -->

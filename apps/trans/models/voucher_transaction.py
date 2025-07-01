@@ -10,6 +10,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from apps.core import signals
+from apps.core.exceptions import FormulaNotValid
 from apps.core.models import TimeStampAbstractModel
 from apps.core.models.abstracts import UrlsMixin
 from apps.core.utils import round_to_nearest
@@ -17,8 +18,8 @@ from apps.fin.models import Compensation
 from apps.hr.models import Employee
 
 from ..managers import VoucherTransactionManager
-from .voucher import Voucher
 from .journal_entry import JournalEntry
+from .voucher import Voucher
 
 
 class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
@@ -102,12 +103,29 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
     def clean(self):
         errors: dict[str, ValidationError] = {}
 
+        if (
+            getattr(self, "compensation", None)
+            and self.compensation.calculation_method
+            == self.compensation.CalculationChoices.FORMULA
+        ):
+            try:
+                self.compensation.calculate(self.value, self.employee)
+            except FormulaNotValid as e:
+                errors["compensation"] = ValidationError(
+                    "the formula is not valid, REASON: {}".format(e.args[0]),
+                )
+
         if getattr(self, "employee", None) and self.employee.status.is_payable is False:
             errors["employee"] = ValidationError(
                 _("the employee ({}) is {}").format(
                     self.employee.fullname,
                     self.employee.status.name,
                 )
+            )
+
+        if getattr(self, "compensation", None) and self.compensation.is_active is False:
+            errors["compensation"] = ValidationError(
+                _("the compensation ({}) is not active").format(self.compensation.name)
             )
 
         if (
@@ -278,7 +296,7 @@ def slugify_voucher_transaction(
         instance.slug = instance.uuid.hex
 
 
-def post_save_calculations(
+def pre_save_calculations(
     sender,
     instance: VoucherTransaction,
     *args,
@@ -290,7 +308,7 @@ def post_save_calculations(
 
 
 pre_save.connect(slugify_voucher_transaction, sender=VoucherTransaction)
-pre_save.connect(post_save_calculations, sender=VoucherTransaction)
+pre_save.connect(pre_save_calculations, sender=VoucherTransaction)
 pre_save.connect(
     signals.add_update_activity(ActivitySerializer), sender=VoucherTransaction
 )

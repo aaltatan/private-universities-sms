@@ -1,4 +1,4 @@
-{% load i18n utils %}
+{% load i18n utils django_vite %}
 
 <c-layout.modal width="xl">
   <c-layout.modal.body :close_padding="buttons_padding">
@@ -6,12 +6,12 @@
     <c-slot name="body">
       <div class="grid grid-cols-1 @md:grid-cols-4 gap-2">
         <a
-          href="{% if object.profile %}{{ object.profile.url }}{% else %}#{% endif %}"
+          href="{% if object.profile %}{{ object.profile.url }}{% else %}{% vite_asset_url 'assets/images/user.png' %}{% endif %}"
           target="{% if object.profile %}_blank{% else %}_self{% endif %}"
           class="block"
         >
           <img
-            src="{% if object.profile %}{{ object.profile.url }}{% endif %}"
+            src="{% if object.profile %}{{ object.profile.url }}{% else %}{% vite_asset_url 'assets/images/user.png' %}{% endif %}"
             class="size-48 rounded-full object-cover block border border-neutral-300 dark:border-neutral-800"
             alt="avatar"
           />
