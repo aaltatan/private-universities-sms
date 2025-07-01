@@ -25,17 +25,15 @@ Attributes (extra_tags):
 -->
 {% endcomment %}
 <li
-  class="w-full realtive rounded-md p-4 text-xs ring-2 {{ ring_colors|get_item:message.level_tag }}"
+  class="w-full flex items-start gap-1 rounded-md p-2 text-xs ring-2 {{ ring_colors|get_item:message.level_tag }}"
   x-data="messages(
     '{{ settings.messages_timeout }}000', 
     {% if message.extra_tags == 'do_not_close' %}false{% else %}true{% endif %},
   )"
   x-show="open"
 >
-  <div class="absolute top-0 right-0 flex items-center gap-1">
-    <c-button @click="close" icon="x-mark" size="16" rounded="full" theme="outline" />
-  </div>
-  <div class="text-sm">{{ message|capfirst }}</div>
+  <div class="text-sm p-2">{{ message|capfirst }}</div>
+  <c-button @click="close" icon="x-mark" size="16" rounded="full" theme="outline" />
 </li>
 {% endfor %}
 <!--  -->
