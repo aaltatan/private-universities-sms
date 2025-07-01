@@ -52,137 +52,206 @@
         text="{{ sidebar_links.core.dashboard.text }}"
       />
       <!-- geo -->
+      {% if perms.geo.view_governorate or perms.geo.view_city or perms.geo.view_nationality %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'geographical'|title %}"
         icon="globe-europe-africa"
         url="/geo/"
         name="geo"
       >
+        {% if perms.geo.view_governorate %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.geo.governorates.path }}"
           text="{{ sidebar_links.geo.governorates.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.geo.view_city %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.geo.cities.path }}"
           text="{{ sidebar_links.geo.cities.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.geo.view_nationality %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.geo.nationalities.path }}"
           text="{{ sidebar_links.geo.nationalities.text }}"
         />
+        {% endif %}
       </c-layout.sidebar.collapsible-item>
+      {% endif %}
       <!-- org -->
+      {% if perms.org.view_jobtype or perms.org.view_jobsubtype or perms.org.view_costcenter or perms.org.view_position or perms.org.view_status or perms.org.view_group %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'organization'|title %}"
         icon="briefcase"
         url="/org/"
         name="org"
       >
+        {% if perms.org.view_jobtype %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.org.job_types.path }}"
           text="{{ sidebar_links.org.job_types.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.org.view_jobsubtype %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.org.job_subtypes.path }}"
           text="{{ sidebar_links.org.job_subtypes.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.org.view_costcenter %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.org.cost_centers.path }}"
           text="{{ sidebar_links.org.cost_centers.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.org.view_position %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.org.positions.path }}"
           text="{{ sidebar_links.org.positions.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.org.view_status %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.org.statuses.path }}"
           text="{{ sidebar_links.org.statuses.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.org.view_group %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.org.groups.path }}"
           text="{{ sidebar_links.org.groups.text }}"
         />
+        {% endif %}
       </c-layout.sidebar.collapsible-item>
+      {% endif %}
       <!-- edu -->
+      {% if perms.edu.view_schoolkind or perms.edu.view_school or perms.edu.view_degree or perms.edu.view_specialization %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'educational'|title %}"
         icon="academic-cap"
         url="/edu/"
         name="edu"
       >
+        {% if perms.edu.view_schoolkind %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.edu.school_kinds.path }}"
           text="{{ sidebar_links.edu.school_kinds.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.edu.view_school %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.edu.schools.path }}"
           text="{{ sidebar_links.edu.schools.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.edu.view_degree %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.edu.degrees.path }}"
           text="{{ sidebar_links.edu.degrees.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.edu.view_specialization %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.edu.specializations.path }}"
           text="{{ sidebar_links.edu.specializations.text }}"
         />
+        {% endif %}
       </c-layout.sidebar.collapsible-item>
+      {% endif %}
       <!-- fin -->
+      {% if perms.fin.view_year or perms.fin.view_period or perms.fin.view_tax or perms.fin.view_taxbracket or perms.fin.view_compensation or perms.fin.view_voucherkind %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'financial'|title %}"
         icon="currency-dollar"
         url="/fin/"
         name="fin"
       >
+        {% if perms.fin.view_year %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.fin.years.path }}"
           text="{{ sidebar_links.fin.years.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.fin.view_period %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.fin.periods.path }}"
           text="{{ sidebar_links.fin.periods.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.fin.view_tax %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.fin.taxes.path }}"
           text="{{ sidebar_links.fin.taxes.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.fin.view_taxbracket %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.fin.tax_brackets.path }}"
           text="{{ sidebar_links.fin.tax_brackets.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.fin.view_compensation %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.fin.compensations.path }}"
           text="{{ sidebar_links.fin.compensations.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.fin.view_voucherkind %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.fin.voucher_kinds.path }}"
           text="{{ sidebar_links.fin.voucher_kinds.text }}"
         />
+        {% endif %}
       </c-layout.sidebar.collapsible-item>
+      {% endif %}
       <!-- hr -->
+      {% if perms.hr.view_employee %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'human resources'|title %}"
         icon="users"
         url="/hr/"
         name="hr"
       >
+        {% if perms.hr.view_employee %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.hr.employees.path }}"
           text="{{ sidebar_links.hr.employees.text }}"
         />
+        {% endif %}
       </c-layout.sidebar.collapsible-item>
+      {% endif %}
       <!-- trans -->
+      {% if perms.trans.view_voucher %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'transactions'|title %}"
         icon="book-open"
         url="/trans/"
         name="trans"
       >
+        {% if perms.trans.view_voucher %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.trans.vouchers.path }}"
           text="{{ sidebar_links.trans.vouchers.text }}"
         />
+        {% endif %}
       </c-layout.sidebar.collapsible-item>
+      {% endif %}
     </div>
   </nav>
 
