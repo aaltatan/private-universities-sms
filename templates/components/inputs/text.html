@@ -13,7 +13,7 @@
   }"
   theme="text"
   icon="plus"
-  icon_size="20"
+  icon_size="16"
   kind="text"
 />
 
@@ -62,11 +62,11 @@
     </span>
     {% if auto_focus %}
     <!--  -->
-    {% render_field field autofocus="true" class=themes|get_item:theme style="padding-inline-start:2.5rem" type=kind %}
+    {% render_field field autofocus="true" class=themes|get_item:theme style="padding-inline-start:1.75rem" type=kind %}
     <!--  -->
     {% else %}
     <!--  -->
-    {% render_field field class=themes|get_item:theme style="padding-inline-start:2.5rem" type=kind
+    {% render_field field class=themes|get_item:theme style="padding-inline-start:1.75rem" type=kind
     %}
     <!--  -->
     {% endif %}
