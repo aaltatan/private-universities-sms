@@ -15,6 +15,10 @@ class BaseTaxFilter(BaseNameDescriptionFilter):
         label=_("fixed").title(),
         choices=models.Tax.FixedChoices,
     )
+    affected_by_working_days = filters.ChoiceFilter(
+        label=_("affected by working days").title(),
+        choices=models.Tax.AffectedByWorkingDaysChoices,
+    )
     rate_from, rate_to = get_number_from_to_filters("rate")
 
     class Meta:
@@ -24,6 +28,7 @@ class BaseTaxFilter(BaseNameDescriptionFilter):
             "fixed",
             "rate_from",
             "rate_to",
+            "affected_by_working_days",
             "description",
         )
 

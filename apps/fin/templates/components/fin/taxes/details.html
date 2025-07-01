@@ -53,6 +53,15 @@
           <!--  -->
           <c-table.tr>
             <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'affected_by_working_days' }}
+            </c-table.td>
+            <c-table.td data-header="{{ model|verbose_name:'affected_by_working_days' }}">
+              {{ object.affected_by_working_days|yesno|title }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {% translate 'brackets count'|title %}
             </c-table.td>
             <c-table.td data-header="{% translate 'brackets count'|title %}">

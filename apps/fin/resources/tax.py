@@ -25,6 +25,17 @@ class TaxResource(BaseResource):
         attribute="round_method",
         column_name=_("round method").title(),
     )
+    affected_by_working_days = fields.Field(
+        attribute="affected_by_working_days",
+        column_name=_("affected by working days").title(),
+    )
+    description = fields.Field(
+        attribute="description",
+        column_name=_("description").title(),
+    )
+
+    def dehydrate_affected_by_working_days(self, obj: models.Compensation):
+        return self._dehydrate_boolean(obj.affected_by_working_days)
 
     def dehydrate_round_method(self, obj: models.Compensation):
         return self._dehydrate_choices(obj, "round_method")
@@ -41,6 +52,7 @@ class TaxResource(BaseResource):
             "rate",
             "rounded_to",
             "round_method",
+            "affected_by_working_days",
             "description",
             "slug",
         )

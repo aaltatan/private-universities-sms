@@ -34,7 +34,9 @@ class Tax(AddCreateActivityMixin, AbstractUniqueNameModel):
         FIXED = True, _("fixed").title()
         BRACKETS = False, _("brackets").title()
 
-    objects: TaxManager = TaxManager()
+    class AffectedByWorkingDaysChoices(models.TextChoices):
+        YES = True, _("yes").title()
+        NO = False, _("no").title()
 
     fixed = models.BooleanField(
         default=True,
@@ -58,6 +60,12 @@ class Tax(AddCreateActivityMixin, AbstractUniqueNameModel):
         choices=RoundMethodChoices.choices,
         default=RoundMethodChoices.CEIL,
     )
+    affected_by_working_days = models.BooleanField(
+        verbose_name=_("affected by working days"),
+        default=False,
+    )
+
+    objects: TaxManager = TaxManager()
 
     def _calculate_fixed(self, amount: Decimal | int | float) -> Decimal:
         return amount * self.rate
