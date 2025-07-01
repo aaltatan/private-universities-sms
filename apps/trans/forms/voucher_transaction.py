@@ -12,7 +12,7 @@ from .. import models
 class BaseVoucherTransactionForm(CustomModelForm):
     employee = get_autocomplete_field(
         Employee.objects.all(),
-        to_field_name="autocomplete",
+        to_field_name="fullname",
         widget_attributes={"placeholder": _("search employees")},
         app_label="hr",
         model_name="Employee",
