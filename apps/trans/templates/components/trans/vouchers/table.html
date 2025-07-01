@@ -44,7 +44,7 @@
     />
   </c-slot>
 
-  {% if can_delete or can_audit %}
+  {% if can_delete or can_audit or can_migrate %}
   <c-slot name="actions">
     <c-layout.contextmenu.section>
       {% if can_delete %}
@@ -69,6 +69,19 @@
           hx-target="#modal-container"
           hx-indicator="#modal-spinner"
           aria-label="audit all objects"
+        />
+      </c-layout.contextmenu.item>
+      {% endif %}
+      <!--  -->
+      {% if can_migrate %}
+      <c-layout.contextmenu.item icon="lock-closed">
+        <c-table.action-button
+          action_name="migrate"
+          value="{% translate 'migrate' %}"
+          hx-post="{{ index_url }}{% querystring %}"
+          hx-target="#modal-container"
+          hx-indicator="#modal-spinner"
+          aria-label="migrate all objects"
         />
       </c-layout.contextmenu.item>
       {% endif %}
@@ -121,7 +134,7 @@
               </c-layout.contextmenu.item>
               {% endif %}
               <!--  -->
-              {% if can_audit %}
+              {% if can_audit and not obj.is_audited %}
               <c-layout.contextmenu.item
                 icon="check-circle"
                 href="#"
@@ -132,6 +145,34 @@
                 aria-label="audit object"
               >
                 {% translate 'audit' %}
+              </c-layout.contextmenu.item>
+              {% endif %}
+              <!--  -->
+              {% if can_migrate and not obj.is_migrated and obj.is_audited %}
+              <c-layout.contextmenu.item
+                icon="lock-closed"
+                href="#"
+                hx-get="{{ obj.get_migrate_url }}{% querystring %}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="migrate object"
+              >
+                {% translate 'migrate' %}
+              </c-layout.contextmenu.item>
+              {% endif %}
+              <!--  -->
+              {% if can_unmigrate and obj.is_migrated %}
+              <c-layout.contextmenu.item
+                icon="lock-open"
+                href="#"
+                hx-get="{{ obj.get_unmigrate_url }}{% querystring %}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="unmigrate object"
+              >
+                {% translate 'unmigrate' %}
               </c-layout.contextmenu.item>
               {% endif %}
             </c-layout.contextmenu.section>

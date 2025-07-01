@@ -43,4 +43,16 @@ urlpatterns = [
         name="audit",
         kwargs={"title": _("audit")},
     ),
+    path(
+        route="migrate/<str:slug>/",
+        view=views.MigrateView.as_view(),
+        name="migrate",
+        kwargs={"title": _("migrate")},
+    ),
+    path(
+        route="unmigrate/<str:slug>/",
+        view=views.UnMigrateView.as_view(),
+        name="unmigrate",
+        kwargs={"title": _("unmigrate")},
+    ),
 ]

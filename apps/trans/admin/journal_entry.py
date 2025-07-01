@@ -22,6 +22,7 @@ class JournalEntryAdmin(
         "voucher",
     )
     fields = (
+        ("uuid", "created_at", "updated_at"),
         ("date", "month", "quarter", "period"),
         ("debit", "credit"),
         ("employee", "cost_center"),
@@ -32,7 +33,6 @@ class JournalEntryAdmin(
     search_fields = constants.SEARCH_FIELDS
     autocomplete_fields = ("employee", "voucher", "cost_center", "period")
     list_per_page = 20
-    readonly_fields = ("slug", "fiscal_object")
 
     @admin.display(description="debit")
     def formatted_debit(self, obj: models.JournalEntry):
@@ -41,3 +41,6 @@ class JournalEntryAdmin(
     @admin.display(description="credit")
     def formatted_credit(self, obj: models.JournalEntry):
         return f"{obj.credit:,.2f}"
+
+    def has_change_permission(self, request, obj=None):
+        return False

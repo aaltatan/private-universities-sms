@@ -16,12 +16,17 @@ from rest_framework.response import Response
 
 from apps.core import filter_backends, mixins
 from apps.core.inline import InlineFormsetFactory
-from apps.core.utils import Deleter
 from apps.core.schemas import Action
+from apps.core.utils import Deleter
 
 from .. import filters, forms, models, resources, serializers
 from ..constants import vouchers as constants
-from ..utils import VoucherAuditor, VoucherDeleter
+from ..utils import (
+    VoucherAuditor,
+    VoucherDeleter,
+    VoucherMigrator,
+    VoucherUnMigrator,
+)
 
 
 class APIViewSet(
@@ -52,6 +57,34 @@ class APIViewSet(
         else:
             return Response(
                 {"details": auditor.get_message()},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    @action(detail=True, methods=["post"], url_path="migrate")
+    def migrate(self, request: Request, pk: int):
+        instance = self.get_object()
+        migrator = VoucherMigrator(request=request, obj=instance)
+        migrator.action()
+
+        if migrator.has_executed:
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {"details": migrator.get_message()},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    @action(detail=True, methods=["post"], url_path="unmigrate")
+    def unmigrate(self, request: Request, pk: int):
+        instance = self.get_object()
+        unmigrator = VoucherUnMigrator(request=request, obj=instance)
+        unmigrator.action()
+
+        if unmigrator.has_executed:
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {"details": unmigrator.get_message()},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -115,6 +148,52 @@ class ListView(
         response["HX-Trigger"] = "messages"
         return response
 
+    def bulk_migrate(self, qs: QuerySet, **kwargs):
+        response = HttpResponse()
+
+        migrate = VoucherMigrator(request=self.request, queryset=qs)
+        migrate.action()
+        message = migrate.get_message()
+
+        if migrate.has_executed:
+            response["Hx-Location"] = json.dumps(
+                {
+                    "path": self.request.get_full_path(),
+                    "target": f"#{self.get_html_ids()['table_id']}",
+                }
+            )
+            messages.success(self.request, message)
+        else:
+            response["Hx-Retarget"] = "#no-content"
+            response["HX-Reswap"] = "innerHTML"
+            messages.error(self.request, message)
+
+        response["HX-Trigger"] = "messages"
+        return response
+
+    def bulk_unmigrate(self, qs: QuerySet, **kwargs):
+        response = HttpResponse()
+
+        migrate = VoucherUnMigrator(request=self.request, queryset=qs)
+        migrate.action()
+        message = migrate.get_message()
+
+        if migrate.has_executed:
+            response["Hx-Location"] = json.dumps(
+                {
+                    "path": self.request.get_full_path(),
+                    "target": f"#{self.get_html_ids()['table_id']}",
+                }
+            )
+            messages.success(self.request, message)
+        else:
+            response["Hx-Retarget"] = "#no-content"
+            response["HX-Reswap"] = "innerHTML"
+            messages.error(self.request, message)
+
+        response["HX-Trigger"] = "messages"
+        return response
+
     def get_actions(self) -> dict[str, Action]:
         return {
             "delete": Action(
@@ -127,6 +206,16 @@ class ListView(
                 method=self.bulk_audit,
                 template="components/trans/vouchers/modals/bulk-audit.html",
                 permissions=("trans.audit_voucher",),
+            ),
+            "migrate": Action(
+                method=self.bulk_migrate,
+                template="components/trans/vouchers/modals/bulk-migrate.html",
+                permissions=("trans.migrate_voucher",),
+            ),
+            "unmigrate": Action(
+                method=self.bulk_unmigrate,
+                template="components/trans/vouchers/modals/bulk-unmigrate.html",
+                permissions=("trans.unmigrate_voucher",),
             ),
         }
 
@@ -193,3 +282,17 @@ class AuditView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     behavior = VoucherAuditor
     model = models.Voucher
     modal_template_name = "components/trans/vouchers/modals/audit.html"
+
+
+class MigrateView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
+    permission_required = "trans.migrate_voucher"
+    behavior = VoucherMigrator
+    model = models.Voucher
+    modal_template_name = "components/trans/vouchers/modals/migrate.html"
+
+
+class UnMigrateView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
+    permission_required = "trans.unmigrate_voucher"
+    behavior = VoucherUnMigrator
+    model = models.Voucher
+    modal_template_name = "components/trans/vouchers/modals/unmigrate.html"

@@ -170,6 +170,11 @@ class Voucher(
     def clean(self):
         errors: dict[str, ValidationError] = {}
 
+        if self.is_migrated:
+            raise ValidationError(
+                _("you can't edit a voucher that is already migrated"),
+            )
+
         if getattr(self, "due_date", None) and self.due_date < self.date:
             errors["due_date"] = ValidationError(
                 _("due date cannot be earlier than date"),
@@ -183,15 +188,62 @@ class Voucher(
         if errors:
             raise ValidationError(errors)
 
+    def save(
+        self,
+        *args,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+        audit=False,
+    ):
+        if not audit:
+            self.is_audited = False
+            self.audited_by = None
+
+        return super().save(
+            *args,
+            force_insert=force_insert,
+            force_update=force_update,
+            using=using,
+            update_fields=update_fields,
+        )
+
+    def audit(self, audited_by: User):
+        """Audit the voucher"""
+        self.is_audited = True
+        self.audited_by = audited_by
+        self.save(audit=True)
+
     def migrate(self):
         """Migrate the voucher and generate a journal entry."""
-        transactions = self.transactions.all()
-        for transaction in transactions:
+        for transaction in self.transactions.all():
             transaction.migrate()
+
+        self.is_migrated = True
+        self.save(audit=True)
+
+    def unmigrate(self):
+        """Unmigrate the voucher."""
+        self.journals.all().delete()
+        self.is_migrated = False
+        self.save()
 
     def get_audit_url(self):
         return reverse(
             "trans:vouchers:audit",
+            kwargs={"slug": self.slug},
+        )
+
+    def get_migrate_url(self):
+        return reverse(
+            "trans:vouchers:migrate",
+            kwargs={"slug": self.slug},
+        )
+
+    def get_unmigrate_url(self):
+        return reverse(
+            "trans:vouchers:unmigrate",
             kwargs={"slug": self.slug},
         )
 

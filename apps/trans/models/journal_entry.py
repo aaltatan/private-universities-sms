@@ -19,21 +19,7 @@ from apps.fin.models import Period
 from apps.hr.models import Employee
 from apps.org.models import CostCenter
 
-
-class JournalEntryManager(models.Manager):
-    def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .select_related(
-                "voucher",
-                "employee",
-                "cost_center",
-                "period",
-                "content_type",
-            )
-            .prefetch_related("fiscal_object")
-        )
+from ..managers import JournalEntryManager
 
 
 class JournalEntry(
@@ -142,10 +128,10 @@ class JournalEntry(
 
         if self.debit != 0 and self.credit != 0:
             errors["debit"] = ValidationError(
-                _("debit and credit cannot be both greater than 0"),
+                _("debit and credit cannot be both filled"),
             )
             errors["credit"] = ValidationError(
-                _("debit and credit cannot be both greater than 0"),
+                _("debit and credit cannot be both filled"),
             )
 
         if errors:

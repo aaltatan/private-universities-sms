@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<c-layout.modal>
+  <form hx-post="{{ obj.get_unmigrate_url }}{% querystring %}" hx-target="#{{ table_id }}">
+    <c-layout.modal.body>
+      <c-slot name="header">
+        {% translate 'unmigrate'|title %}
+        <span>{{ obj }}</span>
+      </c-slot>
+      <c-slot name="body">
+        <p class="text-neutral-600 dark:text-neutral-300 first-letter:capitalize">
+          {% translate 'are you sure you want to unmigrate' %} {{ obj }} {% translate '?' %}
+        </p>
+      </c-slot>
+      <c-slot name="footer">
+        <c-button title="{% translate 'unmigrate'|title %}" @click="hideModal" :hide_icon="True">
+          {% translate 'unmigrate'|title %}
+        </c-button>
+      </c-slot>
+    </c-layout.modal.body>
+  </form>
+</c-layout.modal>
