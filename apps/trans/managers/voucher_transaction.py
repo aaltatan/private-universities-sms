@@ -19,6 +19,7 @@ class VoucherTransactionManager(models.Manager):
                 "employee__status",
                 "employee__cost_center",
                 "compensation",
+                "compensation__tax",
             )
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
