@@ -16,7 +16,7 @@
 
 <form
   hx-post="{{ url }}"
-  hx-swap="innerHTML show:top"
+  hx-swap="outerHTML show:top"
   hx-disabled-elt="#save-button, #save-and-add-another-button, #save-and-continue-editing-button"
   {% if encoding == 'multipart' %}
   hx-encoding="multipart/form-data"
