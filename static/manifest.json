@@ -7,13 +7,17 @@
     "file": "assets/road-C-HTMa9f.jpg",
     "src": "assets/images/road.jpg"
   },
+  "assets/images/user.png": {
+    "file": "assets/user-NK4nsSo2.png",
+    "src": "assets/images/user.png"
+  },
   "assets/js/index.js": {
-    "file": "assets/assets-DZvPgi4R.js",
+    "file": "assets/assets-C1gpe2jf.js",
     "name": "assets",
     "src": "assets/js/index.js",
     "isEntry": true,
     "css": [
-      "assets/assets-DyCF7zsf.css"
+      "assets/assets-CweBU7Wx.css"
     ]
   }
 }
