@@ -139,7 +139,17 @@
           </a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'year' }}">
-          {{ obj.year }}
+          <a
+            href="#"
+            hx-get="{{ obj.year.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.year }}
+          </a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'start_date' }}">
           {{ obj.start_date|date:'Y-m-d' }}

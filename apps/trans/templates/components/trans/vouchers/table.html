@@ -172,7 +172,19 @@
         <c-table.td data-header="{% translate 'transactions count' %}">
           {{ obj.transactions_count }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'kind' }}"> {{ obj.kind }} </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'kind' }}">
+          <a
+            href="#"
+            hx-get="{{ obj.kind.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.kind }}
+          </a>
+        </c-table.td>
         <c-table.td data-header="{% translate 'information' %}">
           <div class="flex items-center gap-2">
             <div

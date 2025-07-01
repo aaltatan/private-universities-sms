@@ -171,7 +171,19 @@
           {{ obj.get_round_method_display }}
         </c-table.td>
         <c-table.td wrap="True" data-header="{{ model|verbose_name:'tax' }}">
-          {{ obj.tax|default:"-" }}
+          <a
+            href="#"
+            hx-get="{{ obj.tax.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            <div class="flex items-center gap-2">
+              {{ obj.tax|default:"-" }}
+            </div>
+          </a>
         </c-table.td>
         <c-table.td wrap="True" data-header="{{ model|verbose_name:'tax_classification' }}">
           {{ obj.get_tax_classification_display }}
