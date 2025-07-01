@@ -19,11 +19,20 @@
   hx-target="#{{ form_id }}"
   {% if encoding == 'multipart' %}
   hx-encoding="multipart/form-data"
+  hx-indicator="#{{ form_id }}-indicator"
   {% endif %}
   id="{{ form_id }}"
-  class="{{ widths|get_item:width }}"
+  class="{{ widths|get_item:width }} relative"
   x-trap.noautofocus="true"
 >
+  <div 
+    class="absolute left-0 top-0 w-full h-full bg-white/30 dark:bg-black/30 z-20 items-center justify-center hidden hx-request:flex"
+    id="{{ form_id }}-indicator"
+  >
+    <div class="animate-spin">
+      {% heroicon_outline "arrow-path" size="36" %}
+    </div>
+  </div>
   <h1 class="text-2xl my-2 first-letter:capitalize">{{ form_title }}</h1>
   {% if form.non_field_errors %}
   <div class="my-6">
