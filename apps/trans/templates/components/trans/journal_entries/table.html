@@ -37,13 +37,12 @@
     <c-table.table>
       <c-table.tr header="True">
         <c-table.th>#</c-table.th>
-        <c-table.th>{{ model|verbose_name:'voucher' }}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'employee' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'debit' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'credit' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'employee' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'fiscal_object' }}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'explanation' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'cost_center' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'voucher' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'date' }}</c-table.th>
         <c-table.th>{% translate 'year' %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'period' }}</c-table.th>
@@ -53,20 +52,11 @@
       {% for obj in page %}
       <c-table.tr>
         <c-table.td>{{ forloop.counter }}</c-table.td>
-        <c-table.td :warp="True" data-header="{{ model|verbose_name:'voucher' }}">
-          {% if obj.voucher %}
-          <a
-            href="#"
-            hx-get="{{ obj.voucher.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
-            {{ obj.voucher }}
-          </a>
-          {% else %} - {% endif %}
+        <c-table.td :title="obj.explanation" data-header="{{ model|verbose_name:'debit' }}">
+          {{ obj.debit|money:True }}
+        </c-table.td>
+        <c-table.td :title="obj.explanation" data-header="{{ model|verbose_name:'credit' }}">
+          {{ obj.credit|money:True }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'employee' }}">
           <a
@@ -81,12 +71,6 @@
             {{ obj.employee.fullname }}
           </a>
         </c-table.td>
-        <c-table.td :title="obj.explanation" data-header="{{ model|verbose_name:'debit' }}">
-          {{ obj.debit|money:True }}
-        </c-table.td>
-        <c-table.td :title="obj.explanation" data-header="{{ model|verbose_name:'credit' }}">
-          {{ obj.credit|money:True }}
-        </c-table.td>
         <c-table.td :wrap="True" data-header="{{ model|verbose_name:'fiscal_object' }}">
           <a
             href="#"
@@ -100,9 +84,6 @@
             {{ obj.fiscal_object }}
           </a>
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'explanation' }}">
-            {{ obj.explanation }}
-        </c-table.td>
         <c-table.td :wrap="True" data-header="{{ model|verbose_name:'cost_center' }}">
           <a
             href="#"
@@ -115,6 +96,25 @@
           >
             {{ obj.cost_center }}
           </a>
+        </c-table.td>
+        <c-table.td :warp="True" data-header="{{ model|verbose_name:'voucher' }}">
+          {% if obj.voucher %}
+          <a
+            href="#"
+            hx-get="{{ obj.voucher.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.voucher }}
+          </a>
+          {% else %}
+          <!--  -->
+          -
+          <!--  -->
+          {% endif %}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'date' }}">
           {{ obj.date|date:'Y-m-d' }}

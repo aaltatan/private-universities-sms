@@ -48,6 +48,10 @@ class JournalEntryResource(
         attribute="period",
         column_name=_("period").title(),
     )
+    year = fields.Field(
+        attribute="period__year",
+        column_name=_("year").title(),
+    )
     employee = fields.Field(
         attribute="employee__fullname",
         column_name=_("employee").title(),
@@ -82,15 +86,20 @@ class JournalEntryResource(
         column_name=_("voucher serial").title(),
         dehydrate_method="dehydrate_voucher_serial",
     )
-    slug = fields.Field(
-        attribute="slug",
-        column_name=_("slug").title(),
+    voucher_title = fields.Field(
+        column_name=_("voucher title").title(),
+        dehydrate_method="dehydrate_voucher_title",
     )
 
     def dehydrate_voucher_serial(self, obj) -> str:
         if getattr(obj, "voucher", None) is None:
             return "-"
         return obj.voucher.voucher_serial
+
+    def dehydrate_voucher_title(self, obj) -> str:
+        if getattr(obj, "voucher", None) is None:
+            return "-"
+        return obj.voucher.title
 
     def dehydrate_fiscal_object(self, obj) -> str:
         return obj.fiscal_object.name
@@ -105,19 +114,21 @@ class JournalEntryResource(
         model = models.JournalEntry
         fields = (
             "serial",
+            "debit",
+            "credit",
+            "employee",
+            "fiscal_object",
+            "explanation",
+            "cost_center",
+            "voucher_serial",
+            "voucher_title",
+            "date",
+            "year",
+            "period",
+            "month",
+            "quarter",
+            "notes",
             "created_at",
             "updated_at",
             "uuid",
-            "date",
-            "month",
-            "quarter",
-            "period",
-            "employee",
-            "cost_center",
-            "debit",
-            "credit",
-            "fiscal_object",
-            "voucher",
-            "explanation",
-            "notes",
         )

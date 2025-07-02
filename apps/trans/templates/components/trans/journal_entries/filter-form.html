@@ -1,6 +1,37 @@
 {% load i18n %}
 
 <c-blocks.table-filters>
+  <c-inputs.text :field="filter.form.employee" />
+  <c-inputs.text :field="filter.form.cost_center" />
+  <c-inputs.text :field="filter.form.content_type" />
+  <c-inputs.text :field="filter.form.fiscal_object" />
+  <c-inputs.text :field="filter.form.voucher" />
+  <c-inputs.text :field="filter.form.month" />
+  <c-inputs.text :field="filter.form.quarter" />
+  <c-inputs.text :field="filter.form.period" />
+  <c-inputs.text :field="filter.form.year" />
+  <c-inputs.range-wrapper title="{% translate 'debit'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.debit_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.debit_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'credit'|title %}">
+    <c-inputs.text :show_label="False" :field="filter.form.credit_from" />
+    <c-inputs.text :show_label="False" :field="filter.form.credit_to" />
+  </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'date'|title %}">
+    <c-inputs.text
+      :show_icon="True"
+      icon="calendar"
+      :show_label="False"
+      :field="filter.form.date_from"
+    />
+    <c-inputs.text
+      :show_icon="True"
+      icon="calendar"
+      :show_label="False"
+      :field="filter.form.date_to"
+    />
+  </c-inputs.range-wrapper>
   <c-inputs.range-wrapper title="{% translate 'created at'|title %}">
     <c-inputs.text
       :show_icon="True"
@@ -29,35 +60,6 @@
       :field="filter.form.updated_at_to"
     />
   </c-inputs.range-wrapper>
-  <c-inputs.range-wrapper title="{% translate 'date'|title %}">
-    <c-inputs.text
-      :show_icon="True"
-      icon="calendar"
-      :show_label="False"
-      :field="filter.form.date_from"
-    />
-    <c-inputs.text
-      :show_icon="True"
-      icon="calendar"
-      :show_label="False"
-      :field="filter.form.date_to"
-    />
-  </c-inputs.range-wrapper>
-  <c-inputs.text :field="filter.form.month" />
-  <c-inputs.text :field="filter.form.quarter" />
-  <c-inputs.text :field="filter.form.period" />
-  <c-inputs.range-wrapper title="{% translate 'debit'|title %}">
-    <c-inputs.text :show_label="False" :field="filter.form.debit_to" />
-    <c-inputs.text :show_label="False" :field="filter.form.debit_to" />
-  </c-inputs.range-wrapper>
-  <c-inputs.range-wrapper title="{% translate 'credit'|title %}">
-    <c-inputs.text :show_label="False" :field="filter.form.credit_to" />
-    <c-inputs.text :show_label="False" :field="filter.form.credit_to" />
-  </c-inputs.range-wrapper>
-  <c-inputs.text :field="filter.form.content_type" />
-  <c-inputs.text :field="filter.form.voucher" />
-  <c-inputs.text :field="filter.form.employee" />
-  <c-inputs.text :field="filter.form.cost_center" />
   <c-inputs.text :field="filter.form.explanation" />
   <c-inputs.text :field="filter.form.notes" />
 </c-blocks.table-filters>

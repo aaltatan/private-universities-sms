@@ -37,8 +37,7 @@
     <c-table.table>
       <c-table.tr header="True">
         <c-table.th>#</c-table.th>
-        <c-table.th>{% translate 'voucher serial'|capfirst %}</c-table.th>
-        <c-table.th>{% translate 'title'|capfirst %}</c-table.th>
+        <c-table.th>{% translate 'voucher'|capfirst %}</c-table.th>
         <c-table.th>{% translate 'date'|capfirst %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'employee' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'compensation' }}</c-table.th>
@@ -63,20 +62,37 @@
             class="hover:underline cursor-pointer"
             aria-label="object details"
           >
-            {{ obj.voucher.voucher_serial }}
+            {{ obj.voucher }}
           </a>
-        </c-table.td>
-        <c-table.td :wrap="True" data-header="{% translate 'title'|capfirst %}">
-          {{ obj.voucher.title }}
         </c-table.td>
         <c-table.td :wrap="True" data-header="{% translate 'date'|capfirst %}">
           {{ obj.voucher.date|date:'Y-m-d' }}
         </c-table.td>
         <c-table.td :wrap="True" data-header="{{ model|verbose_name:'employee' }}">
-          {{ obj.employee.fullname }}
+          <a
+            href="#"
+            hx-get="{{ obj.employee.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.employee.fullname }}
+          </a>
         </c-table.td>
         <c-table.td :wrap="True" data-header="{{ model|verbose_name:'compensation' }}">
-          {{ obj.compensation.name }}
+          <a
+            href="#"
+            hx-get="{{ obj.compensation.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.compensation.name }}
+          </a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'quantity' }}">
           {{ obj.quantity|money:True }}

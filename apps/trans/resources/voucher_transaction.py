@@ -141,10 +141,6 @@ class VoucherTransactionResource(
         attribute="voucher__is_migrated",
         column_name=_("is migrated").title(),
     )
-    slug = fields.Field(
-        attribute="voucher__slug",
-        column_name=_("slug").title(),
-    )
 
     def dehydrate_is_audited(self, obj) -> bool:
         return self._dehydrate_boolean(obj.voucher.is_audited)
@@ -162,18 +158,9 @@ class VoucherTransactionResource(
         model = models.Voucher
         fields = (
             "serial",
-            "created_at",
-            "created_by",
-            "updated_at",
-            "updated_by",
-            "uuid",
             "voucher_serial",
             "title",
             "date",
-            "kind",
-            "month",
-            "quarter",
-            "period",
             "employee",
             "compensation",
             "quantity",
@@ -182,14 +169,22 @@ class VoucherTransactionResource(
             "tax",
             "net",
             "notes",
-            "voucher_notes",
+            "kind",
+            "month",
+            "quarter",
+            "period",
             "serial_id",
             "serial_date",
             "approve_date",
             "due_date",
             "accounting_journal_sequence",
+            "voucher_notes",
             "is_audited",
             "audited_by",
             "is_migrated",
-            "slug",
+            "created_at",
+            "created_by",
+            "updated_at",
+            "updated_by",
+            "uuid",
         )
