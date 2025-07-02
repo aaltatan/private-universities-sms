@@ -32,16 +32,11 @@ class CreateMixin(ABC):
         """
         Handles GET requests and returns a rendered template.
         """
-        if self.can_access(request=request, obj=self.obj) is False:
-            messages.error(
-                request,
-                self.cannot_access_message(
-                    request=request,
-                    obj=self.obj,
-                ),
-            )
-            referer = request.META.get("HTTP_REFERER")
-            return HttpResponseRedirect(referer)
+        if self.can_access(request=request) is False:
+            message = self.cannot_access_message(request=request)
+            messages.error(request, message)
+
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
         request_parser = RequestParser(
             request=request,
@@ -84,13 +79,13 @@ class CreateMixin(ABC):
             request_parser=request_parser,
         )
 
-    def can_access(self, request: HttpRequest, obj: Model) -> bool:
+    def can_access(self, request: HttpRequest) -> bool:
         """
         Hook for checking if the user has access to the view.
         """
         return True
 
-    def cannot_access_message(self, request: HttpRequest, obj: Model) -> str:
+    def cannot_access_message(self, request: HttpRequest) -> str:
         """
         Hook for returning the message to be displayed when the user does not have access to the view.
         """
