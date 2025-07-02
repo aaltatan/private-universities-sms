@@ -14,6 +14,6 @@ ORDERING_FIELDS: dict[str, str] = {
 SEARCH_FIELDS: tuple[str] = (
     "voucher__title",
     "voucher__voucher_serial",
-    "employee__firstname",
+    "employee__fullname",
     "compensation__name",
 )
