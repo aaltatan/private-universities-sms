@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
@@ -63,6 +64,13 @@ class Tax(AddCreateActivityMixin, AbstractUniqueNameModel):
     affected_by_working_days = models.BooleanField(
         verbose_name=_("affected by working days"),
         default=False,
+    )
+    journals = GenericRelation(
+        "trans.JournalEntry",
+        related_query_name="tax",
+        related_name="tax",
+        object_id_field="fiscal_object_id",
+        content_type_field="content_type",
     )
 
     objects: TaxManager = TaxManager()

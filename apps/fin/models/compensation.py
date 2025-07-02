@@ -1,6 +1,7 @@
 from decimal import Decimal
 from typing import Any
 
+from django.contrib.contenttypes.fields import GenericRelation
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -153,6 +154,13 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         null=True,
         max_length=15,
         default="31",
+    )
+    journals = GenericRelation(
+        "trans.JournalEntry",
+        related_query_name="compensation",
+        related_name="compensation",
+        object_id_field="fiscal_object_id",
+        content_type_field="content_type",
     )
 
     objects: CompensationManager = CompensationManager()
