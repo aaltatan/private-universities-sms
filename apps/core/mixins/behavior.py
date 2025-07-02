@@ -46,8 +46,15 @@ class BehaviorMixin(ABC):
             )
             raise Http404()
 
-        model = self.get_model_class()
-        self.obj = get_object_or_404(model, slug=slug)
+        self.obj = get_object_or_404(self.get_model_class(), slug=slug)
+
+        if not self.can_access(request, self.obj):
+            messages.error(
+                request,
+                self.cannot_access_message(request, self.obj),
+            )
+            raise Http404()
+
         modal_template_name = self.get_modal_template_name()
         context = self.context_data()
 
@@ -90,6 +97,18 @@ class BehaviorMixin(ABC):
         response["HX-Trigger"] = "messages"
 
         return response
+
+    def can_access(self, request: HttpRequest, obj: Model) -> bool:
+        """
+        Hook for checking if the user has access to the view.
+        """
+        return True
+
+    def cannot_access_message(self, request: HttpRequest, obj: Model) -> str:
+        """
+        Hook for returning the message to be displayed when the user does not have access to the view.
+        """
+        return _("you cannot access this page")
 
     def context_data(self, **kwargs) -> dict[str, Any]:
         """
