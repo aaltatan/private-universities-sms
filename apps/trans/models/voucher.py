@@ -251,7 +251,7 @@ class Voucher(
         )
 
     def __str__(self):
-        return f"{self.title} ({self.voucher_serial})"
+        return f"{self.voucher_serial} ({self.title})"
 
     class Meta:
         icon = "document-check"
