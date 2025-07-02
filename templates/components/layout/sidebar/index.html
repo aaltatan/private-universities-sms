@@ -82,7 +82,8 @@
       </c-layout.sidebar.collapsible-item>
       {% endif %}
       <!-- org -->
-      {% if perms.org.view_jobtype or perms.org.view_jobsubtype or perms.org.view_costcenter or perms.org.view_position or perms.org.view_status or perms.org.view_group %}
+      {% if perms.org.view_jobtype or perms.org.view_jobsubtype or perms.org.view_costcenter or
+      perms.org.view_position or perms.org.view_status or perms.org.view_group %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'organization'|title %}"
         icon="briefcase"
@@ -133,7 +134,8 @@
       </c-layout.sidebar.collapsible-item>
       {% endif %}
       <!-- edu -->
-      {% if perms.edu.view_schoolkind or perms.edu.view_school or perms.edu.view_degree or perms.edu.view_specialization %}
+      {% if perms.edu.view_schoolkind or perms.edu.view_school or perms.edu.view_degree or
+      perms.edu.view_specialization %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'educational'|title %}"
         icon="academic-cap"
@@ -170,7 +172,8 @@
       </c-layout.sidebar.collapsible-item>
       {% endif %}
       <!-- fin -->
-      {% if perms.fin.view_year or perms.fin.view_period or perms.fin.view_tax or perms.fin.view_taxbracket or perms.fin.view_compensation or perms.fin.view_voucherkind %}
+      {% if perms.fin.view_year or perms.fin.view_period or perms.fin.view_tax or
+      perms.fin.view_taxbracket or perms.fin.view_compensation or perms.fin.view_voucherkind %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'financial'|title %}"
         icon="currency-dollar"
@@ -237,7 +240,7 @@
       </c-layout.sidebar.collapsible-item>
       {% endif %}
       <!-- trans -->
-      {% if perms.trans.view_voucher or perms.trans.view_vouchertransaction %}
+      {% if perms.trans.view_voucher or perms.trans.view_vouchertransaction or perms.trans.view_journalentry %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'transactions'|title %}"
         icon="book-open"
@@ -255,6 +258,13 @@
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.trans.voucher_transactions.path }}"
           text="{{ sidebar_links.trans.voucher_transactions.text }}"
+        />
+        {% endif %}
+        <!--  -->
+        {% if perms.trans.view_journalentry %}
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.trans.journal_entries.path }}"
+          text="{{ sidebar_links.trans.journal_entries.text }}"
         />
         {% endif %}
       </c-layout.sidebar.collapsible-item>
