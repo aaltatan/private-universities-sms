@@ -14,4 +14,14 @@ class JournalEntryManager(models.Manager):
                 "content_type",
             )
             .prefetch_related("fiscal_object")
+        ).annotate(
+            net=models.Window(
+                expression=models.Sum(models.F("amount")),
+                frame=models.RowRange(0, None),
+                order_by=("-date", "ordering", "-debit"),
+                output_field=models.DecimalField(
+                    max_digits=20,
+                    decimal_places=4,
+                ),
+            )
         )
