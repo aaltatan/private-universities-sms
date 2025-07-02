@@ -120,6 +120,9 @@ class JournalEntry(
         default="",
         blank=True,
     )
+    ordering = models.PositiveIntegerField(
+        default=0,
+    )
 
     objects: JournalEntryManager = JournalEntryManager()
 
@@ -142,7 +145,7 @@ class JournalEntry(
 
     class Meta:
         icon = "circle-stack"
-        ordering = ("-date", "-created_at")
+        ordering = ("-date", "ordering", "-debit")
         codename_plural = "journal_Entries"
         verbose_name = _("journal entry").title()
         verbose_name_plural = _("journal entries").title()
