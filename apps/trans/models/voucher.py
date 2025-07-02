@@ -211,23 +211,26 @@ class Voucher(
 
     def audit(self, audited_by: User):
         """Audit the voucher"""
-        self.is_audited = True
-        self.audited_by = audited_by
-        self.save(audit=True)
+        if not self.is_audited:
+            self.is_audited = True
+            self.audited_by = audited_by
+            self.save(audit=True)
 
     def migrate(self):
         """Migrate the voucher and generate a journal entry."""
-        for transaction in self.transactions.all():
-            transaction.migrate()
+        if not self.is_migrated:
+            for transaction in self.transactions.all():
+                transaction.migrate()
 
-        self.is_migrated = True
-        self.save(audit=True)
+            self.is_migrated = True
+            self.save(audit=True)
 
     def unmigrate(self):
         """Unmigrate the voucher."""
-        self.journals.all().delete()
-        self.is_migrated = False
-        self.save()
+        if self.is_migrated:
+            self.journals.all().delete()
+            self.is_migrated = False
+            self.save()
 
     def get_audit_url(self):
         return reverse(

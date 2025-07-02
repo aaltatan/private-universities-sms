@@ -42,17 +42,21 @@ class VoucherDeleter(ActionBehavior[Voucher]):
 class VoucherAuditor(ActionBehavior[Voucher]):
     success_obj_msg = _("voucher audited successfully")
     error_obj_msg = _(
-        "you can't audit your the vouchers that you have created or updated"
+        "you can't audit a voucher that you have created or updated or already audited"
     )
     success_qs_msg = _("vouchers audited successfully")
     error_qs_msg = _(
-        "you can't audit your the vouchers that you have created or updated"
+        "you can't audit vouchers that you have created or updated or already audited"
     )
 
     def check_obj_executing_possibility(self, obj) -> bool:
-        return obj.updated_by != self.request.user
+        if obj.is_audited:
+            return False
+        return False if obj.updated_by == self.request.user else True
 
     def check_queryset_executing_possibility(self, qs) -> bool:
+        if qs.filter(is_audited=True).exists():
+            return False
         return not qs.filter(updated_by=self.request.user).exists()
 
     def action(self) -> tuple[int, dict[str, int]] | None:
@@ -85,9 +89,13 @@ class VoucherMigrator(ActionBehavior[Voucher]):
     )
 
     def check_obj_executing_possibility(self, obj) -> bool:
-        return obj.is_audited
+        if obj.is_migrated:
+            return False
+        return True if obj.is_audited else False
 
     def check_queryset_executing_possibility(self, qs) -> bool:
+        if qs.filter(is_audited=False).exists():
+            return False
         return not qs.filter(is_audited=False).exists()
 
     def action(self) -> tuple[int, dict[str, int]] | None:
@@ -116,6 +124,12 @@ class VoucherUnMigrator(ActionBehavior[Voucher]):
     error_obj_msg = _("you can't unmigrate voucher")
     success_qs_msg = _("vouchers migrated successfully")
     error_qs_msg = _("you can't unmigrate vouchers")
+
+    def check_obj_executing_possibility(self, obj) -> bool:
+        return obj.is_migrated
+
+    def check_queryset_executing_possibility(self, qs) -> bool:
+        return qs.filter(is_migrated=False).exists()
 
     def action(self) -> tuple[int, dict[str, int]] | None:
         if self._kind == "obj":
