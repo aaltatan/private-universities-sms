@@ -178,7 +178,7 @@
             </c-layout.contextmenu.section>
             {% endif %}
             <!--  -->
-            {% if can_delete %}
+            {% if can_delete and not obj.is_migrated %}
             <c-layout.contextmenu.section>
               <c-layout.contextmenu.item
                 color="danger"
