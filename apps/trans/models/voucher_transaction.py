@@ -29,7 +29,7 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
     )
     voucher = models.ForeignKey(
         Voucher,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="transactions",
         verbose_name=_("voucher"),
     )
@@ -41,7 +41,7 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
     )
     compensation = models.ForeignKey(
         Compensation,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="transactions",
         verbose_name=_("compensation"),
     )
