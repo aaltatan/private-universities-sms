@@ -19,12 +19,18 @@
 
     <ul class="ms-auto flex items-center justify-center gap-1">
       <li :class="{'md:hidden': sidebarFixed}">
-        <c-button @click="toggleSidebar" role="button" aria-label="toggle aside">
+        <c-button
+          @keyup.alt.s.prevent.window="toggleSidebar"
+          @keyup.alt.س.prevent.window="toggleSidebar"
+          @click="toggleSidebar"
+          role="button"
+          aria-label="toggle aside"
+        >
           <c-slot name="icon_slot">
-            <span x-show="sidebarOpened" title="{% translate 'close sidebar'|title %}">
+            <span x-show="sidebarOpened" title="{% translate 'close sidebar'|title %} (alt + s)">
               {% heroicon_outline "x-mark" size=icons_size %}
             </span>
-            <span x-show="!sidebarOpened" title="{% translate 'open sidebar'|title %}">
+            <span x-show="!sidebarOpened" title="{% translate 'open sidebar'|title %} (alt + s)">
               {% heroicon_outline "bars-3" size=icons_size %}
             </span>
           </c-slot>
@@ -99,7 +105,9 @@
             <div class="p-2 flex items-center gap-2">
               <c-layout.avatar />
               <div>
-                <h1 class="text-sm tracking-tighter font-semibold">{{ user.first_name|title }} {{ user.last_name|title }}</h1>
+                <h1 class="text-sm tracking-tighter font-semibold">
+                  {{ user.first_name|title }} {{ user.last_name|title }}
+                </h1>
                 <small class="text-neutral-500">@{{ user.username }}</small>
               </div>
             </div>
@@ -109,11 +117,7 @@
             <c-layout.contextmenu.item icon="wrench-screwdriver" href="/admin" target="_blank">
               {% translate 'admin'|title %}
             </c-layout.contextmenu.item>
-            <c-layout.contextmenu.item
-              icon="arrow-top-right-on-square"
-              href="/api"
-              target="_blank"
-            >
+            <c-layout.contextmenu.item icon="arrow-top-right-on-square" href="/api" target="_blank">
               Api Documentation
             </c-layout.contextmenu.item>
             {% if debug %}
