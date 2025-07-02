@@ -5,6 +5,6 @@
   <a
     x-bind:href="'{{ url }}' + (sidebarLinksQuerystring['{{ url }}'] || '')"
     class="{% active_link url %} flex items-center rounded-sm gap-2 px-2 py-1.5 text-sm text-neutral-600 underline-offset-2 active:bg-black/8 active:text-neutral-900 active:dark:bg-white/5 active:dark:text-white hover:bg-black/5 hover:text-neutral-900 focus:outline-hidden focus-visible:underline dark:text-neutral-300 dark:hover:bg-white/5 dark:hover:text-white w-full ps-8"
-    >- {{ text }}</a
+    >- {{ text|capfirst }}</a
   >
 </li>
