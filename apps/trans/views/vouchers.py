@@ -255,7 +255,7 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
 
     def can_access(self, request, obj: models.Voucher) -> bool:
         return not obj.is_migrated
-    
+
     def cannot_access_message(self, request, obj: models.Voucher) -> str:
         return _("you cannot edit migrated voucher")
 
@@ -281,6 +281,12 @@ class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     permission_required = "trans.delete_voucher"
     behavior = VoucherDeleter
     model = models.Voucher
+
+    def can_access(self, request, obj: models.Voucher) -> bool:
+        return not obj.is_migrated
+
+    def cannot_access_message(self, request, obj: models.Voucher) -> str:
+        return _("you cannot delete migrated voucher")
 
 
 class AuditView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
