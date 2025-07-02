@@ -237,7 +237,7 @@
       </c-layout.sidebar.collapsible-item>
       {% endif %}
       <!-- trans -->
-      {% if perms.trans.view_voucher %}
+      {% if perms.trans.view_voucher or perms.trans.view_vouchertransaction %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'transactions'|title %}"
         icon="book-open"
@@ -249,6 +249,9 @@
           url="{{ sidebar_links.trans.vouchers.path }}"
           text="{{ sidebar_links.trans.vouchers.text }}"
         />
+        {% endif %}
+        <!--  -->
+        {% if perms.trans.view_vouchertransaction %}
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.trans.voucher_transactions.path }}"
           text="{{ sidebar_links.trans.voucher_transactions.text }}"
