@@ -8,11 +8,11 @@ from .models import Voucher
 class VoucherDeleter(ActionBehavior[Voucher]):
     success_obj_msg = _("voucher deleted successfully")
     error_obj_msg = _(
-        "you can't delete this voucher because it is related to other objects."
+        "you can't delete this voucher because it is migrated."
     )
     success_qs_msg = _("vouchers deleted successfully")
     error_qs_msg = _(
-        "you can't delete vouchers because they are related to other objects."
+        "you can't delete vouchers because they are migrated."
     )
 
     def check_obj_executing_possibility(self, obj) -> bool:
