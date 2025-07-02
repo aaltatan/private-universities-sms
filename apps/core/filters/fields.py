@@ -101,24 +101,42 @@ def get_text_filter(
 
 def get_number_from_to_filters(
     field_name: str,
+    method_name: str | None = None,
     from_attributes: dict[str, str] = {},
     to_attributes: dict[str, str] = {},
 ) -> tuple[filters.NumberFilter, filters.NumberFilter]:
-    """Get number range fields."""
+    """
+    Get number range fields.
+
+    Args:
+        field_name (str): The name of the field.
+        method_name (str | None, optional): The name of the method to call. Defaults to None you must name the method filter_{field_name}_from and filter_{field_name}_to.
+        from_attributes (dict[str, str], optional): The attributes for the from field. Defaults to {}.
+        to_attributes (dict[str, str], optional): The attributes for the to field. Defaults to {}.
+    """
 
     from_attributes.setdefault("placeholder", _("from").title())
     to_attributes.setdefault("placeholder", _("to").title())
 
-    from_ = filters.NumberFilter(
-        field_name=field_name,
-        lookup_expr="gte",
-        widget=get_text_widget(**from_attributes),
-    )
-    to = filters.NumberFilter(
-        field_name=field_name,
-        lookup_expr="lte",
-        widget=get_text_widget(**to_attributes),
-    )
+    from_kwargs = {
+        "field_name": field_name,
+        "widget": get_text_widget(**from_attributes),
+    }
+
+    to_kwargs = {
+        "field_name": field_name,
+        "widget": get_text_widget(**to_attributes),
+    }
+
+    if method_name is not None:
+        from_kwargs["method"] = f"{method_name}_from"
+        to_kwargs["method"] = f"{method_name}_to"
+    else:
+        from_kwargs["lookup_expr"] = "gte"
+        to_kwargs["lookup_expr"] = "lte"
+
+    from_ = filters.NumberFilter(**from_kwargs)
+    to = filters.NumberFilter(**to_kwargs)
 
     return from_, to
 
