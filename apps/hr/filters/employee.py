@@ -15,7 +15,7 @@ from apps.geo.models import Nationality
 from apps.org.models import Status
 
 from .. import choices
-from ..managers import EmployeeQuerySet
+from ..querysets import EmployeeQuerySet
 from ..models import Employee
 
 
@@ -81,6 +81,7 @@ class BaseEmployeeFilter(
     )
     age_from, age_to = get_number_from_to_filters(
         field_name="age",
+        method_name="filter_age",
     )
     age_group = filters.ChoiceFilter(
         field_name="age_group",
@@ -108,6 +109,7 @@ class BaseEmployeeFilter(
     )
     job_age_from, job_age_to = get_number_from_to_filters(
         field_name="job_age",
+        method_name="filter_job_age",
     )
     notes = get_text_filter(label=_("notes").title())
     is_specialist = filters.ChoiceFilter(
@@ -141,6 +143,18 @@ class BaseEmployeeFilter(
         method="filter_upcoming_job_anniversary_this",
     )
 
+    def filter_age_from(self, queryset: EmployeeQuerySet, name, value):
+        return queryset.annotate_dates().filter(age__gte=value)
+
+    def filter_age_to(self, queryset: EmployeeQuerySet, name, value):
+        return queryset.annotate_dates().filter(age__lte=value)
+
+    def filter_job_age_from(self, queryset: EmployeeQuerySet, name, value):
+        return queryset.annotate_dates().filter(job_age__gte=value)
+
+    def filter_job_age_to(self, queryset: EmployeeQuerySet, name, value):
+        return queryset.annotate_dates().filter(job_age__lte=value)
+
     def filter_upcoming_birthday_this(self, queryset: EmployeeQuerySet, name, value):
         return queryset.get_upcoming_birthdays(this=value)
 
@@ -148,7 +162,7 @@ class BaseEmployeeFilter(
         self, queryset: EmployeeQuerySet, name, value
     ):
         return queryset.get_upcoming_job_anniversaries(this=value)
-    
+
     class Meta:
         model = Employee
         exclude = (
