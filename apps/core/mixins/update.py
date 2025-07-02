@@ -5,7 +5,12 @@ from typing import Any, Iterable
 from django.contrib import messages
 from django.db.models import Model
 from django.forms import BaseInlineFormSet, ModelForm
-from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    HttpResponseForbidden,
+    HttpResponseRedirect,
+)
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -34,6 +39,17 @@ class UpdateMixin(ABC):
         Handles GET requests and returns a rendered template.
         """
         self.obj = get_object_or_404(self.get_model_class(), slug=slug)
+
+        if self.can_access(request=request, obj=self.obj) is False:
+            messages.error(
+                request,
+                self.cannot_access_message(
+                    request=request,
+                    obj=self.obj,
+                ),
+            )
+            referer = request.META.get("HTTP_REFERER")
+            return HttpResponseRedirect(referer)
 
         request_parser = RequestParser(
             request=request,
@@ -113,6 +129,18 @@ class UpdateMixin(ABC):
             form=form,
             request_parser=request_parser,
         )
+
+    def can_access(self, request: HttpRequest, obj: Model) -> bool:
+        """
+        Hook for checking if the user has access to the view.
+        """
+        return True
+
+    def cannot_access_message(self, request: HttpRequest, obj: Model) -> str:
+        """
+        Hook for returning the message to be displayed when the user does not have access to the view.
+        """
+        return _("you cannot access this page")
 
     def perform_update_before_validation(self, obj: Model, form: ModelForm) -> None:
         """
