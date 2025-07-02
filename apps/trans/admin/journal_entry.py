@@ -2,7 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 from .. import models
-from ..constants import vouchers as constants
+from ..constants import journal_entries as constants
 
 
 @admin.register(models.JournalEntry)
