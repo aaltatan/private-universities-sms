@@ -3,7 +3,7 @@ from django.utils.translation import gettext as _
 
 ORDERING_FIELDS: dict[str, str] = {
     "id": _("id"),
-    "voucher__voucher_serial": _("voucher voucher_serial"),
+    "voucher__voucher_serial": _("voucher serial"),
     "voucher__date": _("voucher date"),
     "voucher__kind": _("voucher kind"),
     "employee__fullname": _("employee fullname"),
