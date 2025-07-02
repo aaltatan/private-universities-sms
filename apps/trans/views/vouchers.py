@@ -253,6 +253,12 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     form_class = forms.VoucherForm
     inlines = (VoucherTransactionInline,)
 
+    def can_access(self, request, obj: models.Voucher) -> bool:
+        return not obj.is_migrated
+    
+    def cannot_access_message(self, request, obj: models.Voucher) -> str:
+        return _("you cannot edit migrated voucher")
+
     def perform_update(self, form, formsets):
         obj = form.save(commit=False)
         for formset in formsets:

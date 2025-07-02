@@ -124,7 +124,7 @@
               </c-layout.contextmenu.item>
               {% endif %}
               <!--  -->
-              {% if can_update %}
+              {% if can_update and not obj.is_migrated %}
               <c-layout.contextmenu.item
                 icon="pencil"
                 href="{{ obj.get_update_url }}{% querystring %}"
