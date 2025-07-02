@@ -1,4 +1,5 @@
 import django_filters as filters
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.choices import MonthChoices, QuarterChoices
@@ -39,6 +40,21 @@ class BaseJournalEntryFilter(FilterTextMixin, FilterComboboxMixin, filters.Filte
         field_name="period__name",
         label=_("period"),
     )
+    year = get_combobox_choices_filter(
+        model=models.JournalEntry,
+        field_name="period__year__name",
+        label=_("year"),
+    )
+    content_type = get_combobox_choices_filter(
+        model=models.JournalEntry,
+        field_name="content_type__model",
+        label=_("content type"),
+    )
+    fiscal_object = get_text_filter(
+        method_name="filter_fiscal_object",
+        label=_("fiscal object"),
+        placeholder=_("e.g. fixed salary"),
+    )
     debit_from, debit_to = get_number_from_to_filters("debit")
     credit_from, credit_to = get_number_from_to_filters("credit")
     employee = get_combobox_choices_filter(
@@ -67,6 +83,11 @@ class BaseJournalEntryFilter(FilterTextMixin, FilterComboboxMixin, filters.Filte
         placeholder=_("e.g. June 2025 Salaries"),
     )
 
+    def filter_fiscal_object(self, queryset, name, value):
+        return queryset.filter(
+            Q(compensation__name__icontains=value) | Q(tax__name__icontains=value)
+        )
+
     class Meta:
         model = models.JournalEntry
         fields = (
@@ -82,6 +103,7 @@ class BaseJournalEntryFilter(FilterTextMixin, FilterComboboxMixin, filters.Filte
             "debit_from",
             "debit_to",
             "content_type",
+            "fiscal_object",
             "credit_from",
             "credit_to",
             "employee",
@@ -97,6 +119,18 @@ class APIJournalEntryFilter(BaseJournalEntryFilter):
         model=models.JournalEntry,
         field_name="period__name",
         label=_("period"),
+        api_filter=True,
+    )
+    year = get_combobox_choices_filter(
+        model=models.JournalEntry,
+        field_name="period__year__name",
+        label=_("year"),
+        api_filter=True,
+    )
+    content_type = get_combobox_choices_filter(
+        model=models.JournalEntry,
+        field_name="content_type__model",
+        label=_("content type"),
         api_filter=True,
     )
     employee = get_combobox_choices_filter(
