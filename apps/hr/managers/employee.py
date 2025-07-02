@@ -3,13 +3,49 @@ from django.utils import timezone
 
 from apps.core.constants import DATE_UNITS
 
-from ...constants.employee import PREFETCH_RELATED_FIELDS, SELECT_RELATED_FIELDS
-from .annotations import AnnotationMixin
-from .optimizations import OptimizationMixin
-from .queryset import EmployeeQuerySet
+from ..constants.employee import PREFETCH_RELATED_LOOKUPS, SELECT_RELATED_FIELDS
+from ..querysets import EmployeeQuerySet
 
 
-class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
+class EmployeeManager(models.Manager):
+    def annotate_unmigrated_vouchers_nets(self, include_zero: bool = True):
+        """
+        Returns a queryset of employees with nets from their unmigrated vouchers.
+        """
+        return self.get_queryset().annotate_unmigrated_vouchers_nets(
+            include_zero=include_zero,
+        )
+
+    def annotate_unmigrated_vouchers_totals(self, include_zero: bool = True):
+        """
+        Returns a queryset of employees with totals from their unmigrated vouchers.
+        """
+        return self.get_queryset().annotate_unmigrated_vouchers_totals(
+            include_zero=include_zero,
+        )
+
+    def annotate_journals_nets(self, include_zero: bool = False):
+        """
+        Returns a queryset of employees with nets from their journals.
+        """
+        return self.get_queryset().annotate_journals_nets(
+            include_zero=include_zero,
+        )
+
+    def annotate_journals_totals(self, include_zero: bool = False):
+        """
+        Returns a queryset of employees with totals from their journals.
+        """
+        return self.get_queryset().annotate_journals_totals(
+            include_zero=include_zero,
+        )
+    
+    def annotate_search(self):
+        return self.get_queryset().annotate_search()
+    
+    def annotate_dates(self):
+        return self.get_queryset().annotate_dates()
+
     def get_counts_grouped_by(self, group_by: str = "gender"):
         return (
             self.get_queryset()
@@ -53,31 +89,14 @@ class EmployeeManager(AnnotationMixin, OptimizationMixin, models.Manager):
         """
         return self.get_queryset().get_upcoming_job_anniversaries(date=date, this=this)
 
-    def queryset_adjustments(
-        self,
-        *,
-        select_related: list[SELECT_RELATED_FIELDS] | None = None,
-        prefetch_related: list[PREFETCH_RELATED_FIELDS] | None = None,
-        search_annotations: bool = True,
-        date_annotations: bool = True,
-    ):
-        queryset = self.get_queryset()
+    def select_related(self, *fields: SELECT_RELATED_FIELDS):
+        return super().select_related(*fields)
 
-        if select_related:
-            queryset = self._select_related(queryset, select_related)
-
-        if prefetch_related:
-            queryset = self._prefetch_related(queryset, prefetch_related)
-
-        if search_annotations:
-            queryset = self._annotate_search(queryset)
-
-        if date_annotations:
-            queryset = self._annotate_dates(queryset)
-
-        return queryset
+    def prefetch_related(self, *lookups: PREFETCH_RELATED_LOOKUPS):
+        return super().prefetch_related(*lookups)
 
     def get_queryset(self) -> EmployeeQuerySet:
         queryset = EmployeeQuerySet(self.model, using=self._db)
-        queryset = self._annotate_search(queryset)
+        queryset = queryset.annotate_search()
+
         return queryset

@@ -67,4 +67,4 @@ SELECT_RELATED_FIELDS = Literal[
     "specialization",
 ]
 
-PREFETCH_RELATED_FIELDS = Literal["emails", "phones", "mobiles", "groups"]
+PREFETCH_RELATED_LOOKUPS = Literal["emails", "phones", "mobiles", "groups"]

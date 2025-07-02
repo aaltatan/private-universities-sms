@@ -20,8 +20,8 @@ class APIViewSet(
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
 ):
-    queryset = models.Employee.objects.queryset_adjustments(
-        select_related=[
+    queryset = (
+        models.Employee.objects.select_related(
             # geo
             "city",
             "city__governorate",
@@ -38,14 +38,10 @@ class APIViewSet(
             "school__kind",
             "school__nationality",
             "specialization",
-        ],
-        prefetch_related=[
-            "emails",
-            "phones",
-            "mobiles",
-            "groups",
-        ],
-    ).all()
+        )
+        .prefetch_related("emails", "phones", "mobiles", "groups")
+        .annotate_dates()
+    )
     serializer_class = serializers.EmployeeSerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
@@ -81,24 +77,20 @@ class ListView(
     resource_class = resources.EmployeeResource
     deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
-    queryset = models.Employee.objects.queryset_adjustments(
-        select_related=[
-            # geo
-            "city",
-            "city__governorate",
-            # org
-            "cost_center",
-            "position",
-            "status",
-            "job_subtype",
-            "job_subtype__job_type",
-            # edu
-            "degree",
-            "specialization",
-        ],
-        prefetch_related=["groups"],
-        date_annotations=False,
-    )
+    queryset = models.Employee.objects.select_related(
+        # geo
+        "city",
+        "city__governorate",
+        # org
+        "cost_center",
+        "position",
+        "status",
+        "job_subtype",
+        "job_subtype__job_type",
+        # edu
+        "degree",
+        "specialization",
+    ).prefetch_related("groups")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -118,11 +110,11 @@ class ListView(
 
 class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
     permission_required = "hr.view_employee"
-    model = models.Employee
+    model: models.Employee = models.Employee
 
     def get_queryset(self):
-        return self.model.objects.queryset_adjustments(
-            select_related=[
+        return (
+            self.model.objects.select_related(
                 # geo
                 "city",
                 "city__governorate",
@@ -139,13 +131,9 @@ class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
                 "school__kind",
                 "school__nationality",
                 "specialization",
-            ],
-            prefetch_related=[
-                "emails",
-                "phones",
-                "mobiles",
-                "groups",
-            ],
+            )
+            .prefetch_related("emails", "phones", "mobiles", "groups")
+            .annotate_dates()
         )
 
     def get_context_data(self, **kwargs):

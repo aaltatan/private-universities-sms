@@ -90,16 +90,12 @@ class EmployeeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_classes = (resources.EmployeeResource,)
 
     def get_queryset(self, request):
-        return self.model.objects.queryset_adjustments(
-            date_annotations=False,
-            search_annotations=False,
-            select_related=[
-                "city",
-                "cost_center",
-                "position",
-                "job_subtype",
-                "job_subtype__job_type",
-                "degree",
-                "specialization",
-            ],
+        return self.model.select_related(
+            "city",
+            "cost_center",
+            "position",
+            "job_subtype",
+            "job_subtype__job_type",
+            "degree",
+            "specialization",
         )
