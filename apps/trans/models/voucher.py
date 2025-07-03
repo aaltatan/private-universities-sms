@@ -216,13 +216,14 @@ class Voucher(
             self.audited_by = audited_by
             self.save(audit=True)
 
-    def migrate(self):
+    def migrate(self, accounting_journal_sequence: str = ""):
         """Migrate the voucher and generate a journal entry."""
         if not self.is_migrated:
             for idx, transaction in enumerate(self.transactions.all()):
                 transaction.migrate(ordering=idx)
 
             self.is_migrated = True
+            self.accounting_journal_sequence = accounting_journal_sequence
             self.save(audit=True)
 
     def unmigrate(self):
@@ -230,6 +231,7 @@ class Voucher(
         if self.is_migrated:
             self.journals.all().delete()
             self.is_migrated = False
+            self.accounting_journal_sequence = ""
             self.save()
 
     def get_audit_url(self):
