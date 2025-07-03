@@ -1,3 +1,4 @@
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.utils import ActionBehavior
@@ -7,13 +8,9 @@ from .models import Voucher
 
 class VoucherDeleter(ActionBehavior[Voucher]):
     success_obj_msg = _("voucher deleted successfully")
-    error_obj_msg = _(
-        "you can't delete this voucher because it is migrated."
-    )
+    error_obj_msg = _("you can't delete this voucher because it is migrated.")
     success_qs_msg = _("vouchers deleted successfully")
-    error_qs_msg = _(
-        "you can't delete vouchers because they are migrated."
-    )
+    error_qs_msg = _("you can't delete vouchers because they are migrated.")
 
     def check_obj_executing_possibility(self, obj) -> bool:
         return not obj.is_migrated
@@ -42,20 +39,20 @@ class VoucherDeleter(ActionBehavior[Voucher]):
 class VoucherAuditor(ActionBehavior[Voucher]):
     success_obj_msg = _("voucher audited successfully")
     error_obj_msg = _(
-        "you can't audit a voucher that you have created or updated or already audited"
+        "you can't audit a voucher that you have created or updated or already has been audited or migrated"
     )
     success_qs_msg = _("vouchers audited successfully")
     error_qs_msg = _(
-        "you can't audit vouchers that you have created or updated or already audited"
+        "you can't audit vouchers that you have created or updated or already have been audited or migrated"
     )
 
     def check_obj_executing_possibility(self, obj) -> bool:
-        if obj.is_audited:
+        if obj.is_audited or obj.is_migrated:
             return False
         return False if obj.updated_by == self.request.user else True
 
     def check_queryset_executing_possibility(self, qs) -> bool:
-        if qs.filter(is_audited=True).exists():
+        if qs.filter(models.Q(is_audited=True) | models.Q(is_migrated=True)).exists():
             return False
         return not qs.filter(updated_by=self.request.user).exists()
 
@@ -91,12 +88,10 @@ class VoucherMigrator(ActionBehavior[Voucher]):
     def check_obj_executing_possibility(self, obj) -> bool:
         if obj.is_migrated:
             return False
-        return True if obj.is_audited else False
+        return obj.is_audited
 
     def check_queryset_executing_possibility(self, qs) -> bool:
-        if qs.filter(is_audited=False).exists():
-            return False
-        return not qs.filter(is_audited=False).exists()
+        return False if qs.filter(is_audited=False).exists() else True
 
     def action(self) -> tuple[int, dict[str, int]] | None:
         if self._kind == "obj":
@@ -108,13 +103,15 @@ class VoucherMigrator(ActionBehavior[Voucher]):
             return self._handle_executing_error()
 
         self.has_executed = True
-
+        accounting_journal_sequence = self.request.POST.get(
+            "accounting_journal_sequence", ""
+        )
         if self._kind == "obj":
-            self._obj.migrate()
+            self._obj.migrate(accounting_journal_sequence)
         else:
             queryset = self._obj
             for obj in queryset:
-                obj.migrate()
+                obj.migrate(accounting_journal_sequence)
 
         return
 
