@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views.generic import DetailView, View
+from django.views.generic import View
 from django.views.generic.list import MultipleObjectMixin
 
 from apps.core import mixins
@@ -25,8 +25,3 @@ class ListView(
 
     def get_actions(self):
         return {}
-
-
-class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
-    permission_required = "trans.journalentry"
-    model = models.JournalEntry

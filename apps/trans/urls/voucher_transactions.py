@@ -11,12 +11,6 @@ urlpatterns = [
         route="",
         view=views.ListView.as_view(),
         name="index",
-        kwargs={"title": _("vouchers")},
-    ),
-    path(
-        route="details/<str:slug>/",
-        view=views.DetailsView.as_view(),
-        name="details",
-        kwargs={"title": ""},
+        kwargs={"title": _("voucher transactions")},
     ),
 ]
