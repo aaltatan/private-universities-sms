@@ -3,6 +3,7 @@ from datetime import date
 from django.db import models
 from django.db.models.functions import Concat
 from django.db.models.signals import pre_delete, pre_save
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -337,6 +338,9 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
     )  # to order objects in inlines
 
     objects: EmployeeManager = EmployeeManager()
+
+    def get_ledger_url(self):
+        return reverse("reports:ledger", kwargs={"slug": self.slug})
 
     class Meta:
         ordering = ("firstname",)
