@@ -1,0 +1,150 @@
+{% load i18n widget_tweaks utils formats %}
+
+<c-blocks.table id="{{ table_id }}" :index_url="{{ index_url }}" :table_id="{{ table_id }}">
+  <c-slot name="search">
+    <c-table.filter-form trigger="search" class="w-full" prevent="True">
+      <c-inputs.text
+        :field="search_filter.form.q"
+        :show_label="False"
+        show_icon="True"
+        icon="magnifying-glass"
+        kind="search"
+        placeholder="{% translate 'search'|title %}"
+        :auto_focus="False"
+      />
+    </c-table.filter-form>
+  </c-slot>
+
+  <c-slot name="buttons_bar">
+    <c-button
+      icon="adjustments-horizontal"
+      size="20"
+      hx-get="{{ index_url }}{% querystring %}"
+      hx-vals='{"filters": true}'
+      hx-target="#overlay-sidebar-container"
+      hx-swap="innerHTML"
+      data-fields=""
+      badge="True"
+      title="{% translate 'filters'|title %}"
+    />
+  </c-slot>
+
+  <form hx-post="{{ index_url }}" id="{{ form_table_id }}">
+    <c-table.table>
+      <c-table.tr header="True">
+        <c-table.th>#</c-table.th>
+        <c-table.th>{{ model|verbose_name:'debit' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'credit' }}</c-table.th>
+        <c-table.th>{% translate 'net' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'fiscal_object' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'explanation' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'cost_center' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'voucher' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'date' }}</c-table.th>
+        <c-table.th>{% translate 'year' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'period' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'month' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'notes' }}</c-table.th>
+      </c-table.tr>
+      {% for obj in page %}
+      <c-table.tr>
+        <c-table.td>{{ forloop.counter }}</c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'debit' }}">
+          {{ obj.debit|money:True }}
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'credit' }}">
+          {{ obj.credit|money:True }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'net' %}">
+          {{ obj.net|money:True }}
+        </c-table.td>
+        <c-table.td :wrap="True" data-header="{{ model|verbose_name:'fiscal_object' }}">
+          <a
+            href="#"
+            hx-get="{{ obj.fiscal_object.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.fiscal_object }}
+          </a>
+        </c-table.td>
+        <c-table.td :wrap="True" data-header="{{ model|verbose_name:'explanation' }}">
+          {{ obj.explanation }}
+        </c-table.td>
+        <c-table.td :wrap="True" data-header="{{ model|verbose_name:'cost_center' }}">
+          <a
+            href="#"
+            hx-get="{{ obj.cost_center.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.cost_center }}
+          </a>
+        </c-table.td>
+        <c-table.td :warp="True" data-header="{{ model|verbose_name:'voucher' }}">
+          {% if obj.voucher %}
+          <a
+            href="#"
+            hx-get="{{ obj.voucher.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.voucher }}
+          </a>
+          {% else %}
+          <!--  -->
+          -
+          <!--  -->
+          {% endif %}
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'date' }}">
+          {{ obj.date|date:'Y-m-d' }}
+        </c-table.td>
+        <c-table.td :wrap="True" data-header="{% translate 'year'|capfirst %}">
+          <a
+            href="#"
+            hx-get="{{ obj.period.year.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.period.year.name }}
+          </a>
+        </c-table.td>
+        <c-table.td :wrap="True" data-header="{{ model|verbose_name:'period' }}">
+          <a
+            href="#"
+            hx-get="{{ obj.period.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.period.name }}
+          </a>
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'month' }}">
+          {{ obj.get_month_display }}
+        </c-table.td>
+        <c-table.td :wrap="True" data-header="{{ model|verbose_name:'notes' }}">
+          {{ obj.notes }}
+        </c-table.td>
+      </c-table.tr>
+      {% empty %}
+      <c-table.empty-tr />
+      {% endfor %}
+    </c-table.table>
+  </form>
+</c-blocks.table>
