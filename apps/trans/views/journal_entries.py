@@ -22,6 +22,7 @@ class ListView(
     resource_class = resources.JournalEntryResource
     deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
+    search_filter_class = filters.JournalEntrySearchFilter
 
     def get_actions(self):
         return {}
