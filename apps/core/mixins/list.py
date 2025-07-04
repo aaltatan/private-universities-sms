@@ -23,6 +23,51 @@ from ..filters import BaseQSearchFilter, get_ordering_filter
 from ..schemas import Action
 
 
+class SidebarFiltersMixin(ABC):
+    """
+    this class will not work except if combined with TableVariablesMixin.
+    """
+    @property
+    @abstractmethod
+    def filter_class(self) -> type[FilterSet]:
+        pass
+
+    @abstractmethod
+    def get_index_url(self) -> dict[str, str]:
+        pass
+
+    @abstractmethod
+    def get_html_ids(self) -> dict[str, str]:
+        pass
+
+    def get_filters_response(
+        self,
+        request: HttpRequest,
+        template_name: str,
+        context: dict[str, Any],
+    ) -> HttpResponse:
+        """
+        Returns the filters response.
+        """
+        response = render(request, template_name, context)
+        response["Hx-Trigger"] = "open-overlay-sidebar"
+        return response
+
+    def sidebar_filters_context_data(
+        self, request: HttpRequest, queryset: QuerySet, **kwargs
+    ) -> dict[str, Any]:
+        """
+        Returns the filter context data that will be passed to the template.
+        """
+        filter_obj = self.filter_class(request.GET, queryset)
+
+        return {
+            "filter": filter_obj,
+            **self.get_index_url(),
+            **self.get_html_ids(),
+        }
+
+
 class ObjectNamesMixin:
     model: type[Model] | None = None
     app_label: str | None = None
@@ -260,6 +305,7 @@ class ListMixin(
     PaginationMixin,
     TableVariablesMixin,
     TableFiltersMixin,
+    SidebarFiltersMixin,
     TemplatesNamesMixin,
     ABC,
 ):
@@ -303,7 +349,11 @@ class ListMixin(
             return self.get_export_response(request)
 
         if request.GET.get("filters"):
-            return self.get_filters_response(request)
+            template_name = self.get_filter_form_template_name()
+            context = self.sidebar_filters_context_data(
+                request=request, queryset=self.get_queryset()
+            )
+            return self.get_filters_response(request, template_name, context)
 
         template_name = self.get_template_name()
 
@@ -323,18 +373,6 @@ class ListMixin(
         Handles the POST request.
         """
         return self.get_bulk_actions_response(request)
-
-    def get_filters_response(self, request: HttpRequest) -> HttpResponse:
-        """
-        Returns the filters response.
-        """
-        template_name = self.get_filter_form_template_name()
-        context = self.filter_context_data()
-
-        response = render(request, template_name, context)
-        response["Hx-Trigger"] = "open-overlay-sidebar"
-
-        return response
 
     def get_bulk_actions_response(self, request: HttpRequest) -> HttpResponse:
         """
@@ -426,6 +464,32 @@ class ListMixin(
         )
         return response
 
+    def get_filtered_queryset(
+        self, request: HttpRequest, initial_queryset: QuerySet
+    ) -> QuerySet:
+        """
+        Returns the filtered queryset.
+        Steps:
+        1. Filter the queryset by ordering filter
+        2. Filter the queryset by search filter
+        3. Filter the queryset by filter class (sidebar)
+        """
+        # Step 1: Filter the queryset by ordering filter
+        OrderingFilter = self.get_ordering_filter_class()
+        ordering_filter = OrderingFilter(request.GET, initial_queryset)
+        queryset = ordering_filter.qs
+
+        # Step 2: Filter the queryset by search filter
+        SearchFilter = self.get_search_filter_class()
+        search_filter = SearchFilter(request.GET, queryset)
+        queryset = search_filter.qs
+
+        # Step 3: Filter the queryset by filter class (sidebar)
+        filter_obj = self.filter_class(request.GET, queryset)
+        queryset = filter_obj.qs
+
+        return queryset
+
     def get_queryset(self) -> QuerySet:
         """
         Returns the queryset.
@@ -436,18 +500,7 @@ class ListMixin(
         else:
             queryset = self.queryset
 
-        request: HttpRequest = self.request
-
-        OrderingFilter = self.get_ordering_filter_class()
-        ordering_filter = OrderingFilter(request.GET, queryset)
-        queryset = ordering_filter.qs
-
-        SearchFilter = self.get_search_filter_class()
-        search_filter = SearchFilter(request.GET, queryset)
-        queryset = search_filter.qs
-
-        filter_obj = self.filter_class(request.GET, queryset)
-        queryset = filter_obj.qs
+        queryset = self.get_filtered_queryset(self.request, queryset)
 
         return queryset
 
@@ -457,19 +510,6 @@ class ListMixin(
         """
         return {
             "qs": qs,
-            **self.get_create_url(),
-            **self.get_index_url(),
-            **self.get_html_ids(),
-        }
-
-    def filter_context_data(self, **kwargs) -> dict[str, Any]:
-        """
-        Returns the filter context data that will be passed to the template.
-        """
-        filter_obj = self.filter_class(self.request.GET, self.get_queryset())
-
-        return {
-            "filter": filter_obj,
             **self.get_create_url(),
             **self.get_index_url(),
             **self.get_html_ids(),

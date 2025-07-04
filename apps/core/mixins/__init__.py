@@ -7,6 +7,7 @@ from .index import IndexMixin
 from .list import (
     ListMixin,
     PaginationMixin,
+    SidebarFiltersMixin,
     TableFiltersMixin,
     TableVariablesMixin,
     TemplatesNamesMixin,
@@ -21,6 +22,7 @@ __all__ = [
     "ListMixin",
     "TemplatesNamesMixin",
     "PaginationMixin",
+    "SidebarFiltersMixin",
     "TableVariablesMixin",
     "TableFiltersMixin",
     "CreateMixin",
