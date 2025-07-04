@@ -4,7 +4,7 @@
   <c-slot name="search">
     <c-table.filter-form trigger="search" class="w-full" prevent="True">
       <c-inputs.text
-        :field="search_ordering_filter.form.q"
+        :field="search_filter.form.q"
         :show_label="False"
         show_icon="True"
         icon="magnifying-glass"
@@ -16,7 +16,7 @@
   </c-slot>
 
   <c-slot name="buttons_bar">
-    {% if can_create %}
+    {% if can_add %}
     <c-button
       size="20"
       kind="a"
@@ -28,7 +28,7 @@
     {% endif %}
 
     <c-table.filter-form trigger="order-by-change">
-      {{ search_ordering_filter.form.ordering }}
+      {{ ordering_filter.form.ordering }}
     </c-table.filter-form>
 
     <c-button
@@ -80,9 +80,9 @@
       <c-table.tr>
         <c-table.td-check :show_checkbox="can_delete" :obj="obj" idx="{{ forloop.counter }}" />
         <c-table.td fixed="True">
-          {% if can_update or can_delete or can_view_activity %}
+          {% if can_change or can_delete or can_view_activity %}
           <c-layout.contextmenu button_padding="sm">
-            {% if can_update or can_view_activity %}
+            {% if can_change or can_view_activity %}
             <c-layout.contextmenu.section>
               {% if can_view_activity %}
               <c-layout.contextmenu.item
@@ -98,7 +98,7 @@
               </c-layout.contextmenu.item>
               {% endif %}
               <!--  -->
-              {% if can_update %}
+              {% if can_change %}
               <c-layout.contextmenu.item
                 icon="pencil"
                 href="{{ obj.get_update_url }}{% querystring %}"

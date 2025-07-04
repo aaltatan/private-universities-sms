@@ -4,7 +4,7 @@
   <c-slot name="search">
     <c-table.filter-form trigger="search" class="w-full" prevent="True">
       <c-inputs.text
-        :field="search_ordering_filter.form.q"
+        :field="search_filter.form.q"
         :show_label="False"
         show_icon="True"
         icon="magnifying-glass"
@@ -17,7 +17,7 @@
 
   <c-slot name="buttons_bar">
     <c-table.filter-form trigger="order-by-change">
-      {{ search_ordering_filter.form.ordering }}
+      {{ ordering_filter.form.ordering }}
     </c-table.filter-form>
 
     <c-button
