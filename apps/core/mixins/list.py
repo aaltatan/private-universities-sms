@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Any, Iterable, Literal
 
+import django_filters as filters
 from django.conf import settings
 from django.core.paginator import EmptyPage, Page, PageNotAnInteger, Paginator
-from django.urls import NoReverseMatch
 from django.db.models import Model, QuerySet
 from django.http import (
     HttpRequest,
@@ -13,7 +13,7 @@ from django.http import (
     HttpResponseServerError,
 )
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
 from django_filters import FilterSet
 from import_export.resources import ModelResource
 from tablib import Dataset
@@ -23,7 +23,135 @@ from ..filters import BaseQSearchFilter, get_ordering_filter
 from ..schemas import Action
 
 
-class ListMixin(ABC):
+class TableFiltersMixin:
+    def get_search_filter_class(self) -> type[FilterSet]:
+        """
+        Returns the search filter class.
+        """
+        if getattr(self, "search_filter_class", None):
+            return self.search_filter_class
+
+        class SearchFilter(BaseQSearchFilter):
+            class Meta:
+                model = self.get_model_class()
+                fields = ("id",)
+
+        return SearchFilter
+
+    def get_ordering_filter_class(self) -> type[FilterSet]:
+        """
+        Returns the ordering filter class.
+        """
+        if getattr(self, "ordering_filter_class", None):
+            return self.ordering_filter_class
+
+        class OrderingFilter(filters.FilterSet):
+            ordering = get_ordering_filter(self.ordering_fields)
+
+            class Meta:
+                model = self.get_model_class()
+                fields = ("id",)
+
+        return OrderingFilter
+
+
+class TableVariablesMixin:
+    def get_html_ids(self, verbose_name_plural: str) -> dict[str, str]:
+        """
+        Returns the html ids.
+        """
+        return {
+            "table_id": f"{verbose_name_plural}-table",
+            "form_table_id": f"{verbose_name_plural}-form-table",
+            "filter_form_id": f"{verbose_name_plural}-filter",
+        }
+
+    def get_app_urls(self, app_label: str, verbose_name_plural: str) -> dict[str, str]:
+        """
+        Returns the app links.
+        """
+        # in case of no create view
+        try:
+            create_url = reverse(f"{app_label}:{verbose_name_plural}:create")
+        except NoReverseMatch:
+            create_url = None
+
+        return {
+            "index_url": reverse(f"{app_label}:{verbose_name_plural}:index"),
+            "create_url": create_url,
+        }
+
+    def get_permissions(
+        self, request: HttpRequest, app_label: str, object_name: str
+    ) -> dict[str, bool]:
+        """
+        Returns a dictionary of permissions.
+        """
+        permissions: list[PERMISSION] = [
+            "view",
+            "add",
+            "change",
+            "delete",
+            "export",
+            "audit",
+            "unaudit",
+            "migrate",
+            "unmigrate",
+            "view_activity",
+        ]
+        return {
+            f"can_{permission}": self._get_permission(
+                request, permission, app_label, object_name
+            )
+            for permission in permissions
+        }
+
+    def _get_permission(
+        self,
+        request: HttpRequest,
+        permission: PERMISSION,
+        app_label: str,
+        object_name: str,
+    ) -> bool:
+        """
+        Returns whether the user has a given permission.
+        """
+        permission_string = f"{app_label}.{permission}_{object_name}"
+        return request.user.has_perm(permission_string)
+
+
+class PaginationMixin:
+    def _get_per_page(self, request: HttpRequest) -> int:
+        """
+        Returns the number of items to show per page.
+        """
+        default_per_page: int = settings.PER_PAGE
+        request_per_page: str = request.GET.get("per_page", None)
+
+        if request_per_page == "all":
+            return settings.MAX_PAGE_SIZE
+
+        return request_per_page or default_per_page
+
+    def get_page_class(self, request: HttpRequest, queryset: QuerySet) -> Page:
+        """
+        Returns the page class.
+        """
+        per_page = self._get_per_page(request=request)
+        paginator = Paginator(queryset, per_page)
+        page: int = request.GET.get("page", 1)
+
+        try:
+            page = paginator.page(page)
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+
+        return page
+
+
+class ListMixin(PaginationMixin, TableVariablesMixin, TableFiltersMixin, ABC):
     """
     A mixin that adds a list view.
     """
@@ -56,7 +184,8 @@ class ListMixin(ABC):
     template_name: str | None = None
     table_template_name: str | None = None
     filter_form_template_name: str | None = None
-    search_ordering_filter_class: type[FilterSet] | None = None
+    ordering_filter_class: type[FilterSet] | None = None
+    search_filter_class: type[FilterSet] | None = None
 
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
@@ -195,22 +324,6 @@ class ListMixin(ABC):
         """
         return self.model
 
-    def get_search_ordering_filter_class(self) -> type[FilterSet]:
-        """
-        Returns the search ordering filter class.
-        """
-        if self.search_ordering_filter_class:
-            return self.search_ordering_filter_class
-
-        class SearchOrderingFilter(BaseQSearchFilter):
-            ordering = get_ordering_filter(self.ordering_fields)
-
-            class Meta:
-                model = self.get_model_class()
-                fields = ("id",)
-
-        return SearchOrderingFilter
-
     def get_template_name(self) -> str:
         """
         Returns the template name.
@@ -262,44 +375,19 @@ class ListMixin(ABC):
             queryset = self.queryset
 
         request: HttpRequest = self.request
-        SearchOrderingFilter = self.get_search_ordering_filter_class()
 
-        search_ordering_filter = SearchOrderingFilter(request.GET, queryset)
-        queryset = search_ordering_filter.qs
+        OrderingFilter = self.get_ordering_filter_class()
+        ordering_filter = OrderingFilter(request.GET, queryset)
+        queryset = ordering_filter.qs
+
+        SearchFilter = self.get_search_filter_class()
+        search_filter = SearchFilter(request.GET, queryset)
+        queryset = search_filter.qs
 
         filter_obj = self.filter_class(request.GET, queryset)
         queryset = filter_obj.qs
 
         return queryset
-
-    def get_permissions(self) -> dict[str, bool]:
-        """
-        Returns a dictionary of permissions.
-        """
-        return {
-            "can_view": self.get_permission("view"),
-            "can_create": self.get_permission("add"),
-            "can_update": self.get_permission("change"),
-            "can_delete": self.get_permission("delete"),
-            "can_export": self.get_permission("export"),
-            "can_audit": self.get_permission("audit"),
-            "can_unaudit": self.get_permission("unaudit"),
-            "can_migrate": self.get_permission("migrate"),
-            "can_unmigrate": self.get_permission("unmigrate"),
-            "can_view_activity": self.get_permission("view_activity"),
-        }
-
-    def get_permission(self, permission: PERMISSION) -> bool:
-        """
-        Returns whether the user has a given permission.
-        """
-        app_label = self.get_app_label()
-        object_name: str = self.get_object_name()
-        permission_string: str = f"{app_label}.{permission}_{object_name}"
-
-        request: HttpRequest = self.request
-
-        return request.user.has_perm(permission_string)
 
     def get_model_name(self) -> str:
         """
@@ -327,78 +415,17 @@ class ListMixin(ABC):
         model = self.get_model_class()
         return model._meta.object_name.lower()
 
-    def get_per_page(self) -> int:
-        """
-        Returns the number of items to show per page.
-        """
-        request: HttpRequest = self.request
-
-        default_per_page: int = settings.PER_PAGE
-        request_per_page: str = request.GET.get("per_page", None)
-
-        if request_per_page == "all":
-            return settings.MAX_PAGE_SIZE
-
-        return request_per_page or default_per_page
-
-    def get_page_class(self) -> Page:
-        """
-        Returns the page class.
-        """
-        request: HttpRequest = self.request
-        qs = self.get_queryset()
-
-        per_page: int = self.get_per_page()
-
-        paginator: Paginator = Paginator(qs, per_page)
-        page: int = request.GET.get("page", 1)
-
-        try:
-            page = paginator.page(page)
-        except PageNotAnInteger:
-            page = paginator.page(1)
-        except EmptyPage:
-            page = paginator.page(paginator.num_pages)
-
-        return page
-
-    def get_app_urls(self) -> dict[str, str]:
-        """
-        Returns the app links.
-        """
-        app_label = self.get_app_label()
-        verbose_name_plural: str = self.get_verbose_name_plural()
-
-        # in case of no create view
-        try:
-            create_url = reverse(f"{app_label}:{verbose_name_plural}:create")
-        except NoReverseMatch:
-            create_url = None
-
-        return {
-            "index_url": reverse(f"{app_label}:{verbose_name_plural}:index"),
-            "create_url": create_url,
-        }
-
-    def get_html_ids(self) -> dict[str, str]:
-        """
-        Returns the html ids.
-        """
-        verbose_name_plural: str = self.get_verbose_name_plural()
-        return {
-            "table_id": f"{verbose_name_plural}-table",
-            "form_table_id": f"{verbose_name_plural}-form-table",
-            "filter_form_id": f"{verbose_name_plural}-filter",
-        }
-
     def get_modal_context_data(self, qs: QuerySet, **kwargs) -> dict[str, Any]:
         """
         Returns the modal context data that will be passed to the template.
         """
+        app_label = self.get_app_label()
+        verbose_name_plural = self.get_verbose_name_plural()
+
         return {
             "qs": qs,
-            **self.get_app_urls(),
-            **self.get_html_ids(),
+            **self.get_app_urls(app_label, verbose_name_plural),
+            **self.get_html_ids(verbose_name_plural),
         }
 
     def filter_context_data(self, **kwargs) -> dict[str, Any]:
@@ -407,35 +434,43 @@ class ListMixin(ABC):
         """
         filter_obj = self.filter_class(self.request.GET, self.get_queryset())
 
+        app_label = self.get_app_label()
+        verbose_name_plural = self.get_verbose_name_plural()
+
         return {
             "filter": filter_obj,
-            **self.get_app_urls(),
-            **self.get_html_ids(),
+            **self.get_app_urls(app_label, verbose_name_plural),
+            **self.get_html_ids(verbose_name_plural),
         }
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         """
         Returns the context data that will be passed to the template.
         """
-        qs: QuerySet = self.get_queryset()
+        queryset = self.get_queryset()
         request: HttpRequest = self.request
-        SearchOrderingFilter = self.get_search_ordering_filter_class()
 
-        search_ordering_filter = SearchOrderingFilter(
-            request.GET or request.POST, qs.all()
-        )
-        page: Page = self.get_page_class()
+        OrderingFilter = self.get_ordering_filter_class()
+        ordering_filter = OrderingFilter(request.GET or request.POST, queryset.all())
 
-        page.paginator.count
+        SearchFilter = self.get_search_filter_class()
+        search_filter = SearchFilter(request.GET or request.POST, queryset.all())
+
+        page = self.get_page_class(request=request, queryset=queryset)
+
+        app_label = self.get_app_label()
+        verbose_name_plural = self.get_verbose_name_plural()
+        object_name = self.get_object_name()
 
         return {
             "page": page,
-            "search_ordering_filter": search_ordering_filter,
+            "ordering_filter": ordering_filter,
+            "search_filter": search_filter,
             "app_label": self.get_app_label(),
             "subapp_label": self.get_verbose_name_plural(),
             "model_name": self.get_model_name(),
             "model": self.get_model_class(),
-            **self.get_app_urls(),
-            **self.get_html_ids(),
-            **self.get_permissions(),
+            **self.get_app_urls(app_label, verbose_name_plural),
+            **self.get_html_ids(verbose_name_plural),
+            **self.get_permissions(request, app_label, object_name),
         }
