@@ -23,57 +23,124 @@ from ..filters import BaseQSearchFilter, get_ordering_filter
 from ..schemas import Action
 
 
-class TableFiltersMixin(ABC):
-    @abstractmethod
-    def get_model_class(self) -> type[Model]:
-        pass
+class ObjectNamesMixin:
+    model: type[Model] | None = None
+    app_label: str | None = None
+    verbose_name_plural: str | None = None
+    object_name: str | None = None
+    model_name: str | None = None
 
-    def get_search_filter_class(self) -> type[FilterSet]:
+    def get_model_name(self) -> str:
         """
-        Returns the search filter class.
+        return model name
         """
-        if getattr(self, "search_filter_class", None):
-            return self.search_filter_class
+        if getattr(self, "model_name", None):
+            return self.model_name
 
-        class SearchFilter(BaseQSearchFilter):
-            class Meta:
-                model = self.get_model_class()
-                fields = ("id",)
+        return self.model._meta.model_name
 
-        return SearchFilter
-
-    def get_ordering_filter_class(self) -> type[FilterSet]:
+    def get_app_label(self) -> str:
         """
-        Returns the ordering filter class.
+        Returns the app label using the model
         """
-        if getattr(self, "ordering_filter_class", None):
-            return self.ordering_filter_class
+        if getattr(self, "app_label", None):
+            return self.app_label
 
-        class OrderingFilter(filters.FilterSet):
-            ordering = get_ordering_filter(self.ordering_fields)
+        return self.model._meta.app_label
 
-            class Meta:
-                model = self.get_model_class()
-                fields = ("id",)
+    def get_verbose_name_plural(self) -> str:
+        """
+        Returns the verbose name plural using the model.
+        """
+        if getattr(self, "verbose_name_plural", None):
+            return self.verbose_name_plural
 
-        return OrderingFilter
+        return self.model._meta.codename_plural
+
+    def get_object_name(self) -> str:
+        """
+        Returns the app label for single object using the model.
+        """
+        if getattr(self, "object_name", None):
+            return self.object_name
+
+        return self.model._meta.object_name.lower()
 
 
-class TableVariablesMixin:
-    def get_html_ids(self, verbose_name_plural: str) -> dict[str, str]:
+class TemplatesNamesMixin(ObjectNamesMixin):
+    template_name: str | None = None
+    table_template_name: str | None = None
+    filter_form_template_name: str | None = None
+
+    def get_template_name(self) -> str:
+        """
+        Returns the template name.
+        Notes: you can use the *template_name* attribute to override the default template name.
+        """
+        if self.template_name:
+            return self.template_name
+
+        verbose_name_plural = self.get_verbose_name_plural()
+        app_label = self.get_app_label()
+
+        return f"apps/{app_label}/{verbose_name_plural}/index.html"
+
+    def get_table_template_name(self) -> str:
+        """
+        Returns the table template name.
+        Notes: you can use the table_template_name attribute to override the default table template name.
+        """
+        if self.table_template_name:
+            return self.table_template_name
+
+        verbose_name_plural = self.get_verbose_name_plural()
+        app_label = self.get_app_label()
+
+        return f"components/{app_label}/{verbose_name_plural}/table.html"
+
+    def get_filter_form_template_name(self) -> str:
+        """
+        Returns the filter form template name.
+        Notes: you can use the filter_form_template_name attribute to override the default filter form template name.
+        """
+        if self.filter_form_template_name:
+            return self.filter_form_template_name
+
+        verbose_name_plural = self.get_verbose_name_plural()
+        app_label = self.get_app_label()
+
+        return f"components/{app_label}/{verbose_name_plural}/filter-form.html"
+
+
+class TableVariablesMixin(ObjectNamesMixin):
+    def get_html_ids(self) -> dict[str, str]:
         """
         Returns the html ids.
         """
+        verbose_name_plural = self.get_verbose_name_plural()
         return {
             "table_id": f"{verbose_name_plural}-table",
             "form_table_id": f"{verbose_name_plural}-form-table",
             "filter_form_id": f"{verbose_name_plural}-filter",
         }
 
-    def get_app_urls(self, app_label: str, verbose_name_plural: str) -> dict[str, str]:
+    def get_index_url(self) -> dict[str, str]:
         """
-        Returns the app links.
+        Returns index urls.
         """
+        app_label = self.get_app_label()
+        verbose_name_plural = self.get_verbose_name_plural()
+        return {
+            "index_url": reverse(f"{app_label}:{verbose_name_plural}:index"),
+        }
+
+    def get_create_url(self) -> dict[str, str | None]:
+        """
+        Returns add url.
+        """
+        app_label = self.get_app_label()
+        verbose_name_plural = self.get_verbose_name_plural()
+
         # in case of no create view
         try:
             create_url = reverse(f"{app_label}:{verbose_name_plural}:create")
@@ -81,13 +148,10 @@ class TableVariablesMixin:
             create_url = None
 
         return {
-            "index_url": reverse(f"{app_label}:{verbose_name_plural}:index"),
             "create_url": create_url,
         }
 
-    def get_permissions(
-        self, request: HttpRequest, app_label: str, object_name: str
-    ) -> dict[str, bool]:
+    def get_permissions(self, request: HttpRequest) -> dict[str, bool]:
         """
         Returns a dictionary of permissions.
         """
@@ -103,25 +167,62 @@ class TableVariablesMixin:
             "unmigrate",
             "view_activity",
         ]
+
         return {
-            f"can_{permission}": self._get_permission(
-                request, permission, app_label, object_name
-            )
+            f"can_{permission}": self._get_perm(request, permission)
             for permission in permissions
         }
 
-    def _get_permission(
-        self,
-        request: HttpRequest,
-        permission: PERMISSION,
-        app_label: str,
-        object_name: str,
-    ) -> bool:
+    def _get_perm(self, request: HttpRequest, permission: PERMISSION) -> bool:
         """
         Returns whether the user has a given permission.
         """
+        app_label = self.get_app_label()
+        object_name = self.get_object_name()
+
         permission_string = f"{app_label}.{permission}_{object_name}"
+
         return request.user.has_perm(permission_string)
+
+
+class TableFiltersMixin(ABC):
+    search_filter_class: type[FilterSet] | None = None
+    ordering_filter_class: type[FilterSet] | None = None
+
+    @property
+    @abstractmethod
+    def model(self) -> type[Model]:
+        pass
+
+    def get_search_filter_class(self) -> type[FilterSet]:
+        """
+        Returns the search filter class.
+        """
+        if getattr(self, "search_filter_class", None):
+            return self.search_filter_class
+
+        class SearchFilter(BaseQSearchFilter):
+            class Meta:
+                model = self.model
+                fields = ("id",)
+
+        return SearchFilter
+
+    def get_ordering_filter_class(self) -> type[FilterSet]:
+        """
+        Returns the ordering filter class.
+        """
+        if getattr(self, "ordering_filter_class", None):
+            return self.ordering_filter_class
+
+        class OrderingFilter(filters.FilterSet):
+            ordering = get_ordering_filter(self.ordering_fields)
+
+            class Meta:
+                model = self.model
+                fields = ("id",)
+
+        return OrderingFilter
 
 
 class PaginationMixin:
@@ -155,7 +256,13 @@ class PaginationMixin:
         return page
 
 
-class ListMixin(PaginationMixin, TableVariablesMixin, TableFiltersMixin, ABC):
+class ListMixin(
+    PaginationMixin,
+    TableVariablesMixin,
+    TableFiltersMixin,
+    TemplatesNamesMixin,
+    ABC,
+):
     """
     A mixin that adds a list view.
     """
@@ -185,9 +292,6 @@ class ListMixin(PaginationMixin, TableVariablesMixin, TableFiltersMixin, ABC):
         pass
 
     queryset: QuerySet | None = None
-    template_name: str | None = None
-    table_template_name: str | None = None
-    filter_form_template_name: str | None = None
     ordering_filter_class: type[FilterSet] | None = None
     search_filter_class: type[FilterSet] | None = None
 
@@ -201,7 +305,7 @@ class ListMixin(PaginationMixin, TableVariablesMixin, TableFiltersMixin, ABC):
         if request.GET.get("filters"):
             return self.get_filters_response(request)
 
-        template_name: str = self.get_template_name()
+        template_name = self.get_template_name()
 
         if request.htmx:
             if request.GET.get("export") and not request.GET.get("redirected"):
@@ -227,7 +331,7 @@ class ListMixin(PaginationMixin, TableVariablesMixin, TableFiltersMixin, ABC):
         template_name = self.get_filter_form_template_name()
         context = self.filter_context_data()
 
-        response = render(self.request, template_name, context)
+        response = render(request, template_name, context)
         response["Hx-Trigger"] = "open-overlay-sidebar"
 
         return response
@@ -322,59 +426,13 @@ class ListMixin(PaginationMixin, TableVariablesMixin, TableFiltersMixin, ABC):
         )
         return response
 
-    def get_model_class(self) -> type[Model]:
-        """
-        Returns the model class.
-        """
-        return self.model
-
-    def get_template_name(self) -> str:
-        """
-        Returns the template name.
-        Notes: you can use the *template_name* attribute to override the default template name.
-        """
-        if self.template_name:
-            return self.template_name
-
-        verbose_name_plural = self.get_verbose_name_plural()
-        app_label = self.get_app_label()
-
-        return f"apps/{app_label}/{verbose_name_plural}/index.html"
-
-    def get_table_template_name(self) -> str:
-        """
-        Returns the table template name.
-        Notes: you can use the table_template_name attribute to override the default table template name.
-        """
-        if self.table_template_name:
-            return self.table_template_name
-
-        verbose_name_plural = self.get_verbose_name_plural()
-        app_label = self.get_app_label()
-
-        return f"components/{app_label}/{verbose_name_plural}/table.html"
-
-    def get_filter_form_template_name(self) -> str:
-        """
-        Returns the filter form template name.
-        Notes: you can use the filter_form_template_name attribute to override the default filter form template name.
-        """
-        if self.filter_form_template_name:
-            return self.filter_form_template_name
-
-        verbose_name_plural = self.get_verbose_name_plural()
-        app_label = self.get_app_label()
-
-        return f"components/{app_label}/{verbose_name_plural}/filter-form.html"
-
     def get_queryset(self) -> QuerySet:
         """
         Returns the queryset.
         """
         if self.queryset is None:
-            model = self.get_model_class()
-            default_ordering = model._meta.ordering
-            queryset = model.objects.all().order_by(*default_ordering)
+            default_ordering = self.model._meta.ordering
+            queryset = self.model.objects.all().order_by(*default_ordering)
         else:
             queryset = self.queryset
 
@@ -393,43 +451,15 @@ class ListMixin(PaginationMixin, TableVariablesMixin, TableFiltersMixin, ABC):
 
         return queryset
 
-    def get_model_name(self) -> str:
-        """
-        return model name
-        """
-        return self.get_model_class()._meta.model_name
-
-    def get_app_label(self) -> str:
-        """
-        Returns the app label using the model
-        """
-        return self.get_model_class()._meta.app_label
-
-    def get_verbose_name_plural(self) -> str:
-        """
-        Returns the verbose name plural using the model.
-        """
-        model = self.get_model_class()
-        return model._meta.codename_plural
-
-    def get_object_name(self) -> str:
-        """
-        Returns the app label for single object using the model.
-        """
-        model = self.get_model_class()
-        return model._meta.object_name.lower()
-
     def get_modal_context_data(self, qs: QuerySet, **kwargs) -> dict[str, Any]:
         """
         Returns the modal context data that will be passed to the template.
         """
-        app_label = self.get_app_label()
-        verbose_name_plural = self.get_verbose_name_plural()
-
         return {
             "qs": qs,
-            **self.get_app_urls(app_label, verbose_name_plural),
-            **self.get_html_ids(verbose_name_plural),
+            **self.get_create_url(),
+            **self.get_index_url(),
+            **self.get_html_ids(),
         }
 
     def filter_context_data(self, **kwargs) -> dict[str, Any]:
@@ -438,13 +468,11 @@ class ListMixin(PaginationMixin, TableVariablesMixin, TableFiltersMixin, ABC):
         """
         filter_obj = self.filter_class(self.request.GET, self.get_queryset())
 
-        app_label = self.get_app_label()
-        verbose_name_plural = self.get_verbose_name_plural()
-
         return {
             "filter": filter_obj,
-            **self.get_app_urls(app_label, verbose_name_plural),
-            **self.get_html_ids(verbose_name_plural),
+            **self.get_create_url(),
+            **self.get_index_url(),
+            **self.get_html_ids(),
         }
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
@@ -455,16 +483,18 @@ class ListMixin(PaginationMixin, TableVariablesMixin, TableFiltersMixin, ABC):
         request: HttpRequest = self.request
 
         OrderingFilter = self.get_ordering_filter_class()
-        ordering_filter = OrderingFilter(request.GET or request.POST, queryset.all())
+        ordering_filter = OrderingFilter(
+            request.GET or request.POST,
+            queryset.all(),
+        )
 
         SearchFilter = self.get_search_filter_class()
-        search_filter = SearchFilter(request.GET or request.POST, queryset.all())
+        search_filter = SearchFilter(
+            request.GET or request.POST,
+            queryset.all(),
+        )
 
         page = self.get_page_class(request=request, queryset=queryset)
-
-        app_label = self.get_app_label()
-        verbose_name_plural = self.get_verbose_name_plural()
-        object_name = self.get_object_name()
 
         return {
             "page": page,
@@ -473,8 +503,9 @@ class ListMixin(PaginationMixin, TableVariablesMixin, TableFiltersMixin, ABC):
             "app_label": self.get_app_label(),
             "subapp_label": self.get_verbose_name_plural(),
             "model_name": self.get_model_name(),
-            "model": self.get_model_class(),
-            **self.get_app_urls(app_label, verbose_name_plural),
-            **self.get_html_ids(verbose_name_plural),
-            **self.get_permissions(request, app_label, object_name),
+            "model": self.model,
+            **self.get_create_url(),
+            **self.get_index_url(),
+            **self.get_html_ids(),
+            **self.get_permissions(request),
         }

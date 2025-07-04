@@ -4,7 +4,13 @@ from .behavior import BehaviorMixin
 from .create import CreateMixin
 from .details import DetailsMixin
 from .index import IndexMixin
-from .list import ListMixin, PaginationMixin, TableFiltersMixin, TableVariablesMixin
+from .list import (
+    ListMixin,
+    PaginationMixin,
+    TableFiltersMixin,
+    TableVariablesMixin,
+    TemplatesNamesMixin,
+)
 from .save import AddCreateActivityMixin
 from .update import UpdateMixin
 from .utils import CustomDjangoQLSearchMixin, FiltersetMixin
@@ -13,6 +19,7 @@ __all__ = [
     "AddCreateActivityMixin",
     "CustomDjangoQLSearchMixin",
     "ListMixin",
+    "TemplatesNamesMixin",
     "PaginationMixin",
     "TableVariablesMixin",
     "TableFiltersMixin",
