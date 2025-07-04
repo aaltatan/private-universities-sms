@@ -23,7 +23,11 @@ from ..filters import BaseQSearchFilter, get_ordering_filter
 from ..schemas import Action
 
 
-class TableFiltersMixin:
+class TableFiltersMixin(ABC):
+    @abstractmethod
+    def get_model_class(self) -> type[Model]:
+        pass
+
     def get_search_filter_class(self) -> type[FilterSet]:
         """
         Returns the search filter class.
