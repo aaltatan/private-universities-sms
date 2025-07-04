@@ -15,7 +15,7 @@ from apps.core.filters import (
 from .. import models
 
 
-class BaseJournalEntryFilter(FilterTextMixin, FilterComboboxMixin, filters.FilterSet):
+class LedgerFilter(FilterTextMixin, FilterComboboxMixin, filters.FilterSet):
     created_at_from, created_at_to = get_date_from_to_filters(
         "created_at",
     )
@@ -57,11 +57,6 @@ class BaseJournalEntryFilter(FilterTextMixin, FilterComboboxMixin, filters.Filte
     )
     debit_from, debit_to = get_number_from_to_filters("debit")
     credit_from, credit_to = get_number_from_to_filters("credit")
-    employee = get_combobox_choices_filter(
-        model=models.JournalEntry,
-        field_name="employee__fullname",
-        label=_("employee"),
-    )
     cost_center = get_combobox_choices_filter(
         model=models.JournalEntry,
         field_name="cost_center__name",
@@ -87,6 +82,38 @@ class BaseJournalEntryFilter(FilterTextMixin, FilterComboboxMixin, filters.Filte
         return queryset.filter(
             Q(compensation__name__icontains=value) | Q(tax__name__icontains=value)
         )
+
+    class Meta:
+        model = models.JournalEntry
+        fields = (
+            "created_at_from",
+            "created_at_to",
+            "updated_at_from",
+            "updated_at_to",
+            "date_from",
+            "date_to",
+            "month",
+            "quarter",
+            "period",
+            "debit_from",
+            "debit_to",
+            "content_type",
+            "fiscal_object",
+            "credit_from",
+            "credit_to",
+            "cost_center",
+            "voucher",
+            "explanation",
+            "notes",
+        )
+
+
+class BaseJournalEntryFilter(LedgerFilter):
+    employee = get_combobox_choices_filter(
+        model=models.JournalEntry,
+        field_name="employee__fullname",
+        label=_("employee"),
+    )
 
     class Meta:
         model = models.JournalEntry
