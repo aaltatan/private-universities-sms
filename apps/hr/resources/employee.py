@@ -278,6 +278,26 @@ class EmployeeResource(
     def dehydrate_religion(self, obj: models.Employee):
         return self._dehydrate_choices(obj, "religion")
 
+    def filter_export(self, queryset, **kwargs):
+        queryset = super().filter_export(queryset, **kwargs)
+        return queryset.select_related(
+            # geo
+            "nationality",
+            "city__governorate",
+            "city",
+            # org
+            "cost_center",
+            "position",
+            "status",
+            "job_subtype",
+            "job_subtype__job_type",
+            # edu
+            "degree",
+            "school",
+            "school__kind",
+            "specialization",
+        ).prefetch_related("groups")
+
     class Meta:
         model = models.Employee
         fields = (
