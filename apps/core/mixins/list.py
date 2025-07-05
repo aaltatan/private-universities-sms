@@ -60,7 +60,7 @@ class SidebarFilterMixin(ABC):
         """
         Returns the filter context data that will be passed to the template.
         """
-        filter_obj = self.filter_class(request.GET, queryset)
+        filter_obj = self.filter_class(request.GET, queryset, request=request)
 
         return {
             "filter": filter_obj,
@@ -485,7 +485,7 @@ class ListMixin(
         # Step 1: Filter the queryset by ordering filter
         if self.order_filter:
             OrderingFilter = self.get_ordering_filter_class()
-            ordering_filter = OrderingFilter(request.GET, queryset)
+            ordering_filter = OrderingFilter(request.GET, queryset, request=request)
             queryset = ordering_filter.qs
 
         if not request.GET.get("ordering"):
@@ -495,11 +495,11 @@ class ListMixin(
         # Step 2: Filter the queryset by search filter
         if self.search_filter:
             SearchFilter = self.get_search_filter_class()
-            search_filter = SearchFilter(request.GET, queryset)
+            search_filter = SearchFilter(request.GET, queryset, request=request)
             queryset = search_filter.qs
 
         # Step 3: Filter the queryset by filter class (sidebar)
-        filter_obj = self.filter_class(request.GET, queryset)
+        filter_obj = self.filter_class(request.GET, queryset, request=request)
         queryset = filter_obj.qs
 
         return queryset
@@ -555,6 +555,7 @@ class ListMixin(
             search_filter = SearchFilter(
                 request.GET or request.POST,
                 queryset.all(),
+                request=request,
             )
             context["search_filter"] = search_filter
 
@@ -563,6 +564,7 @@ class ListMixin(
             ordering_filter = OrderingFilter(
                 request.GET or request.POST,
                 queryset.all(),
+                request=request,
             )
             context["ordering_filter"] = ordering_filter
 

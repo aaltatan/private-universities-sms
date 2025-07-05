@@ -29,11 +29,11 @@ class LedgerView(
 
         queryset = JournalEntry.objects.filter(employee=self.employee)
 
-        filter_obj = LedgerFilter(request.GET, queryset)
+        filter_obj = LedgerFilter(request.GET, queryset, request=request)
         queryset = filter_obj.qs
 
         SearchFilter = self.get_search_filter_class()
-        search_filter = SearchFilter(request.GET, queryset=queryset)
+        search_filter = SearchFilter(request.GET, queryset=queryset, request=request)
         queryset = search_filter.qs
 
         if request.GET.get("filters"):
