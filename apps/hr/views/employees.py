@@ -77,20 +77,22 @@ class ListView(
     resource_class = resources.EmployeeResource
     deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
-    queryset = models.Employee.objects.select_related(
-        # geo
-        "city",
-        "city__governorate",
-        # org
-        "cost_center",
-        "position",
-        "status",
-        "job_subtype",
-        "job_subtype__job_type",
-        # edu
-        "degree",
-        "specialization",
-    ).prefetch_related("groups")
+
+    def get_initial_queryset(self):
+        return models.Employee.objects.select_related(
+            # geo
+            "city",
+            "city__governorate",
+            # org
+            "cost_center",
+            "position",
+            "status",
+            "job_subtype",
+            "job_subtype__job_type",
+            # edu
+            "degree",
+            "specialization",
+        ).prefetch_related("groups")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
