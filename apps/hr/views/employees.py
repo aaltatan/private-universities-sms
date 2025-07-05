@@ -77,7 +77,6 @@ class ListView(
     resource_class = resources.EmployeeResource
     deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
-    export_queryset = models.Employee.objects.annotate_dates().all()
 
     def get_initial_queryset(self):
         return models.Employee.objects.select_related(
