@@ -6,7 +6,6 @@ from apps.core import mixins
 from apps.core.utils import Deleter
 
 from .. import filters, models, resources
-from ..constants import journal_entries as constants
 
 
 class ListView(
@@ -21,8 +20,7 @@ class ListView(
     filter_class = filters.JournalEntryFilter
     resource_class = resources.JournalEntryResource
     deleter = Deleter
-    ordering_fields = constants.ORDERING_FIELDS
-    search_filter_class = filters.JournalEntrySearchFilter
+    order_filter = False
 
     def get_actions(self):
         return {}

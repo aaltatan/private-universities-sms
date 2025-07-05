@@ -1,10 +1,9 @@
 import django_filters as filters
-from django.db.models import Q, QuerySet
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.choices import MonthChoices, QuarterChoices
 from apps.core.filters import (
-    BaseQSearchFilter,
     FilterComboboxMixin,
     FilterTextMixin,
     get_combobox_choices_filter,
@@ -12,24 +11,8 @@ from apps.core.filters import (
     get_number_from_to_filters,
     get_text_filter,
 )
-from apps.core.utils import get_djangoql_query, get_keywords_query
 
 from .. import models
-
-
-class JournalEntrySearchFilter(BaseQSearchFilter):
-    class Meta:
-        model = models.JournalEntry
-        fields = ("id",)
-
-    def search(self, queryset: QuerySet, name: str, value: str) -> QuerySet:
-        query = (
-            get_keywords_query(value)
-            | Q(tax__name__icontains=value)
-            | Q(compensation__name__icontains=value)
-        )
-        default_queryset = queryset.filter(query)
-        return get_djangoql_query(queryset, value, default_queryset)
 
 
 class LedgerFilter(FilterTextMixin, FilterComboboxMixin, filters.FilterSet):

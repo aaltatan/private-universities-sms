@@ -12,4 +12,6 @@ SEARCH_FIELDS: tuple[str] = (
     "period__name",
     "voucher__voucher_serial",
     "employee__fullname",
+    "tax__name",
+    "compensation__name",
 )

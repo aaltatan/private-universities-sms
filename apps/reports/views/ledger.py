@@ -5,7 +5,7 @@ from django.views.generic import View
 
 from apps.core import mixins
 from apps.hr.models import Employee
-from apps.trans.filters import JournalEntrySearchFilter, LedgerFilter
+from apps.trans.filters import LedgerFilter
 from apps.trans.models import JournalEntry
 
 # from ..resources import LedgerResource
@@ -22,7 +22,6 @@ class LedgerView(
     model = JournalEntry
     app_label = "reports"
     verbose_name_plural = "ledger"
-    search_filter_class = JournalEntrySearchFilter
     filter_class = LedgerFilter
 
     def get(self, request: HttpRequest, slug: str, *args, **kwargs):
