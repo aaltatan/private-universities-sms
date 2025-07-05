@@ -4,6 +4,9 @@
   <c-slot name="header">
     <span class="hidden" x-data="sidebarLinks"></span>
     <div class="min-w-64 max-sm:w-full">{{ search }}</div>
+    {% spaceless %}
+    <div class="empty:hidden font-medium tracking-tighter text-sm">{{ page_header }}</div>
+    {% endspaceless %}
     <div class="flex items-center flex-wrap gap-1">
       <!-- actions menu -->
       {% if actions %}

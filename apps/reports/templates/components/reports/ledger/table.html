@@ -15,6 +15,20 @@
     </c-table.filter-form>
   </c-slot>
 
+  <c-slot name="page_header">
+    <a
+      href="#"
+      hx-get="{{ employee.get_absolute_url }}{% querystring %}"
+      hx-target="#modal-container"
+      hx-indicator="#modal-spinner"
+      @click="showModal"
+      class="hover:underline cursor-pointer"
+      aria-label="employee ledger"
+    >
+      {% translate 'ledger'|capfirst %} ({{ employee.fullname }})
+    </a>
+  </c-slot>
+
   <c-slot name="buttons_bar">
     <c-button
       icon="adjustments-horizontal"
@@ -55,9 +69,7 @@
         <c-table.td data-header="{{ model|verbose_name:'credit' }}">
           {{ obj.credit|money:True }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'net' %}">
-          {{ obj.net|money:True }}
-        </c-table.td>
+        <c-table.td data-header="{% translate 'net' %}"> {{ obj.net|money:True }} </c-table.td>
         <c-table.td :wrap="True" data-header="{{ model|verbose_name:'fiscal_object' }}">
           <a
             href="#"
