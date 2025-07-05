@@ -510,6 +510,7 @@ class ActivitySerializer(serializers.ModelSerializer):
             "nationality",
             "city",
             "hire_date",
+            "separation_date",
             "notes",
             "cost_center",
             "position",
