@@ -86,28 +86,38 @@ def annotate_search(fields: Iterable[str]) -> Concat:
 
 
 def db_calculate_age_in_years(
-    field_name: str, date: timezone.datetime | None = None
+    fieldname: str,
+    *,
+    other_date: timezone.datetime | None = None,
+    other_fieldname: str | None = None,
 ) -> models.ExpressionWrapper:
     """
     calculates the age of a specific DateField in years (on database level).
     """
-    if date is None:
-        date = timezone.now()
+    if other_fieldname is None and fieldname is None:
+        raise ValueError("field_name or fieldname must be provided")
 
-    current_date = date
+    if other_fieldname:
+        current_year = models.F(f"{other_fieldname}__year")
+        current_month = models.F(f"{other_fieldname}__month")
+        current_day = models.F(f"{other_fieldname}__day")
+    else:
+        current_year = models.Value(other_date.year)
+        current_month = models.Value(other_date.month)
+        current_day = models.Value(other_date.day)
 
     return models.ExpressionWrapper(
-        models.Value(current_date.year)
-        - ExtractYear(models.F(field_name))
+        current_year
+        - ExtractYear(models.F(fieldname))
         - models.Case(
             models.When(
                 condition=models.Q(
-                    **{f"{field_name}__month__gt": current_date.month},
+                    **{f"{fieldname}__month__gt": current_month},
                 )
                 | models.Q(
                     **{
-                        f"{field_name}__month": current_date.month,
-                        f"{field_name}__day__gt": current_date.day,
+                        f"{fieldname}__month": current_month,
+                        f"{fieldname}__day__gt": current_day,
                     }
                 ),
                 then=models.Value(1),
