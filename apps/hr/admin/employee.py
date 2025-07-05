@@ -90,7 +90,7 @@ class EmployeeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_classes = (resources.EmployeeResource,)
 
     def get_queryset(self, request):
-        return self.model.select_related(
+        return self.model.objects.select_related(
             "city",
             "cost_center",
             "position",
