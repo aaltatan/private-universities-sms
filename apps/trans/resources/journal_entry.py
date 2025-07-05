@@ -74,6 +74,11 @@ class JournalEntryResource(
         column_name=_("credit").title(),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
+    net = fields.Field(
+        attribute="net",
+        column_name=_("net").title(),
+        widget=widgets.NumberWidget(coerce_to_string=False),
+    )
     explanation = fields.Field(
         attribute="explanation",
         column_name=_("explanation").title(),
@@ -116,6 +121,7 @@ class JournalEntryResource(
             "serial",
             "debit",
             "credit",
+            "net",
             "employee",
             "fiscal_object",
             "explanation",
