@@ -1,5 +1,5 @@
-from datetime import date
-
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.functions import Concat
 from django.db.models.signals import pre_delete, pre_save
@@ -241,6 +241,11 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         verbose_name=_("city"),
     )
     hire_date = models.DateField()
+    separation_date = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name=_("separation date"),
+    )
     notes = models.TextField(
         verbose_name=_("notes"),
         max_length=1000,
@@ -341,6 +346,8 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
 
     class Meta:
         ordering = (
+            "-status__is_payable",
+            "status__name",
             "cost_center__name",
             "job_subtype__name",
             "specialization__name",
@@ -361,13 +368,76 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
             models.Index(fields=["hire_date"]),
         ]
 
+    def clean(self):
+        errors: dict[str, ValidationError] = {}
+
+        # birth date
+        if timezone.now().date() < self.birth_date:
+            errors["birth_date"] = ValidationError(
+                _("birth date cannot be in the future"),
+            )
+
+        min_age = settings.MIN_EMPLOYEE_AGE
+        age = calculate_age_in_years(self.birth_date)
+
+        if age < min_age:
+            errors["birth_date"] = ValidationError(
+                _("employee's age must be at least {} years old").format(min_age),
+            )
+
+        # hire date
+        if timezone.now().date() < self.hire_date:
+            errors["hire_date"] = ValidationError(
+                _("hire date cannot be in the future"),
+            )
+
+        if self.hire_date < self.birth_date:
+            errors["hire_date"] = ValidationError(
+                _("hire date cannot be earlier than birth date"),
+            )
+
+        # card date
+        if self.card_date:
+            if timezone.now().date() < self.card_date:
+                errors["card_date"] = ValidationError(
+                    _("card date cannot be in the future"),
+                )
+
+            if self.card_date < self.birth_date:
+                errors["card_date"] = ValidationError(
+                    _("card date cannot be earlier than birth date"),
+                )
+
+        # separation date
+        if self.status.is_separated and self.separation_date is None:
+            errors["separation_date"] = ValidationError(
+                _(
+                    "separation date cannot be empty if the employee status is separated"
+                ),
+            )
+
+        if self.separation_date and not self.status.is_separated:
+            errors["separation_date"] = ValidationError(
+                _(
+                    "separation date cannot be filled if the employee status is not separated"
+                ),
+            )
+
+        if self.separation_date and self.separation_date < self.hire_date:
+            errors["separation_date"] = ValidationError(
+                _("separation date cannot be earlier than hire date"),
+            )
+
+        if errors:
+            raise ValidationError(errors)
+
     def get_age(self) -> int:
         return calculate_age_in_years(self.birth_date)
 
     def get_job_age(self) -> int:
         return calculate_age_in_years(self.hire_date)
 
-    def get_next_birthday(self) -> date:
+    def get_next_birthday(self):
         return timezone.datetime(
             timezone.now().year, self.birth_date.month, self.birth_date.day
         ).date()
