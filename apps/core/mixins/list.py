@@ -452,7 +452,7 @@ class ListMixin(
         }
         extension = request.GET.get("extension", "xlsx").lower()
 
-        queryset = self.get_export_queryset(request)
+        queryset = self.get_queryset()
         self.resource_class._serials = []
         dataset: Dataset = self.resource_class().export(queryset)
 
@@ -467,17 +467,6 @@ class ListMixin(
             f'attachment; filename="{filename}.{extension}"'
         )
         return response
-
-    def get_export_queryset(self, request: HttpRequest) -> QuerySet:
-        """
-        Returns the queryset to be exported.
-        """
-        if getattr(self, "export_queryset", None):
-            queryset = self.export_queryset
-            queryset = self.get_filtered_queryset(request, queryset)
-            return queryset
-
-        return self.get_queryset()
 
     def get_dataset_title(self) -> str:
         """
