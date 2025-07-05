@@ -1,5 +1,3 @@
-from typing import Any
-
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import View
 from django.views.generic.list import MultipleObjectMixin
@@ -25,7 +23,7 @@ class ListView(
     deleter = VoucherDeleter
     ordering_fields = constants.ORDERING_FIELDS
 
-    def get_initial_queryset(self, GET_kwargs: dict[str, Any] = {}):
+    def get_initial_queryset(self):
         return models.VoucherTransaction.objects.filter(
             voucher__is_deleted=False,
         )

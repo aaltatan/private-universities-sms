@@ -367,7 +367,7 @@ class ListMixin(
                 return response
             template_name = self.get_table_template_name()
 
-        context: dict[str, Any] = self.get_context_data(GET_kwargs=kwargs)
+        context: dict[str, Any] = self.get_context_data()
 
         return render(request, template_name, context)
 
@@ -504,17 +504,17 @@ class ListMixin(
 
         return queryset
 
-    def get_initial_queryset(self, GET_kwargs: dict[str, Any] = {}) -> QuerySet:
+    def get_initial_queryset(self) -> QuerySet:
         """
         Returns the initial queryset.
         """
         return self.model.objects.all()
 
-    def get_queryset(self, GET_kwargs: dict[str, Any] = {}) -> QuerySet:
+    def get_queryset(self) -> QuerySet:
         """
         Returns the queryset.
         """
-        initial_queryset = self.get_initial_queryset(GET_kwargs)
+        initial_queryset = self.get_initial_queryset()
         queryset = self.get_filtered_queryset(self.request, initial_queryset)
 
         return queryset
@@ -530,13 +530,11 @@ class ListMixin(
             **self.get_html_ids(),
         }
 
-    def get_context_data(
-        self, GET_kwargs: dict[str, Any] = {}, **kwargs
-    ) -> dict[str, Any]:
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
         """
         Returns the context data that will be passed to the template.
         """
-        queryset = self.get_queryset(GET_kwargs)
+        queryset = self.get_queryset()
         request: HttpRequest = self.request
 
         context = {
