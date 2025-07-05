@@ -339,11 +339,14 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
 
     objects: EmployeeManager = EmployeeManager()
 
-    def get_ledger_url(self):
-        return reverse("reports:ledger", kwargs={"slug": self.slug})
-
     class Meta:
-        ordering = ("firstname",)
+        ordering = (
+            "cost_center__name",
+            "job_subtype__name",
+            "specialization__name",
+            "degree__name",
+            "fullname",
+        )
         icon = "user"
         codename_plural = "employees"
         verbose_name = _("employee").title()
@@ -368,6 +371,9 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         return timezone.datetime(
             timezone.now().year, self.birth_date.month, self.birth_date.day
         ).date()
+
+    def get_ledger_url(self):
+        return reverse("reports:ledger", kwargs={"slug": self.slug})
 
     def __str__(self) -> str:
         return f"{self.firstname} {self.father_name} {self.lastname}"

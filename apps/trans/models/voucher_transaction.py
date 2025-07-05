@@ -258,7 +258,13 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 
     class Meta:
         icon = "circle-stack"
-        ordering = ("-voucher__date", "voucher__voucher_serial", "ordering")
+        ordering = (
+            "voucher__is_migrated",
+            "voucher__date",
+            "-voucher__created_at",
+            "voucher__voucher_serial",
+            "ordering",
+        )
         codename_plural = "voucher_transactions"
         verbose_name = _("voucher transaction").title()
         verbose_name_plural = _("voucher transactions").title()

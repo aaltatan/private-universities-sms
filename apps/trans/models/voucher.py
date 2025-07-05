@@ -257,7 +257,7 @@ class Voucher(
 
     class Meta:
         icon = "document-check"
-        ordering = ("-date", "-created_at", "voucher_serial")
+        ordering = ("is_migrated", "date", "-created_at", "voucher_serial")
         codename_plural = "vouchers"
         verbose_name = _("voucher").title()
         verbose_name_plural = _("vouchers").title()

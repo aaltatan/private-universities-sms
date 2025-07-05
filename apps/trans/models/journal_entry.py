@@ -137,7 +137,7 @@ class JournalEntry(UrlsMixin, TimeStampAbstractModel):
 
     class Meta:
         icon = "circle-stack"
-        ordering = ("-date", "ordering", "-debit")
+        ordering = ("date", "ordering", "-debit")
         codename_plural = "journal_entries"
         verbose_name = _("journal entry").title()
         verbose_name_plural = _("journal entries").title()
