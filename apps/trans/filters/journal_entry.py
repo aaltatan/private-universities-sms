@@ -15,7 +15,9 @@ from apps.core.filters import (
 from .. import models
 
 
-class LedgerFilter(FilterTextMixin, FilterComboboxMixin, filters.FilterSet):
+class BaseJournalEntryLedgerFilter(
+    FilterTextMixin, FilterComboboxMixin, filters.FilterSet
+):
     created_at_from, created_at_to = get_date_from_to_filters(
         "created_at",
     )
@@ -108,7 +110,11 @@ class LedgerFilter(FilterTextMixin, FilterComboboxMixin, filters.FilterSet):
         )
 
 
-class BaseJournalEntryFilter(LedgerFilter):
+class LedgerFilter(BaseJournalEntryLedgerFilter):
+    pass
+
+
+class BaseJournalEntryFilter(BaseJournalEntryLedgerFilter):
     employee = get_combobox_choices_filter(
         model=models.JournalEntry,
         field_name="employee__fullname",
