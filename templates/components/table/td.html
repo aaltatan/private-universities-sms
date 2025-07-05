@@ -19,7 +19,7 @@
 <td
   class="
   {% if not wrap %}whitespace-nowrap{% endif %}
-  {% if not fixed %}flex before:content-[attr(data-header)':']{% endif %}
+  {% if not fixed %}flex before:content-[attr(data-header)':'] before:whitespace-nowrap{% endif %}
   {% if header %}
     hidden 
     @{{ containers|get_item:container }}{% if relative_to_table_container %}/table{% endif %}:!table-cell
