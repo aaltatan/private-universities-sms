@@ -20,6 +20,7 @@ class JournalEntryAdmin(
         "period",
         "month",
         "voucher",
+        "ordering",
     )
     fields = (
         ("uuid", "created_at", "updated_at"),

@@ -219,8 +219,8 @@ class Voucher(
     def migrate(self, accounting_journal_sequence: str = ""):
         """Migrate the voucher and generate a journal entry."""
         if not self.is_migrated:
-            for idx, transaction in enumerate(self.transactions.all()):
-                transaction.migrate(ordering=idx)
+            for transaction in self.transactions.all():
+                transaction.migrate()
 
             self.is_migrated = True
             self.accounting_journal_sequence = accounting_journal_sequence

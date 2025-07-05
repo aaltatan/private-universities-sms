@@ -153,7 +153,6 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
     def __migrate(
         self,
         calculate_for: Literal["tax", "compensation"] = "compensation",
-        ordering: int = 0,
     ):
         kwargs = {
             "date": self.voucher.date,
@@ -164,7 +163,7 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
             "cost_center": self.employee.cost_center,
             "voucher": self.voucher,
             "notes": self.notes,
-            "ordering": ordering,
+            "ordering": self.ordering,
         }
 
         if calculate_for == "compensation":
@@ -199,12 +198,12 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 
         JournalEntry.objects.create(**kwargs)
 
-    def migrate(self, ordering: int = 0):
+    def migrate(self):
         """Migrate the voucher transaction and generate a journal entry."""
-        self.__migrate(calculate_for="compensation", ordering=ordering)
+        self.__migrate(calculate_for="compensation")
 
         if self.tax != 0:
-            self.__migrate(calculate_for="tax", ordering=ordering)
+            self.__migrate(calculate_for="tax")
 
     def get_total(self) -> Decimal:
         return self.quantity * self.value
