@@ -152,6 +152,11 @@ class EmployeeResource(
         column_name=_("hire date").title(),
         widget=widgets.DateWidget(coerce_to_string=False),
     )
+    separation_date = fields.Field(
+        attribute="separation_date",
+        column_name=_("separation date").title(),
+        widget=widgets.DateWidget(coerce_to_string=False),
+    )
     next_job_anniversary = fields.Field(
         attribute="next_nth_job_anniversary",
         column_name=_("next job anniversary").title(),
@@ -317,6 +322,7 @@ class EmployeeResource(
             "position",
             "position_order",
             "status",
+            "separation_date",
             "is_payable",
             "job_type",
             "job_subtype",

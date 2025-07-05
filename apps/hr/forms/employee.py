@@ -1,14 +1,9 @@
-from datetime import datetime
-
 from django import forms
-from django.conf import settings
-from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from apps.core.fields import get_autocomplete_field
 from apps.core.forms import CustomModelForm
 from apps.core.models import User
-from apps.core.utils import calculate_age_in_years
 from apps.core.widgets import (
     AvatarWidget,
     SelectMultipleWidget,
@@ -132,43 +127,6 @@ class EmployeeForm(CustomModelForm):
         ),
     )
 
-    def clean_birth_date(self):
-        birth_date: datetime = self.cleaned_data.get("birth_date")
-        age: int = calculate_age_in_years(birth_date)
-        min_age = settings.MIN_EMPLOYEE_AGE
-
-        if timezone.now().date() < birth_date:
-            self.add_error(
-                "birth_date",
-                _("birth date cannot be in the future"),
-            )
-
-        if age < min_age:
-            self.add_error(
-                "birth_date",
-                _("employee's age must be at least {} years old").format(min_age),
-            )
-
-        return birth_date
-
-    def clean_hire_date(self):
-        hire_date = self.cleaned_data.get("hire_date")
-        if timezone.now().date() < hire_date:
-            self.add_error(
-                "hire_date",
-                _("hire date cannot be in the future"),
-            )
-        return hire_date
-
-    def clean_card_date(self):
-        card_date = self.cleaned_data.get("card_date")
-        if timezone.now().date() < card_date:
-            self.add_error(
-                "card_date",
-                _("card date cannot be in the future"),
-            )
-        return card_date
-
     class Meta:
         model = models.Employee
         exclude = ("slug", "ordering")
@@ -223,6 +181,7 @@ class EmployeeForm(CustomModelForm):
             ),
             "card_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
             "hire_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
+            "separation_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
             "notes": get_textarea_widget(placeholder=_("some notes")),
             "identity_document": get_file_widget(),
         }

@@ -40,6 +40,8 @@ class CountsGroupedByChoices(TextChoices):
     COST_CENTER = "cost_center__name", _("cost center").title()
     POSITION = "position__name", _("position").title()
     STATUS = "status__name", _("status").title()
+    IS_PAYABLE = "status__is_payable", _("payable status").title()
+    IS_SEPARATED = "status__is_separated", _("separated status").title()
     JOB_TYPE = "job_subtype__job_type__name", _("job type").title()
     JOB_SUBTYPE = "job_subtype__name", _("job subtype").title()
     GROUPS = "groups__name", _("groups").title()

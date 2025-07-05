@@ -270,6 +270,7 @@ class EmployeeCreateUpdateSerializer(serializers.ModelSerializer):
             "cost_center",
             "position",
             "status",
+            "separation_date",
             "job_subtype",
             "groups",
             ##### org #####

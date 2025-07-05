@@ -44,6 +44,22 @@
       icon_size="16"
     />
   </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'separation date'|title %}">
+    <c-inputs.text
+      :show_label="False"
+      :field="filter.form.separation_date_from"
+      :show_icon="True"
+      icon="calendar"
+      icon_size="16"
+    />
+    <c-inputs.text
+      :show_label="False"
+      :field="filter.form.separation_date_to"
+      :show_icon="True"
+      icon="calendar"
+      icon_size="16"
+    />
+  </c-inputs.range-wrapper>
   <c-inputs.range-wrapper title="{% translate 'job age'|title %}">
     <c-inputs.text :show_label="False" :field="filter.form.job_age_from" />
     <c-inputs.text :show_label="False" :field="filter.form.job_age_to" />

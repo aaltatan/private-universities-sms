@@ -175,6 +175,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
             "nationality",
             "city",
             "hire_date",
+            "separation_date",
             "job_age",
             "job_age_group",
             "next_job_anniversary",

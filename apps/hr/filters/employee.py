@@ -107,6 +107,9 @@ class BaseEmployeeFilter(
     hire_date_from, hire_date_to = get_date_from_to_filters(
         field_name="hire_date",
     )
+    separation_date_from, separation_date_to = get_date_from_to_filters(
+        field_name="separation_date",
+    )
     job_age_from, job_age_to = get_number_from_to_filters(
         field_name="job_age",
         method_name="filter_job_age",
