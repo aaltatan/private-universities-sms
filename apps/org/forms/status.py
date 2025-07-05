@@ -12,10 +12,14 @@ class StatusForm(CustomModelForm):
         choices=models.Status.PayableChoices,
         label=_("is payable"),
     )
+    is_separated = forms.ChoiceField(
+        choices=models.Status.SeparatedChoices,
+        label=_("is separated"),
+    )
 
     class Meta:
         model = models.Status
-        fields = ("name", "is_payable", "description")
+        fields = ("name", "is_payable", "is_separated", "description")
         widgets = {
             "name": get_text_widget(placeholder=_("e.g. Active")),
             "description": get_textarea_widget(),

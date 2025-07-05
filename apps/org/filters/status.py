@@ -11,6 +11,10 @@ class BaseStatusFilter(BaseNameDescriptionFilter):
         label=_("payable").title(),
         choices=models.Status.PayableChoices,
     )
+    is_separated = filters.ChoiceFilter(
+        label=_("separated").title(),
+        choices=models.Status.SeparatedChoices,
+    )
     employees_count_from, employees_count_to = get_number_from_to_filters(
         "employees_count",
     )
@@ -20,6 +24,7 @@ class BaseStatusFilter(BaseNameDescriptionFilter):
         fields = (
             "name",
             "is_payable",
+            "is_separated",
             "employees_count_from",
             "employees_count_to",
             "description",

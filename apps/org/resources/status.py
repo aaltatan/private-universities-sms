@@ -11,6 +11,10 @@ class StatusResource(BaseResource):
         attribute="is_payable",
         column_name=_("is payable").title(),
     )
+    is_separated = fields.Field(
+        attribute="is_separated",
+        column_name=_("is separated").title(),
+    )
     employees_count = fields.Field(
         attribute="employees_count",
         column_name=_("employees count").title(),
@@ -25,6 +29,7 @@ class StatusResource(BaseResource):
             "serial",
             "name",
             "is_payable",
+            "is_separated",
             "employees_count",
             "description",
             "slug",

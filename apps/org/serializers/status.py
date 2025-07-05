@@ -5,6 +5,7 @@ from .. import models
 
 class StatusSerializer(serializers.ModelSerializer):
     is_payable = serializers.BooleanField(required=False)
+    is_separated = serializers.BooleanField(required=False)
     employees_count = serializers.IntegerField(read_only=True)
 
     class Meta:
@@ -13,6 +14,7 @@ class StatusSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "is_payable",
+            "is_separated",
             "employees_count",
             "description",
         )

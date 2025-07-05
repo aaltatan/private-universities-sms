@@ -7,7 +7,7 @@ from ..constants import statuses as constants
 
 @admin.register(models.Status)
 class StatusAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ("id", "name", "is_payable", "slug")
+    list_display = ("id", "name", "is_payable", "is_separated", "slug")
     list_display_links = ("id", "name")
     search_fields = constants.SEARCH_FIELDS
     list_per_page = 20

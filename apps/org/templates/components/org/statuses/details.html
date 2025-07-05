@@ -24,6 +24,14 @@
           </c-table.tr>
           <c-table.tr>
             <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'is_separated' }}
+            </c-table.td>
+            <c-table.td data-header="{{ model|verbose_name:'is_separated' }}">
+              {{ object.is_separated|yesno|title }}
+            </c-table.td>
+          </c-table.tr>
+          <c-table.tr>
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {% translate 'employees count'|title %}
             </c-table.td>
             <c-table.td data-header="{% translate 'employees count'|title %}">

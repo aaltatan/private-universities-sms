@@ -28,9 +28,17 @@ class Status(AddCreateActivityMixin, AbstractUniqueNameModel):
         PAYABLE = True, _("payable").title()
         NOT_PAYABLE = False, _("not payable").title()
 
+    class SeparatedChoices(models.TextChoices):
+        SEPARATED = True, _("separated").title()
+        NOT_SEPARATED = False, _("not separated").title()
+
     is_payable = models.BooleanField(
         verbose_name=_("is payable"),
         default=True,
+    )
+    is_separated = models.BooleanField(
+        verbose_name=_("is separated"),
+        default=False,
     )
 
     objects: StatusManager = StatusManager()
@@ -53,6 +61,12 @@ class ActivitySerializer(serializers.ModelSerializer):
         fields = ("name", "is_payable", "description")
 
 
+def pre_save_status(sender, instance: Status, *args, **kwargs):
+    if instance.is_separated:
+        instance.is_payable = False
+
+
 pre_save.connect(signals.slugify_name, sender=Status)
+pre_save.connect(pre_save_status, sender=Status)
 pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=Status)
 pre_delete.connect(signals.add_delete_activity(ActivitySerializer), sender=Status)

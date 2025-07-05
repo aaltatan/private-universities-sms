@@ -38,7 +38,7 @@
       hx-vals='{"filters": true}'
       hx-target="#overlay-sidebar-container"
       hx-swap="innerHTML"
-      data-fields="name,is_payable,description,employees_count_from,employees_count_to"
+      data-fields="name,is_payable,is_separated,description,employees_count_from,employees_count_to"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
@@ -68,6 +68,7 @@
         <c-table.th>{% translate 'options' %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'name' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'is_payable' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'is_separated' }}</c-table.th>
         <c-table.th>{% translate 'employees count' %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'description' }}</c-table.th>
       </c-table.tr>
@@ -139,9 +140,16 @@
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'is_payable' }}">
           {% if obj.is_payable %}
-          <c-badge theme="primary"> {% translate 'payable'|title %} </c-badge>
+          <c-badge> {% translate 'payable'|title %} </c-badge>
           {% else %}
-          <c-badge> {% translate 'not payable'|title %} </c-badge>
+          <c-badge theme="red"> {% translate 'not payable'|title %} </c-badge>
+          {% endif %}
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'is_separated' }}">
+          {% if obj.is_separated %}
+          <c-badge theme="red"> {% translate 'separated'|title %} </c-badge>
+          {% else %}
+          <c-badge> {% translate 'not separated'|title %} </c-badge>
           {% endif %}
         </c-table.td>
         <c-table.td data-header="{% translate 'employees count' %}">
