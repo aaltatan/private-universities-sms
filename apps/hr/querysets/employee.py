@@ -168,7 +168,10 @@ class EmployeeQuerySet(models.QuerySet):
         )
 
         dates = {
-            "age": db_calculate_age_in_years("birth_date", current_date),
+            "age": db_calculate_age_in_years(
+                "birth_date",
+                other_date=current_date,
+            ),
             "_age_group": Floor(models.F("age") / models.Value(10)),
             "age_group": models.Case(
                 models.When(_age_group=0, then=_("children")),
@@ -185,7 +188,17 @@ class EmployeeQuerySet(models.QuerySet):
                 output_field=models.CharField(),
             ),
             **next_birthday,
-            "job_age": db_calculate_age_in_years("hire_date", current_date),
+            "job_age": models.Case(
+                models.When(
+                    separation_date__isnull=True,
+                    then=db_calculate_age_in_years(
+                        "hire_date", other_date=current_date
+                    ),
+                ),
+                default=db_calculate_age_in_years(
+                    "separation_date", other_fieldname="separation_date"
+                ),
+            ),
             "job_age_group": db_get_age_groups(
                 "job_age", n=settings.YEARS_COUNT_TO_GROUP_JOB_AGE
             ),
