@@ -23,8 +23,7 @@ class JournalEntryManager(models.Manager):
             search=annotate_search(constants.SEARCH_FIELDS),
             net=models.Window(
                 expression=models.Sum(models.F("amount")),
-                frame=models.RowRange(0, None),
-                order_by=("-date", "ordering", "-debit"),
+                frame=models.RowRange(None, 0),
                 output_field=models.DecimalField(
                     max_digits=20,
                     decimal_places=4,
