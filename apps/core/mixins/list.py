@@ -341,6 +341,8 @@ class ListMixin(
     def resource_class(self) -> type[ModelResource]:
         pass
 
+    export_queryset: QuerySet | None = None
+
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
         Handles GET requests and returns a rendered template.
@@ -450,9 +452,9 @@ class ListMixin(
         }
         extension = request.GET.get("extension", "xlsx").lower()
 
-        qs = self.get_queryset()
+        queryset = self.get_export_queryset(request)
         self.resource_class._serials = []
-        dataset: Dataset = self.resource_class().export(qs)
+        dataset: Dataset = self.resource_class().export(queryset)
 
         filename = self.get_filename()
         dataset.title = self.get_dataset_title()
@@ -465,6 +467,17 @@ class ListMixin(
             f'attachment; filename="{filename}.{extension}"'
         )
         return response
+
+    def get_export_queryset(self, request: HttpRequest) -> QuerySet:
+        """
+        Returns the queryset to be exported.
+        """
+        if getattr(self, "export_queryset", None):
+            queryset = self.export_queryset
+            queryset = self.get_filtered_queryset(request, queryset)
+            return queryset
+
+        return self.get_queryset()
 
     def get_dataset_title(self) -> str:
         """

@@ -58,10 +58,12 @@ class EmployeeResource(
         widget=widgets.DateWidget(coerce_to_string=False),
     )
     age = fields.Field(
+        attribute="age",
         column_name=_("age").title(),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     age_group = fields.Field(
+        attribute="age_group",
         column_name=_("age group").title(),
     )
     next_birthday = fields.Field(
@@ -151,14 +153,17 @@ class EmployeeResource(
         widget=widgets.DateWidget(coerce_to_string=False),
     )
     next_job_anniversary = fields.Field(
+        attribute="next_nth_job_anniversary",
         column_name=_("next job anniversary").title(),
         widget=widgets.DateWidget(coerce_to_string=False),
     )
     job_age = fields.Field(
+        attribute="job_age",
         column_name=_("job age").title(),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     job_age_group = fields.Field(
+        attribute="job_age_group",
         column_name=_("job age group").title(),
     )
     notes = fields.Field(
@@ -232,24 +237,6 @@ class EmployeeResource(
         attribute="specialization__is_specialist",
         column_name=_("specialist?").title(),
     )
-
-    def dehydrate_age(self, obj: models.Employee):
-        return obj.age
-
-    def dehydrate_age_group(self, obj: models.Employee):
-        return obj.age_group.title()
-
-    def dehydrate_job_age(self, obj: models.Employee):
-        return obj.job_age
-
-    def dehydrate_job_age_group(self, obj: models.Employee):
-        return obj.job_age_group.title()
-
-    def dehydrate_next_birthday(self, obj: models.Employee):
-        return obj.next_birthday
-
-    def dehydrate_next_job_anniversary(self, obj: models.Employee):
-        return obj.next_nth_job_anniversary
 
     def dehydrate_is_payable(self, obj: models.Employee):
         return self._dehydrate_boolean(obj.status.is_payable)
@@ -344,25 +331,3 @@ class EmployeeResource(
             "specialization",
             "is_specialist",
         )
-
-
-class BaseInfoResource(SerialResourceMixin, resources.ModelResource):
-    serial = fields.Field(
-        column_name="#",
-        dehydrate_method="dehydrate_serial",
-    )
-    employee_name = fields.Field(
-        column_name=_("employee name").title(),
-    )
-    employee_national_id = fields.Field(
-        attribute="employee__national_id",
-        column_name=_("employee national id").title(),
-    )
-    kind = fields.Field(
-        attribute="kind",
-        column_name=_("kind").title(),
-    )
-    notes = fields.Field(
-        attribute="notes",
-        column_name=_("notes").title(),
-    )
