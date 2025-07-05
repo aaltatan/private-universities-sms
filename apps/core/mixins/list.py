@@ -27,6 +27,7 @@ class SidebarFiltersMixin(ABC):
     """
     this class will not work except if combined with TableVariablesMixin.
     """
+
     @property
     @abstractmethod
     def filter_class(self) -> type[FilterSet]:
@@ -337,7 +338,6 @@ class ListMixin(
     def get_actions(self) -> dict[str, Action]:
         pass
 
-    queryset: QuerySet | None = None
     ordering_filter_class: type[FilterSet] | None = None
     search_filter_class: type[FilterSet] | None = None
 
@@ -479,6 +479,10 @@ class ListMixin(
         ordering_filter = OrderingFilter(request.GET, initial_queryset)
         queryset = ordering_filter.qs
 
+        if not request.GET.get("ordering"):
+            default_ordering = self.model._meta.ordering
+            queryset = queryset.order_by(*default_ordering)
+
         # Step 2: Filter the queryset by search filter
         SearchFilter = self.get_search_filter_class()
         search_filter = SearchFilter(request.GET, queryset)
@@ -490,17 +494,18 @@ class ListMixin(
 
         return queryset
 
+    def get_initial_queryset(self) -> QuerySet:
+        """
+        Returns the initial queryset.
+        """
+        return self.model.objects.all()
+
     def get_queryset(self) -> QuerySet:
         """
         Returns the queryset.
         """
-        if self.queryset is None:
-            default_ordering = self.model._meta.ordering
-            queryset = self.model.objects.all().order_by(*default_ordering)
-        else:
-            queryset = self.queryset
-
-        queryset = self.get_filtered_queryset(self.request, queryset)
+        initial_queryset = self.get_initial_queryset()
+        queryset = self.get_filtered_queryset(self.request, initial_queryset)
 
         return queryset
 
@@ -522,14 +527,14 @@ class ListMixin(
         queryset = self.get_queryset()
         request: HttpRequest = self.request
 
-        OrderingFilter = self.get_ordering_filter_class()
-        ordering_filter = OrderingFilter(
+        SearchFilter = self.get_search_filter_class()
+        search_filter = SearchFilter(
             request.GET or request.POST,
             queryset.all(),
         )
 
-        SearchFilter = self.get_search_filter_class()
-        search_filter = SearchFilter(
+        OrderingFilter = self.get_ordering_filter_class()
+        ordering_filter = OrderingFilter(
             request.GET or request.POST,
             queryset.all(),
         )
