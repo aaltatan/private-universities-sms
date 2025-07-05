@@ -341,8 +341,6 @@ class ListMixin(
     def resource_class(self) -> type[ModelResource]:
         pass
 
-    export_queryset: QuerySet | None = None
-
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
         Handles GET requests and returns a rendered template.
