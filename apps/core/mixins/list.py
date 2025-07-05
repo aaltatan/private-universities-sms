@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any, Iterable, Literal
+from typing import Any, Literal
 
 import django_filters as filters
 from django.conf import settings
@@ -23,9 +23,9 @@ from ..filters import BaseQSearchFilter, get_ordering_filter
 from ..schemas import Action
 
 
-class SidebarFiltersMixin(ABC):
+class SidebarFilterMixin(ABC):
     """
-    this class will not work except if combined with TableVariablesMixin.
+    this class will not work except if combined with TemplateVariablesMixin.
     """
 
     @property
@@ -113,7 +113,7 @@ class ObjectNamesMixin:
         return self.model._meta.object_name.lower()
 
 
-class TemplatesNamesMixin(ObjectNamesMixin):
+class TemplateNamesMixin(ObjectNamesMixin):
     template_name: str | None = None
     table_template_name: str | None = None
     filter_form_template_name: str | None = None
@@ -158,7 +158,7 @@ class TemplatesNamesMixin(ObjectNamesMixin):
         return f"components/{app_label}/{verbose_name_plural}/filter-form.html"
 
 
-class TableVariablesMixin(ObjectNamesMixin):
+class TemplateVariablesMixin(ObjectNamesMixin):
     def get_html_ids(self) -> dict[str, str]:
         """
         Returns the html ids.
@@ -231,9 +231,9 @@ class TableVariablesMixin(ObjectNamesMixin):
         return request.user.has_perm(permission_string)
 
 
-class TableFiltersMixin(ABC):
+class SearchFilterMixin(ABC):
+    search_filter: bool = True
     search_filter_class: type[FilterSet] | None = None
-    ordering_filter_class: type[FilterSet] | None = None
 
     @property
     @abstractmethod
@@ -254,10 +254,24 @@ class TableFiltersMixin(ABC):
 
         return SearchFilter
 
+
+class OrderFilterMixin(ABC):
+    order_filter: bool = True
+    ordering_filter_class: type[FilterSet] | None = None
+
+    @property
+    @abstractmethod
+    def model(self) -> type[Model]:
+        pass
+
     def get_ordering_filter_class(self) -> type[FilterSet]:
         """
         Returns the ordering filter class.
         """
+        if getattr(self, "ordering_fields", None) is None:
+            raise AttributeError(
+                "you must define the ordering_fields attribute.",
+            )
         if getattr(self, "ordering_filter_class", None):
             return self.ordering_filter_class
 
@@ -303,11 +317,12 @@ class PaginationMixin:
 
 
 class ListMixin(
+    TemplateVariablesMixin,
     PaginationMixin,
-    TableVariablesMixin,
-    TableFiltersMixin,
-    SidebarFiltersMixin,
-    TemplatesNamesMixin,
+    SearchFilterMixin,
+    OrderFilterMixin,
+    SidebarFilterMixin,
+    TemplateNamesMixin,
     ABC,
 ):
     """
@@ -328,18 +343,6 @@ class ListMixin(
     @abstractmethod
     def resource_class(self) -> type[ModelResource]:
         pass
-
-    @property
-    @abstractmethod
-    def ordering_fields(self) -> Iterable[str]:
-        pass
-
-    @abstractmethod
-    def get_actions(self) -> dict[str, Action]:
-        pass
-
-    ordering_filter_class: type[FilterSet] | None = None
-    search_filter_class: type[FilterSet] | None = None
 
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
@@ -364,7 +367,7 @@ class ListMixin(
                 return response
             template_name = self.get_table_template_name()
 
-        context: dict[str, Any] = self.get_context_data()
+        context: dict[str, Any] = self.get_context_data(GET_kwargs=kwargs)
 
         return render(request, template_name, context)
 
@@ -378,6 +381,11 @@ class ListMixin(
         """
         Returns the bulk actions response.
         """
+        if getattr(self, "get_actions", None) is None:
+            raise AttributeError(
+                "you must define the get_actions attribute.",
+            )
+
         kind: Literal["modal", "action"] = request.POST.get("kind", "modal")
         name = request.POST.get("name", None)
         actions: dict[str, Action] = self.get_actions()
@@ -465,7 +473,7 @@ class ListMixin(
         return response
 
     def get_filtered_queryset(
-        self, request: HttpRequest, initial_queryset: QuerySet
+        self, request: HttpRequest, queryset: QuerySet
     ) -> QuerySet:
         """
         Returns the filtered queryset.
@@ -475,18 +483,20 @@ class ListMixin(
         3. Filter the queryset by filter class (sidebar)
         """
         # Step 1: Filter the queryset by ordering filter
-        OrderingFilter = self.get_ordering_filter_class()
-        ordering_filter = OrderingFilter(request.GET, initial_queryset)
-        queryset = ordering_filter.qs
+        if self.order_filter:
+            OrderingFilter = self.get_ordering_filter_class()
+            ordering_filter = OrderingFilter(request.GET, queryset)
+            queryset = ordering_filter.qs
 
         if not request.GET.get("ordering"):
             default_ordering = self.model._meta.ordering
             queryset = queryset.order_by(*default_ordering)
 
         # Step 2: Filter the queryset by search filter
-        SearchFilter = self.get_search_filter_class()
-        search_filter = SearchFilter(request.GET, queryset)
-        queryset = search_filter.qs
+        if self.search_filter:
+            SearchFilter = self.get_search_filter_class()
+            search_filter = SearchFilter(request.GET, queryset)
+            queryset = search_filter.qs
 
         # Step 3: Filter the queryset by filter class (sidebar)
         filter_obj = self.filter_class(request.GET, queryset)
@@ -494,17 +504,17 @@ class ListMixin(
 
         return queryset
 
-    def get_initial_queryset(self) -> QuerySet:
+    def get_initial_queryset(self, GET_kwargs: dict[str, Any] = {}) -> QuerySet:
         """
         Returns the initial queryset.
         """
         return self.model.objects.all()
 
-    def get_queryset(self) -> QuerySet:
+    def get_queryset(self, GET_kwargs: dict[str, Any] = {}) -> QuerySet:
         """
         Returns the queryset.
         """
-        initial_queryset = self.get_initial_queryset()
+        initial_queryset = self.get_initial_queryset(GET_kwargs)
         queryset = self.get_filtered_queryset(self.request, initial_queryset)
 
         return queryset
@@ -520,31 +530,16 @@ class ListMixin(
             **self.get_html_ids(),
         }
 
-    def get_context_data(self, **kwargs) -> dict[str, Any]:
+    def get_context_data(
+        self, GET_kwargs: dict[str, Any] = {}, **kwargs
+    ) -> dict[str, Any]:
         """
         Returns the context data that will be passed to the template.
         """
-        queryset = self.get_queryset()
+        queryset = self.get_queryset(GET_kwargs)
         request: HttpRequest = self.request
 
-        SearchFilter = self.get_search_filter_class()
-        search_filter = SearchFilter(
-            request.GET or request.POST,
-            queryset.all(),
-        )
-
-        OrderingFilter = self.get_ordering_filter_class()
-        ordering_filter = OrderingFilter(
-            request.GET or request.POST,
-            queryset.all(),
-        )
-
-        page = self.get_page_class(request=request, queryset=queryset)
-
-        return {
-            "page": page,
-            "ordering_filter": ordering_filter,
-            "search_filter": search_filter,
+        context = {
             "app_label": self.get_app_label(),
             "subapp_label": self.get_verbose_name_plural(),
             "model_name": self.get_model_name(),
@@ -554,3 +549,24 @@ class ListMixin(
             **self.get_html_ids(),
             **self.get_permissions(request),
         }
+
+        if self.search_filter:
+            SearchFilter = self.get_search_filter_class()
+            search_filter = SearchFilter(
+                request.GET or request.POST,
+                queryset.all(),
+            )
+            context["search_filter"] = search_filter
+
+        if self.order_filter:
+            OrderingFilter = self.get_ordering_filter_class()
+            ordering_filter = OrderingFilter(
+                request.GET or request.POST,
+                queryset.all(),
+            )
+            context["ordering_filter"] = ordering_filter
+
+        page = self.get_page_class(request=request, queryset=queryset)
+        context["page"] = page
+
+        return context

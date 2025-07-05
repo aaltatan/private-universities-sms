@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.utils import timezone
 from django.views.generic import DetailView, View
@@ -78,7 +80,7 @@ class ListView(
     deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
 
-    def get_initial_queryset(self):
+    def get_initial_queryset(self, GET_kwargs: dict[str, Any] = {}):
         return models.Employee.objects.select_related(
             # geo
             "city",
@@ -94,8 +96,8 @@ class ListView(
             "specialization",
         ).prefetch_related("groups")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self, GET_kwargs: dict[str, Any] = {}, **kwargs):
+        context = super().get_context_data(GET_kwargs, **kwargs)
         context["now"] = timezone.now()
         return context
 

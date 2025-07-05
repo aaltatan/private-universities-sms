@@ -6,11 +6,12 @@ from .details import DetailsMixin
 from .index import IndexMixin
 from .list import (
     ListMixin,
+    OrderFilterMixin,
     PaginationMixin,
-    SidebarFiltersMixin,
-    TableFiltersMixin,
-    TableVariablesMixin,
-    TemplatesNamesMixin,
+    SearchFilterMixin,
+    SidebarFilterMixin,
+    TemplateNamesMixin,
+    TemplateVariablesMixin,
 )
 from .save import AddCreateActivityMixin
 from .update import UpdateMixin
@@ -20,11 +21,12 @@ __all__ = [
     "AddCreateActivityMixin",
     "CustomDjangoQLSearchMixin",
     "ListMixin",
-    "TemplatesNamesMixin",
+    "TemplateNamesMixin",
     "PaginationMixin",
-    "SidebarFiltersMixin",
-    "TableVariablesMixin",
-    "TableFiltersMixin",
+    "SidebarFilterMixin",
+    "TemplateVariablesMixin",
+    "OrderFilterMixin",
+    "SearchFilterMixin",
     "CreateMixin",
     "UpdateMixin",
     "BehaviorMixin",

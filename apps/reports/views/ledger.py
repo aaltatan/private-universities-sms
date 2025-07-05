@@ -13,10 +13,10 @@ from apps.trans.models import JournalEntry
 
 class LedgerView(
     mixins.PaginationMixin,
-    mixins.TableVariablesMixin,
-    mixins.TableFiltersMixin,
-    mixins.TemplatesNamesMixin,
-    mixins.SidebarFiltersMixin,
+    mixins.TemplateVariablesMixin,
+    mixins.SearchFilterMixin,
+    mixins.TemplateNamesMixin,
+    mixins.SidebarFilterMixin,
     View,
 ):
     model = JournalEntry
