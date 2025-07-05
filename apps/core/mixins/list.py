@@ -64,7 +64,7 @@ class SidebarFilterMixin(ABC):
 
         return {
             "filter": filter_obj,
-            **self.get_index_url(),
+            "index_url": self.get_index_url(),
             **self.get_html_ids(),
         }
 
@@ -170,17 +170,16 @@ class TemplateVariablesMixin(ObjectNamesMixin):
             "filter_form_id": f"{verbose_name_plural}-filter",
         }
 
-    def get_index_url(self) -> dict[str, str]:
+    def get_index_url(self) -> str:
         """
         Returns index urls.
         """
         app_label = self.get_app_label()
         verbose_name_plural = self.get_verbose_name_plural()
-        return {
-            "index_url": reverse(f"{app_label}:{verbose_name_plural}:index"),
-        }
 
-    def get_create_url(self) -> dict[str, str | None]:
+        return reverse(f"{app_label}:{verbose_name_plural}:index")
+
+    def get_create_url(self) -> str | None:
         """
         Returns add url.
         """
@@ -193,9 +192,7 @@ class TemplateVariablesMixin(ObjectNamesMixin):
         except NoReverseMatch:
             create_url = None
 
-        return {
-            "create_url": create_url,
-        }
+        return create_url
 
     def get_permissions(self, request: HttpRequest) -> dict[str, bool]:
         """
@@ -525,8 +522,8 @@ class ListMixin(
         """
         return {
             "qs": qs,
-            **self.get_create_url(),
-            **self.get_index_url(),
+            "create_url": self.get_create_url(),
+            "index_url": self.get_index_url(),
             **self.get_html_ids(),
         }
 
@@ -542,10 +539,11 @@ class ListMixin(
             "subapp_label": self.get_verbose_name_plural(),
             "model_name": self.get_model_name(),
             "model": self.model,
-            **self.get_create_url(),
-            **self.get_index_url(),
+            "create_url": self.get_create_url(),
+            "index_url": self.get_index_url(),
             **self.get_html_ids(),
             **self.get_permissions(request),
+            **kwargs,
         }
 
         if self.search_filter:
