@@ -76,11 +76,27 @@
   <c-inputs.text :field="form.city" />
   {% endif %}
 </c-forms.wrapper>
+<c-inputs.text show_icon="True" icon="calendar-days" :field="form.hire_date" />
 <c-forms.wrapper cols="2">
-  <c-inputs.text show_icon="True" icon="calendar-days" :field="form.hire_date" />
+  {% if perms.org.add_status %}
+  <c-inputs.text :field="form.status" :has_add="True">
+    <c-button
+      rounded="full"
+      theme="outline"
+      padding="sm"
+      size="20"
+      hx-get="{% url 'org:statuses:create' %}"
+      hx-target="#modal-container"
+      hx-headers='{"modal": true, "target": "#no-content"}'
+      @click.prevent="showModal"
+    />
+  </c-inputs.text>
+  {% else %}
+  <c-inputs.text :field="form.status" />
+  {% endif %}
   <c-inputs.text show_icon="True" icon="calendar-days" :field="form.separation_date" />
 </c-forms.wrapper>
-<c-forms.wrapper cols="2">
+<c-forms.wrapper cols="3">
   <!--  -->
   {% if perms.org.add_costcenter %}
   <c-inputs.text :field="form.cost_center" :has_add="True">
@@ -131,23 +147,6 @@
   </c-inputs.text>
   {% else %}
   <c-inputs.text :field="form.position" />
-  {% endif %}
-  <!--  -->
-  {% if perms.org.add_status %}
-  <c-inputs.text :field="form.status" :has_add="True">
-    <c-button
-      rounded="full"
-      theme="outline"
-      padding="sm"
-      size="20"
-      hx-get="{% url 'org:statuses:create' %}"
-      hx-target="#modal-container"
-      hx-headers='{"modal": true, "target": "#no-content"}'
-      @click.prevent="showModal"
-    />
-  </c-inputs.text>
-  {% else %}
-  <c-inputs.text :field="form.status" />
   {% endif %}
 </c-forms.wrapper>
 <c-forms.wrapper cols="3">
