@@ -233,7 +233,14 @@ class EmployeeQuerySet(models.QuerySet):
             },
         }
 
-        return self.annotate_dates().filter(**filter_kwargs[this])
+        return (
+            self.annotate_dates()
+            .filter(**filter_kwargs[this])
+            .order_by(
+                "birth_date__day",
+                "birth_date__year",
+            )
+        )
 
     def get_upcoming_job_anniversaries(
         self, *, this: DATE_UNITS = "day", date: timezone.datetime | None = None
@@ -265,4 +272,8 @@ class EmployeeQuerySet(models.QuerySet):
             },
         }
 
-        return self.annotate_dates().filter(**filter_kwargs[this])
+        return (
+            self.annotate_dates()
+            .filter(**filter_kwargs[this])
+            .order_by("hire_date__day", "hire_date__year")
+        )
