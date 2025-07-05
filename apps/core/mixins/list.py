@@ -434,7 +434,6 @@ class ListMixin(
             )
 
         app_label = self.get_app_label()
-        verbose_name_plural = self.get_verbose_name_plural()
         object_name = self.get_object_name()
 
         required_perm = f"{app_label}.export_{object_name}"
@@ -455,10 +454,8 @@ class ListMixin(
         self.resource_class._serials = []
         dataset: Dataset = self.resource_class().export(qs)
 
-        now: str = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        filename: str = f"{verbose_name_plural.title()}-{now}"
-
-        dataset.title = verbose_name_plural.replace("_", " ").title()
+        filename = self.get_filename()
+        dataset.title = self.get_dataset_title()
 
         response = HttpResponse(
             getattr(dataset, extension),
@@ -468,6 +465,20 @@ class ListMixin(
             f'attachment; filename="{filename}.{extension}"'
         )
         return response
+
+    def get_dataset_title(self) -> str:
+        """
+        Returns the dataset title.
+        """
+        return self.get_verbose_name_plural().replace("_", " ").title()
+
+    def get_filename(self) -> str:
+        """
+        Returns the filename.
+        """
+        verbose_name_plural = self.get_verbose_name_plural()
+        now: str = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        return f"{verbose_name_plural.title()}-{now}"
 
     def get_filtered_queryset(
         self, request: HttpRequest, queryset: QuerySet
