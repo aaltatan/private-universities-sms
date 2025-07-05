@@ -316,12 +316,31 @@
                 </c-table.td>
               </c-table.tr>
               <!--  -->
+              {% if object.separation_date %}
+              <c-table.tr>
+                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+                  {{ model|verbose_name:'separation_date' }}
+                </c-table.td>
+                <c-table.td data-header="{{ model|verbose_name:'separation_date' }}">
+                  {{ object.separation_date|date:'Y-m-d' }}
+                </c-table.td>
+              </c-table.tr>
+              {% endif %}
+              <!--  -->
               <c-table.tr>
                 <c-table.td :header="True" data-header="{% translate 'name'|title %}">
                   {% translate 'job age'|title %}
                 </c-table.td>
                 <c-table.td data-header="{% translate 'job age'|title %}">
+                  {% if object.separation_date %}
+                  <!--  -->
+                  {{ object.hire_date|timesince:object.separation_date }}
+                  <!--  -->
+                  {% else %}
+                  <!--  -->
                   {{ object.hire_date|timesince }}
+                  <!--  -->
+                  {% endif %}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
@@ -385,15 +404,6 @@
                 </c-table.td>
                 <c-table.td data-header="{{ model|verbose_name:'status' }}">
                   {{ object.status }}
-                </c-table.td>
-              </c-table.tr>
-              <!--  -->
-              <c-table.tr>
-                <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-                  {{ model|verbose_name:'separation_date' }}
-                </c-table.td>
-                <c-table.td data-header="{{ model|verbose_name:'separation_date' }}">
-                  {{ object.separation_date|date:'Y-m-d' }}
                 </c-table.td>
               </c-table.tr>
               <!--  -->
