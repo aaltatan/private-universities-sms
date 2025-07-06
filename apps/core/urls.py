@@ -32,4 +32,10 @@ urlpatterns = [
         views.AutocompleteView.as_view(),
         name="autocomplete",
     ),
+    path(
+        "ledger/",
+        views.ledger,
+        name="ledger",
+        kwargs={"title": _("ledger")},
+    ),
 ]

@@ -48,6 +48,26 @@
           </c-slot>
         </c-button>
       </li>
+      <li>
+        <c-button role="button" aria-label="ledger modal">
+          <c-slot name="icon_slot">
+            <a
+              href="#"
+              hx-get="{% url 'core:ledger' %}"
+              hx-target="#modal-container"
+              hx-indicator="#modal-spinner"
+              @keyup.alt.slash.prevent.window="$el.click()"
+              @keyup.alt.ظ.prevent.window="$el.click()"
+              @click="showModal"
+              class="hover:underline cursor-pointer"
+              aria-label="object details"
+              title="{% translate 'employee ledger'|capfirst %}"
+            >
+              {% heroicon_outline "magnifying-glass" size=icons_size %}
+            </a>
+          </c-slot>
+        </c-button>
+      </li>
       <li x-show="!sidebarFixed" class="hidden sm:block">
         <c-button @click="toggleFullWidthContainer" role="button" aria-label="toggle full width">
           <c-slot name="icon_slot">

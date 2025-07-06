@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<c-layout.modal>
+  <form hx-post="{% url 'core:ledger' %}">
+    <c-layout.modal.body>
+      <c-slot name="header">
+        {% translate 'search'|capfirst %}
+        <span>{{ obj }}</span>
+      </c-slot>
+      <c-slot name="body">
+        <div class="pb-18 pt-4">
+          <c-inputs.text :show_label="False" :field="form.employee" />
+        </div>
+      </c-slot>
+      <c-slot name="footer">
+        <c-button title="{% translate 'ledger'|capfirst %}" @click="hideModal" :hide_icon="True">
+          {% translate 'ledger'|capfirst %}
+        </c-button>
+      </c-slot>
+    </c-layout.modal.body>
+  </form>
+</c-layout.modal>

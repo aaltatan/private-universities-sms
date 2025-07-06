@@ -1,6 +1,6 @@
 from .activities import activities
 from .autocomplete import AutocompleteView
-from .core import index, messages, dashboard
+from .core import dashboard, index, ledger, messages
 
 __all__ = [
     "AutocompleteView",
@@ -8,4 +8,5 @@ __all__ = [
     "messages",
     "activities",
     "dashboard",
+    "ledger",
 ]
