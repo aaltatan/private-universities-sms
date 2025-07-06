@@ -431,10 +431,16 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         if errors:
             raise ValidationError(errors)
 
+    def get_fullname(self):
+        return f"{self.firstname} {self.father_name} {self.lastname}"
+
     def get_age(self) -> int:
         return calculate_age_in_years(self.birth_date)
 
     def get_job_age(self) -> int:
+        if self.separation_date:
+            return calculate_age_in_years(self.hire_date, self.separation_date)
+
         return calculate_age_in_years(self.hire_date)
 
     def get_next_birthday(self):
@@ -451,7 +457,7 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
 
 def employee_pre_save(sender, instance: Employee, *args, **kwargs):
     instance.slug = slugify(
-        f"{instance.fullname}-{instance.national_id}", allow_unicode=True
+        f"{instance.get_fullname()}-{instance.national_id}", allow_unicode=True
     )
 
     if instance.gender == instance.GenderChoices.FEMALE.value:
