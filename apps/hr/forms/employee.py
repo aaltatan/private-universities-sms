@@ -181,7 +181,9 @@ class EmployeeForm(CustomModelForm):
             ),
             "card_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
             "hire_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
-            "separation_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
+            "separation_date": get_date_widget(
+                placeholder=_("e.g. 2022-01-01"), fill_onfocus=False
+            ),
             "notes": get_textarea_widget(placeholder=_("some notes")),
             "identity_document": get_file_widget(),
         }
