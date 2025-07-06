@@ -77,6 +77,14 @@ class TaxBracket(AddCreateActivityMixin, UrlsMixin, models.Model):
     def clean(self):
         errors: dict[str, ValidationError] = {}
 
+        if self.tax.fixed:
+            errors["tax"] = ValidationError(
+                _("you can't add a bracket to a fixed tax."),
+            )
+            errors["amount_from"] = ValidationError(
+                _("you can't add a bracket to a fixed tax."),
+            )
+
         if self.amount_from == self.amount_to:
             errors["amount_from"] = ValidationError(
                 _("amount from must be greater than amount to."),
