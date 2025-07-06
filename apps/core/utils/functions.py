@@ -104,21 +104,21 @@ def get_differences(from_: dict, to: dict) -> dict:
 
 
 def calculate_age_in_years(
-    birthdate: datetime,
-    today: datetime | None = None,
+    date: datetime,
+    other_date: datetime | None = None,
 ) -> int:
     """
     calculates the age in years.
     """
-    if today is None:
-        today = timezone.now().date()
+    if other_date is None:
+        other_date = timezone.now().date()
 
-    age = today.year - birthdate.year
+    difference = other_date.year - date.year
 
-    if (today.month, today.day) < (birthdate.month, birthdate.day):
-        age -= 1
+    if (other_date.month, other_date.day) < (date.month, date.day):
+        difference -= 1
 
-    return age
+    return difference
 
 
 def round_to_nearest(
