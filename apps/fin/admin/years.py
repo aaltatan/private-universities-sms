@@ -7,6 +7,7 @@ from ..constants import years as constants
 
 @admin.register(models.Year)
 class YearAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (("name", "description"),)
     list_display = ("id", "name", "slug")
     list_display_links = ("id", "name")
     search_fields = constants.SEARCH_FIELDS

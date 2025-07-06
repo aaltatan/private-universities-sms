@@ -7,6 +7,11 @@ from ..constants import positions as constants
 
 @admin.register(models.Position)
 class PositionAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (
+        ("name",),
+        "order",
+        "description",
+    )
     list_display = ("id", "name", "order", "slug")
     list_display_links = ("id", "name")
     search_fields = constants.SEARCH_FIELDS

@@ -13,6 +13,7 @@ class JobSubtypeInline(admin.TabularInline):
 
 @admin.register(models.JobType)
 class JobTypeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (("name", "description"),)
     list_display = ("id", "name", "slug")
     list_display_links = ("id", "name")
     search_fields = constants.SEARCH_FIELDS

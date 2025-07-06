@@ -7,6 +7,11 @@ from ..constants import periods as constants
 
 @admin.register(models.Period)
 class PeriodAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (
+        ("name", "is_closed"),
+        ("year", "start_date"),
+        "description",
+    )
     list_display = (
         "id",
         "name",

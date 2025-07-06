@@ -15,6 +15,11 @@ class DegreeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "description",
         "slug",
     )
+    fields = (
+        ("name", "is_academic"),
+        "order",
+        "description",
+    )
     list_display_links = ("id", "name")
     search_fields = constants.SEARCH_FIELDS
     list_per_page = 20

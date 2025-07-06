@@ -7,6 +7,10 @@ from ..constants import specialization as constants
 
 @admin.register(models.Specialization)
 class SpecializationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (
+        ("name", "is_specialist",),
+        "description",
+    )
     list_display = (
         "id",
         "name",

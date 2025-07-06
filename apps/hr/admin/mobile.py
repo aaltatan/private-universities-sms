@@ -8,6 +8,7 @@ from .. import models, resources
 
 @admin.register(models.Mobile)
 class MobileAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (("number", "has_whatsapp"), "employee", "notes")
     list_display = ("id", "number", "has_whatsapp", "employee__fullname")
     list_display_links = ("id", "number")
     search_fields = ("employee__fullname", "number")

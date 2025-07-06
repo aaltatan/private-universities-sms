@@ -7,6 +7,11 @@ from ..constants import tax_brackets as constants
 
 @admin.register(models.TaxBracket)
 class TaxBracketAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (
+        "tax",
+        ("amount_from", "amount_to", "rate"),
+        "notes",
+    )
     list_display = ("id", "tax__name", "amount_from", "amount_to", "rate", "slug")
     list_display_links = ("id", "tax__name")
     search_fields = constants.SEARCH_FIELDS

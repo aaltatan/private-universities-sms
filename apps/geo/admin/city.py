@@ -9,6 +9,11 @@ from ..constants import cities as constants
 
 @admin.register(models.City)
 class CityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (
+        ("name", "kind"),
+        "governorate",
+        "description",
+    )
     list_display = (
         "id",
         "name",

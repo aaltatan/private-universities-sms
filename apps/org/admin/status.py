@@ -7,6 +7,10 @@ from ..constants import statuses as constants
 
 @admin.register(models.Status)
 class StatusAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (
+        ("name", "is_payable", "is_separated"),
+        "description",
+    )
     list_display = ("id", "name", "is_payable", "is_separated", "slug")
     list_display_links = ("id", "name")
     search_fields = constants.SEARCH_FIELDS

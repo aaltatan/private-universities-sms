@@ -13,6 +13,7 @@ class TabularCity(admin.TabularInline):
 
 @admin.register(models.Governorate)
 class GovernorateAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (("name", "description"),)
     list_display = ("id", "name", "slug")
     list_display_links = ("id", "name")
     search_fields = constants.SEARCH_FIELDS

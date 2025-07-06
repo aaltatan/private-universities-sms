@@ -6,6 +6,7 @@ from .. import models, resources
 
 @admin.register(models.Phone)
 class PhoneAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = ("number", "employee", "notes")
     list_display = ("id", "number", "employee__fullname")
     list_display_links = ("id", "number")
     autocomplete_fields = ("employee",)

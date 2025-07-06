@@ -6,6 +6,7 @@ from .. import models, resources
 
 @admin.register(models.Email)
 class EmailAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = ("email", "employee", "notes")
     list_display = ("id", "email", "employee__fullname")
     list_display_links = ("id", "email")
     search_fields = ("employee__fullname", "email")

@@ -5,10 +5,23 @@ from .. import models, resources
 from ..constants import taxes as constants
 
 
+class TaxBracketInline(admin.TabularInline):
+    model = models.TaxBracket
+    extra = 0
+    fields = ("amount_from", "amount_to", "rate")
+
+
 @admin.register(models.Tax)
 class TaxAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (
+        "name",
+        ("rate", "rounded_to", "round_method"),
+        ("fixed", "affected_by_working_days"),
+        "description",
+    )
     list_display = ("id", "name", "fixed", "rate", "rounded_to", "slug")
     list_display_links = ("id", "name")
     search_fields = constants.SEARCH_FIELDS
     list_per_page = 20
     resource_classes = (resources.TaxResource,)
+    inlines = (TaxBracketInline,)

@@ -7,6 +7,12 @@ from ..constants import schools as constants
 
 @admin.register(models.School)
 class SchoolAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    fields = (
+        "name",
+        ("nationality", "kind"),
+        ("website", "email", "phone", "address"),
+        "description",
+    )
     list_display = (
         "id",
         "name",
