@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import DetailView, View
-from django.views.generic.list import MultipleObjectMixin
 from django_filters import rest_framework as django_filters
 from rest_framework import filters as rest_filters
 from rest_framework import viewsets
@@ -36,7 +35,6 @@ class ListView(
     PermissionRequiredMixin,
     mixins.BulkDeleteMixin,
     mixins.ListMixin,
-    MultipleObjectMixin,
     View,
 ):
     permission_required = "geo.view_governorate"

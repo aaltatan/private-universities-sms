@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import View
-from django.views.generic.list import MultipleObjectMixin
 
 from apps.core import mixins
 
@@ -13,7 +12,6 @@ class ListView(
     PermissionRequiredMixin,
     mixins.BulkDeleteMixin,
     mixins.ListMixin,
-    MultipleObjectMixin,
     View,
 ):
     permission_required = "trans.view_vouchertransaction"

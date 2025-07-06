@@ -2,7 +2,6 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import resolve, reverse
 from django.views.generic import View
-from django.views.generic.list import MultipleObjectMixin
 
 from apps.core import mixins
 from apps.hr.models import Employee
@@ -12,12 +11,7 @@ from apps.trans.models import JournalEntry
 from .. import resources
 
 
-class LedgerView(
-    PermissionRequiredMixin,
-    mixins.ListMixin,
-    MultipleObjectMixin,
-    View,
-):
+class LedgerView(PermissionRequiredMixin, mixins.ListMixin, View):
     app_label = "reports"
     verbose_name_plural = "ledger"
     permission_required = "trans.view_journalentry"

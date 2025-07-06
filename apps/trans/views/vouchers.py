@@ -6,7 +6,6 @@ from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, View
-from django.views.generic.list import MultipleObjectMixin
 from django_filters import rest_framework as django_filters
 from rest_framework import filters as rest_filters
 from rest_framework import status, viewsets
@@ -115,7 +114,6 @@ class ListView(
     PermissionRequiredMixin,
     mixins.BulkDeleteMixin,
     mixins.ListMixin,
-    MultipleObjectMixin,
     View,
 ):
     permission_required = "trans.view_voucher"
