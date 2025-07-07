@@ -21,6 +21,9 @@ class VoucherTransactionAdmin(
         "formatted_tax",
         "net",
         "ordering",
+        "voucher__is_audited",
+        "voucher__is_migrated",
+        "voucher__is_deleted",
     )
     fields = (
         ("voucher", "created_at", "updated_at"),
