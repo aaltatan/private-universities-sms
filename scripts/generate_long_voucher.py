@@ -5,10 +5,10 @@ from apps.hr.models import Employee
 from apps.trans.models import Voucher, VoucherTransaction
 
 
-def generate_long_voucher(voucher: Voucher):
+def generate_long_voucher(voucher: Voucher, voucher_counts: int = 100):
     compensation = Compensation.objects.filter(name__contains="ساعة تدريسية").first()
 
-    for idx in range(200):
+    for idx in range(voucher_counts):
         vt = VoucherTransaction(
             voucher=voucher,
             employee=random.choice(list(Employee.objects.all()[:100])),
@@ -22,5 +22,11 @@ def generate_long_voucher(voucher: Voucher):
 
 
 def run():
+    inputted = input("Enter the number of vouchers to generate: ")
+    try:
+        vouchers_count = int(inputted)
+    except ValueError:
+        vouchers_count = 100
+
     voucher = Voucher.objects.filter(title__contains="تموز").first()
-    generate_long_voucher(voucher)
+    generate_long_voucher(voucher, vouchers_count)
