@@ -191,7 +191,7 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/accounts/login/"
 
 # Request settings
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000
 
 # Django Cotton settings
 COTTON_DIR = "components"
