@@ -12,6 +12,16 @@ from .. import models
 
 
 class BaseSchoolFilter(BaseNameDescriptionFilter):
+    kind = get_combobox_choices_filter(
+        queryset=models.School.objects.all(),
+        field_name="kind__name",
+        label=_("kind"),
+    )
+    nationality = get_combobox_choices_filter(
+        queryset=models.School.objects.all(),
+        field_name="nationality__name",
+        label=_("nationality"),
+    )
     website = get_text_filter(
         label=_("website").title(),
         widget_type="url",
@@ -52,13 +62,13 @@ class BaseSchoolFilter(BaseNameDescriptionFilter):
 
 class APISchoolFilter(FilterComboboxMixin, BaseSchoolFilter):
     kind = get_combobox_choices_filter(
-        model=models.School,
+        queryset=models.School.objects.all(),
         field_name="kind__name",
         label=_("kind"),
         api_filter=True,
     )
     nationality = get_combobox_choices_filter(
-        model=models.School,
+        queryset=models.School.objects.all(),
         field_name="nationality__name",
         label=_("nationality"),
         api_filter=True,
@@ -66,13 +76,4 @@ class APISchoolFilter(FilterComboboxMixin, BaseSchoolFilter):
 
 
 class SchoolFilter(FilterComboboxMixin, BaseSchoolFilter):
-    kind = get_combobox_choices_filter(
-        model=models.School,
-        field_name="kind__name",
-        label=_("kind"),
-    )
-    nationality = get_combobox_choices_filter(
-        model=models.School,
-        field_name="nationality__name",
-        label=_("nationality"),
-    )
+    pass

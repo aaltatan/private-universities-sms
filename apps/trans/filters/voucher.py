@@ -18,24 +18,24 @@ class BaseVoucherFilter(FilterComboboxMixin, filters.FilterSet):
     updated_at_from, updated_at_to = get_date_from_to_filters("updated_at")
     date_from, date_to = get_date_from_to_filters("date")
     kind = get_combobox_choices_filter(
-        model=models.Voucher,
+        queryset=models.Voucher.objects.all(),
         field_name="kind__name",
         label=_("kind"),
     )
     month = get_combobox_choices_filter(
-        model=models.Voucher,
+        queryset=models.Voucher.objects.all(),
         field_name="month",
         label=_("month"),
         choices=MonthChoices.choices,
     )
     quarter = get_combobox_choices_filter(
-        model=models.Voucher,
+        queryset=models.Voucher.objects.all(),
         field_name="quarter",
         label=_("quarter"),
         choices=QuarterChoices.choices,
     )
     period = get_combobox_choices_filter(
-        model=models.Voucher,
+        queryset=models.Voucher.objects.all(),
         field_name="period__name",
         label=_("period"),
     )
@@ -93,27 +93,27 @@ class BaseVoucherFilter(FilterComboboxMixin, filters.FilterSet):
 
 class APIVoucherFilter(BaseVoucherFilter):
     kind = get_combobox_choices_filter(
-        model=models.Voucher,
+        queryset=models.Voucher.objects.all(),
         field_name="kind__name",
         label=_("kind"),
         api_filter=True,
     )
     month = get_combobox_choices_filter(
-        model=models.Voucher,
+        queryset=models.Voucher.objects.all(),
         field_name="month",
         label=_("month"),
         choices=MonthChoices.choices,
         api_filter=True,
     )
     quarter = get_combobox_choices_filter(
-        model=models.Voucher,
+        queryset=models.Voucher.objects.all(),
         field_name="quarter",
         label=_("quarter"),
         choices=QuarterChoices.choices,
         api_filter=True,
     )
     period = get_combobox_choices_filter(
-        model=models.Voucher,
+        queryset=models.Voucher.objects.all(),
         field_name="period__name",
         label=_("period"),
         api_filter=True,

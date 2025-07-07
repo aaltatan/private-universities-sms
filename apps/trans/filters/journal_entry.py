@@ -26,29 +26,29 @@ class BaseJournalEntryLedgerFilter(
     )
     date_from, date_to = get_date_from_to_filters("date")
     month = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="month",
         label=_("month"),
         choices=MonthChoices.choices,
     )
     quarter = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="quarter",
         label=_("quarter"),
         choices=QuarterChoices,
     )
     period = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="period__name",
         label=_("period"),
     )
     year = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="period__year__name",
         label=_("year"),
     )
     content_type = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="content_type__model",
         label=_("content type"),
     )
@@ -60,12 +60,12 @@ class BaseJournalEntryLedgerFilter(
     debit_from, debit_to = get_number_from_to_filters("debit")
     credit_from, credit_to = get_number_from_to_filters("credit")
     cost_center = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="cost_center__name",
         label=_("cost center"),
     )
     voucher = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="voucher__voucher_serial",
         label=_("voucher".title()),
     )
@@ -111,12 +111,17 @@ class BaseJournalEntryLedgerFilter(
 
 
 class LedgerFilter(BaseJournalEntryLedgerFilter):
-    pass
+    @property
+    def qs(self):
+        qs = super().qs
+        print(f"{self.request=}")
+        print("#" * 100)
+        return qs
 
 
 class BaseJournalEntryFilter(BaseJournalEntryLedgerFilter):
     employee = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="employee__fullname",
         label=_("employee"),
     )
@@ -149,37 +154,37 @@ class BaseJournalEntryFilter(BaseJournalEntryLedgerFilter):
 
 class APIJournalEntryFilter(BaseJournalEntryFilter):
     period = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="period__name",
         label=_("period"),
         api_filter=True,
     )
     year = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="period__year__name",
         label=_("year"),
         api_filter=True,
     )
     content_type = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="content_type__model",
         label=_("content type"),
         api_filter=True,
     )
     employee = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="employee__fullname",
         label=_("employee"),
         api_filter=True,
     )
     cost_center = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="cost_center__name",
         label=_("cost center"),
         api_filter=True,
     )
     voucher = get_combobox_choices_filter(
-        model=models.JournalEntry,
+        queryset=models.JournalEntry.objects.all(),
         field_name="voucher__voucher_serial",
         label=_("voucher".title()),
         api_filter=True,

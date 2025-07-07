@@ -29,7 +29,7 @@ class BaseCityFilter(BaseNameDescriptionFilter):
 
 class APICityFilter(FilterComboboxMixin, BaseCityFilter):
     governorate = get_combobox_choices_filter(
-        model=models.City,
+        queryset=models.City.objects.all(),
         field_name="governorate__name",
         label=_("governorate"),
         api_filter=True,
@@ -38,7 +38,7 @@ class APICityFilter(FilterComboboxMixin, BaseCityFilter):
 
 class CityFilter(FilterComboboxMixin, BaseCityFilter):
     governorate = get_combobox_choices_filter(
-        model=models.City,
+        queryset=models.City.objects.all(),
         field_name="governorate__name",
         label=_("governorate"),
     )

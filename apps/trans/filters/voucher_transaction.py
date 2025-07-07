@@ -18,7 +18,7 @@ class BaseVoucherTransactionFilter(
     FilterTextMixin, FilterComboboxMixin, filters.FilterSet
 ):
     voucher = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.filter(voucher__is_deleted=False),
         field_name="voucher__voucher_serial",
         label=_("voucher".title()),
     )
@@ -30,34 +30,34 @@ class BaseVoucherTransactionFilter(
     )
     date_from, date_to = get_date_from_to_filters("voucher__date")
     kind = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="voucher__kind__name",
         label=_("kind"),
     )
     month = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="voucher__month",
         label=_("month"),
         choices=MonthChoices.choices,
     )
     quarter = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="voucher__quarter",
         label=_("quarter"),
         choices=QuarterChoices,
     )
     period = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="voucher__period__name",
         label=_("period"),
     )
     employee = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="employee__fullname",
         label=_("employee"),
     )
     compensation = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="compensation__name",
         label=_("compensation"),
     )
@@ -132,45 +132,45 @@ class BaseVoucherTransactionFilter(
 
 class APIVoucherTransactionFilter(BaseVoucherTransactionFilter):
     voucher = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="voucher__voucher_serial",
         label=_("voucher".title()),
         api_filter=True,
     )
     employee = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="employee__fullname",
         label=_("employee"),
         api_filter=True,
     )
     compensation = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="compensation__name",
         label=_("compensation"),
         api_filter=True,
     )
     kind = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="voucher__kind__name",
         label=_("kind"),
         api_filter=True,
     )
     month = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="voucher__month",
         label=_("month"),
         choices=MonthChoices.choices,
         api_filter=True,
     )
     quarter = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="voucher__quarter",
         label=_("quarter"),
         choices=QuarterChoices.choices,
         api_filter=True,
     )
     period = get_combobox_choices_filter(
-        model=models.VoucherTransaction,
+        queryset=models.VoucherTransaction.objects.all(),
         field_name="voucher__period__name",
         label=_("period"),
         api_filter=True,

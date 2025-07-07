@@ -185,119 +185,119 @@ class BaseEmployeeFilter(
 
 class APIEmployeeFilter(BaseEmployeeFilter):
     face_color = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="face_color",
         label=_("face color"),
         api_filter=True,
     )
     eyes_color = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="eyes_color",
         label=_("eyes color"),
         api_filter=True,
     )
     martial_status = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="martial_status",
         label=_("martial status"),
         choices=Employee.MartialStatusChoices.choices,
         api_filter=True,
     )
     military_status = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="military_status",
         label=_("military status"),
         choices=Employee.MilitaryStatus.choices,
         api_filter=True,
     )
     religion = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="religion",
         label=_("religion"),
         choices=Employee.ReligionChoices.choices,
         api_filter=True,
     )
     nationality = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="nationality__name",
         label=_("nationality"),
         api_filter=True,
     )
     governorate = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="city__governorate__name",
         label=_("governorate"),
         api_filter=True,
     )
     city = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="city__name",
         label=_("city"),
         api_filter=True,
     )
     cost_center = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="cost_center__name",
         label=_("cost center"),
         api_filter=True,
     )
     position = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="position__name",
         label=_("position"),
         api_filter=True,
     )
     status = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="status__name",
         label=_("status"),
         api_filter=True,
     )
     job_type = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="job_subtype__job_type__name",
         label=_("job type"),
         api_filter=True,
     )
     job_subtype = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="job_subtype__name",
         label=_("job subtype"),
         api_filter=True,
     )
     groups = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="groups__name",
         label=_("groups"),
         api_filter=True,
     )
     groups_combined = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="groups__name",
         method_name="filter_combobox_combined",
         label=_("groups combined"),
         api_filter=True,
     )
     degree = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="degree__name",
         label=_("degree"),
         api_filter=True,
     )
     school = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="school__name",
         label=_("school"),
         api_filter=True,
     )
     school_kind = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="school__kind__name",
         label=_("school kind"),
         api_filter=True,
     )
     specialization = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="specialization__name",
         label=_("specialization"),
         api_filter=True,
@@ -306,101 +306,101 @@ class APIEmployeeFilter(BaseEmployeeFilter):
 
 class EmployeeFilter(BaseEmployeeFilter):
     face_color = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="face_color",
         label=_("face color"),
     )
     eyes_color = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="eyes_color",
         label=_("eyes color"),
     )
     martial_status = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="martial_status",
         label=_("martial status"),
         choices=Employee.MartialStatusChoices.choices,
     )
     military_status = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="military_status",
         label=_("military status"),
         choices=Employee.MilitaryStatus.choices,
     )
     religion = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="religion",
         label=_("religion"),
         choices=Employee.ReligionChoices.choices,
     )
     nationality = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="nationality__name",
         label=_("nationality"),
     )
     governorate = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="city__governorate__name",
         label=_("governorate"),
     )
     city = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="city__name",
         label=_("city"),
     )
     cost_center = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="cost_center__name",
         label=_("cost center"),
     )
     position = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="position__name",
         label=_("position"),
     )
     status = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="status__name",
         label=_("status"),
     )
     job_type = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="job_subtype__job_type__name",
         label=_("job type"),
     )
     job_subtype = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="job_subtype__name",
         label=_("job subtype"),
     )
     groups = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="groups__name",
         label=_("groups"),
     )
     groups_combined = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="groups__name",
         method_name="filter_combobox_combined",
         label=_("groups combined"),
     )
     degree = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="degree__name",
         label=_("degree"),
     )
     school = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="school__name",
         label=_("school"),
     )
     school_kind = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="school__kind__name",
         label=_("school kind"),
     )
     specialization = get_combobox_choices_filter(
-        model=Employee,
+        queryset=Employee.objects.all(),
         field_name="specialization__name",
         label=_("specialization"),
     )

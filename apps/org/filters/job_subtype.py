@@ -28,7 +28,7 @@ class BaseJobSubtypeFilter(BaseNameDescriptionFilter):
 
 class APIJobSubtypeFilter(FilterComboboxMixin, BaseJobSubtypeFilter):
     job_type = get_combobox_choices_filter(
-        model=models.JobSubtype,
+        queryset=models.JobSubtype.objects.all(),
         field_name="job_type__name",
         label=_("job type"),
         api_filter=True,
@@ -37,7 +37,7 @@ class APIJobSubtypeFilter(FilterComboboxMixin, BaseJobSubtypeFilter):
 
 class JobSubtypeFilter(FilterComboboxMixin, BaseJobSubtypeFilter):
     job_type = get_combobox_choices_filter(
-        model=models.JobSubtype,
+        queryset=models.JobSubtype.objects.all(),
         field_name="job_type__name",
         label=_("job type"),
     )
