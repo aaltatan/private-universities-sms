@@ -39,10 +39,10 @@ class EmployeeManager(models.Manager):
         return self.get_queryset().annotate_journals_totals(
             include_zero=include_zero,
         )
-    
+
     def annotate_search(self):
         return self.get_queryset().annotate_search()
-    
+
     def annotate_dates(self):
         return self.get_queryset().annotate_dates()
 
@@ -97,6 +97,6 @@ class EmployeeManager(models.Manager):
 
     def get_queryset(self) -> EmployeeQuerySet:
         queryset = EmployeeQuerySet(self.model, using=self._db)
-        queryset = queryset.annotate_search()
+        queryset = queryset.annotate_search().select_related("cost_center")
 
         return queryset
