@@ -80,10 +80,6 @@ class FilterSearchMixin:
         return get_djangoql_query(queryset, value, default_queryset)
 
 
-class CustomMultipleChoiceFilter(filters.MultipleChoiceFilter):
-    pass
-
-
 class CustomOrderingFilter(filters.OrderingFilter):
     descending_fmt = _("%s (desc)")
 
@@ -123,12 +119,18 @@ def get_combobox_choices_filter(
 
     if choices is not None:
         kwargs["choices"] = choices
+        return filters.MultipleChoiceFilter(**kwargs)
     else:
-        kwargs["choices"] = (
-            queryset.values_list(field_name, field_name).order_by(field_name).distinct()
-        )
-
-    return filters.MultipleChoiceFilter(**kwargs)
+        if type(queryset) == QuerySet:
+            kwargs["choices"] = (
+                queryset.values_list(field_name, field_name)
+                .order_by(field_name)
+                .distinct()
+            )
+            return filters.MultipleChoiceFilter(**kwargs)
+        else:  # if is a function
+            kwargs["queryset"] = queryset
+            return filters.ModelMultipleChoiceFilter(**kwargs)
 
 
 def get_text_filter(
