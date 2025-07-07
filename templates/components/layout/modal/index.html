@@ -7,6 +7,7 @@
     '3xl': 'w-[min(1200px,100%)]',
   }"
   width="base"
+  :overflow="True"
 />
 
 <div
@@ -31,7 +32,7 @@
     x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100"
     x-ref="modal"
-    class="flex flex-col gap-2 overflow-hidden rounded-lg border border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 bg-white dark:bg-neutral-950 {{ widths|get_item:width }} empty:hidden"
+    class="flex flex-col gap-2 rounded-lg border {% if overflow %}overflow-hidden{% endif %} border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 bg-white dark:bg-neutral-950 {{ widths|get_item:width }} empty:hidden"
   >
     {{ slot }}
   </div>
