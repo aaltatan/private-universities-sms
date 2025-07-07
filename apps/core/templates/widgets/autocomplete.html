@@ -47,16 +47,16 @@ class="relative"
     </span>
   </div>
   <ul 
-  x-show="isListOpen && keywords" 
-  x-trap="isListOpen && keywords"
-  x-transition:enter="duration-200"
-  x-transition:enter-start="-translate-y-2"
-  x-transition:enter-end="translate-y-0"
-  @keydown.down.prevent="$focus.wrap().next()"
-  @keydown.up.prevent="$focus.wrap().previous()"
-  class="absolute top-[calc(100%+0.5rem)] z-50 w-full min-w-48 text-xs max-h-20 overflow-auto rounded-md border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none scroll empty:hidden divide-y divide-neutral-300 dark:divide-neutral-800"
-  id="{{ widget.name }}-autocomplete-list"
-  role="list" 
-  x-ref="autocompleteList"
+    x-show="isListOpen && keywords" 
+    x-trap="isListOpen && keywords"
+    x-transition:enter="duration-200"
+    x-transition:enter-start="-translate-y-2"
+    x-transition:enter-end="translate-y-0"
+    @keydown.down.prevent="$focus.wrap().next()"
+    @keydown.up.prevent="$focus.wrap().previous()"
+    class="absolute top-[calc(100%+0.5rem)] z-50 w-full min-w-48 text-xs max-h-24 overflow-auto rounded-md border border-neutral-300 bg-white dark:border-neutral-800 dark:bg-black shadow-md dark:shadow-none scroll empty:hidden divide-y divide-neutral-300 dark:divide-neutral-800"
+    id="{{ widget.name }}-autocomplete-list"
+    role="list" 
+    x-ref="autocompleteList"
   ></ul>
 </div>
