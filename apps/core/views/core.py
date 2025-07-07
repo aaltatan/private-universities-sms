@@ -1,6 +1,6 @@
 from django.contrib.messages import error
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from ..forms import LedgerForm
 
@@ -25,8 +25,14 @@ def ledger(request: HttpRequest, *args, **kwargs) -> HttpResponse:
         form = LedgerForm(request.POST)
         response = HttpResponse(status=200)
         if form.is_valid():
+            if request.POST.get("details"):
+                return redirect(
+                    form.cleaned_data.get("employee").get_absolute_url(),
+                )
+
             ledger_url = form.cleaned_data.get("employee").get_ledger_url()
             response["Hx-Redirect"] = ledger_url
+
         else:
             response["Hx-Retarget"] = "#no-content"
             response["HX-Reswap"] = "innerHTML"
