@@ -431,7 +431,7 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         if errors:
             raise ValidationError(errors)
 
-    def get_fullname(self):
+    def get_fullname(self) -> str:
         return f"{self.firstname} {self.father_name} {self.lastname}"
 
     def get_age(self) -> int:
@@ -452,7 +452,7 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         return reverse("reports:ledger", kwargs={"slug": self.slug})
 
     def __str__(self) -> str:
-        return f"{self.firstname} {self.father_name} {self.lastname}"
+        return f"{self.get_fullname()} - {self.cost_center.name} [{self.national_id}]"
 
 
 def employee_pre_save(sender, instance: Employee, *args, **kwargs):
