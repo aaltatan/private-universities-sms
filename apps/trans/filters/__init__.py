@@ -1,7 +1,7 @@
 from .journal_entry import (
     APIJournalEntryFilter,
     JournalEntryFilter,
-    LedgerFilter,
+    BaseJournalEntryLedgerFilter,
 )
 from .voucher import APIVoucherFilter, VoucherFilter
 from .voucher_transaction import APIVoucherTransactionFilter, VoucherTransactionFilter
@@ -9,7 +9,7 @@ from .voucher_transaction import APIVoucherTransactionFilter, VoucherTransaction
 __all__ = [
     "APIJournalEntryFilter",
     "JournalEntryFilter",
-    "LedgerFilter",
+    "BaseJournalEntryLedgerFilter",
     "APIVoucherFilter",
     "VoucherFilter",
     "APIVoucherTransactionFilter",

@@ -5,10 +5,9 @@ from django.views.generic import View
 
 from apps.core import mixins
 from apps.hr.models import Employee
-from apps.trans.filters import LedgerFilter
 from apps.trans.models import JournalEntry
 
-from .. import resources
+from .. import resources, filters
 
 
 class LedgerView(PermissionRequiredMixin, mixins.ListMixin, View):
@@ -16,7 +15,7 @@ class LedgerView(PermissionRequiredMixin, mixins.ListMixin, View):
     verbose_name_plural = "ledger"
     permission_required = "trans.view_journalentry"
     model = JournalEntry
-    filter_class = LedgerFilter
+    filter_class = filters.LedgerFilter
     resource_class = resources.LedgerResource
     order_filter = False
 
