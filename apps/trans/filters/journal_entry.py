@@ -110,15 +110,6 @@ class BaseJournalEntryLedgerFilter(
         )
 
 
-class LedgerFilter(BaseJournalEntryLedgerFilter):
-    @property
-    def qs(self):
-        qs = super().qs
-        print(f"{self.request=}")
-        print("#" * 100)
-        return qs
-
-
 class BaseJournalEntryFilter(BaseJournalEntryLedgerFilter):
     employee = get_combobox_choices_filter(
         queryset=models.JournalEntry.objects.all(),
