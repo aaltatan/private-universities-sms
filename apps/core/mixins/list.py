@@ -575,6 +575,12 @@ class ListMixin(
             )
             context["ordering_filter"] = ordering_filter
 
+        context["filter"] = self.filter_class(
+            request.GET or request.POST,
+            queryset.all(),
+            request=request,
+        )
+
         page = self.get_page_class(request=request, queryset=queryset)
         context["page"] = page
 

@@ -38,7 +38,9 @@
       hx-vals='{"filters": true}'
       hx-target="#overlay-sidebar-container"
       hx-swap="innerHTML"
-      data-fields="tax,amount_from_from,amount_from_to,amount_to_from,amount_to_to,rate_from,rate_to,notes"
+      data-fields="{% for field in filter.form.fields %}
+      {% if forloop.last %}{{ field }}{% else %}{{ field }},{% endif %}
+      {% endfor %}"
       badge="True"
       title="{% translate 'filters'|title %}"
     />

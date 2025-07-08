@@ -38,7 +38,9 @@
       hx-vals='{"filters": true}'
       hx-target="#overlay-sidebar-container"
       hx-swap="innerHTML"
-      data-fields="firstname,lastname,father_name,mother_name,birth_place,birth_date_from,birth_date_to,age_from,age_to,national_id,card_id,passport_id,civil_registry_office,registry_office_name,registry_office_id,address,special_signs,card_date_from,card_date_to,martial_status,military_status,religion,current_address,nationality,governorate,city,cost_center,position,status,job_type,job_subtype,groups,degree,school,specialization,notes,gender,groups_combined,is_academic,is_specialist,is_payable,hire_date_from,hire_date_to,job_age_from,job_age_to,school_kind,is_local,separation_date_from,separation_date_to"
+      data-fields="{% for field in filter.form.fields %}
+      {% if forloop.last %}{{ field }}{% else %}{{ field }},{% endif %}
+      {% endfor %}"
       badge="True"
       title="{% translate 'filters'|title %}"
     />
