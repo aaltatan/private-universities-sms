@@ -23,6 +23,11 @@ class JournalEntry(UrlsMixin, TimeStampAbstractModel):
         default=uuid.uuid4,
         editable=False,
     )
+    general_serial = models.PositiveBigIntegerField(
+        default=0,
+        editable=False,
+        verbose_name=_("general serial"),
+    )
     slug = models.SlugField(
         max_length=255,
         unique=True,
@@ -137,7 +142,7 @@ class JournalEntry(UrlsMixin, TimeStampAbstractModel):
 
     class Meta:
         icon = "circle-stack"
-        ordering = ("date", "ordering", "-debit")
+        ordering = ("general_serial", "ordering", "-debit")
         codename_plural = "journal_entries"
         verbose_name = _("journal entry").title()
         verbose_name_plural = _("journal entries").title()
@@ -147,9 +152,13 @@ class JournalEntry(UrlsMixin, TimeStampAbstractModel):
         )
 
 
-def slugify_journal_entry(sender, instance: JournalEntry, *args, **kwargs):
+def pre_save_journal(sender, instance: JournalEntry, *args, **kwargs):
     if instance.slug is None:
         instance.slug = instance.uuid.hex
 
+    Klass = instance.__class__
+    if not instance.general_serial:
+        instance.general_serial = Klass.objects.get_next_journal_general_serial()
 
-pre_save.connect(slugify_journal_entry, sender=JournalEntry)
+
+pre_save.connect(pre_save_journal, sender=JournalEntry)
