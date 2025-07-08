@@ -6,7 +6,6 @@ from apps.core.resources import (
     DehydrateChoicesMixin,
     SerialResourceMixin,
 )
-
 from apps.trans.models import JournalEntry
 
 
@@ -70,6 +69,11 @@ class LedgerResource(
         column_name=_("credit").title(),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
+    net = fields.Field(
+        attribute="net",
+        column_name=_("net").title(),
+        widget=widgets.NumberWidget(coerce_to_string=False),
+    )
     explanation = fields.Field(
         attribute="explanation",
         column_name=_("explanation").title(),
@@ -112,6 +116,7 @@ class LedgerResource(
             "serial",
             "debit",
             "credit",
+            "net",
             "fiscal_object",
             "explanation",
             "cost_center",
