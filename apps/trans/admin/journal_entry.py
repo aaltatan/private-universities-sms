@@ -20,6 +20,7 @@ class JournalEntryAdmin(
         "period",
         "month",
         "voucher",
+        "general_serial",
         "ordering",
     )
     fields = (
