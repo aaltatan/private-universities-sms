@@ -48,6 +48,7 @@
           </c-slot>
         </c-button>
       </li>
+      {% if perms.reports.view_ledger %}
       <li>
         <c-button role="button" aria-label="ledger modal">
           <c-slot name="icon_slot">
@@ -68,6 +69,7 @@
           </c-slot>
         </c-button>
       </li>
+      {% endif %}
       <li x-show="!sidebarFixed" class="hidden sm:block">
         <c-button @click="toggleFullWidthContainer" role="button" aria-label="toggle full width">
           <c-slot name="icon_slot">
