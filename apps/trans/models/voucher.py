@@ -1,3 +1,4 @@
+from typing import Any
 import uuid
 
 from django.core.exceptions import ValidationError
@@ -234,6 +235,22 @@ class Voucher(
             self.accounting_journal_sequence = ""
             self.save()
 
+    def get_totals(self, formatted: bool = True) -> dict[str, Any]:
+        transactions = self.transactions.all()
+
+        data = {
+            "quantity": sum(trans.quantity for trans in transactions),
+            "value": sum(trans.value for trans in transactions),
+            "total": sum(trans.total for trans in transactions),
+            "tax": sum(trans.tax for trans in transactions),
+            "net": sum(trans.net for trans in transactions),
+        }
+
+        if formatted:
+            data = {k: f"{v:,.2f}" for k, v in data.items()}
+
+        return data
+
     def get_audit_url(self):
         return reverse(
             "trans:vouchers:audit",
@@ -249,6 +266,12 @@ class Voucher(
     def get_unmigrate_url(self):
         return reverse(
             "trans:vouchers:unmigrate",
+            kwargs={"slug": self.slug},
+        )
+
+    def get_word_url(self):
+        return reverse(
+            "trans:vouchers:word",
             kwargs={"slug": self.slug},
         )
 

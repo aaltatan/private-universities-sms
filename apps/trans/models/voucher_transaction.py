@@ -208,6 +208,29 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
     def get_total(self) -> Decimal:
         return self.quantity * self.value
 
+    def get_net(self) -> Decimal:
+        return self.get_total() - self.tax
+
+    @property
+    def formatted_quantity(self) -> str:
+        return f"{self.quantity:,.2f}"
+
+    @property
+    def formatted_value(self) -> str:
+        return f"{self.value:,.2f}"
+
+    @property
+    def formatted_total(self) -> str:
+        return f"{self.get_total():,.2f}"
+
+    @property
+    def formatted_tax(self) -> str:
+        return f"{self.tax:,.2f}"
+
+    @property
+    def formatted_net(self) -> str:
+        return f"{self.get_net():,.2f}"
+
     @property
     def total_information(self):
         if self.quantity == 1:
