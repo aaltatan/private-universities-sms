@@ -9,15 +9,20 @@ admin.site.register(User, UserAdmin)
 
 
 @admin.register(TemplateItem)
-class TemplateItemAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class TemplateItemAdmin(admin.ModelAdmin):
     list_display = ("name", "file")
     search_fields = ("name",)
 
 
 @admin.register(Template)
-class TemplateAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ("voucher",)
+class TemplateAdmin(admin.ModelAdmin):
     search_fields = ("voucher__name",)
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request):
+        return False
 
 
 @admin.register(Activity)
