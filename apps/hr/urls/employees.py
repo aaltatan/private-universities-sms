@@ -39,6 +39,12 @@ urlpatterns = [
         kwargs={"title": _("delete")},
     ),
     path(
+        route="word/<str:slug>/",
+        view=views.ExportToMSWordView.as_view(),
+        name="word",
+        kwargs={"title": _("word")},
+    ),
+    path(
         route="widgets/",
         view=include(
             [

@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.urls import resolve
 from django.utils import timezone
 from django.views.generic import DetailView, View
 from django_filters import rest_framework as django_filters
@@ -7,6 +8,7 @@ from rest_framework import parsers, viewsets
 
 from apps.core import filter_backends, mixins
 from apps.core.inline import InlineFormsetFactory
+from apps.core.models import Template
 from apps.core.schemas import Action
 from apps.core.utils import Deleter
 
@@ -190,3 +192,25 @@ class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     permission_required = "hr.delete_employee"
     behavior = Deleter
     model = models.Employee
+
+
+class ExportToMSWordView(
+    PermissionRequiredMixin,
+    mixins.ExportToMSWordMixin,
+    View,
+):
+    permission_required = "hr.export_employee"
+
+    def get_template(self):
+        return Template.get_employee_template()
+
+    def get_filename(self):
+        return "employee details"
+
+    def get_context_data(self):
+        resolved = resolve(self.request.path_info)
+        return {
+            "employee": models.Employee.objects.get(
+                slug=resolved.kwargs.get("slug"),
+            ),
+        }
