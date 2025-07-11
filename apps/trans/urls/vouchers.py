@@ -55,4 +55,10 @@ urlpatterns = [
         name="unmigrate",
         kwargs={"title": _("unmigrate")},
     ),
+    path(
+        route="word/<str:slug>/",
+        view=views.ExportToMSWordView.as_view(),
+        name="word",
+        kwargs={"title": _("word")},
+    ),
 ]

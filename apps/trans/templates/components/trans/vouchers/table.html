@@ -108,7 +108,7 @@
       <c-table.tr>
         <c-table.td-check :show_checkbox="can_delete" :obj="obj" idx="{{ forloop.counter }}" />
         <c-table.td fixed="True">
-          {% if can_change or can_delete or can_view_activity %}
+          {% if can_change or can_delete or can_view_activity or can_export %}
           <c-layout.contextmenu button_padding="sm">
             {% if can_change or can_view_activity or can_audit %}
             <c-layout.contextmenu.section>
@@ -177,6 +177,18 @@
                 {% translate 'unmigrate' %}
               </c-layout.contextmenu.item>
               {% endif %}
+            </c-layout.contextmenu.section>
+            {% endif %}
+            <!--  -->
+            {% if can_export %}
+            <c-layout.contextmenu.section>
+              <c-layout.contextmenu.item
+                icon="document"
+                href="{{ obj.get_word_url }}"
+                aria-label="object ms word template"
+              >
+                {% translate 'export to MSWord' %}
+              </c-layout.contextmenu.item>
             </c-layout.contextmenu.section>
             {% endif %}
             <!--  -->

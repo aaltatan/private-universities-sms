@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import QuerySet
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.urls import resolve
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, View
 from django_filters import rest_framework as django_filters
@@ -15,6 +17,7 @@ from rest_framework.response import Response
 
 from apps.core import filter_backends, mixins
 from apps.core.inline import InlineFormsetFactory
+from apps.core.models import TemplateSetting
 from apps.core.schemas import Action
 from apps.core.utils import Deleter
 
@@ -26,6 +29,26 @@ from ..utils import (
     VoucherMigrator,
     VoucherUnMigrator,
 )
+
+
+class ExportToMSWordView(mixins.ExportToMSWordMixin, View):
+    template = TemplateSetting.voucher_template()
+
+    def get_filename(self):
+        resolved = resolve(self.request.path_info)
+        voucher = get_object_or_404(
+            models.Voucher,
+            slug=resolved.kwargs.get("slug"),
+        )
+        return voucher.voucher_serial
+
+    def get_context_data(self):
+        resolved = resolve(self.request.path_info)
+        return {
+            "voucher": models.Voucher.objects.get(
+                slug=resolved.kwargs.get("slug"),
+            ),
+        }
 
 
 class APIViewSet(

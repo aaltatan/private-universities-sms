@@ -14,6 +14,7 @@ from .list import (
     TemplateVariablesMixin,
 )
 from .save import AddCreateActivityMixin
+from .template import ExportToMSWordMixin
 from .update import UpdateMixin
 from .utils import CustomDjangoQLSearchMixin, FiltersetMixin
 
@@ -36,4 +37,5 @@ __all__ = [
     "APIMixin",
     "IndexMixin",
     "FiltersetMixin",
+    "ExportToMSWordMixin",
 ]
