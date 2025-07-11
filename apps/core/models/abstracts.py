@@ -19,29 +19,29 @@ class UrlsMixin:
 
     def get_absolute_url(self) -> str:
         app_label = self.__get_app_label()
-        verbose_name_plural: str = self.__get_verbose_name_plural()
+        codename_plural: str = self.__get_codename_plural()
         return reverse(
-            f"{app_label}:{verbose_name_plural}:details",
+            f"{app_label}:{codename_plural}:details",
             kwargs={"slug": self.slug},
         )
 
     def get_delete_url(self) -> str:
         app_label = self.__get_app_label()
-        verbose_name_plural: str = self.__get_verbose_name_plural()
+        codename_plural: str = self.__get_codename_plural()
         return reverse(
-            f"{app_label}:{verbose_name_plural}:delete",
+            f"{app_label}:{codename_plural}:delete",
             kwargs={"slug": self.slug},
         )
 
     def get_update_url(self) -> str:
         app_label = self.__get_app_label()
-        verbose_name_plural: str = self.__get_verbose_name_plural()
+        codename_plural: str = self.__get_codename_plural()
         return reverse(
-            f"{app_label}:{verbose_name_plural}:update",
+            f"{app_label}:{codename_plural}:update",
             kwargs={"slug": self.slug},
         )
 
-    def __get_verbose_name_plural(self) -> str:
+    def __get_codename_plural(self) -> str:
         return self._meta.codename_plural
 
     def __get_app_label(self) -> str:

@@ -190,10 +190,10 @@ class CreateMixin(ABC):
         if self.template_name:
             return self.template_name
 
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         app_label = self.get_app_label()
 
-        return f"apps/{app_label}/{verbose_name_plural}/create.html"
+        return f"apps/{app_label}/{codename_plural}/create.html"
 
     def get_form_modal_template_name(self) -> str:
         """
@@ -204,10 +204,10 @@ class CreateMixin(ABC):
         if self.form_template_name:
             return self.form_modal_template_name
 
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         app_label = self.get_app_label()
 
-        return f"components/{app_label}/{verbose_name_plural}/modal-create.html"
+        return f"components/{app_label}/{codename_plural}/modal-create.html"
 
     def get_form_template_name(self) -> str:
         """
@@ -217,14 +217,14 @@ class CreateMixin(ABC):
         if self.form_modal_template_name:
             return self.form_template_name
 
-        verbose_name_plural = self.get_verbose_name_plural()
         app_label = self.get_app_label()
+        codename_plural = self.get_codename_plural()
 
-        return f"components/{app_label}/{verbose_name_plural}/create.html"
+        return f"components/{app_label}/{codename_plural}/create.html"
 
-    def get_verbose_name_plural(self) -> str:
+    def get_codename_plural(self) -> str:
         """
-        Returns the verbose name plural using the model.
+        Returns the codename plural using the model.
         """
         return self.get_model_class()._meta.codename_plural
 
@@ -240,20 +240,20 @@ class CreateMixin(ABC):
         Returns the app links.
         """
         app_label = self.get_app_label()
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         return {
-            "index_url": reverse(f"{app_label}:{verbose_name_plural}:index"),
-            "create_url": reverse(f"{app_label}:{verbose_name_plural}:create"),
+            "index_url": reverse(f"{app_label}:{codename_plural}:index"),
+            "create_url": reverse(f"{app_label}:{codename_plural}:create"),
         }
 
     def get_html_ids(self) -> dict[str, str]:
         """
         Returns the html ids.
         """
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         return {
-            "table_id": f"{verbose_name_plural}-table",
-            "form_id": f"{verbose_name_plural}-form",
+            "table_id": f"{codename_plural}-table",
+            "form_id": f"{codename_plural}-form",
         }
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:

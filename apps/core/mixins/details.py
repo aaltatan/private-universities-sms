@@ -6,7 +6,7 @@ class DetailsMixin:
     template_name: str | None = None
     model: Model | None = None
 
-    def get_verbose_name_plural(self) -> str:
+    def get_codename_plural(self) -> str:
         return self.model._meta.codename_plural
 
     def get_app_label(self) -> str:
@@ -22,8 +22,8 @@ class DetailsMixin:
             return self.template_name
 
         app_label = self.get_app_label()
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
 
-        template_name = f"components/{app_label}/{verbose_name_plural}/details.html"
+        template_name = f"components/{app_label}/{codename_plural}/details.html"
 
         return [template_name]

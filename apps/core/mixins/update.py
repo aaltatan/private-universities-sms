@@ -294,40 +294,40 @@ class UpdateMixin(ABC):
         if getattr(self, "template_name", None):
             return self.template_name
 
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         app_label = self.get_app_label()
 
-        return f"apps/{app_label}/{verbose_name_plural}/update.html"
+        return f"apps/{app_label}/{codename_plural}/update.html"
 
     def get_form_template_name(self) -> str:
         """
         Returns the form template name.
         Notes: you can use the *form_template_name* attribute to override the default form template name.
         """
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         app_label = self.get_app_label()
 
         if getattr(self, "form_template_name", None):
             return self.form_template_name
 
-        return f"components/{app_label}/{verbose_name_plural}/update.html"
+        return f"components/{app_label}/{codename_plural}/update.html"
 
     def get_form_modal_template_name(self) -> str:
         """
         Returns the form modal template name.
         Notes: you can use the *form_modal_template_name* attribute to override the default form modal template name.
         """
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         app_label = self.get_app_label()
 
         if getattr(self, "form_modal_template_name", None):
             return self.form_modal_template_name
 
-        return f"components/{app_label}/{verbose_name_plural}/modal-update.html"
+        return f"components/{app_label}/{codename_plural}/modal-update.html"
 
-    def get_verbose_name_plural(self) -> str:
+    def get_codename_plural(self) -> str:
         """
-        Returns the verbose name plural using the model.
+        Returns the codename plural using the model.
         """
         model = self.get_model_class()
         return model._meta.codename_plural
@@ -344,9 +344,9 @@ class UpdateMixin(ABC):
         Returns the app links.
         """
         app_label = self.get_app_label()
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         return {
-            "index_url": reverse(f"{app_label}:{verbose_name_plural}:index"),
+            "index_url": reverse(f"{app_label}:{codename_plural}:index"),
             "update_url": self.obj.get_update_url(),
         }
 
@@ -354,7 +354,7 @@ class UpdateMixin(ABC):
         """
         Returns the html ids.
         """
-        app_label = self.get_verbose_name_plural()
+        app_label = self.get_codename_plural()
         return {
             "form_id": f"{app_label}-form",
             "table_id": f"{app_label}-table",

@@ -72,7 +72,7 @@ class SidebarFilterMixin(ABC):
 class ObjectNamesMixin:
     model: type[Model] | None = None
     app_label: str | None = None
-    verbose_name_plural: str | None = None
+    codename_plural: str | None = None
     object_name: str | None = None
     model_name: str | None = None
 
@@ -94,12 +94,12 @@ class ObjectNamesMixin:
 
         return self.model._meta.app_label
 
-    def get_verbose_name_plural(self) -> str:
+    def get_codename_plural(self) -> str:
         """
-        Returns the verbose name plural using the model.
+        Returns the codename plural using the model.
         """
-        if getattr(self, "verbose_name_plural", None):
-            return self.verbose_name_plural
+        if getattr(self, "codename_plural", None):
+            return self.codename_plural
 
         return self.model._meta.codename_plural
 
@@ -126,10 +126,10 @@ class TemplateNamesMixin(ObjectNamesMixin):
         if self.template_name:
             return self.template_name
 
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         app_label = self.get_app_label()
 
-        return f"apps/{app_label}/{verbose_name_plural}/index.html"
+        return f"apps/{app_label}/{codename_plural}/index.html"
 
     def get_table_template_name(self) -> str:
         """
@@ -139,10 +139,10 @@ class TemplateNamesMixin(ObjectNamesMixin):
         if self.table_template_name:
             return self.table_template_name
 
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         app_label = self.get_app_label()
 
-        return f"components/{app_label}/{verbose_name_plural}/table.html"
+        return f"components/{app_label}/{codename_plural}/table.html"
 
     def get_filter_form_template_name(self) -> str:
         """
@@ -152,10 +152,10 @@ class TemplateNamesMixin(ObjectNamesMixin):
         if self.filter_form_template_name:
             return self.filter_form_template_name
 
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         app_label = self.get_app_label()
 
-        return f"components/{app_label}/{verbose_name_plural}/filter-form.html"
+        return f"components/{app_label}/{codename_plural}/filter-form.html"
 
 
 class TemplateVariablesMixin(ObjectNamesMixin):
@@ -163,11 +163,11 @@ class TemplateVariablesMixin(ObjectNamesMixin):
         """
         Returns the html ids.
         """
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         return {
-            "table_id": f"{verbose_name_plural}-table",
-            "form_table_id": f"{verbose_name_plural}-form-table",
-            "filter_form_id": f"{verbose_name_plural}-filter",
+            "table_id": f"{codename_plural}-table",
+            "form_table_id": f"{codename_plural}-form-table",
+            "filter_form_id": f"{codename_plural}-filter",
         }
 
     def get_index_url(self) -> str:
@@ -175,20 +175,20 @@ class TemplateVariablesMixin(ObjectNamesMixin):
         Returns index urls.
         """
         app_label = self.get_app_label()
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
 
-        return reverse(f"{app_label}:{verbose_name_plural}:index")
+        return reverse(f"{app_label}:{codename_plural}:index")
 
     def get_create_url(self) -> str | None:
         """
         Returns add url.
         """
         app_label = self.get_app_label()
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
 
         # in case of no create view
         try:
-            create_url = reverse(f"{app_label}:{verbose_name_plural}:create")
+            create_url = reverse(f"{app_label}:{codename_plural}:create")
         except NoReverseMatch:
             create_url = None
 
@@ -470,15 +470,15 @@ class ListMixin(
         """
         Returns the dataset title.
         """
-        return self.get_verbose_name_plural().replace("_", " ").title()
+        return self.get_codename_plural().replace("_", " ").title()
 
     def get_filename(self) -> str:
         """
         Returns the filename.
         """
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         now: str = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        return f"{verbose_name_plural.title()}-{now}"
+        return f"{codename_plural.title()}-{now}"
 
     def get_filtered_queryset(
         self, request: HttpRequest, queryset: QuerySet
@@ -547,7 +547,7 @@ class ListMixin(
 
         context = {
             "app_label": self.get_app_label(),
-            "subapp_label": self.get_verbose_name_plural(),
+            "subapp_label": self.get_codename_plural(),
             "model_name": self.get_model_name(),
             "model": self.model,
             "create_url": self.get_create_url(),

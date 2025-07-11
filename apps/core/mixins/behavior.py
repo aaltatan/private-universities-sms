@@ -127,9 +127,9 @@ class BehaviorMixin(ABC):
         model = self.get_model_class()
         return model._meta.app_label
 
-    def get_verbose_name_plural(self) -> str:
+    def get_codename_plural(self) -> str:
         """
-        Returns the verbose name plural using the model.
+        Returns the codename plural using the model.
         """
         model = self.get_model_class()
         return model._meta.codename_plural
@@ -139,7 +139,7 @@ class BehaviorMixin(ABC):
         Returns the html ids.
         """
         return {
-            "table_id": f"{self.get_verbose_name_plural()}-table",
+            "table_id": f"{self.get_codename_plural()}-table",
         }
 
     def get_app_urls(self) -> dict[str, str]:
@@ -147,9 +147,9 @@ class BehaviorMixin(ABC):
         Returns the app links.
         """
         app_label = self.get_app_label()
-        verbose_name_plural = self.get_verbose_name_plural()
+        codename_plural = self.get_codename_plural()
         return {
-            "index_url": reverse(f"{app_label}:{verbose_name_plural}:index"),
+            "index_url": reverse(f"{app_label}:{codename_plural}:index"),
         }
 
     def get_modal_template_name(self) -> str:
