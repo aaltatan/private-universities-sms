@@ -54,6 +54,7 @@ THIRTY_PARTY_APPS = [
     "rest_framework_simplejwt",
     "django_vite",
     "corsheaders",
+    "django_cleanup",
 ]
 
 CORE_APPS = [
