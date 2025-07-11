@@ -43,7 +43,7 @@
             hx-vals='{"export": true, "extension": "xlsx"}'
             aria-label="export table as xlsx"
           >
-            {% translate 'excel file'|title %}
+            {% translate 'export to Excel'|capfirst %}
           </c-layout.contextmenu.item>
           <c-layout.contextmenu.item
             icon="document-text"
@@ -52,7 +52,7 @@
             hx-vals='{"export": true, "extension": "csv"}'
             aria-label="export table as csv"
           >
-            CSV
+            {% translate 'export to CSV' %}
           </c-layout.contextmenu.item>
           <c-layout.contextmenu.item
             icon="document"
@@ -61,7 +61,7 @@
             hx-vals='{"export": true, "extension": "json"}'
             aria-label="export table as json"
           >
-            JSON
+            {% translate 'export to JSON' %}
           </c-layout.contextmenu.item>
         </c-layout.contextmenu.section>
       </c-layout.contextmenu>
