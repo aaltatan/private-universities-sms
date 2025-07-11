@@ -55,12 +55,7 @@ class Template(models.Model):
         return cls.objects.first().voucher.file
 
     def __str__(self):
-        return f"VoucherSetting(voucher={self.voucher})"
-
-    def clean(self):
-        Klass = self.__class__
-        if Klass.objects.count() >= 1:
-            raise ValidationError(_("only one setting allowed"))
+        return f"VoucherSetting(voucher={self.voucher}, employee={self.employee})"
 
     def delete(self, using=None, keep_parents=False):
         raise ValidationError(_("you cannot delete this object"))
@@ -72,7 +67,8 @@ class Template(models.Model):
         using=None,
         update_fields=None,
     ):
-        self.clean()
+        if self.pk is None:
+            raise ValidationError(_("you cannot multiple templates"))
         return super().save(force_insert, force_update, using, update_fields)
 
     class Meta:
