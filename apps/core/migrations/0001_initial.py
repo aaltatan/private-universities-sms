@@ -16,19 +16,27 @@ import apps.core.validators
 
 
 def create_default_template(apps: AppConfig, schema_editor):
-    empty_template = Path("assets/word_templates/empty.docx").resolve()
+    employee_template = Path("assets/word_templates/employee.docx").resolve()
+    base_voucher_template = Path("assets/word_templates/voucher.docx").resolve()
 
     TemplateItem = apps.get_model("core", "TemplateItem")
-    TemplateSetting = apps.get_model("core", "Template")
+    Template = apps.get_model("core", "Template")
 
-    with open(empty_template, "rb") as file:
-        empty_template_item = TemplateItem()
-        empty_template_item.name = "voucher"
-        empty_template_item.file.save("template.docx", File(file))
+    with open(employee_template, "rb") as file:
+        employee_template_item = TemplateItem()
+        employee_template_item.name = "employee template"
+        employee_template_item.file.save("employee.docx", File(file))
+        employee_template_item.save()
 
-    empty_template_item.save()
-    TemplateSetting.objects.create(
-        voucher=empty_template_item, employee=empty_template_item
+    with open(base_voucher_template, "rb") as file:
+        voucher_template_item = TemplateItem()
+        voucher_template_item.name = "voucher template"
+        voucher_template_item.file.save("voucher.docx", File(file))
+        voucher_template_item.save()
+
+    Template.objects.create(
+        voucher=voucher_template_item,
+        employee=employee_template_item,
     )
 
 
