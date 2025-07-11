@@ -2,10 +2,22 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from import_export.admin import ImportExportModelAdmin
 
-from .models import Activity, User
+from .models import Activity, User, Template, TemplateSetting
 from .utils import badge_component
 
 admin.site.register(User, UserAdmin)
+
+
+@admin.register(Template)
+class TemplateAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ("name", "file")
+    search_fields = ("name",)
+
+
+@admin.register(TemplateSetting)
+class TemplateSettingAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ("voucher",)
+    search_fields = ("voucher__name",)
 
 
 @admin.register(Activity)
