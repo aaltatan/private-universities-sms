@@ -13,6 +13,7 @@ class MobileManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().select_related("employee")
 
+
 class Mobile(AddCreateActivityMixin, models.Model):
     class HasWhatsappChoices(models.TextChoices):
         NONE = "", "------"
@@ -57,7 +58,7 @@ class Mobile(AddCreateActivityMixin, models.Model):
     objects: MobileManager = MobileManager()
 
     def __str__(self) -> str:
-        return f"+963{self.number[1:]}"
+        return f"+963 {self.number[1:4]} {self.number[4:7]} {self.number[7:]}"
 
     def get_absolute_url(self) -> str:
         return f"tel:+963{self.number[1:]}"

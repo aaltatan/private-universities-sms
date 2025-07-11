@@ -48,7 +48,7 @@ class Phone(AddCreateActivityMixin, models.Model):
     objects: PhoneManager = PhoneManager()
 
     def __str__(self) -> str:
-        return f"+963{self.number[1:]}"
+        return f"+963 {self.number[1:3]} {self.number[3:]}"
 
     def get_absolute_url(self) -> str:
         return f"tel:+963{self.number[1:]}"
