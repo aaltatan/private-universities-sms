@@ -4,8 +4,7 @@ from .abstracts import (
     TimeStampAbstractModel,
 )
 from .activity import Activity
-from .template_setting import TemplateSetting
-from .template import Template
+from .template import Template, TemplateItem
 from .user import User
 
 __all__ = [
@@ -14,6 +13,6 @@ __all__ = [
     "TimeStampAbstractModel",
     "User",
     "Activity",
+    "TemplateItem",
     "Template",
-    "TemplateSetting",
 ]

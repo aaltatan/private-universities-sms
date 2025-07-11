@@ -1,10 +1,11 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext as _
 
 from .. import validators
 
 
-class Template(models.Model):
+class TemplateItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     uploaded_at = models.DateTimeField(auto_now=True)
     name = models.CharField(
@@ -26,6 +27,55 @@ class Template(models.Model):
         return self.name
 
     class Meta:
+        verbose_name = _("template item").title()
+        verbose_name_plural = _("template items").title()
+        ordering = ("name",)
+
+
+class Template(models.Model):
+    voucher = models.OneToOneField(
+        TemplateItem,
+        on_delete=models.PROTECT,
+        related_name="voucher_template",
+        verbose_name=_("voucher template"),
+    )
+    employee = models.OneToOneField(
+        TemplateItem,
+        on_delete=models.PROTECT,
+        related_name="employee_template",
+        verbose_name=_("employee template"),
+    )
+
+    @classmethod
+    def get_employee_template(cls):
+        return cls.objects.first().employee.file
+
+    @classmethod
+    def get_voucher_template(cls):
+        return cls.objects.first().voucher.file
+
+    def __str__(self):
+        return f"VoucherSetting(voucher={self.voucher})"
+
+    def clean(self):
+        Klass = self.__class__
+        if Klass.objects.count() >= 1:
+            raise ValidationError(_("only one setting allowed"))
+
+    def delete(self, using=None, keep_parents=False):
+        raise ValidationError(_("you cannot delete this object"))
+
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ):
+        self.clean()
+        return super().save(force_insert, force_update, using, update_fields)
+
+    class Meta:
         verbose_name = _("template").title()
         verbose_name_plural = _("templates").title()
-        ordering = ("name",)
+        ordering = ("voucher__name",)

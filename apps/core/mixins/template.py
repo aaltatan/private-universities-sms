@@ -6,9 +6,8 @@ from docxtpl import DocxTemplate
 
 
 class ExportToMSWordMixin(ABC):
-    @property
     @abstractmethod
-    def template(self) -> Any:
+    def get_template(self) -> Any:
         pass
 
     @abstractmethod
@@ -16,7 +15,7 @@ class ExportToMSWordMixin(ABC):
         pass
 
     def get(self, request, *args, **kwargs):
-        response = self.render_to_word_response(file=self.template)
+        response = self.render_to_word_response(file=self.get_template())
         return response
 
     def get_filename(self):

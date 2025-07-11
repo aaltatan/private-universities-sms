@@ -17,7 +17,7 @@ from rest_framework.response import Response
 
 from apps.core import filter_backends, mixins
 from apps.core.inline import InlineFormsetFactory
-from apps.core.models import TemplateSetting
+from apps.core.models import Template
 from apps.core.schemas import Action
 from apps.core.utils import Deleter
 
@@ -317,7 +317,9 @@ class ExportToMSWordView(
     View,
 ):
     permission_required = "vouchers.export_voucher"
-    template = TemplateSetting.get_voucher_template()
+
+    def get_template(self):
+        return Template.get_voucher_template()
 
     def get_filename(self):
         resolved = resolve(self.request.path_info)
