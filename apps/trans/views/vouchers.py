@@ -31,26 +31,6 @@ from ..utils import (
 )
 
 
-class ExportToMSWordView(mixins.ExportToMSWordMixin, View):
-    template = TemplateSetting.voucher_template()
-
-    def get_filename(self):
-        resolved = resolve(self.request.path_info)
-        voucher = get_object_or_404(
-            models.Voucher,
-            slug=resolved.kwargs.get("slug"),
-        )
-        return voucher.voucher_serial
-
-    def get_context_data(self):
-        resolved = resolve(self.request.path_info)
-        return {
-            "voucher": models.Voucher.objects.get(
-                slug=resolved.kwargs.get("slug"),
-            ),
-        }
-
-
 class APIViewSet(
     mixins.APIMixin,
     mixins.BulkDeleteAPIMixin,
@@ -329,3 +309,28 @@ class UnMigrateView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     behavior = VoucherUnMigrator
     model = models.Voucher
     modal_template_name = "components/trans/vouchers/modals/unmigrate.html"
+
+
+class ExportToMSWordView(
+    PermissionRequiredMixin,
+    mixins.ExportToMSWordMixin,
+    View,
+):
+    permission_required = "vouchers.export_voucher"
+    template = TemplateSetting.get_voucher_template()
+
+    def get_filename(self):
+        resolved = resolve(self.request.path_info)
+        voucher = get_object_or_404(
+            models.Voucher,
+            slug=resolved.kwargs.get("slug"),
+        )
+        return voucher.voucher_serial
+
+    def get_context_data(self):
+        resolved = resolve(self.request.path_info)
+        return {
+            "voucher": models.Voucher.objects.get(
+                slug=resolved.kwargs.get("slug"),
+            ),
+        }
