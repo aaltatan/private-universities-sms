@@ -292,6 +292,15 @@
     <c-slot name="footer">
       <c-button
         theme="outline"
+        kind="a"
+        href="{{ object.get_word_url }}"
+        title="{% translate 'close'|title %}"
+        :hide_icon="True"
+      >
+        {% translate 'export to MS Word'|capfirst %}
+      </c-button>
+      <c-button
+        theme="outline"
         title="{% translate 'close'|title %}"
         @click="hideModal"
         :hide_icon="True"
