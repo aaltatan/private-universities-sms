@@ -14,7 +14,7 @@ class TemplateSetting(models.Model):
     )
 
     @classmethod
-    def voucher_template(cls):
+    def get_voucher_template(cls):
         return cls.objects.first().voucher.file
 
     def __str__(self):
