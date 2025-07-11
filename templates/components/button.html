@@ -74,9 +74,18 @@
     {{ attrs }}
     class="{{ widths|get_item:width }} {{ paddings|get_item:padding }} {{ base_theme }} {{ theme_variants|get_item:theme }} {{ corners|get_item:rounded }}"
   >
-    {% if icon_slot %} {{ icon_slot }} {% else %}
+    {% if icon_slot %}
+    <!--  -->
+    {{ icon_slot }} 
+    <!--  -->
+    {% else %}
+    <!--  -->
+    {% if not hide_icon %}
     <span>{% heroicon_outline icon size=size %}</span>
+    {% endif %}
+    <!--  -->
     {% endif %} 
+    <!--  -->
     {{ slot }}
   </a>
 
