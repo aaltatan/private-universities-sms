@@ -238,7 +238,7 @@
           <c-table.tr>
             <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
             <c-table.td data-header="{% translate 'employee'|title %}">
-              <span> {{ transaction.employee }}</span>
+              <span> {{ transaction.employee.fullname }}</span>
             </c-table.td>
             <c-table.td :wrap="True" data-header="{% translate 'cost center'|title %}">
               {{ transaction.employee.cost_center }}

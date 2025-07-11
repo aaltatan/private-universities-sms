@@ -3,7 +3,7 @@ from django.db.models import options
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from ..validators import four_char_length_validator
+from .. import validators
 
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("icon", "codename_plural")
 
@@ -59,7 +59,7 @@ class AbstractUniqueNameModel(UrlsMixin, models.Model):
     name = models.CharField(
         max_length=255,
         unique=True,
-        validators=[four_char_length_validator],
+        validators=[validators.four_char_length_validator],
         verbose_name=_("name"),
     )
     description = models.TextField(
@@ -102,7 +102,7 @@ class SoftDeleteAbstractModel(models.Model):
 
     def delete(self, using=None, keep_parents=False, permanent=False):
         if permanent:
-            super().delete(using=None, keep_parents=False)
+            super().delete(using=using, keep_parents=keep_parents)
         else:
             self.is_deleted = True
             self.save()
