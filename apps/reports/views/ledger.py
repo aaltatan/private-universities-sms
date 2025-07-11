@@ -12,7 +12,7 @@ from .. import resources, filters
 
 class LedgerView(PermissionRequiredMixin, mixins.ListMixin, View):
     app_label = "reports"
-    verbose_name_plural = "ledger"
+    codename_plural = "ledger"
     permission_required = "trans.view_journalentry"
     model = JournalEntry
     filter_class = filters.LedgerFilter
