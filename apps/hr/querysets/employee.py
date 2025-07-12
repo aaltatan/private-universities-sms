@@ -116,6 +116,13 @@ class EmployeeQuerySet(models.QuerySet):
     ):
         return self._annotate_journals_total_field("amount", sum_filter_Q)
 
+    def annotate_journals_totals(self, sum_filter_Q: models.Q | None = None):
+        return (
+            self.annotate_journals_total_debit(sum_filter_Q)
+            .annotate_journals_total_credit(sum_filter_Q)
+            .annotate_journals_total_amount(sum_filter_Q)
+        )
+
     def annotate_search(self):
         return self.annotate(
             search=annotate_search(constants.SEARCH_FIELDS),
