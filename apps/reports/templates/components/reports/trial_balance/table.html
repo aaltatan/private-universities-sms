@@ -16,6 +16,10 @@
   </c-slot>
 
   <c-slot name="buttons_bar">
+    <c-table.filter-form trigger="order-by-change">
+      {{ ordering_filter.form.ordering }}
+    </c-table.filter-form>
+
     <c-button
       icon="adjustments-horizontal"
       size="20"
@@ -73,14 +77,14 @@
             {{ obj.fullname }}
           </a>
         </c-table.td>
-        <c-table.td data-header="{% translate 'total debit' %}"> 
-            {{ obj.total_debit|money:True }}
+        <c-table.td data-header="{% translate 'total debit' %}">
+          {{ obj.total_debit|money:True }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'total credit' %}"> 
-            {{ obj.total_credit|money:True }}
+        <c-table.td data-header="{% translate 'total credit' %}">
+          {{ obj.total_credit|money:True }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'net' %}"> 
-            {{ obj.total_amount|money:True }}
+        <c-table.td data-header="{% translate 'net' %}">
+          {{ obj.total_amount|money:True }}
         </c-table.td>
       </c-table.tr>
       {% empty %}
