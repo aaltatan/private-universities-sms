@@ -501,6 +501,8 @@ class ListMixin(
         2. Filter the queryset by search filter
         3. Filter the queryset by filter class (sidebar)
         """
+        ordered_by = queryset.query.order_by
+
         # Step 1: Filter the queryset by ordering filter
         if self.order_filter:
             OrderingFilter = self.get_ordering_filter_class()
@@ -508,8 +510,11 @@ class ListMixin(
             queryset = ordering_filter.qs
 
         if not request.GET.get("ordering"):
-            default_ordering = self.model._meta.ordering
-            queryset = queryset.order_by(*default_ordering)
+            if ordered_by:
+                queryset = queryset.order_by(*ordered_by)
+            else:
+                default_ordering = self.model._meta.ordering
+                queryset = queryset.order_by(*default_ordering)
 
         # Step 2: Filter the queryset by search filter
         if self.search_filter:
