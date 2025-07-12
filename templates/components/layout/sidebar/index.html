@@ -269,6 +269,22 @@
         {% endif %}
       </c-layout.sidebar.collapsible-item>
       {% endif %}
+      <!-- reports -->
+      {% if perms.reports.view_trialbalance %}
+      <c-layout.sidebar.collapsible-item
+        text="{% translate 'reports'|title %}"
+        icon="chart-pie"
+        url="/reports/"
+        name="reports"
+      >
+        {% if perms.reports.view_trialbalance %}
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.reports.trial_balance.path }}"
+          text="{{ sidebar_links.reports.trial_balance.text }}"
+        />
+        {% endif %}
+      </c-layout.sidebar.collapsible-item>
+      {% endif %}
     </div>
   </nav>
 

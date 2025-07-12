@@ -1,10 +1,14 @@
 from django.db import models
 
 
-class ReportPermission(models.Model):
+class Ledger(models.Model):
     class Meta:
         managed = False
-        permissions = (
-            ("view_ledger", "Can view ledger report"),
-            ("view_trialbalance", "Can view trial balance report"),
-        )
+        codename_plural = "ledger"
+
+
+class TrialBalance(models.Model):
+    class Meta:
+        managed = False
+        icon = "scale"
+        codename_plural = "trial_balance"

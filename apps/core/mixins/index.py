@@ -32,6 +32,7 @@ class IndexMixin(ABC):
                 "phone",
                 "mobile",
                 "voucherproxy",
+                "ledger",
             ],
         )
 

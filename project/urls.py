@@ -9,7 +9,7 @@ from apps.fin.urls import patterns as fin_patterns
 from apps.geo.urls import patterns as geo_patterns
 from apps.hr.urls import patterns as hr_patterns
 from apps.org.urls import patterns as org_patterns
-from apps.reports.urls import urlpatterns as reports_patterns
+from apps.reports.urls import patterns as reports_patterns
 from apps.trans.urls import patterns as trans_patterns
 
 from .router import router
