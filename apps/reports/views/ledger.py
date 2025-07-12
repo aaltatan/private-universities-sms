@@ -24,7 +24,7 @@ class LedgerView(PermissionRequiredMixin, mixins.ListMixin, View):
         context["employee"] = self.employee
         return context
 
-    def get_initial_queryset(self):
+    def get_queryset(self):
         resolved = resolve(self.request.path_info)
         slug = resolved.kwargs.get("slug")
 

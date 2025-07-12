@@ -21,7 +21,7 @@ class ListView(
     deleter = VoucherDeleter
     ordering_fields = constants.ORDERING_FIELDS
 
-    def get_initial_queryset(self):
+    def get_queryset(self):
         return models.VoucherTransaction.objects.filter(
             voucher__is_deleted=False,
         )

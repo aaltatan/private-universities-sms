@@ -350,9 +350,14 @@ class ListMixin(
 
         if request.GET.get("filters"):
             template_name = self.get_filter_form_template_name()
+
+            queryset = self.get_queryset()
+            queryset = self.get_filtered_queryset(request, queryset)
+
             context = self.sidebar_filters_context_data(
-                request=request, queryset=self.get_queryset()
+                request=request, queryset=queryset
             )
+
             return self.get_filters_response(request, template_name, context)
 
         template_name = self.get_template_name()
@@ -419,7 +424,11 @@ class ListMixin(
         Parses the ids from the request.
         """
         ids = [int(id) for id in request.POST.getlist("action-check")]
-        return self.get_queryset().filter(pk__in=ids)
+
+        queryset = self.get_queryset()
+        queryset = self.get_filtered_queryset(request, queryset)
+
+        return queryset.filter(pk__in=ids)
 
     def get_export_response(self, request: HttpRequest) -> HttpResponse:
         """
@@ -451,6 +460,8 @@ class ListMixin(
         extension = request.GET.get("extension", "xlsx").lower()
 
         queryset = self.get_queryset()
+        queryset = self.get_filtered_queryset(request, queryset)
+
         self.resource_class._serials = []
         dataset: Dataset = self.resource_class().export(queryset)
 
@@ -512,20 +523,11 @@ class ListMixin(
 
         return queryset
 
-    def get_initial_queryset(self) -> QuerySet:
-        """
-        Returns the initial queryset.
-        """
-        return self.model.objects.all()
-
     def get_queryset(self) -> QuerySet:
         """
         Returns the queryset.
         """
-        initial_queryset = self.get_initial_queryset()
-        queryset = self.get_filtered_queryset(self.request, initial_queryset)
-
-        return queryset
+        return self.model.objects.all()
 
     def get_modal_context_data(self, qs: QuerySet, **kwargs) -> dict[str, Any]:
         """
@@ -542,8 +544,10 @@ class ListMixin(
         """
         Returns the context data that will be passed to the template.
         """
-        queryset = self.get_queryset()
         request: HttpRequest = self.request
+
+        queryset = self.get_queryset()
+        queryset = self.get_filtered_queryset(request, queryset)
 
         context = {
             "app_label": self.get_app_label(),

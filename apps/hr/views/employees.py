@@ -78,7 +78,7 @@ class ListView(
     deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
 
-    def get_initial_queryset(self):
+    def get_queryset(self):
         return models.Employee.objects.select_related(
             # geo
             "city",
