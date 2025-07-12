@@ -449,7 +449,7 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         ).date()
 
     def get_ledger_url(self):
-        return reverse("reports:ledger", kwargs={"slug": self.slug})
+        return reverse("reports:ledger:index", kwargs={"slug": self.slug})
 
     def get_word_url(self):
         return reverse("hr:employees:word", kwargs={"slug": self.slug})

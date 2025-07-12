@@ -33,7 +33,7 @@ class LedgerView(PermissionRequiredMixin, mixins.ListMixin, View):
         return JournalEntry.objects.filter(employee=self.employee)
 
     def get_index_url(self):
-        return reverse("reports:ledger", kwargs={"slug": self.employee.slug})
+        return reverse("reports:ledger:index", kwargs={"slug": self.employee.slug})
 
     def get_dataset_title(self):
         return self.employee.fullname
