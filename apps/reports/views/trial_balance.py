@@ -28,7 +28,7 @@ class TrialBalanceView(PermissionRequiredMixin, mixins.ListMixin, View):
             Employee.objects.annotate_journals_total_debit()
             .annotate_journals_total_credit()
             .annotate_journals_total_amount()
-            .order_by("-total_amount")
+            .order_by("-total_amount", "fullname")
         )
 
     def get_index_url(self):
