@@ -1,5 +1,6 @@
+from typing import Literal
+
 from django.conf import settings
-from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.db.models.functions import Coalesce, Floor
@@ -71,55 +72,34 @@ class EmployeeQuerySet(models.QuerySet):
 
         return queryset
 
-    def annotate_journals_nets(self, include_zero: bool = True):
-        """
-        Returns a queryset of employees with nets from their journals.
-        """
-        queryset = self.annotate(
-            net=Coalesce(
-                models.Sum("journals__amount"),
-                0,
-                output_field=models.DecimalField(
-                    max_digits=20,
-                    decimal_places=4,
-                ),
-            )
-        )
-
-        if not include_zero:
-            queryset = queryset.filter(~models.Q(net=0))
-
-        return queryset
-
-    def annotate_journals_totals(self, include_zero: bool = True):
+    def _annotate_journals_total_field(
+        self,
+        field_name: Literal["debit", "credit", "amount"],
+    ):
         """
         Returns a queryset of employees with totals from their journals.
         """
-        content_type = ContentType.objects.get_by_natural_key(
-            "fin",
-            "compensation",
-        )
-
-        queryset = self.annotate(
-            total=Coalesce(
-                models.Sum(
-                    "journals__amount",
-                    filter=models.Q(
-                        journals__content_type=content_type,
+        return self.annotate(
+            **{
+                f"total_{field_name}": Coalesce(
+                    models.Sum(f"journals__{field_name}"),
+                    0,
+                    output_field=models.DecimalField(
+                        max_digits=20,
+                        decimal_places=4,
                     ),
-                ),
-                0,
-                output_field=models.DecimalField(
-                    max_digits=20,
-                    decimal_places=4,
-                ),
-            ),
+                )
+            },
         )
 
-        if not include_zero:
-            queryset = queryset.filter(~models.Q(total=0))
+    def annotate_journals_total_debit(self):
+        return self._annotate_journals_total_field("debit")
 
-        return queryset
+    def annotate_journals_total_credit(self):
+        return self._annotate_journals_total_field("credit")
+
+    def annotate_journals_total_amount(self):
+        return self._annotate_journals_total_field("amount")
 
     def annotate_search(self):
         return self.annotate(

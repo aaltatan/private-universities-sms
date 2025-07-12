@@ -17,6 +17,14 @@ class TrialBalanceView(PermissionRequiredMixin, mixins.ListMixin, View):
     resource_class = resources.TrialBalanceResource
     order_filter = False
 
+    def get_queryset(self):
+        return (
+            Employee.objects.annotate_journals_total_debit()
+            .annotate_journals_total_credit()
+            .annotate_journals_total_amount()
+            .all()
+        )
+
     def get_index_url(self):
         return reverse("reports:trial_balance:index")
 

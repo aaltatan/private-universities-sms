@@ -73,9 +73,15 @@
             {{ obj.fullname }}
           </a>
         </c-table.td>
-        <c-table.td data-header="{% translate 'total debit' %}"> 0 </c-table.td>
-        <c-table.td data-header="{% translate 'total credit' %}"> 0 </c-table.td>
-        <c-table.td data-header="{% translate 'net' %}"> 0 </c-table.td>
+        <c-table.td data-header="{% translate 'total debit' %}"> 
+            {{ obj.total_debit|money:True }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'total credit' %}"> 
+            {{ obj.total_credit|money:True }}
+        </c-table.td>
+        <c-table.td data-header="{% translate 'net' %}"> 
+            {{ obj.total_amount|money:True }}
+        </c-table.td>
       </c-table.tr>
       {% empty %}
       <c-table.empty-tr />
