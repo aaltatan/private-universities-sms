@@ -32,14 +32,23 @@ class EmployeeManager(models.Manager):
             include_zero=include_zero,
         )
 
-    def annotate_journals_total_debit(self):
-        return self.get_queryset().annotate_journals_total_debit()
+    def annotate_journals_total_debit(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ):
+        return self.get_queryset().annotate_journals_total_debit(sum_filter_Q)
 
-    def annotate_journals_total_credit(self):
-        return self.get_queryset().annotate_journals_total_credit()
+    def annotate_journals_total_credit(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ):
+        return self.get_queryset().annotate_journals_total_credit(sum_filter_Q)
 
-    def annotate_journals_total_amount(amount):
-        return amount.get_queryset().annotate_journals_total_amount()
+    def annotate_journals_total_amount(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ):
+        return self.get_queryset().annotate_journals_total_amount(sum_filter_Q)
 
     def annotate_search(self):
         return self.get_queryset().annotate_search()

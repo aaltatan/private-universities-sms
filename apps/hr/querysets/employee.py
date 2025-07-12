@@ -75,14 +75,20 @@ class EmployeeQuerySet(models.QuerySet):
     def _annotate_journals_total_field(
         self,
         field_name: Literal["debit", "credit", "amount"],
+        sum_filter_Q: models.Q | None = None,
     ):
         """
         Returns a queryset of employees with totals from their journals.
         """
+        sum_obj = models.Sum(f"journals__{field_name}")
+
+        if sum_filter_Q:
+            sum_obj = models.Sum(f"journals__{field_name}", filter=sum_filter_Q)
+
         return self.annotate(
             **{
                 f"total_{field_name}": Coalesce(
-                    models.Sum(f"journals__{field_name}"),
+                    sum_obj,
                     0,
                     output_field=models.DecimalField(
                         max_digits=20,
@@ -92,14 +98,23 @@ class EmployeeQuerySet(models.QuerySet):
             },
         )
 
-    def annotate_journals_total_debit(self):
-        return self._annotate_journals_total_field("debit")
+    def annotate_journals_total_debit(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ):
+        return self._annotate_journals_total_field("debit", sum_filter_Q)
 
-    def annotate_journals_total_credit(self):
-        return self._annotate_journals_total_field("credit")
+    def annotate_journals_total_credit(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ):
+        return self._annotate_journals_total_field("credit", sum_filter_Q)
 
-    def annotate_journals_total_amount(self):
-        return self._annotate_journals_total_field("amount")
+    def annotate_journals_total_amount(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ):
+        return self._annotate_journals_total_field("amount", sum_filter_Q)
 
     def annotate_search(self):
         return self.annotate(
