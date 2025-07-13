@@ -20,6 +20,10 @@ class EmployeeResource(
         column_name="#",
         dehydrate_method="dehydrate_serial",
     )
+    uuid = fields.Field(
+        attribute="uuid",
+        column_name=_("uuid").title(),
+    )
     fullname = fields.Field(
         attribute="fullname",
         column_name=_("fullname").title(),
@@ -302,6 +306,7 @@ class EmployeeResource(
         model = models.Employee
         fields = (
             "serial",
+            "uuid",
             "fullname",
             "shortname",
             "firstname",

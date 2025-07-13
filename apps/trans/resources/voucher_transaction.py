@@ -72,6 +72,10 @@ class VoucherTransactionResource(
         attribute="voucher__notes",
         column_name=_("notes").title(),
     )
+    employee_uuid = fields.Field(
+        attribute="employee__uuid",
+        column_name=_("employee uuid").title(),
+    )
     employee = fields.Field(
         attribute="employee__fullname",
         column_name=_("employee").title(),
@@ -161,6 +165,7 @@ class VoucherTransactionResource(
             "voucher_serial",
             "title",
             "date",
+            "employee_uuid",
             "employee",
             "compensation",
             "quantity",

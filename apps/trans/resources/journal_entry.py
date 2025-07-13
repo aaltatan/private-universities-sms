@@ -52,6 +52,10 @@ class JournalEntryResource(
         attribute="period__year",
         column_name=_("year").title(),
     )
+    employee_uuid = fields.Field(
+        attribute="employee__uuid",
+        column_name=_("employee uuid").title(),
+    )
     employee = fields.Field(
         attribute="employee__fullname",
         column_name=_("employee").title(),
@@ -122,6 +126,7 @@ class JournalEntryResource(
             "debit",
             "credit",
             "net",
+            "employee_uuid",
             "employee",
             "fiscal_object",
             "explanation",

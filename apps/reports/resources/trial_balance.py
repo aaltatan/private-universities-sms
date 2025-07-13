@@ -10,9 +10,13 @@ class TrialBalanceResource(SerialResourceMixin, resources.ModelResource):
         column_name="#",
         dehydrate_method="dehydrate_serial",
     )
-    fullname = fields.Field(
+    uuid = fields.Field(
+        attribute="uuid",
+        column_name=_("uuid").title(),
+    )
+    employee = fields.Field(
         attribute="fullname",
-        column_name=_("fullname").title(),
+        column_name=_("employee").title(),
     )
     total_debit = fields.Field(
         attribute="total_debit",
@@ -34,7 +38,8 @@ class TrialBalanceResource(SerialResourceMixin, resources.ModelResource):
         model = Employee
         fields = (
             "serial",
-            "fullname",
+            "uuid",
+            "employee",
             "total_debit",
             "total_credit",
             "total_amount",

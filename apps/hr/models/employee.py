@@ -1,3 +1,5 @@
+import uuid
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -49,6 +51,11 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         EXCUSED = "excused", _("excused").title()
         OTHER = "other", _("other").title()
 
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+    )
     firstname = models.CharField(
         max_length=255,
         verbose_name=_("first name"),
