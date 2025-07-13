@@ -4,19 +4,19 @@ import django_filters as filters
 from django.db import models
 from django.utils.translation import gettext as _
 
+from apps.core.choices import MonthChoices
 from apps.core.filters import (
     FilterTextMixin,
     get_combobox_choices_filter,
-    get_text_filter,
-    get_number_from_to_filters,
     get_date_from_to_filters,
+    get_number_from_to_filters,
+    get_text_filter,
 )
-from apps.core.choices import MonthChoices
+from apps.fin.models import Period, Year
 from apps.hr.models import Employee
 from apps.hr.querysets import EmployeeQuerySet
 from apps.org.models import CostCenter
 from apps.trans.models import Voucher
-from apps.fin.models import Period, Year
 
 
 class ExcludeZeroNet(models.TextChoices):
@@ -40,7 +40,11 @@ class FilterJournalsMixin:
         sum_filter_Q = self._get_joined_sum_filter_Q(
             models.Q(**{f"journals__{field}": value}),
         )
-        return queryset.annotate_journals_totals(sum_filter_Q)
+        return (
+            queryset.annotate_journals_total_debit(sum_filter_Q)
+            .annotate_journals_total_credit(sum_filter_Q)
+            .annotate_journals_total_amount(sum_filter_Q)
+        )
 
 
 class TrialBalanceFilter(

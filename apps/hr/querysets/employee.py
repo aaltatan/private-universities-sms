@@ -1,14 +1,12 @@
-from typing import Literal
-
 from django.conf import settings
-from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
-from django.db.models.functions import Coalesce, Floor
+from django.db.models.functions import Floor
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.constants import DATE_UNITS
+from apps.core.querysets import JournalsTotalsQuerysetMixin
 from apps.core.utils import (
     annotate_search,
     db_calculate_age_in_years,
@@ -23,68 +21,12 @@ from ..constants.employee import (
 )
 
 
-class EmployeeQuerySet(models.QuerySet):
+class EmployeeQuerySet(
+    JournalsTotalsQuerysetMixin["EmployeeQuerySet"], models.QuerySet
+):
     """
     Custom QuerySet for Employee model.
     """
-
-    def _annotate_journals_total_field(
-        self,
-        field_name: Literal["debit", "credit", "amount"],
-        sum_filter_Q: models.Q | None = None,
-    ):
-        """
-        Returns a queryset of employees with totals from their journals.
-        """
-        compensation_ct = ContentType.objects.get_by_natural_key("fin", "compensation")
-
-        q = models.Q(journals__content_type=compensation_ct)
-
-        sum_obj = models.Sum(f"journals__{field_name}", filter=q)
-
-        if sum_filter_Q:
-            sum_obj = models.Sum(
-                f"journals__{field_name}",
-                filter=sum_filter_Q & q,
-            )
-
-        return self.annotate(
-            **{
-                f"total_{field_name}": Coalesce(
-                    sum_obj,
-                    0,
-                    output_field=models.DecimalField(
-                        max_digits=20,
-                        decimal_places=4,
-                    ),
-                )
-            },
-        )
-
-    def annotate_journals_total_debit(
-        self,
-        sum_filter_Q: models.Q | None = None,
-    ):
-        return self._annotate_journals_total_field("debit", sum_filter_Q)
-
-    def annotate_journals_total_credit(
-        self,
-        sum_filter_Q: models.Q | None = None,
-    ):
-        return self._annotate_journals_total_field("credit", sum_filter_Q)
-
-    def annotate_journals_total_amount(
-        self,
-        sum_filter_Q: models.Q | None = None,
-    ):
-        return self._annotate_journals_total_field("amount", sum_filter_Q)
-
-    def annotate_journals_totals(self, sum_filter_Q: models.Q | None = None):
-        return (
-            self.annotate_journals_total_debit(sum_filter_Q)
-            .annotate_journals_total_credit(sum_filter_Q)
-            .annotate_journals_total_amount(sum_filter_Q)
-        )
 
     def annotate_search(self):
         return self.annotate(

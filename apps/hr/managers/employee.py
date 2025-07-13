@@ -26,9 +26,6 @@ class EmployeeManager(models.Manager):
     ):
         return self.get_queryset().annotate_journals_total_amount(sum_filter_Q)
 
-    def annotate_journals_totals(self, sum_filter_Q: models.Q | None = None):
-        return self.get_queryset().annotate_journals_totals(sum_filter_Q)
-
     def annotate_search(self):
         return self.get_queryset().annotate_search()
 
