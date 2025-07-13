@@ -212,6 +212,8 @@ def get_number_from_to_filters(
 
 def get_date_from_to_filters(
     field_name: str,
+    method_name_from: str | None = None,
+    method_name_to: str | None = None,
     from_attributes: dict[str, str] = {},
     to_attributes: dict[str, str] = {},
 ) -> tuple[filters.DateFilter, filters.DateFilter]:
@@ -222,16 +224,26 @@ def get_date_from_to_filters(
     to_attributes.setdefault("placeholder", _("to").title())
     to_attributes.setdefault("x-mask", "9999-99-99")
 
-    from_ = filters.DateFilter(
-        field_name=field_name,
-        lookup_expr="gte",
-        widget=get_date_widget(**from_attributes, fill_onfocus=False),
-    )
-    to = filters.DateFilter(
-        field_name=field_name,
-        lookup_expr="lte",
-        widget=get_date_widget(**to_attributes, fill_onfocus=False),
-    )
+    from_kwargs = {
+        "field_name": field_name,
+        "lookup_expr": "gte",
+        "widget": get_date_widget(**from_attributes, fill_onfocus=False),
+    }
+
+    if method_name_from is not None:
+        from_kwargs["method"] = method_name_from
+
+    to_kwargs = {
+        "field_name": field_name,
+        "lookup_expr": "lte",
+        "widget": get_date_widget(**to_attributes, fill_onfocus=False),
+    }
+
+    if method_name_to is not None:
+        to_kwargs["method"] = method_name_to
+
+    from_ = filters.DateFilter(**from_kwargs)
+    to = filters.DateFilter(**to_kwargs)
 
     return from_, to
 
