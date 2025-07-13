@@ -28,51 +28,6 @@ class EmployeeQuerySet(models.QuerySet):
     Custom QuerySet for Employee model.
     """
 
-    def annotate_unmigrated_vouchers_totals(self, include_zero: bool = True):
-        """
-        Returns a queryset of employees with totals from their unmigrated vouchers.
-        """
-        queryset = self.annotate(
-            unmigrated_total=Coalesce(
-                models.Sum(
-                    models.F("transactions__quantity")
-                    * models.F("transactions__value"),
-                    filter=models.Q(transactions__voucher__is_migrated=False),
-                ),
-                0,
-                output_field=models.DecimalField(max_digits=20, decimal_places=4),
-            )
-        )
-
-        if not include_zero:
-            queryset = queryset.filter(~models.Q(unmigrated_total=0))
-
-        return queryset
-
-    def annotate_unmigrated_vouchers_nets(self, include_zero: bool = True):
-        """
-        Returns a queryset of employees with nets from their unmigrated vouchers.
-        """
-        queryset = self.annotate(
-            unmigrated_net=Coalesce(
-                models.Sum(
-                    (
-                        models.F("transactions__quantity")
-                        * models.F("transactions__value")
-                    )
-                    - models.F("transactions__tax"),
-                    filter=models.Q(transactions__voucher__is_migrated=False),
-                ),
-                0,
-                output_field=models.DecimalField(max_digits=20, decimal_places=4),
-            )
-        )
-
-        if not include_zero:
-            queryset = queryset.filter(~models.Q(unmigrated_net=0))
-
-        return queryset
-
     def _annotate_journals_total_field(
         self,
         field_name: Literal["debit", "credit", "amount"],

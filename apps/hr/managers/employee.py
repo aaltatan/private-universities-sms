@@ -8,30 +8,6 @@ from ..querysets import EmployeeQuerySet
 
 
 class EmployeeManager(models.Manager):
-    def annotate_unmigrated_vouchers_nets(self, include_zero: bool = True):
-        """
-        Returns a queryset of employees with nets from their unmigrated vouchers.
-        """
-        return self.get_queryset().annotate_unmigrated_vouchers_nets(
-            include_zero=include_zero,
-        )
-
-    def annotate_unmigrated_vouchers_totals(self, include_zero: bool = True):
-        """
-        Returns a queryset of employees with totals from their unmigrated vouchers.
-        """
-        return self.get_queryset().annotate_unmigrated_vouchers_totals(
-            include_zero=include_zero,
-        )
-
-    def annotate_journals_nets(self, include_zero: bool = False):
-        """
-        Returns a queryset of employees with nets from their journals.
-        """
-        return self.get_queryset().annotate_journals_nets(
-            include_zero=include_zero,
-        )
-
     def annotate_journals_total_debit(
         self,
         sum_filter_Q: models.Q | None = None,
