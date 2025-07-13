@@ -8,6 +8,8 @@ from apps.core.filters import (
     FilterTextMixin,
     get_combobox_choices_filter,
     get_text_filter,
+    get_number_from_to_filters,
+    get_date_from_to_filters,
 )
 from apps.core.choices import MonthChoices
 from apps.hr.models import Employee
@@ -15,6 +17,11 @@ from apps.hr.querysets import EmployeeQuerySet
 from apps.org.models import CostCenter
 from apps.trans.models import Voucher
 from apps.fin.models import Period, Year
+
+
+class ExcludeZeroNet(models.TextChoices):
+    EXCLUDE = "exclude", _("exclude").title()
+    INCLUDE = "include", _("include").title()
 
 
 class FilterJournalsMixin:
@@ -42,8 +49,21 @@ class TrialBalanceFilter(
     filters.FilterSet,
 ):
     fullname = get_text_filter(_("employee fullname"))
+    total_debit_from, total_debit_to = get_number_from_to_filters("total_debit")
+    total_credit_from, total_credit_to = get_number_from_to_filters("total_credit")
+    total_amount_from, total_amount_to = get_number_from_to_filters("total_amount")
+    exclude_zero_net = filters.ChoiceFilter(
+        choices=ExcludeZeroNet.choices,
+        method="filter_exclude_zero_net",
+        label=_("exclude zero net"),
+    )
 
     # journals internals filters
+    date_from, date_to = get_date_from_to_filters(
+        field_name="date",
+        method_name_from="filter_date_from",
+        method_name_to="filter_date_to",
+    )
     voucher_serial = get_combobox_choices_filter(
         queryset=Voucher.objects.filter(is_deleted=False),
         field_name="voucher_serial",
@@ -76,6 +96,11 @@ class TrialBalanceFilter(
         method_name="filter_month",
     )
 
+    def filter_exclude_zero_net(self, queryset: EmployeeQuerySet, name, value):
+        if value == ExcludeZeroNet.EXCLUDE:
+            queryset = queryset.filter(~models.Q(total_amount=0))
+        return queryset
+
     def filter_voucher_serial(self, queryset: EmployeeQuerySet, name, value):
         return self.filter_journals("voucher__voucher_serial__in", value, queryset)
 
@@ -90,6 +115,12 @@ class TrialBalanceFilter(
 
     def filter_period(self, queryset: EmployeeQuerySet, name, value):
         return self.filter_journals("period__name__in", value, queryset)
+
+    def filter_date_from(self, queryset: EmployeeQuerySet, name, value):
+        return self.filter_journals("date__gte", value, queryset)
+
+    def filter_date_to(self, queryset: EmployeeQuerySet, name, value):
+        return self.filter_journals("date__lte", value, queryset)
 
     class Meta:
         model = Employee
