@@ -1,6 +1,7 @@
 from typing import Literal
 
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.db.models.functions import Coalesce, Floor
@@ -80,10 +81,17 @@ class EmployeeQuerySet(models.QuerySet):
         """
         Returns a queryset of employees with totals from their journals.
         """
-        sum_obj = models.Sum(f"journals__{field_name}")
+        compensation_ct = ContentType.objects.get_by_natural_key("fin", "compensation")
+
+        q = models.Q(journals__content_type=compensation_ct)
+
+        sum_obj = models.Sum(f"journals__{field_name}", filter=q)
 
         if sum_filter_Q:
-            sum_obj = models.Sum(f"journals__{field_name}", filter=sum_filter_Q)
+            sum_obj = models.Sum(
+                f"journals__{field_name}",
+                filter=sum_filter_Q & q,
+            )
 
         return self.annotate(
             **{
