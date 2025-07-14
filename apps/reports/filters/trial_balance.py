@@ -12,7 +12,7 @@ from apps.core.filters import (
     get_number_from_to_filters,
     get_text_filter,
 )
-from apps.fin.models import Period, Year
+from apps.fin.models import Year
 from apps.hr.models import Employee
 from apps.hr.querysets import EmployeeQuerySet
 from apps.trans.models import Voucher
@@ -79,12 +79,6 @@ class TrialBalanceFilter(
         label=_("year"),
         method_name="filter_year",
     )
-    period = get_combobox_choices_filter(
-        queryset=Period.objects.all(),
-        field_name="name",
-        label=_("period"),
-        method_name="filter_period",
-    )
     month = get_combobox_choices_filter(
         queryset=Voucher.objects.all(),
         field_name="month",
@@ -107,9 +101,6 @@ class TrialBalanceFilter(
     def filter_year(self, queryset: EmployeeQuerySet, name, value):
         return self.filter_journals("period__year__name__in", value, queryset)
 
-    def filter_period(self, queryset: EmployeeQuerySet, name, value):
-        return self.filter_journals("period__name__in", value, queryset)
-
     def filter_date_from(self, queryset: EmployeeQuerySet, name, value):
         return self.filter_journals("date__gte", value, queryset)
 
@@ -122,7 +113,6 @@ class TrialBalanceFilter(
             "fullname",
             "voucher_serial",
             "year",
-            "period",
             "month",
         )
         filter_overrides = {
