@@ -15,7 +15,6 @@ from apps.core.filters import (
 from apps.fin.models import Period, Year
 from apps.hr.models import Employee
 from apps.hr.querysets import EmployeeQuerySet
-from apps.org.models import CostCenter
 from apps.trans.models import Voucher
 
 
@@ -74,12 +73,6 @@ class TrialBalanceFilter(
         label=_("voucher"),
         method_name="filter_voucher_serial",
     )
-    cost_center = get_combobox_choices_filter(
-        queryset=CostCenter.objects.all(),
-        field_name="name",
-        label=_("cost center"),
-        method_name="filter_cost_center",
-    )
     year = get_combobox_choices_filter(
         queryset=Year.objects.all(),
         field_name="name",
@@ -108,9 +101,6 @@ class TrialBalanceFilter(
     def filter_voucher_serial(self, queryset: EmployeeQuerySet, name, value):
         return self.filter_journals("voucher__voucher_serial__in", value, queryset)
 
-    def filter_cost_center(self, queryset: EmployeeQuerySet, name, value):
-        return self.filter_journals("cost_center__name__in", value, queryset)
-
     def filter_month(self, queryset: EmployeeQuerySet, name, value):
         return self.filter_journals("month__in", value, queryset)
 
@@ -131,7 +121,6 @@ class TrialBalanceFilter(
         fields = (
             "fullname",
             "voucher_serial",
-            "cost_center",
             "year",
             "period",
             "month",
