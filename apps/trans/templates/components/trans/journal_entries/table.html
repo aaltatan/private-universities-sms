@@ -31,7 +31,7 @@
     />
   </c-slot>
 
-  <form hx-post="{{ index_url }}" id="{{ form_table_id }}">
+  <div x-data="tableTotals(['debit', 'credit'])">
     <c-table.table>
       <c-table.tr header="True">
         <c-table.th>#</c-table.th>
@@ -51,10 +51,10 @@
       {% for obj in page %}
       <c-table.tr>
         <c-table.td>{{ forloop.counter }}</c-table.td>
-        <c-table.td :title="obj.explanation" data-header="{{ model|verbose_name:'debit' }}">
+        <c-table.td data-debit="{{ obj.debit }}" :title="obj.explanation" data-header="{{ model|verbose_name:'debit' }}">
           {{ obj.debit|money:True }}
         </c-table.td>
-        <c-table.td :title="obj.explanation" data-header="{{ model|verbose_name:'credit' }}">
+        <c-table.td data-credit="{{ obj.credit }}" :title="obj.explanation" data-header="{{ model|verbose_name:'credit' }}">
           {{ obj.credit|money:True }}
         </c-table.td>
         <c-table.td :title="obj.explanation" data-header="{% translate 'net' %}">
@@ -157,6 +157,12 @@
       {% empty %}
       <c-table.empty-tr />
       {% endfor %}
+      <c-table.tr :hovered="False" :bolded="True">
+          <c-table.td colspan="1"></c-table.th>
+          <c-table.td data-header="{% translate 'debit' %}" x-html="totals.debit"></c-table.td>
+          <c-table.td data-header="{% translate 'credit' %}" x-html="totals.credit"></c-table.td>
+          <c-table.td colspan="10"></c-table.th>
+        </c-table.tr>
     </c-table.table>
-  </form>
+  </div>
 </c-blocks.table>

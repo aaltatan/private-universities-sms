@@ -35,7 +35,7 @@
     />
   </c-slot>
 
-  <form hx-post="{{ index_url }}" id="{{ form_table_id }}">
+  <div x-data="tableTotals(['totalDebit', 'totalCredit', 'totalAmount'])">
     <c-table.table>
       <c-table.tr header="True">
         <c-table.th>#</c-table.th>
@@ -60,19 +60,31 @@
             {{ obj.name }}
           </a>
         </c-table.td>
-        <c-table.td data-header="{% translate 'total debit' %}">
+        <c-table.td
+          data-total-debit="{{ obj.total_debit }}"
+          data-header="{% translate 'total debit' %}"
+        >
           {{ obj.total_debit|money:True }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'total credit' %}">
+        <c-table.td
+          data-total-credit="{{ obj.total_credit }}"
+          data-header="{% translate 'total credit' %}"
+        >
           {{ obj.total_credit|money:True }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'net' %}">
+        <c-table.td data-total-amount="{{ obj.total_amount }}" data-header="{% translate 'net' %}">
           {{ obj.total_amount|money:True }}
         </c-table.td>
       </c-table.tr>
       {% empty %}
       <c-table.empty-tr />
       {% endfor %}
+      <c-table.tr :hovered="False" :bolded="True">
+        <c-table.td colspan="2"></c-table.th>
+        <c-table.td data-header="{% translate 'total debit' %}" x-html="totals.totalDebit"></c-table.td>
+        <c-table.td data-header="{% translate 'total credit' %}" x-html="totals.totalCredit"></c-table.td>
+        <c-table.td data-header="{% translate 'net' %}" x-html="totals.totalAmount"></c-table.td>
+      </c-table.tr>
     </c-table.table>
-  </form>
+  </div>
 </c-blocks.table>

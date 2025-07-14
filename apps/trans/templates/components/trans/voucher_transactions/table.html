@@ -35,7 +35,7 @@
     />
   </c-slot>
 
-  <form hx-post="{{ index_url }}" id="{{ form_table_id }}">
+  <div x-data="tableTotals(['quantity', 'value', 'total', 'tax', 'net'])">
     <c-table.table>
       <c-table.tr header="True">
         <c-table.th>#</c-table.th>
@@ -96,15 +96,20 @@
             {{ obj.compensation.name }}
           </a>
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'quantity' }}">
+        <c-table.td
+          data-quantity="{{ obj.quantity }}"
+          data-header="{{ model|verbose_name:'quantity' }}"
+        >
           {{ obj.quantity|money:True }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'value' }}">
+        <c-table.td data-value="{{ obj.value }}" data-header="{{ model|verbose_name:'value' }}">
           {{ obj.value|money:True }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'total' %}"> {{ obj.total|money:True }} </c-table.td>
-        <c-table.td data-header="{% translate 'tax' %}"> {{ obj.tax|money:True }} </c-table.td>
-        <c-table.td data-header="{% translate 'net' %}"> {{ obj.net|money:True }} </c-table.td>
+        <c-table.td data-total="{{ obj.total }}" data-header="{% translate 'total' %}">
+          {{ obj.total|money:True }}
+        </c-table.td>
+        <c-table.td data-tax="{{ obj.tax }}" data-header="{% translate 'tax' %}"> {{ obj.tax|money:True }} </c-table.td>
+        <c-table.td data-net="{{ obj.net }}" data-header="{% translate 'net' %}"> {{ obj.net|money:True }} </c-table.td>
         <c-table.td :wrap="True" data-header="{{ model|verbose_name:'notes' }}">
           {{ obj.notes }}
         </c-table.td>
@@ -128,11 +133,11 @@
             >
               {% if obj.voucher.is_migrated %}
               <!--  -->
-              {% heroicon_outline 'lock-closed' size="18" %}
+              {% heroicon_outline 'lock-closed' size="18" class="text-green-500" %}
               <!--  -->
               {% else %}
               <!--  -->
-              {% heroicon_outline 'lock-open' size="18" %}
+              {% heroicon_outline 'lock-open' size="18" class="text-red-500" %}
               <!--  -->
               {% endif %}
             </div>
@@ -142,6 +147,15 @@
       {% empty %}
       <c-table.empty-tr />
       {% endfor %}
+      <c-table.tr :hovered="False" :bolded="True">
+        <c-table.td colspan="5"></c-table.th>
+        <c-table.td data-header="{% translate 'quantity' %}" x-html="totals.quantity"></c-table.td>
+        <c-table.td data-header="{% translate 'value' %}" x-html="totals.value"></c-table.td>
+        <c-table.td data-header="{% translate 'total' %}" x-html="totals.total"></c-table.td>
+        <c-table.td data-header="{% translate 'tax' %}" x-html="totals.tax"></c-table.td>
+        <c-table.td data-header="{% translate 'net' %}" x-html="totals.net"></c-table.td>
+        <c-table.td colspan="2"></c-table.th>
+      </c-table.tr>
     </c-table.table>
-  </form>
+  </div>
 </c-blocks.table>

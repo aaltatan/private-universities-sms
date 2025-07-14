@@ -12,3 +12,7 @@ export function getCookie(name) {
   }
   return cookieValue;
 }
+
+export function camelToKebab(str) {
+  return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+}

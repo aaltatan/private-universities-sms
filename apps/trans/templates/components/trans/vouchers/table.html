@@ -91,7 +91,11 @@
   </c-slot>
   {% endif %}
 
-  <form hx-post="{{ index_url }}" id="{{ form_table_id }}">
+  <form
+    hx-post="{{ index_url }}"
+    id="{{ form_table_id }}"
+    x-data="tableTotals(['total', 'transactionsCount'])"
+  >
     <c-table.table>
       <c-table.tr header="True">
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
@@ -228,9 +232,14 @@
         <c-table.td data-header="{{ model|verbose_name:'date' }}">
           {{ obj.date|date:'Y-m-d' }}
         </c-table.td>
-        <c-table.td data-header="{% translate 'total' %}"> {{ obj.total|money:True }} </c-table.td>
-        <c-table.td data-header="{% translate 'transactions count' %}">
-          {{ obj.transactions_count }}
+        <c-table.td data-total="{{ obj.total }}" data-header="{% translate 'total' %}">
+          {{ obj.total|money:True }}
+        </c-table.td>
+        <c-table.td
+          data-transactions-count="{{ obj.transactions_count }}"
+          data-header="{% translate 'transactions count' %}"
+        >
+          {{ obj.transactions_count|money:True }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'kind' }}">
           <a
@@ -279,6 +288,12 @@
       {% empty %}
       <c-table.empty-tr />
       {% endfor %}
+      <c-table.tr :hovered="False" :bolded="True">
+        <c-table.td colspan="5"></c-table.th>
+        <c-table.td data-header="{% translate 'total' %}" x-html="totals.total"></c-table.td>
+        <c-table.td data-header="{% translate 'transactions count' %}" x-html="totals.transactionsCount"></c-table.td>
+        <c-table.td colspan="4"></c-table.th>
+      </c-table.tr>
     </c-table.table>
   </form>
 </c-blocks.table>
