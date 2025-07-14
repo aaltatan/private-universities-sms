@@ -2,30 +2,13 @@ from django.db import models
 from django.utils import timezone
 
 from apps.core.constants import DATE_UNITS
+from apps.core.querysets import JournalsTotalsManagerMixin
 
 from ..constants.employee import PREFETCH_RELATED_LOOKUPS, SELECT_RELATED_FIELDS
 from ..querysets import EmployeeQuerySet
 
 
-class EmployeeManager(models.Manager):
-    def annotate_journals_total_debit(
-        self,
-        sum_filter_Q: models.Q | None = None,
-    ):
-        return self.get_queryset().annotate_journals_total_debit(sum_filter_Q)
-
-    def annotate_journals_total_credit(
-        self,
-        sum_filter_Q: models.Q | None = None,
-    ):
-        return self.get_queryset().annotate_journals_total_credit(sum_filter_Q)
-
-    def annotate_journals_total_amount(
-        self,
-        sum_filter_Q: models.Q | None = None,
-    ):
-        return self.get_queryset().annotate_journals_total_amount(sum_filter_Q)
-
+class EmployeeManager(JournalsTotalsManagerMixin[EmployeeQuerySet], models.Manager):
     def annotate_search(self):
         return self.get_queryset().annotate_search()
 

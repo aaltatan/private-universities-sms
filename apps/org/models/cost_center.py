@@ -6,7 +6,12 @@ from rest_framework import serializers
 from apps.core import signals
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
-from apps.core.querysets import JournalsTotalsQuerysetMixin
+from apps.core.querysets import (
+    EmployeesCountManagerMixin,
+    EmployeesCountQuerysetMixin,
+    JournalsTotalsManagerMixin,
+    JournalsTotalsQuerysetMixin,
+)
 from apps.core.utils import annotate_search
 from apps.core.validators import numeric_validator
 
@@ -14,36 +19,23 @@ from ..constants import cost_centers as constants
 
 
 class CostCenterQuerySet(
-    JournalsTotalsQuerysetMixin["CostCenterQuerySet"], models.QuerySet
+    JournalsTotalsQuerysetMixin["CostCenterQuerySet"],
+    EmployeesCountQuerysetMixin["CostCenterQuerySet"],
+    models.QuerySet,
 ):
     pass
 
 
-class CostCenterManager(models.Manager):
+class CostCenterManager(
+    EmployeesCountManagerMixin[CostCenterQuerySet],
+    JournalsTotalsManagerMixin[CostCenterQuerySet],
+    models.Manager,
+):
     def get_queryset(self):
         queryset = CostCenterQuerySet(self.model, using=self._db)
         return queryset.annotate(
             search=annotate_search(constants.SEARCH_FIELDS),
-            employees_count=models.Count("employees"),
         )
-
-    def annotate_journals_total_debit(
-        self,
-        sum_filter_Q: models.Q | None = None,
-    ):
-        return self.get_queryset().annotate_journals_total_debit(sum_filter_Q)
-
-    def annotate_journals_total_credit(
-        self,
-        sum_filter_Q: models.Q | None = None,
-    ):
-        return self.get_queryset().annotate_journals_total_credit(sum_filter_Q)
-
-    def annotate_journals_total_amount(
-        self,
-        sum_filter_Q: models.Q | None = None,
-    ):
-        return self.get_queryset().annotate_journals_total_amount(sum_filter_Q)
 
 
 class CostCenter(AddCreateActivityMixin, AbstractUniqueNameModel):

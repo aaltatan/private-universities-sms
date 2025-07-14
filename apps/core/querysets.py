@@ -7,6 +7,16 @@ from django.db.models.functions import Coalesce
 T = TypeVar("T")
 
 
+class EmployeesCountQuerysetMixin(Generic[T]):
+    def annotate_employees_count(self) -> T:
+        return self.annotate(employees_count=models.Count("employees"))
+
+
+class EmployeesCountManagerMixin(Generic[T]):
+    def annotate_employees_count(self) -> T:
+        return self.get_queryset().annotate_employees_count()
+
+
 class JournalsTotalsQuerysetMixin(Generic[T]):
     def _annotate_journals_total_field(
         self,
@@ -58,3 +68,23 @@ class JournalsTotalsQuerysetMixin(Generic[T]):
         sum_filter_Q: models.Q | None = None,
     ):
         return self._annotate_journals_total_field("amount", sum_filter_Q)
+
+
+class JournalsTotalsManagerMixin(Generic[T]):
+    def annotate_journals_total_debit(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ) -> T:
+        return self.get_queryset().annotate_journals_total_debit(sum_filter_Q)
+
+    def annotate_journals_total_credit(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ) -> T:
+        return self.get_queryset().annotate_journals_total_credit(sum_filter_Q)
+
+    def annotate_journals_total_amount(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ) -> T:
+        return self.get_queryset().annotate_journals_total_amount(sum_filter_Q)
