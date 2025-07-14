@@ -1,0 +1,17 @@
+from django.urls import path
+from django.utils.translation import gettext as _
+
+from ..views.cost_center import CostCenterView
+
+
+app_name = "cost_center"
+
+
+urlpatterns = [
+    path(
+        route="",
+        view=CostCenterView.as_view(),
+        name="index",
+        kwargs={"title": _("cost center")},
+    ),
+]

@@ -130,6 +130,10 @@ def constants(request: HttpRequest) -> dict[str, Any]:
                     "text": _("trial balance"),
                     "path": reverse("reports:trial_balance:index"),
                 },
+                "cost_center": {
+                    "text": _("cost center"),
+                    "path": reverse("reports:cost_center:index"),
+                },
             },
         },
     }

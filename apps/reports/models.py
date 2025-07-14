@@ -12,3 +12,10 @@ class TrialBalance(models.Model):
         managed = False
         icon = "scale"
         codename_plural = "trial_balance"
+
+
+class CostCenter(models.Model):
+    class Meta:
+        managed = False
+        icon = "building-office-2"
+        codename_plural = "cost_center"

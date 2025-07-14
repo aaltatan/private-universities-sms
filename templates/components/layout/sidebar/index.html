@@ -240,7 +240,8 @@
       </c-layout.sidebar.collapsible-item>
       {% endif %}
       <!-- trans -->
-      {% if perms.trans.view_voucher or perms.trans.view_vouchertransaction or perms.trans.view_journalentry %}
+      {% if perms.trans.view_voucher or perms.trans.view_vouchertransaction or
+      perms.trans.view_journalentry %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'transactions'|title %}"
         icon="book-open"
@@ -270,7 +271,7 @@
       </c-layout.sidebar.collapsible-item>
       {% endif %}
       <!-- reports -->
-      {% if perms.reports.view_trialbalance %}
+      {% if perms.reports.view_trialbalance or perms.reports.view_costcenter %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'reports'|title %}"
         icon="chart-pie"
@@ -281,6 +282,13 @@
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.reports.trial_balance.path }}"
           text="{{ sidebar_links.reports.trial_balance.text }}"
+        />
+        {% endif %}
+        <!--  -->
+        {% if perms.reports.view_costcenter %}
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.reports.cost_center.path }}"
+          text="{{ sidebar_links.reports.cost_center.text }}"
         />
         {% endif %}
       </c-layout.sidebar.collapsible-item>

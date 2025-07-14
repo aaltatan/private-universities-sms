@@ -1,4 +1,4 @@
-from .cost_center import CostCenter
+from .cost_center import CostCenter, CostCenterQuerySet
 from .group import Group
 from .job_subtype import JobSubtype
 from .job_type import JobType
@@ -7,6 +7,7 @@ from .status import Status
 
 __all__ = [
     "CostCenter",
+    "CostCenterQuerySet",
     "JobType",
     "JobSubtype",
     "Group",
