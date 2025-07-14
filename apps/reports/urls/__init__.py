@@ -8,4 +8,5 @@ patterns = [
     path("ledger/", include("apps.reports.urls.ledger")),
     path("trial-balance/", include("apps.reports.urls.trial_balance")),
     path("cost-center/", include("apps.reports.urls.cost_center")),
+    path("periods/", include("apps.reports.urls.periods")),
 ]

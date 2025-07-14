@@ -19,3 +19,10 @@ class CostCenter(models.Model):
         managed = False
         icon = "building-office-2"
         codename_plural = "cost_center"
+
+
+class Period(models.Model):
+    class Meta:
+        managed = False
+        icon = "calendar-date-range"
+        codename_plural = "periods"

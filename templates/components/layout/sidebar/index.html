@@ -291,6 +291,13 @@
           text="{{ sidebar_links.reports.cost_center.text }}"
         />
         {% endif %}
+        <!--  -->
+        {% if perms.reports.view_period %}
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.reports.periods.path }}"
+          text="{{ sidebar_links.reports.periods.text }}"
+        />
+        {% endif %}
       </c-layout.sidebar.collapsible-item>
       {% endif %}
     </div>
