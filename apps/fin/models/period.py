@@ -6,22 +6,41 @@ from rest_framework import serializers
 from apps.core import signals
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
+from apps.core.querysets import JournalsTotalsQuerysetMixin
 from apps.core.utils import annotate_search
 
 from ..constants import periods as constants
 from .year import Year
 
 
+class PeriodQuerySet(JournalsTotalsQuerysetMixin["PeriodQuerySet"], models.QuerySet):
+    pass
+
+
 class PeriodManager(models.Manager):
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .select_related("year")
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-            )
+        queryset = PeriodQuerySet(self.model, using=self._db)
+        return queryset.select_related("year").annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
+
+    def annotate_journals_total_debit(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ):
+        return self.get_queryset().annotate_journals_total_debit(sum_filter_Q)
+
+    def annotate_journals_total_credit(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ):
+        return self.get_queryset().annotate_journals_total_credit(sum_filter_Q)
+
+    def annotate_journals_total_amount(
+        self,
+        sum_filter_Q: models.Q | None = None,
+    ):
+        return self.get_queryset().annotate_journals_total_amount(sum_filter_Q)
 
 
 class Period(AddCreateActivityMixin, AbstractUniqueNameModel):
