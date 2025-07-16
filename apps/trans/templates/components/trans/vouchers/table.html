@@ -106,6 +106,9 @@
         <c-table.th>{% translate 'total' %}</c-table.th>
         <c-table.th>{% translate 'transactions count' %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'kind' }}</c-table.th>
+        <c-table.th>{% translate 'year' %}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'period' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'month' }}</c-table.th>
         <c-table.th>{% translate 'information' %}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
@@ -254,6 +257,35 @@
             {{ obj.kind }}
           </a>
         </c-table.td>
+        <c-table.td data-header="{% translate 'year' %}">
+          <a
+            href="#"
+            hx-get="{{ obj.period.year.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.period.year }}
+          </a>
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'period' }}">
+          <a
+            href="#"
+            hx-get="{{ obj.period.get_absolute_url }}{% querystring %}"
+            hx-target="#modal-container"
+            hx-indicator="#modal-spinner"
+            @click="showModal"
+            class="hover:underline cursor-pointer"
+            aria-label="object details"
+          >
+            {{ obj.period }}
+          </a>
+        </c-table.td>
+        <c-table.td data-header="{{ model|verbose_name:'month' }}">
+            {{ obj.get_month_display }}
+        </c-table.td>
         <c-table.td data-header="{% translate 'information' %}">
           <div class="flex items-center gap-2">
             <div
@@ -292,7 +324,7 @@
         <c-table.td colspan="5"></c-table.th>
         <c-table.td data-header="{% translate 'total' %}" x-html="totals.total"></c-table.td>
         <c-table.td data-header="{% translate 'transactions count' %}" x-html="totals.transactionsCount"></c-table.td>
-        <c-table.td colspan="4"></c-table.th>
+        <c-table.td colspan="6"></c-table.th>
       </c-table.tr>
     </c-table.table>
   </form>
