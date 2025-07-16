@@ -1,8 +1,14 @@
 from django.db import models, transaction
+from django.db.models import Func
 
 from apps.core.utils import annotate_search
 
 from ..constants import journal_entries as constants
+
+
+class MoneyFormat(Func):
+    function = "FORMAT"
+    template = "%(function)s(%(expressions)s, 2)"
 
 
 class JournalEntryManager(models.Manager):
@@ -29,6 +35,10 @@ class JournalEntryManager(models.Manager):
                     max_digits=20,
                     decimal_places=4,
                 ),
+            ),
+            formatted_net=MoneyFormat(
+                models.F("net"),
+                output_field=models.CharField(),
             ),
         )
 
