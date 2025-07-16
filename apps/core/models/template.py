@@ -45,6 +45,16 @@ class Template(models.Model):
         related_name="employee_template",
         verbose_name=_("employee template"),
     )
+    ledger = models.OneToOneField(
+        TemplateItem,
+        on_delete=models.PROTECT,
+        related_name="ledger_template",
+        verbose_name=_("ledger template"),
+    )
+
+    @classmethod
+    def get_ledger_template(cls):
+        return cls.objects.first().ledger.file
 
     @classmethod
     def get_employee_template(cls):
@@ -55,7 +65,7 @@ class Template(models.Model):
         return cls.objects.first().voucher.file
 
     def __str__(self):
-        return f"VoucherSetting(voucher={self.voucher}, employee={self.employee})"
+        return f"VoucherSetting(voucher={self.voucher}, employee={self.employee}, ledger={self.ledger})"
 
     def delete(self, using=None, keep_parents=False):
         raise ValidationError(_("you cannot delete this object"))
