@@ -8,6 +8,7 @@ from apps.org.models import CostCenter
 from .mixins import (
     CommonJournalsFilter,
     JournalsCompensationFilter,
+    JournalsEmployeeFilter,
     JournalsPeriodFilter,
 )
 
@@ -15,6 +16,7 @@ from .mixins import (
 class CostCenterFilter(
     FilterTextMixin,
     CommonJournalsFilter,
+    JournalsEmployeeFilter,
     JournalsCompensationFilter,
     JournalsPeriodFilter,
 ):

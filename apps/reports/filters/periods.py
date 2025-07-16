@@ -9,6 +9,7 @@ from .mixins import (
     CommonJournalsFilter,
     JournalsCompensationFilter,
     JournalsCostCenterFilter,
+    JournalsEmployeeFilter,
 )
 
 
@@ -17,6 +18,7 @@ class PeriodFilter(
     CommonJournalsFilter,
     JournalsCompensationFilter,
     JournalsCostCenterFilter,
+    JournalsEmployeeFilter,
 ):
     name = get_text_filter(_("cost center name"))
 

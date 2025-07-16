@@ -11,6 +11,7 @@ from apps.core.filters import (
     get_number_from_to_filters,
 )
 from apps.fin.models import Compensation, Period, Year
+from apps.hr.models import Employee
 from apps.org.models import CostCenter
 from apps.trans.models import Voucher
 
@@ -32,6 +33,18 @@ class Queryset(Protocol):
 class ExcludeZeroNet(models.TextChoices):
     EXCLUDE = "exclude", _("exclude").title()
     INCLUDE = "include", _("include").title()
+
+
+class JournalsEmployeeFilter(filters.FilterSet):
+    employee = get_combobox_choices_filter(
+        queryset=Employee.objects.filter(journals__isnull=False).distinct(),
+        field_name="fullname",
+        label=_("employee"),
+        method_name="filter_employee",
+    )
+
+    def filter_employee(self, queryset, name, value):
+        return self.filter_journals("employee__in", value, queryset)
 
 
 class JournalsCompensationFilter(filters.FilterSet):

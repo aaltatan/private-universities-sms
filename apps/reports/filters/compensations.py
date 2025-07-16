@@ -8,6 +8,7 @@ from apps.fin.models import Period
 from .mixins import (
     CommonJournalsFilter,
     JournalsCostCenterFilter,
+    JournalsEmployeeFilter,
     JournalsPeriodFilter,
 )
 
@@ -16,6 +17,7 @@ class CompensationFilter(
     FilterTextMixin,
     CommonJournalsFilter,
     JournalsPeriodFilter,
+    JournalsEmployeeFilter,
     JournalsCostCenterFilter,
 ):
     name = get_text_filter(_("compensation name"))
