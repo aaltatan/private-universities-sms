@@ -6,10 +6,7 @@ from ..constants import journal_entries as constants
 
 
 @admin.register(models.JournalEntry)
-class JournalEntryAdmin(
-    ImportExportModelAdmin,
-    admin.ModelAdmin,
-):
+class JournalEntryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = (
         "employee",
         "formatted_debit",
@@ -36,13 +33,19 @@ class JournalEntryAdmin(
     autocomplete_fields = ("employee", "voucher", "cost_center", "period")
     list_per_page = 20
 
-    @admin.display(description="debit")
-    def formatted_debit(self, obj: models.JournalEntry):
-        return f"{obj.debit:,.2f}"
-
-    @admin.display(description="credit")
-    def formatted_credit(self, obj: models.JournalEntry):
-        return f"{obj.credit:,.2f}"
+    def has_delete_permission(self, request, obj=None):
+        return False
 
     def has_change_permission(self, request, obj=None):
         return False
+
+    def has_add_permission(self, request):
+        return False
+
+    @admin.display(description="debit")
+    def formatted_debit(self, obj: models.JournalEntry):
+        return obj.formatted_debit
+
+    @admin.display(description="credit")
+    def formatted_credit(self, obj: models.JournalEntry):
+        return obj.formatted_credit
