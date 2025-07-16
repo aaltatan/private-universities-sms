@@ -45,6 +45,16 @@
     />
   </c-slot>
 
+  <c-slot name="additional_export_items">
+    <c-layout.contextmenu.item
+      icon="document"
+      href="#"
+      aria-label="export table as word template"
+    >
+      {% translate 'export to MSWord' %}
+    </c-layout.contextmenu.item>
+  </c-slot>
+
   <div x-data="tableTotals(['debit', 'credit'])">
     <c-table.table>
       <c-table.tr header="True">

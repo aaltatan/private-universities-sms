@@ -36,6 +36,7 @@
         button_title="{% translate 'export'|title %}"
       >
         <c-layout.contextmenu.section>
+          {{ additional_export_items }}
           <c-layout.contextmenu.item
             icon="table-cells"
             href="#"
@@ -53,15 +54,6 @@
             aria-label="export table as csv"
           >
             {% translate 'export to CSV' %}
-          </c-layout.contextmenu.item>
-          <c-layout.contextmenu.item
-            icon="document"
-            href="#"
-            hx-get="{{ index_url }}{% querystring %}"
-            hx-vals='{"export": true, "extension": "json"}'
-            aria-label="export table as json"
-          >
-            {% translate 'export to JSON' %}
           </c-layout.contextmenu.item>
         </c-layout.contextmenu.section>
       </c-layout.contextmenu>
