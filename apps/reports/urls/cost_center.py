@@ -12,6 +12,6 @@ urlpatterns = [
         route="",
         view=CostCenterView.as_view(),
         name="index",
-        kwargs={"title": _("cost center")},
+        kwargs={"title": _("cost centers")},
     ),
 ]
