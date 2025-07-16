@@ -271,7 +271,8 @@
       </c-layout.sidebar.collapsible-item>
       {% endif %}
       <!-- reports -->
-      {% if perms.reports.view_trialbalance or perms.reports.view_costcenter %}
+      {% if perms.reports.view_trialbalance or perms.reports.view_costcenter or
+      perms.reports.view_period or perms.reports.view_compensation %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'reports'|title %}"
         icon="chart-pie"
@@ -296,6 +297,13 @@
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.reports.periods.path }}"
           text="{{ sidebar_links.reports.periods.text }}"
+        />
+        {% endif %}
+        <!--  -->
+        {% if perms.reports.view_compensation %}
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.reports.compensations.path }}"
+          text="{{ sidebar_links.reports.compensations.text }}"
         />
         {% endif %}
       </c-layout.sidebar.collapsible-item>

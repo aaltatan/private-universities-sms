@@ -1,4 +1,4 @@
-from .compensation import Compensation
+from .compensation import Compensation, CompensationQuerySet
 from .period import Period, PeriodQuerySet
 from .tax import Tax
 from .tax_bracket import TaxBracket
@@ -7,6 +7,7 @@ from .year import Year
 
 __all__ = [
     "Compensation",
+    "CompensationQuerySet",
     "Period",
     "PeriodQuerySet",
     "Year",

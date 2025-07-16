@@ -26,3 +26,10 @@ class Period(models.Model):
         managed = False
         icon = "calendar-date-range"
         codename_plural = "periods"
+
+
+class Compensation(models.Model):
+    class Meta:
+        managed = False
+        icon = "banknotes"
+        codename_plural = "compensations"

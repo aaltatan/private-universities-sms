@@ -14,21 +14,27 @@ from apps.core.choices import RoundMethodChoices
 from apps.core.exceptions import FormulaNotValid
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
+from apps.core.querysets import JournalsTotalsManagerMixin, JournalsTotalsQuerysetMixin
 from apps.core.utils import annotate_search, round_to_nearest
 
 from ..constants import compensations as constants
 from .tax import Tax
 
 
-class CompensationManager(models.Manager):
+class CompensationQuerySet(
+    JournalsTotalsQuerysetMixin["CompensationQuerySet"],
+    models.QuerySet,
+):
+    pass
+
+
+class CompensationManager(
+    JournalsTotalsManagerMixin[CompensationQuerySet], models.Manager
+):
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .select_related("tax")
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-            )
+        queryset = CompensationQuerySet(self.model, using=self._db)
+        return queryset.select_related("tax").annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 
