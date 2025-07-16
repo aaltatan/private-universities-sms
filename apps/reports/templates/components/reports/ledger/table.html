@@ -48,7 +48,7 @@
   <c-slot name="additional_export_items">
     <c-layout.contextmenu.item
       icon="document"
-      href="#"
+      href="{{ employee.get_ledger_msword_url }}{% querystring %}"
       aria-label="export table as word template"
     >
       {% translate 'export to MSWord' %}
