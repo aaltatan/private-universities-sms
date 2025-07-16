@@ -5,13 +5,15 @@ x-data="autocomplete({
   eventName: 'autocomplete-{{ widget.name }}',
 })" 
 class="relative"
-@blur="resetList"
-@click.away="resetList"
+@blur="closeList"
+@click.away="closeList"
 @keydown.esc.prevent="reset"
 >
   <div class="relative">
     <input
+    @input="resetList"
     @input.debounce.750="handleRequest"
+    @openautocompletelist.window="openList();$el.focus()"
     @keydown.enter.prevent=""
     :title="title"
     x-model="keywords"
@@ -19,7 +21,7 @@ class="relative"
     hx-get="{% url 'core:autocomplete' %}?{{ widget.attrs.querystring }}"
     hx-trigger="autocomplete-{{ widget.name }}"
     hx-target="#{{ widget.name }}-autocomplete-list"
-    hx-swap="innerHTML"
+    hx-swap="innerHTML show:none"
     hx-indicator="#{{ widget.name }}-indicator"
     hx-vals="js:{term: event.target.value}"
     hx-params="not governorate"
@@ -46,6 +48,7 @@ class="relative"
       </span>
     </span>
   </div>
+  {% spaceless %}
   <ul 
     x-show="isListOpen && keywords" 
     x-trap="isListOpen && keywords"
@@ -59,4 +62,5 @@ class="relative"
     role="list" 
     x-ref="autocompleteList"
   ></ul>
+  {% endspaceless %}
 </div>

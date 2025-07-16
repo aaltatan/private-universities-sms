@@ -23,8 +23,11 @@ export function autocomplete(data = { url, initial, eventName }) {
     resetKeywords() {
       this.keywords = "";
     },
-    handleNoResults() {
+    selectInput() {
       this.$refs.autocompleteInput.select();
+    },
+    handleNoResults() {
+      this.selectInput();
     },
     handleSelectOption(pk) {
       this.keywords = pk;
@@ -33,11 +36,9 @@ export function autocomplete(data = { url, initial, eventName }) {
     },
     reset() {
       this.resetKeywords();
-      this.closeList();
     },
     handleRequest() {
-      this.resetList();
-      this.openList();
+      this.closeList();
       if (this.keywords) {
         this.$dispatch(data.eventName);
       }

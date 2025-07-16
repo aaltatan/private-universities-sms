@@ -43,7 +43,9 @@ class AutocompleteView(View):
             "label_field_name": parser.label_field_name,
         }
 
-        return render(request, "widgets/autocomplete-item.html", context)
+        response = render(request, "widgets/autocomplete-item.html", context)
+        response["HX-Trigger"] = "openautocompletelist"
+        return response
 
     def post(self, request: HttpRequest, pk: str, *args, **kwargs) -> HttpResponse:
         try:
