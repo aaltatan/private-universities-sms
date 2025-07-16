@@ -123,6 +123,18 @@ class JournalEntry(UrlsMixin, TimeStampAbstractModel):
 
     objects: JournalEntryManager = JournalEntryManager()
 
+    @property
+    def formatted_debit(self):
+        return f"{self.debit:,.2f}"
+
+    @property
+    def formatted_credit(self):
+        return f"{self.credit:,.2f}"
+
+    @property
+    def formatted_amount(self):
+        return f"{self.amount:,.2f}"
+
     def clean(self):
         errors: dict[str, ValidationError] = {}
 
