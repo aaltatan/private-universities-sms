@@ -33,3 +33,10 @@ class Compensation(models.Model):
         managed = False
         icon = "banknotes"
         codename_plural = "compensations"
+
+
+class Employee(models.Model):
+    class Meta:
+        managed = False
+        icon = "user"
+        codename_plural = "employees"

@@ -272,7 +272,7 @@
       {% endif %}
       <!-- reports -->
       {% if perms.reports.view_trialbalance or perms.reports.view_costcenter or
-      perms.reports.view_period or perms.reports.view_compensation %}
+      perms.reports.view_period or perms.reports.view_compensation or perms.reports.view_employee %}
       <c-layout.sidebar.collapsible-item
         text="{% translate 'reports'|title %}"
         icon="chart-pie"
@@ -283,6 +283,13 @@
         <c-layout.sidebar.child-item
           url="{{ sidebar_links.reports.trial_balance.path }}"
           text="{{ sidebar_links.reports.trial_balance.text }}"
+        />
+        {% endif %}
+        <!--  -->
+        {% if perms.reports.view_employee %}
+        <c-layout.sidebar.child-item
+          url="{{ sidebar_links.reports.employees.path }}"
+          text="{{ sidebar_links.reports.employees.text }}"
         />
         {% endif %}
         <!--  -->
