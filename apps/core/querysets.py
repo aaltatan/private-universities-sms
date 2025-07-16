@@ -22,13 +22,19 @@ class JournalsTotalsQuerysetMixin(Generic[T]):
         self,
         field_name: Literal["debit", "credit", "amount"],
         sum_filter_Q: models.Q | None = None,
+        filter_compensations: bool = True,
     ) -> T:
         """
         Returns a queryset annotated with totals from their journals.
         """
-        compensation_ct = ContentType.objects.get_by_natural_key("fin", "compensation")
 
-        q = models.Q(journals__content_type=compensation_ct)
+        q = models.Q()
+
+        if filter_compensations:
+            compensation_ct = ContentType.objects.get_by_natural_key(
+                "fin", "compensation"
+            )
+            q &= models.Q(journals__content_type=compensation_ct)
 
         sum_obj = models.Sum(f"journals__{field_name}", filter=q)
 
@@ -54,37 +60,55 @@ class JournalsTotalsQuerysetMixin(Generic[T]):
     def annotate_journals_total_debit(
         self,
         sum_filter_Q: models.Q | None = None,
+        filter_compensations: bool = True,
     ):
-        return self._annotate_journals_total_field("debit", sum_filter_Q)
+        return self._annotate_journals_total_field(
+            "debit", sum_filter_Q, filter_compensations
+        )
 
     def annotate_journals_total_credit(
         self,
         sum_filter_Q: models.Q | None = None,
+        filter_compensations: bool = True,
     ):
-        return self._annotate_journals_total_field("credit", sum_filter_Q)
+        return self._annotate_journals_total_field(
+            "credit", sum_filter_Q, filter_compensations
+        )
 
     def annotate_journals_total_amount(
         self,
         sum_filter_Q: models.Q | None = None,
+        filter_compensations: bool = True,
     ):
-        return self._annotate_journals_total_field("amount", sum_filter_Q)
+        return self._annotate_journals_total_field(
+            "amount", sum_filter_Q, filter_compensations
+        )
 
 
 class JournalsTotalsManagerMixin(Generic[T]):
     def annotate_journals_total_debit(
         self,
         sum_filter_Q: models.Q | None = None,
+        filter_compensations: bool = True,
     ) -> T:
-        return self.get_queryset().annotate_journals_total_debit(sum_filter_Q)
+        return self.get_queryset().annotate_journals_total_debit(
+            sum_filter_Q, filter_compensations
+        )
 
     def annotate_journals_total_credit(
         self,
         sum_filter_Q: models.Q | None = None,
+        filter_compensations: bool = True,
     ) -> T:
-        return self.get_queryset().annotate_journals_total_credit(sum_filter_Q)
+        return self.get_queryset().annotate_journals_total_credit(
+            sum_filter_Q, filter_compensations
+        )
 
     def annotate_journals_total_amount(
         self,
         sum_filter_Q: models.Q | None = None,
+        filter_compensations: bool = True,
     ) -> T:
-        return self.get_queryset().annotate_journals_total_amount(sum_filter_Q)
+        return self.get_queryset().annotate_journals_total_amount(
+            sum_filter_Q, filter_compensations
+        )

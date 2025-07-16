@@ -25,9 +25,9 @@ class TrialBalanceView(PermissionRequiredMixin, mixins.ListMixin, View):
 
     def get_queryset(self):
         return (
-            Employee.objects.annotate_journals_total_debit()
-            .annotate_journals_total_credit()
-            .annotate_journals_total_amount()
+            Employee.objects.annotate_journals_total_debit(filter_compensations=False)
+            .annotate_journals_total_credit(filter_compensations=False)
+            .annotate_journals_total_amount(filter_compensations=False)
             .order_by("-total_amount", "fullname")
         )
 

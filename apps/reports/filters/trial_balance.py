@@ -20,6 +20,7 @@ class TrialBalanceFilter(
     JournalsCostCenterFilter,
     JournalsPeriodFilter,
 ):
+    filter_compensations = False
     fullname = get_text_filter(_("employee fullname"))
 
     class Meta:

@@ -18,15 +18,21 @@ from apps.trans.models import Voucher
 
 class Queryset(Protocol):
     def annotate_journals_total_debit(
-        self, sum_filter_Q: models.Q | None = None
+        self,
+        sum_filter_Q: models.Q | None = None,
+        filter_compensations: bool = True,
     ) -> "Queryset": ...
 
     def annotate_journals_total_credit(
-        self, sum_filter_Q: models.Q | None = None
+        self,
+        sum_filter_Q: models.Q | None = None,
+        filter_compensations: bool = True,
     ) -> "Queryset": ...
 
     def annotate_journals_total_amount(
-        self, sum_filter_Q: models.Q | None = None
+        self,
+        sum_filter_Q: models.Q | None = None,
+        filter_compensations: bool = True,
     ) -> "Queryset": ...
 
 
@@ -83,8 +89,10 @@ class JournalsCostCenterFilter(filters.FilterSet):
         return self.filter_journals("cost_center__name__in", value, queryset)
 
 
-class CommonJournalsFilter(filters.FilterSet):
+class FilterJournalsMixin:
     _sum_filter_Q = models.Q()
+
+    filter_compensations: bool = True
 
     def _get_joined_sum_filter_Q(self, sum_filter_Q: models.Q):
         self._sum_filter_Q &= sum_filter_Q
@@ -100,11 +108,15 @@ class CommonJournalsFilter(filters.FilterSet):
             models.Q(**{f"journals__{field}": value}) if value else models.Q(),
         )
         return (
-            queryset.annotate_journals_total_debit(sum_filter_Q)
-            .annotate_journals_total_credit(sum_filter_Q)
-            .annotate_journals_total_amount(sum_filter_Q)
+            queryset.annotate_journals_total_debit(
+                sum_filter_Q, self.filter_compensations
+            )
+            .annotate_journals_total_credit(sum_filter_Q, self.filter_compensations)
+            .annotate_journals_total_amount(sum_filter_Q, self.filter_compensations)
         )
 
+
+class CommonJournalsFilter(FilterJournalsMixin, filters.FilterSet):
     total_debit_from, total_debit_to = get_number_from_to_filters("total_debit")
     total_credit_from, total_credit_to = get_number_from_to_filters("total_credit")
     total_amount_from, total_amount_to = get_number_from_to_filters("total_amount")
