@@ -11,7 +11,7 @@ from .. import filters, resources
 
 class CostCenterView(PermissionRequiredMixin, mixins.ListMixin, View):
     app_label = "reports"
-    codename_plural = "cost_center"
+    codename_plural = "cost_centers"
     permission_required = "reports.view_costcenter"
     model = CostCenter
     filter_class = filters.CostCenterFilter

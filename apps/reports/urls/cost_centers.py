@@ -1,7 +1,7 @@
 from django.urls import path
 from django.utils.translation import gettext as _
 
-from ..views.cost_center import CostCenterView
+from ..views.cost_centers import CostCenterView
 
 
 app_name = "cost_center"
