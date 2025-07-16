@@ -3,6 +3,7 @@
 <c-blocks.table-filters>
   <c-inputs.text :field="filter.form.fullname" />
   <c-inputs.text :field="filter.form.exclude_zero_net" />
+  <c-inputs.text :field="filter.form.compensation_kind" />
   <c-inputs.range-wrapper title="{% translate 'total debit'|title %}">
     <c-inputs.text :show_label="False" :field="filter.form.total_debit_from" />
     <c-inputs.text :show_label="False" :field="filter.form.total_debit_to" />

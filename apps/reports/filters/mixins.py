@@ -174,3 +174,16 @@ class CommonJournalsFilter(FilterJournalsMixin, filters.FilterSet):
 
     def filter_month(self, queryset, name, value):
         return self.filter_journals("month__in", value, queryset)
+
+    compensation_kind = get_combobox_choices_filter(
+        queryset=Voucher.objects.all(),
+        field_name="compensation_kind",
+        label=_("compensation kind"),
+        choices=Compensation.CompensationKindChoices.choices,
+        method_name="filter_compensation_kind",
+    )
+
+    def filter_compensation_kind(self, queryset, name, value):
+        return self.filter_journals(
+            "compensation__kind__in", value, queryset
+        )
