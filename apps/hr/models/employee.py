@@ -457,6 +457,9 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
 
     def get_ledger_url(self):
         return reverse("reports:ledger:index", kwargs={"slug": self.slug})
+    
+    def get_ledger_msword_url(self):
+        return reverse("reports:ledger:msword", kwargs={"slug": self.slug})
 
     def get_word_url(self):
         return reverse("hr:employees:word", kwargs={"slug": self.slug})
