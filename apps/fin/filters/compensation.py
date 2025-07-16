@@ -11,6 +11,11 @@ from .. import models
 
 
 class BaseCompensationFilter(BaseQSearchFilter, BaseNameDescriptionFilter):
+    kind = filters.ChoiceFilter(
+        field_name="kind",
+        label=_("kind"),
+        choices=models.Compensation.CompensationKindChoices,
+    )
     calculation_method = filters.ChoiceFilter(
         field_name="calculation_method",
         label=_("calculation method"),
@@ -35,6 +40,7 @@ class BaseCompensationFilter(BaseQSearchFilter, BaseNameDescriptionFilter):
         fields = (
             "name",
             "shortname",
+            "kind",
             "calculation_method",
             "value_from",
             "value_to",

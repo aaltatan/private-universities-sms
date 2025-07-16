@@ -43,6 +43,10 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         FIXED = "fixed", _("fixed").title()
         BY_INPUT = "by_input", _("by input").title()
 
+    class CompensationKindChoices(models.TextChoices):
+        BENEFIT = "benefit", _("benefit").title()
+        CUT = "cut", _("cut").title()
+
     class CalculationChoices(models.TextChoices):
         FIXED = "fixed", _("fixed").title()
         BY_INPUT = "by_input", _("by input").title()
@@ -68,6 +72,12 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         max_length=255,
         verbose_name=_("short name"),
         help_text=_("to use it in services like sms, whatsapp, etc."),
+    )
+    kind = models.CharField(
+        verbose_name=_("kind"),
+        max_length=10,
+        choices=CompensationKindChoices.choices,
+        default=CompensationKindChoices.BENEFIT,
     )
     calculation_method = models.CharField(
         verbose_name=_("calculation method"),

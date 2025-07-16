@@ -5,6 +5,7 @@ ORDERING_FIELDS: dict[str, str] = {
     "id": _("id"),
     "name": _("name"),
     "shortname": _("short name"),
+    "kind": _("kind"),
     "calculation_method": _("calculation method"),
     "tax": _("tax"),
     "tax_classification": _("tax classification"),

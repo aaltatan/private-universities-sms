@@ -11,6 +11,10 @@ class CompensationResource(BaseResource):
         attribute="shortname",
         column_name=_("short name").title(),
     )
+    kind = fields.Field(
+        attribute="kind",
+        column_name=_("kind").title(),
+    )
     calculation_method = fields.Field(
         attribute="calculation_method",
         column_name=_("calculation method").title(),
@@ -66,6 +70,9 @@ class CompensationResource(BaseResource):
 
     def dehydrate_calculation_method(self, obj: models.Compensation):
         return self._dehydrate_choices(obj, "calculation_method")
+    
+    def dehydrate_kind(self, obj: models.Compensation):
+        return self._dehydrate_choices(obj, "kind")
 
     def dehydrate_tax_classification(self, obj: models.Compensation):
         return self._dehydrate_choices(obj, "tax_classification")
@@ -85,6 +92,7 @@ class CompensationResource(BaseResource):
             "serial",
             "name",
             "shortname",
+            "kind",
             "calculation_method",
             "tax",
             "tax_classification",

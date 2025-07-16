@@ -8,6 +8,10 @@ from .. import models
 
 
 class BaseCompensationForm(CustomModelForm):
+    kind = forms.ChoiceField(
+        choices=models.Compensation.CompensationKindChoices,
+        label=_("kind"),
+    )
     calculation_method = forms.ChoiceField(
         choices=models.Compensation.CalculationChoices,
         label=_("calculation method"),
@@ -36,6 +40,7 @@ class BaseCompensationForm(CustomModelForm):
         fields = (
             "name",
             "shortname",
+            "kind",
             "calculation_method",
             "value",
             "formula",

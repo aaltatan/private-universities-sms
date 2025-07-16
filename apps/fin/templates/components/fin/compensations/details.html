@@ -26,6 +26,15 @@
           <!--  -->
           <c-table.tr>
             <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'kind' }}
+            </c-table.td>
+            <c-table.td data-header="{{ model|verbose_name:'kind' }}">
+              {{ object.get_kind_display }}
+            </c-table.td>
+          </c-table.tr>
+          <!--  -->
+          <c-table.tr>
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'calculation_method' }}
             </c-table.td>
             <c-table.td data-header="{{ model|verbose_name:'calculation_method' }}">

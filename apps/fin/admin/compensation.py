@@ -14,6 +14,7 @@ class CompensationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "id",
         "name",
         "tax",
+        "kind",
         "formatted_calculation_method",
         "value",
         "formatted_round_method",
@@ -21,7 +22,7 @@ class CompensationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         "is_active",
     )
     fields = (
-        ("name", "shortname"),
+        ("name", "shortname", "kind"),
         "calculation_method",
         ("value", "min_value", "max_value"),
         "formula",
