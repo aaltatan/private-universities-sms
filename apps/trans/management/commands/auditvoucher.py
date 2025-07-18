@@ -6,33 +6,36 @@ from ...models import Voucher
 
 
 class Command(BaseCommand):
-    help = "Audits specific voucher"
+    help = "Audits specific vouchers"
 
     def add_arguments(self, parser: CommandParser):
-        parser.add_argument("voucher_serial", type=int, help="voucher serial")
+        parser.add_argument(
+            "serials", nargs="+", type=int, help="list of voucher serial"
+        )
 
     def handle(self, *args, **options):
-        serial = options.get("voucher_serial", None)
+        serials = options.get("serials", [])
 
-        if serial is None:
+        if not serials:
             raise CommandError("voucher serial is required")
 
-        voucher_serial = f"VOC{serial:012d}"
+        voucher_serials = [f"VOC{serial:012d}" for serial in serials]
+        joined_serials = ", ".join(voucher_serials)
 
-        try:
-            voucher: Voucher = Voucher.objects.get(
-                voucher_serial=voucher_serial,
-            )
-        except Voucher.DoesNotExist:
-            raise CommandError(f"voucher {voucher_serial} does not exist")
+        vouchers = Voucher.objects.filter(voucher_serial__in=voucher_serials)
+
+        if not vouchers.exists():
+            raise CommandError(f"vouchers {joined_serials} do not exist")
 
         try:
             admin = User.objects.get(username="admin")
         except User.DoesNotExist:
             raise CommandError("admin user does not exist")
 
-        voucher.audit(audited_by=admin)
+        vouchers.update(is_audited=True, audited_by=admin)
 
         self.stdout.write(
-            self.style.SUCCESS(f"Voucher {voucher_serial} audited successfully")
+            self.style.SUCCESS(
+                f"Vouchers {joined_serials} have been audited successfully"
+            )
         )
