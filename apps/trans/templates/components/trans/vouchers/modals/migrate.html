@@ -1,19 +1,23 @@
-{% load i18n %}
+{% load i18n widget_tweaks %}
 
 <c-layout.modal>
-  <form hx-post="{{ obj.get_migrate_url }}{% querystring %}" hx-target="#{{ table_id }}">
+  <form hx-post="{{ obj.get_migrate_url }}{% querystring %}">
     <c-layout.modal.body>
       <c-slot name="header">
         {% translate 'migrate'|title %}
         <span>{{ obj }}</span>
       </c-slot>
       <c-slot name="body">
-        <p class="text-neutral-600 dark:text-neutral-300 first-letter:capitalize">
-          {% translate 'are you sure you want to migrate' %} {{ obj }} {% translate '?' %}
+        <p class="text-neutral-600 dark:text-neutral-300 first-letter:capitalize py-4">
+          {% translate 'you are about to migrate' %}
+          <!--  -->
+          <span class="font-medium text-sm">{{ obj }}</span>
         </p>
+        <c-inputs.text :field="form.accounting_journal_sequence" />
+        {% render_field form.slug value=obj.slug class="hidden" %}
       </c-slot>
       <c-slot name="footer">
-        <c-button title="{% translate 'migrate'|title %}" @click="hideModal" :hide_icon="True">
+        <c-button title="{% translate 'migrate'|title %}" :hide_icon="True">
           {% translate 'migrate'|title %}
         </c-button>
       </c-slot>
