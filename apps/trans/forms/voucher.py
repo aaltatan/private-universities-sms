@@ -1,7 +1,9 @@
+from django import forms
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
 from apps.core.fields import get_autocomplete_field
-from apps.core.forms import CustomModelForm
+from apps.core.forms import BehaviorForm, CustomModelForm
 from apps.core.widgets import (
     get_date_widget,
     get_file_widget,
@@ -11,6 +13,30 @@ from apps.core.widgets import (
 from apps.fin.models import Period, VoucherKind
 
 from .. import models
+
+
+class VoucherMigrateForm(BehaviorForm):
+    slug = forms.CharField(required=True)
+    accounting_journal_sequence = forms.CharField(
+        label=_("type accounting journal sequence to confirm migration").upper(),
+        max_length=255,
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": _("e.g. JOV000001"),
+            }
+        ),
+    )
+
+    def save(self):
+        slug = self.cleaned_data["slug"]
+        accounting_journal_sequence = self.cleaned_data.get(
+            "accounting_journal_sequence"
+        )
+
+        voucher = get_object_or_404(models.Voucher, slug=slug)
+        voucher.accounting_journal_sequence = accounting_journal_sequence
+        voucher.save(audit=True)
 
 
 class BaseVoucherForm(CustomModelForm):

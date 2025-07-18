@@ -207,6 +207,7 @@ class MigrateView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
     behavior = VoucherMigrator
     model = models.Voucher
     modal_template_name = "components/trans/vouchers/modals/migrate.html"
+    form_class = forms.VoucherMigrateForm
 
 
 class UnMigrateView(PermissionRequiredMixin, mixins.BehaviorMixin, View):
