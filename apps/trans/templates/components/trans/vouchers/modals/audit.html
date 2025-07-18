@@ -9,15 +9,12 @@
       </c-slot>
       <c-slot name="body">
         <p class="text-neutral-600 dark:text-neutral-300 first-letter:capitalize">
-          {% translate 'are you sure you want to audit' %} {{ obj }} {% translate '?' %}
+          {% translate 'you are about to unmigrate the voucher, do you want to continue?'|capfirst
+          %}
         </p>
       </c-slot>
       <c-slot name="footer">
-        <c-button
-          title="{% translate 'audit'|title %}"
-          @click="hideModal"
-          :hide_icon="True"
-        >
+        <c-button title="{% translate 'audit'|title %}" @click="hideModal" :hide_icon="True">
           {% translate 'audit'|title %}
         </c-button>
       </c-slot>
