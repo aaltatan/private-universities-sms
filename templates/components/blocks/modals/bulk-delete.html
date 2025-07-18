@@ -12,7 +12,7 @@
         <ul class="text-neutral-600 dark:text-neutral-300">
           {% for obj in qs %}
           <li class="flex items-center gap-1 ps-2 text-sm">
-            <input type="hidden" value="{{ obj.pk }}" name="action-check" />
+            <input type="hidden" value="{{ obj.pk }}" name="action_check" />
             <span>{{ forloop.counter }} - {{ obj }}</span>
           </li>
           {% endfor %}
