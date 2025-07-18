@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <c-layout 
-  page_title="{% translate 'update'|title %} {{ form.instance }}"
+  page_title="{% translate 'update'|title %} {{ form.instance }}{% if form.instance.is_audited %} - {% translate 'audited'|capfirst %}{% endif %}"
 >
   <c-trans.vouchers.update />
 </c-layout>
