@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
+from ..forms import BehaviorForm
 from ..utils import ActionBehavior
 
 
@@ -24,6 +25,7 @@ class BehaviorMixin(ABC):
         pass
 
     modal_template_name: str | None = None
+    form_class: type[BehaviorForm] | None = None
 
     def __init__(self):
         if getattr(self, "behavior", None) is None:
@@ -56,7 +58,12 @@ class BehaviorMixin(ABC):
             raise Http404()
 
         modal_template_name = self.get_modal_template_name()
-        context = self.context_data()
+
+        if self.form_class is not None:
+            form = self.form_class()
+            context = self.context_data(form=form)
+        else:
+            context = self.context_data()
 
         return render(request, modal_template_name, context)
 
@@ -76,27 +83,57 @@ class BehaviorMixin(ABC):
 
         behavior: ActionBehavior = self.behavior(request=self.request, obj=self.obj)
 
-        behavior.action()
-
-        if behavior.has_executed:
-            response = HttpResponse(status=204)
-            querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
-            messages.success(request, behavior.get_message())
-            response["Hx-Location"] = json.dumps(
-                {
-                    "path": self.get_app_urls()["index_url"] + querystring,
-                    "target": f"#{self.get_html_ids()['table_id']}",
-                }
-            )
+        if self.form_class is None:
+            return self.get_behavior_response(request, behavior)
         else:
-            response = HttpResponse(status=200)
-            response["Hx-Retarget"] = "#no-content"
-            response["HX-Reswap"] = "innerHTML"
-            messages.error(request, behavior.get_message())
+            form = self.form_class(request.POST)
+            if form.is_valid():
+                return self.get_behavior_response(request, behavior, form)
+            else:
+                return render(
+                    request=request,
+                    template_name=self.get_modal_template_name(),
+                    context=self.context_data(form=form),
+                )
 
-        response["HX-Trigger"] = "messages"
+    def get_success_response(self, request: HttpRequest, message: str):
+        response = HttpResponse()
+        querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
+        messages.success(request, message)
+        response["Hx-Location"] = json.dumps(
+            {
+                "path": self.get_app_urls()["index_url"] + querystring,
+                "target": f"#{self.get_html_ids()['table_id']}",
+            }
+        )
+        response["HX-Trigger"] = "messages, hidemodal"
+        return response
+
+    def get_error_response(self, request: HttpRequest, message: str):
+        response = HttpResponse()
+
+        response["Hx-Retarget"] = "#no-content"
+        response["HX-Reswap"] = "innerHTML"
+        messages.error(request, message)
+        response["HX-Trigger"] = "messages, hidemodal"
 
         return response
+
+    def get_behavior_response(
+        self,
+        request: HttpRequest,
+        behavior: ActionBehavior,
+        form: BehaviorForm | None = None,
+    ):
+        behavior.action()
+        message = behavior.get_message()
+
+        if behavior.has_executed:
+            if form is not None:
+                form.save()
+            return self.get_success_response(request, message)
+        else:
+            return self.get_error_response(request, message)
 
     def can_access(self, request: HttpRequest, obj: Model) -> bool:
         """
