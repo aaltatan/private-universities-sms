@@ -46,7 +46,7 @@
     />
   </c-slot>
 
-  {% if can_delete or can_audit or can_migrate %}
+  {% if can_delete or can_audit or can_migrate or can_unmigrate %}
   <c-slot name="actions">
     <c-layout.contextmenu.section>
       {% if can_delete %}
@@ -84,6 +84,19 @@
           hx-target="#modal-container"
           hx-indicator="#modal-spinner"
           aria-label="migrate all objects"
+        />
+      </c-layout.contextmenu.item>
+      {% endif %}
+      <!--  -->
+      {% if can_unmigrate %}
+      <c-layout.contextmenu.item icon="lock-open">
+        <c-table.action-button
+          action_name="unmigrate"
+          value="{% translate 'unmigrate' %}"
+          hx-post="{{ index_url }}{% querystring %}"
+          hx-target="#modal-container"
+          hx-indicator="#modal-spinner"
+          aria-label="unmigrate all objects"
         />
       </c-layout.contextmenu.item>
       {% endif %}
