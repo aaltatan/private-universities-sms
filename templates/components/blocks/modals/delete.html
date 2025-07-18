@@ -18,6 +18,12 @@
           title="{% translate 'delete'|title %}"
           @click="hideModal"
           :hide_icon="True"
+          ::disabled="disabled"
+          x-data="setConfirmationTimer(
+            $el, 
+            '{% translate 'delete'|title %}', 
+            {{ settings.delete_confirmation_timeout }}
+          )"
         >
           {% translate 'delete'|title %}
         </c-button>

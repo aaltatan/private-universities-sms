@@ -1,26 +1,20 @@
 {% load i18n %}
 
 <c-layout.modal>
-  <form 
-    hx-post="{{ index_url }}{% querystring %}" 
-    hx-vals='{"kind": "action", "name": "delete"}'
-  >
+  <form hx-post="{{ index_url }}{% querystring %}" hx-vals='{"kind": "action", "name": "delete"}'>
     <c-layout.modal.body>
-      <c-slot name="header">
-        {% translate 'delete'|title %}
-      </c-slot>
+      <c-slot name="header"> {% translate 'delete'|title %} </c-slot>
       <c-slot name="body">
         <p class="text-neutral-600 dark:text-neutral-300 first-letter:capitalize">
-          {% translate 'are you sure you want to delete all' %}
-          {{ qs.count }}
-          {% translate 'selected objects ?' %}
+          {% translate 'are you sure you want to delete all' %} {{ qs.count }} {% translate
+          'selected objects ?' %}
         </p>
         <ul class="text-neutral-600 dark:text-neutral-300">
           {% for obj in qs %}
-             <li class="flex items-center gap-1 ps-2 text-sm">
-                <input type="hidden" value="{{ obj.pk }}" name="action-check" />
-                <span>{{ forloop.counter }} - {{ obj }}</span>
-             </li>
+          <li class="flex items-center gap-1 ps-2 text-sm">
+            <input type="hidden" value="{{ obj.pk }}" name="action-check" />
+            <span>{{ forloop.counter }} - {{ obj }}</span>
+          </li>
           {% endfor %}
         </ul>
       </c-slot>
@@ -30,6 +24,12 @@
           title="{% translate 'delete'|title %}"
           type="submit"
           :hide_icon="True"
+          ::disabled="disabled"
+          x-data="setConfirmationTimer(
+            $el, 
+            '{% translate 'delete'|title %}', 
+            {{ settings.delete_confirmation_timeout }}
+          )"
         >
           {% translate 'delete'|title %}
         </c-button>

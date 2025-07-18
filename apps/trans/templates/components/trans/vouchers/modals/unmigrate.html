@@ -14,7 +14,16 @@
         </p>
       </c-slot>
       <c-slot name="footer">
-        <c-button title="{% translate 'unmigrate'|title %}" :hide_icon="True">
+        <c-button
+          title="{% translate 'unmigrate'|title %}"
+          :hide_icon="True"
+          ::disabled="disabled"
+          x-data="setConfirmationTimer(
+            $el, 
+            '{% translate 'unmigrate'|title %}', 
+            {{ settings.unmigrate_confirmation_timeout }}
+          )"
+        >
           {% translate 'unmigrate'|title %}
         </c-button>
       </c-slot>

@@ -13,6 +13,8 @@ def constants(request: HttpRequest) -> dict[str, Any]:
             "messages_timeout": settings.MESSAGES_TIMEOUT,
             "per_page_array": settings.PER_PAGE_ARRAY,
             "per_page": settings.PER_PAGE,
+            "delete_confirmation_timeout": settings.DELETE_CONFIRMATION_TIMEOUT,
+            "unmigrate_confirmation_timeout": settings.UNMIGRATE_CONFIRMATION_TIMEOUT,
         },
         "sidebar_links": {
             "core": {

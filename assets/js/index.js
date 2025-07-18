@@ -16,14 +16,15 @@ window.Alpine = Alpine;
 
 import { alert } from "./src/alert";
 import { badge } from "./src/badge";
+import { setConfirmationTimer } from "./src/buttons";
 import { combineTitle } from "./src/combine-title";
 import { contextMenu } from "./src/context-menu";
 import { autocomplete, combobox, date } from "./src/fields";
 import { formset } from "./src/formset";
 import { layout, sidebarLinks, theme } from "./src/layout";
 import { messages } from "./src/messages";
-import { tableCheckAll } from "./src/td-check-all";
 import { tableTotals } from "./src/table-totals";
+import { tableCheckAll } from "./src/td-check-all";
 
 Alpine.plugin(collapse);
 Alpine.plugin(focus);
@@ -47,6 +48,7 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("combobox", combobox);
   Alpine.data("formset", formset);
   Alpine.data("tableTotals", tableTotals);
+  Alpine.data("setConfirmationTimer", setConfirmationTimer);
 });
 
 Alpine.start();
