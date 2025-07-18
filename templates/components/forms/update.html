@@ -12,6 +12,7 @@
   }"
   width="lg"
   encoding="urlencoded"
+  confirm_message=""
 />
 
 <form
@@ -24,6 +25,9 @@
   id="{{ form_id }}"
   class="{{ widths|get_item:width }} relative"
   x-trap.noautofocus="true"
+  {% if confirm_message %}
+  hx-confirm="{{ confirm_message }}"
+  {% endif %}
 >
   <div 
     class="absolute left-0 top-0 w-full h-full bg-white/30 dark:bg-black/30 z-20 items-center justify-center hidden hx-request:flex"
