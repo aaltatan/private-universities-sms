@@ -9,7 +9,7 @@ from apps.core.widgets import (
     SelectMultipleWidget,
     get_date_widget,
     get_file_widget,
-    get_input_datalist,
+    get_input_datalist_widget,
     get_numeric_widget,
     get_text_widget,
     get_textarea_widget,
@@ -135,7 +135,7 @@ class EmployeeForm(CustomModelForm):
             "lastname": get_text_widget(placeholder=_("e.g. Doe")),
             "father_name": get_text_widget(placeholder=_("e.g. John")),
             "mother_name": get_text_widget(placeholder=_("e.g. Jane")),
-            "birth_place": get_input_datalist(
+            "birth_place": get_input_datalist_widget(
                 model=models.Employee,
                 field_name="birth_place",
                 placeholder=_("e.g. Hama"),
@@ -147,23 +147,23 @@ class EmployeeForm(CustomModelForm):
             ),
             "passport_id": get_numeric_widget(placeholder="0123456789"),
             "card_id": get_numeric_widget(placeholder="0123456789"),
-            "civil_registry_office": get_input_datalist(
+            "civil_registry_office": get_input_datalist_widget(
                 model=models.Employee,
                 field_name="civil_registry_office",
                 placeholder=_("e.g. Cairo"),
             ),
-            "registry_office_name": get_input_datalist(
+            "registry_office_name": get_input_datalist_widget(
                 model=models.Employee,
                 field_name="registry_office_name",
                 placeholder=_("e.g. Cairo"),
             ),
             "registry_office_id": get_numeric_widget(placeholder="3123"),
-            "face_color": get_input_datalist(
+            "face_color": get_input_datalist_widget(
                 model=models.Employee,
                 field_name="face_color",
                 placeholder=_("e.g. White"),
             ),
-            "eyes_color": get_input_datalist(
+            "eyes_color": get_input_datalist_widget(
                 model=models.Employee,
                 field_name="eyes_color",
                 placeholder=_("e.g. Blue"),
@@ -174,7 +174,7 @@ class EmployeeForm(CustomModelForm):
             "current_address": get_text_widget(
                 placeholder=_("e.g. 123 Main Street, Cairo"),
             ),
-            "special_signs": get_input_datalist(
+            "special_signs": get_input_datalist_widget(
                 model=models.Employee,
                 field_name="special_signs",
                 placeholder=_("e.g. Glasses"),

@@ -194,7 +194,7 @@ def get_date_widget(
     return DateWidget(fill_onfocus=fill_onfocus, attrs=attributes)
 
 
-def get_input_datalist(
+def get_input_datalist_widget(
     model: models.Model, field_name: str, **attrs
 ) -> TextWithDataListInputWidget:
     return TextWithDataListInputWidget(
