@@ -2,13 +2,13 @@ import json
 from dataclasses import InitVar, asdict, dataclass, field
 from typing import Any, Literal, Sequence
 
-from django import forms
 from django.http import Http404, HttpRequest
 from rest_framework.response import Response
 
 from apps.core.utils.behaviors import ActionBehavior
 
 from .constants import PERMISSION
+from .forms import BehaviorForm
 
 
 @dataclass
@@ -58,7 +58,7 @@ class Action:
     behavior: type[ActionBehavior]
     template: str
     permissions: Sequence[Perm | str] = field(default_factory=list)
-    form_class: type[forms.Form] | None = None
+    form_class: type[BehaviorForm] | None = None
 
     def __post_init__(self) -> None:
         if len(self.permissions) == 0:
