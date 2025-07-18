@@ -1,9 +1,6 @@
 from django import forms
-from django.utils.translation import gettext as _
 
-from apps.hr.models import Employee
-
-from .fields import CustomModelChoiceField, get_autocomplete_field
+from .fields import CustomModelChoiceField
 
 
 class CustomModelForm(forms.ModelForm):
@@ -24,19 +21,3 @@ class CustomModelForm(forms.ModelForm):
                     self.initial[field_name] = getattr(
                         related_instance, field.to_field_name
                     )
-
-
-class LedgerForm(forms.Form):
-    employee = get_autocomplete_field(
-        Employee.objects.all(),
-        to_field_name="slug",
-        widget_attributes={"placeholder": _("search employees")},
-        app_label="hr",
-        model_name="Employee",
-        object_name="employee",
-        field_name="search",
-    )
-
-    class Meta:
-        model = Employee
-        fields = ["employee"]
