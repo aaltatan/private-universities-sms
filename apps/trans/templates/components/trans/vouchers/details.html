@@ -177,6 +177,18 @@
               {{ object.is_audited|yesno|title }}
             </c-table.td>
           </c-table.tr>
+          <!--  -->
+          {% if object.is_audited %}
+          <c-table.tr>
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+              {{ model|verbose_name:'audited_by' }}
+            </c-table.td>
+            <c-table.td data-header="{{ model|verbose_name:'audited_by' }}">
+              {{ object.audited_by }}
+            </c-table.td>
+          </c-table.tr>
+          {% endif %}
+          <!--  -->
           <c-table.tr>
             <c-table.td :header="True" data-header="{% translate 'name'|title %}">
               {{ model|verbose_name:'is_migrated' }}
