@@ -275,7 +275,7 @@ class CommonDeleteTests:
         )
 
         payload = {
-            "action-check": list(range(1, 10)),
+            "action_check": list(range(1, 10)),
             "kind": "action",
             "name": "delete",
         }

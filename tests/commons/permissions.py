@@ -22,7 +22,7 @@ class CommonPermissionsTests:
         )
 
         data: dict = {
-            "action-check": list(range(1, bulk_delete_batch + 1)),
+            "action_check": list(range(1, bulk_delete_batch + 1)),
             "kind": "action",
             "name": "delete",
         }
@@ -44,7 +44,7 @@ class CommonPermissionsTests:
         )
 
         data: dict = {
-            "action-check": list(range(1, bulk_delete_batch + 1)),
+            "action_check": list(range(1, bulk_delete_batch + 1)),
             "kind": "action",
             "name": "delete",
         }

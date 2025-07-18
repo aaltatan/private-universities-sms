@@ -65,7 +65,7 @@ class CommonViewsTests:
     ):
         bulk_delete_batch = counts["bulk_delete_batch"]
         data: dict = {
-            "action-check": list(range(1, bulk_delete_batch + 1)),
+            "action_check": list(range(1, bulk_delete_batch + 1)),
             "kind": "modal",
             "name": "delete",
         }

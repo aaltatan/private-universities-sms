@@ -22,7 +22,7 @@ class CommonActionsTests:
         objects_count = counts["objects"]
         bulk_delete_batch = counts["bulk_delete_batch"]
         data: dict = {
-            "action-check": list(range(1, bulk_delete_batch + 1)),
+            "action_check": list(range(1, bulk_delete_batch + 1)),
             "kind": "action",
             "name": "delete",
         }
@@ -53,7 +53,7 @@ class CommonActionsTests:
     ):
         bulk_delete_batch = counts["bulk_delete_batch"]
         data: dict = {
-            "action-check": list(range(1, bulk_delete_batch + 1)),
+            "action_check": list(range(1, bulk_delete_batch + 1)),
             "kind": "action",
             "name": "bulk_delete",  # name not in actions
         }
@@ -78,7 +78,7 @@ class CommonActionsTests:
             f"apps.{app_label}.views.{subapp_label}.ListView.deleter", new=None
         )
         data: dict = {
-            "action-check": list(range(1, bulk_delete_batch + 1)),
+            "action_check": list(range(1, bulk_delete_batch + 1)),
             "kind": "action",
             "name": "delete",
         }
@@ -103,7 +103,7 @@ class CommonActionsTests:
             f"apps.{app_label}.views.{subapp_label}.ListView.deleter", new=Deleter
         )
         data: dict = {
-            "action-check": list(range(1, bulk_delete_batch + 1)),
+            "action_check": list(range(1, bulk_delete_batch + 1)),
             "kind": "action",
             "name": "delete",
         }

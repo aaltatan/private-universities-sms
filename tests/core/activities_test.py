@@ -260,7 +260,7 @@ def test_bulk_delete_activity(
     activity_model,
 ):
     data: dict = {
-        "action-check": list(range(3, 5)),
+        "action_check": list(range(3, 5)),
         "kind": "action",
         "name": "delete",
     }
