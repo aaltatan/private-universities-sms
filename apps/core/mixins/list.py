@@ -419,7 +419,7 @@ class ListMixin(
                 "You don't have permission to perform this action"
             )
 
-        qs = self.parse_ids(request)
+        qs = self.get_queryset_pks(request)
 
         if kind == "modal":
             kwargs = {"qs": qs}
@@ -483,11 +483,11 @@ class ListMixin(
         else:
             return self.get_error_bulk_response(request, message)
 
-    def parse_ids(self, request: HttpRequest) -> QuerySet:
+    def get_queryset_pks(self, request: HttpRequest) -> QuerySet:
         """
         Parses the ids from the request.
         """
-        ids = [int(id) for id in request.POST.getlist("action-check")]
+        ids = [int(id) for id in request.POST.getlist("action_check")]
 
         queryset = self.get_queryset()
         queryset = self.get_filtered_queryset(request, queryset)
