@@ -1,12 +1,13 @@
 {% load i18n widget_tweaks %}
 
 <c-forms.update
-  form_title="{% translate 'update' %} {{ form.instance }}"
+  form_title="{% translate 'update'|title %} {{ form.instance }}{% if form.instance.is_audited %} - {% translate 'audited'|capfirst %}{% endif %}"
   url="{{ update_url }}{% querystring %}"
   :form_id="form_id"
   :form="form"
   width="none"
   encoding="multipart"
+  confirm_message="{% if form.instance.is_audited %}{% translate 'you are about to update audited voucher, you need to re-audit it again, are you sure?'|capfirst %}{% endif %}"
 >
   <c-trans.vouchers.form-body />
   <div
