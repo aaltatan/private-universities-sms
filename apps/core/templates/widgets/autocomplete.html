@@ -13,7 +13,7 @@ class="relative"
     <input
     @input="resetList"
     @input.debounce.750="handleRequest"
-    @openautocompletelist.window="openList();$el.focus()"
+    @openautocompletelist="openList();$el.focus()"
     @keydown.enter.prevent=""
     :title="title"
     x-model="keywords"
