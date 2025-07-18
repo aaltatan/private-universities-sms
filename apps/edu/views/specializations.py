@@ -30,25 +30,18 @@ class APIViewSet(
     deleter = Deleter
 
 
-class ListView(
-    PermissionRequiredMixin,
-    mixins.BulkDeleteMixin,
-    mixins.ListMixin,
-    View,
-):
+class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
     permission_required = "edu.view_specialization"
     model = models.Specialization
     filter_class = filters.SpecializationFilter
     resource_class = resources.SpecializationResource
-    deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
 
     def get_actions(self) -> dict[str, Action]:
         return {
             "delete": Action(
-                method=self.bulk_delete,
+                behavior=Deleter,
                 template="components/blocks/modals/bulk-delete.html",
-                kwargs=("new_value",),
                 permissions=("edu.delete_specialization",),
             ),
         }

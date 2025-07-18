@@ -1,8 +1,4 @@
-import json
-
-from django.contrib import messages
 from django.db.models import QuerySet
-from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.decorators import action
@@ -10,50 +6,6 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from ..utils import ActionBehavior
-
-
-class BulkDeleteMixin:
-    def bulk_delete(self, qs: QuerySet, **kwargs) -> HttpResponse:
-        if getattr(self, "deleter", None) is None:
-            raise AttributeError(
-                "you must define a deleter class for the ListView.",
-            )
-
-        if not issubclass(self.deleter, ActionBehavior):
-            raise TypeError(
-                "the deleter class must be a subclass of ActionBehavior.",
-            )
-
-        deleter: ActionBehavior = self.deleter(
-            request=self.request,
-            queryset=qs,
-        )
-        deleter.action()
-
-        if deleter.has_executed:
-            response = HttpResponse(status=204)
-            response["Hx-Location"] = json.dumps(
-                {
-                    "path": self.request.get_full_path(),
-                    "target": f"#{self.get_html_ids()['table_id']}",
-                }
-            )
-            messages.success(
-                self.request,
-                deleter.get_message(),
-            )
-            response["HX-Trigger"] = "messages"
-            return response
-        else:
-            response = HttpResponse()
-            response["Hx-Retarget"] = "#no-content"
-            response["HX-Reswap"] = "innerHTML"
-            response["HX-Trigger"] = "messages"
-            messages.error(
-                self.request,
-                deleter.get_message(),
-            )
-            return response
 
 
 class BulkDeleteAPIMixin:

@@ -35,12 +35,7 @@ class APIViewSet(
         return serializers.SchoolSerializer
 
 
-class ListView(
-    PermissionRequiredMixin,
-    mixins.BulkDeleteMixin,
-    mixins.ListMixin,
-    View,
-):
+class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
     permission_required = "edu.view_school"
     model = models.School
     filter_class = filters.SchoolFilter
@@ -51,9 +46,8 @@ class ListView(
     def get_actions(self) -> dict[str, Action]:
         return {
             "delete": Action(
-                method=self.bulk_delete,
+                behavior=Deleter,
                 template="components/blocks/modals/bulk-delete.html",
-                kwargs=("new_value",),
                 permissions=("edu.delete_school",),
             ),
         }

@@ -1,9 +1,11 @@
+import json
 from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Any, Literal
 
 import django_filters as filters
 from django.conf import settings
+from django.contrib import messages
 from django.core.paginator import EmptyPage, Page, PageNotAnInteger, Paginator
 from django.db.models import Model, QuerySet
 from django.http import (
@@ -17,6 +19,8 @@ from django.urls import NoReverseMatch, reverse
 from django_filters import FilterSet
 from import_export.resources import ModelResource
 from tablib import Dataset
+
+from apps.core.utils.behaviors import ActionBehavior
 
 from ..constants import PERMISSION
 from ..filters import BaseQSearchFilter, get_ordering_filter
@@ -379,23 +383,35 @@ class ListMixin(
         """
         return self.get_bulk_actions_response(request)
 
+    def get_actions(self) -> dict[str, Action]:
+        """
+        Returns the actions.
+        """
+        pass
+
     def get_bulk_actions_response(self, request: HttpRequest) -> HttpResponse:
         """
         Returns the bulk actions response.
         """
         if getattr(self, "get_actions", None) is None:
             raise AttributeError(
-                "you must define the get_actions attribute.",
+                "you must define the get_actions method",
             )
+        else:
+            actions = self.get_actions()
+            if not isinstance(actions, dict):
+                raise TypeError(
+                    "the get_actions method must return a dictionary of Actions",
+                )
 
         kind: Literal["modal", "action"] = request.POST.get("kind", "modal")
-        name = request.POST.get("name", None)
+        action_name = request.POST.get("name", None)
         actions: dict[str, Action] = self.get_actions()
 
-        if name is None or name not in actions:
+        if action_name is None or action_name not in actions:
             return HttpResponseServerError("Action not found")
 
-        required_permissions = actions[name].permissions
+        required_permissions = actions[action_name].permissions
 
         if not request.user.has_perms(required_permissions):
             return HttpResponseForbidden(
@@ -405,19 +421,62 @@ class ListMixin(
         qs = self.parse_ids(request)
 
         if kind == "modal":
-            template_name = actions[name].template
+            kwargs = {"qs": qs}
+            if actions[action_name].form_class is not None:
+                kwargs["form"] = actions[action_name].form_class()
             return render(
                 request=request,
-                template_name=template_name,
-                context=self.get_modal_context_data(qs),
+                template_name=actions[action_name].template,
+                context=self.get_bulk_context_data(**kwargs),
             )
         else:
-            kwargs = {
-                k: v
-                for k, v in request.POST.items()
-                if k in self.get_actions()[name].kwargs
+            behavior = self.get_actions()[action_name].behavior(request, queryset=qs)
+            if actions[action_name].form_class is None:
+                return self.get_behavior_action_response(request, behavior)
+            else:
+                form = actions[action_name].form_class(request.POST)
+                if form.is_valid():
+                    form.save()
+                    return self.get_behavior_action_response(request, behavior)
+                else:
+                    return render(
+                        request=request,
+                        template_name=actions[action_name].template,
+                        context=self.get_bulk_context_data(qs, form=form),
+                    )
+
+    def get_success_bulk_response(self, request: HttpRequest, message: str):
+        response = HttpResponse()
+        response["Hx-Location"] = json.dumps(
+            {
+                "path": request.get_full_path(),
+                "target": f"#{self.get_html_ids()['table_id']}",
             }
-            return self.get_actions()[name].method(qs, **kwargs)
+        )
+        messages.success(request, message)
+        response["HX-Trigger"] = "messages, hidemodal"
+        return response
+
+    def get_error_bulk_response(self, request: HttpRequest, message: str):
+        response = HttpResponse()
+        response["Hx-Retarget"] = "#no-content"
+        response["HX-Reswap"] = "innerHTML"
+        response["HX-Trigger"] = "messages, hidemodal"
+        messages.error(request, message)
+        return response
+
+    def get_behavior_action_response(
+        self, request: HttpRequest, behavior: ActionBehavior
+    ) -> HttpResponse:
+        """
+        Performs the action.
+        """
+        behavior.action()
+        message = behavior.get_message()
+        if behavior.has_executed:
+            return self.get_success_bulk_response(request, message)
+        else:
+            return self.get_error_bulk_response(request, message)
 
     def parse_ids(self, request: HttpRequest) -> QuerySet:
         """
@@ -429,6 +488,18 @@ class ListMixin(
         queryset = self.get_filtered_queryset(request, queryset)
 
         return queryset.filter(pk__in=ids)
+
+    def get_bulk_context_data(self, qs: QuerySet, **kwargs) -> dict[str, Any]:
+        """
+        Returns the modal context data that will be passed to the template.
+        """
+        return {
+            "qs": qs,
+            "create_url": self.get_create_url(),
+            "index_url": self.get_index_url(),
+            **self.get_html_ids(),
+            **kwargs,
+        }
 
     def get_export_response(self, request: HttpRequest) -> HttpResponse:
         """
@@ -533,17 +604,6 @@ class ListMixin(
         Returns the queryset.
         """
         return self.model.objects.all()
-
-    def get_modal_context_data(self, qs: QuerySet, **kwargs) -> dict[str, Any]:
-        """
-        Returns the modal context data that will be passed to the template.
-        """
-        return {
-            "qs": qs,
-            "create_url": self.get_create_url(),
-            "index_url": self.get_index_url(),
-            **self.get_html_ids(),
-        }
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         """

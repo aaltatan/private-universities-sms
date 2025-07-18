@@ -66,7 +66,7 @@ class ActionBehavior(Generic[T]):
         """
         return True
 
-    def action(self) -> tuple[int, dict[str, int]] | None:
+    def action(self, **kwargs) -> tuple[int, dict[str, int]] | None:
         raise NotImplementedError
 
     def get_message(self) -> str:

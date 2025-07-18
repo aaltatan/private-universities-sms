@@ -3,7 +3,6 @@
 <c-layout.modal>
   <form 
     hx-post="{{ index_url }}{% querystring %}" 
-    hx-target="#{{ table_id }}"
     hx-vals='{"kind": "action", "name": "delete"}'
   >
     <c-layout.modal.body>
@@ -29,7 +28,7 @@
         <c-button
           theme="danger"
           title="{% translate 'delete'|title %}"
-          @click="hideModal"
+          type="submit"
           :hide_icon="True"
         >
           {% translate 'delete'|title %}

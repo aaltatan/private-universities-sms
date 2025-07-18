@@ -1,10 +1,12 @@
 import json
 from dataclasses import InitVar, asdict, dataclass, field
-from typing import Any, Callable, Literal, Sequence
+from typing import Any, Literal, Sequence
 
-from django.db.models import QuerySet
-from django.http import Http404, HttpRequest, HttpResponse
+from django import forms
+from django.http import Http404, HttpRequest
 from rest_framework.response import Response
+
+from apps.core.utils.behaviors import ActionBehavior
 
 from .constants import PERMISSION
 
@@ -53,10 +55,10 @@ class Perm:
 class Action:
     """A dataclass that represents an action."""
 
-    method: Callable[[QuerySet, dict], HttpResponse]
+    behavior: type[ActionBehavior]
     template: str
-    kwargs: Sequence[str] = field(default_factory=list)
     permissions: Sequence[Perm | str] = field(default_factory=list)
+    form_class: type[forms.Form] | None = None
 
     def __post_init__(self) -> None:
         if len(self.permissions) == 0:
@@ -105,7 +107,11 @@ class RequestParser:
                     raise ValueError(
                         "save, save_and_add_another and save_and_continue_editing are mutually exclusive"
                     )
-                if not self.save and not self.save_and_add_another and not self.save_and_continue_editing:
+                if (
+                    not self.save
+                    and not self.save_and_add_another
+                    and not self.save_and_continue_editing
+                ):
                     raise ValueError(
                         "save, save_and_add_another or save_and_continue_editing is required",
                     )

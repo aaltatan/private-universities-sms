@@ -1,4 +1,4 @@
-from .actions import BulkDeleteAPIMixin, BulkDeleteMixin
+from .actions import BulkDeleteAPIMixin
 from .api import APIMixin
 from .behavior import BehaviorMixin
 from .create import CreateMixin
@@ -32,7 +32,6 @@ __all__ = [
     "UpdateMixin",
     "BehaviorMixin",
     "DetailsMixin",
-    "BulkDeleteMixin",
     "BulkDeleteAPIMixin",
     "APIMixin",
     "IndexMixin",

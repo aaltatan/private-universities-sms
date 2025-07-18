@@ -65,17 +65,11 @@ class APIViewSet(
         return serializers.EmployeeSerializer
 
 
-class ListView(
-    PermissionRequiredMixin,
-    mixins.BulkDeleteMixin,
-    mixins.ListMixin,
-    View,
-):
+class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
     permission_required = "hr.view_employee"
     model = models.Employee
     filter_class = filters.EmployeeFilter
     resource_class = resources.EmployeeResource
-    deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
 
     def get_queryset(self):
@@ -102,9 +96,8 @@ class ListView(
     def get_actions(self) -> dict[str, Action]:
         return {
             "delete": Action(
-                method=self.bulk_delete,
+                behavior=Deleter,
                 template="components/blocks/modals/bulk-delete.html",
-                kwargs=("new_value",),
                 permissions=("hr.delete_employee",),
             ),
         }

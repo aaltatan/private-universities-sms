@@ -35,25 +35,18 @@ class APIViewSet(
         return serializers.PeriodSerializer
 
 
-class ListView(
-    PermissionRequiredMixin,
-    mixins.BulkDeleteMixin,
-    mixins.ListMixin,
-    View,
-):
+class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
     permission_required = "fin.view_period"
     model = models.Period
     filter_class = filters.PeriodFilter
     resource_class = resources.PeriodResource
-    deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
 
     def get_actions(self) -> dict[str, Action]:
         return {
             "delete": Action(
-                method=self.bulk_delete,
+                behavior=Deleter,
                 template="components/blocks/modals/bulk-delete.html",
-                kwargs=("new_value",),
                 permissions=("fin.delete_period",),
             ),
         }

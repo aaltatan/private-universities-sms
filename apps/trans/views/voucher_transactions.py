@@ -5,20 +5,13 @@ from apps.core import mixins
 
 from .. import filters, models, resources
 from ..constants import voucher_transactions as constants
-from ..utils import VoucherDeleter
 
 
-class ListView(
-    PermissionRequiredMixin,
-    mixins.BulkDeleteMixin,
-    mixins.ListMixin,
-    View,
-):
+class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
     permission_required = "trans.view_vouchertransaction"
     model = models.VoucherTransaction
     filter_class = filters.VoucherTransactionFilter
     resource_class = resources.VoucherTransactionResource
-    deleter = VoucherDeleter
     ordering_fields = constants.ORDERING_FIELDS
 
     def get_queryset(self):

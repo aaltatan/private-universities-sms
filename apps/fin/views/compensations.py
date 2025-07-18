@@ -35,25 +35,18 @@ class APIViewSet(
         return serializers.CompensationSerializer
 
 
-class ListView(
-    PermissionRequiredMixin,
-    mixins.BulkDeleteMixin,
-    mixins.ListMixin,
-    View,
-):
+class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
     permission_required = "fin.view_compensation"
     model = models.Compensation
     filter_class = filters.CompensationFilter
     resource_class = resources.CompensationResource
-    deleter = Deleter
     ordering_fields = constants.ORDERING_FIELDS
 
     def get_actions(self) -> dict[str, Action]:
         return {
             "delete": Action(
-                method=self.bulk_delete,
+                behavior=Deleter,
                 template="components/blocks/modals/bulk-delete.html",
-                kwargs=("new_value",),
                 permissions=("fin.delete_compensation",),
             ),
         }

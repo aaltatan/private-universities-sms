@@ -18,7 +18,7 @@ class VoucherDeleter(ActionBehavior[Voucher]):
     def check_queryset_executing_possibility(self, qs) -> bool:
         return not qs.filter(is_migrated=True).exists()
 
-    def action(self) -> tuple[int, dict[str, int]] | None:
+    def action(self, **kwargs) -> tuple[int, dict[str, int]] | None:
         if self._kind == "obj":
             status = self.check_obj_executing_possibility(self._obj)
         elif self._kind == "qs":
@@ -56,7 +56,7 @@ class VoucherAuditor(ActionBehavior[Voucher]):
             return False
         return not qs.filter(updated_by=self.request.user).exists()
 
-    def action(self) -> tuple[int, dict[str, int]] | None:
+    def action(self, **kwargs) -> tuple[int, dict[str, int]] | None:
         if self._kind == "obj":
             status = self.check_obj_executing_possibility(self._obj)
         elif self._kind == "qs":
@@ -93,7 +93,7 @@ class VoucherMigrator(ActionBehavior[Voucher]):
     def check_queryset_executing_possibility(self, qs) -> bool:
         return False if qs.filter(is_audited=False).exists() else True
 
-    def action(self) -> tuple[int, dict[str, int]] | None:
+    def action(self, **kwargs) -> tuple[int, dict[str, int]] | None:
         if self._kind == "obj":
             status = self.check_obj_executing_possibility(self._obj)
         elif self._kind == "qs":
@@ -103,15 +103,12 @@ class VoucherMigrator(ActionBehavior[Voucher]):
             return self._handle_executing_error()
 
         self.has_executed = True
-        accounting_journal_sequence = self.request.POST.get(
-            "accounting_journal_sequence", ""
-        )
         if self._kind == "obj":
-            self._obj.migrate(accounting_journal_sequence)
+            self._obj.migrate()
         else:
             queryset = self._obj
             for obj in queryset:
-                obj.migrate(accounting_journal_sequence)
+                obj.migrate()
 
         return
 

@@ -1,9 +1,5 @@
-import json
-
-from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import QuerySet
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import resolve
 from django.utils.translation import gettext_lazy as _
@@ -113,110 +109,19 @@ class APIViewSet(
             )
 
 
-class ListView(
-    PermissionRequiredMixin,
-    mixins.BulkDeleteMixin,
-    mixins.ListMixin,
-    View,
-):
+class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
     permission_required = "trans.view_voucher"
     model = models.Voucher
     filter_class = filters.VoucherFilter
     resource_class = resources.VoucherResource
-    deleter = VoucherDeleter
     ordering_fields = constants.ORDERING_FIELDS
-
-    def bulk_audit(self, qs: QuerySet, **kwargs):
-        response = HttpResponse()
-
-        auditor = VoucherAuditor(request=self.request, queryset=qs)
-        auditor.action()
-        message = auditor.get_message()
-
-        if auditor.has_executed:
-            response["Hx-Location"] = json.dumps(
-                {
-                    "path": self.request.get_full_path(),
-                    "target": f"#{self.get_html_ids()['table_id']}",
-                }
-            )
-            messages.success(self.request, message)
-        else:
-            response["Hx-Retarget"] = "#no-content"
-            response["HX-Reswap"] = "innerHTML"
-            messages.error(self.request, message)
-
-        response["HX-Trigger"] = "messages"
-        return response
-
-    def bulk_migrate(self, qs: QuerySet, **kwargs):
-        response = HttpResponse()
-
-        migrate = VoucherMigrator(request=self.request, queryset=qs)
-        migrate.action()
-        message = migrate.get_message()
-
-        if migrate.has_executed:
-            response["Hx-Location"] = json.dumps(
-                {
-                    "path": self.request.get_full_path(),
-                    "target": f"#{self.get_html_ids()['table_id']}",
-                }
-            )
-            messages.success(self.request, message)
-        else:
-            response["Hx-Retarget"] = "#no-content"
-            response["HX-Reswap"] = "innerHTML"
-            messages.error(self.request, message)
-
-        response["HX-Trigger"] = "messages"
-        return response
-
-    def bulk_unmigrate(self, qs: QuerySet, **kwargs):
-        response = HttpResponse()
-
-        migrate = VoucherUnMigrator(request=self.request, queryset=qs)
-        migrate.action()
-        message = migrate.get_message()
-
-        if migrate.has_executed:
-            response["Hx-Location"] = json.dumps(
-                {
-                    "path": self.request.get_full_path(),
-                    "target": f"#{self.get_html_ids()['table_id']}",
-                }
-            )
-            messages.success(self.request, message)
-        else:
-            response["Hx-Retarget"] = "#no-content"
-            response["HX-Reswap"] = "innerHTML"
-            messages.error(self.request, message)
-
-        response["HX-Trigger"] = "messages"
-        return response
 
     def get_actions(self) -> dict[str, Action]:
         return {
             "delete": Action(
-                method=self.bulk_delete,
+                behavior=VoucherDeleter,
                 template="components/blocks/modals/bulk-delete.html",
-                kwargs=("new_value",),
                 permissions=("trans.delete_voucher",),
-            ),
-            "audit": Action(
-                method=self.bulk_audit,
-                template="components/trans/vouchers/modals/bulk-audit.html",
-                permissions=("trans.audit_voucher",),
-            ),
-            "migrate": Action(
-                method=self.bulk_migrate,
-                template="components/trans/vouchers/modals/bulk-migrate.html",
-                permissions=("trans.migrate_voucher",),
-            ),
-            "unmigrate": Action(
-                method=self.bulk_unmigrate,
-                template="components/trans/vouchers/modals/bulk-unmigrate.html",
-                permissions=("trans.unmigrate_voucher",),
             ),
         }
 
