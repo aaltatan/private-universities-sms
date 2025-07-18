@@ -123,6 +123,22 @@ class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
                 template="components/blocks/modals/bulk-delete.html",
                 permissions=("trans.delete_voucher",),
             ),
+            "audit": Action(
+                behavior=VoucherAuditor,
+                template="components/trans/vouchers/modals/bulk-audit.html",
+                permissions=("trans.audit_voucher",),
+            ),
+            "migrate": Action(
+                behavior=VoucherMigrator,
+                template="components/trans/vouchers/modals/bulk-migrate.html",
+                permissions=("trans.migrate_voucher",),
+                form_class=forms.VoucherBulkMigrateForm,
+            ),
+            "unmigrate": Action(
+                behavior=VoucherUnMigrator,
+                template="components/trans/vouchers/modals/bulk-unmigrate.html",
+                permissions=("trans.unmigrate_voucher",),
+            ),
         }
 
 
@@ -136,7 +152,7 @@ class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
     form_class = forms.VoucherForm
 
     def perform_create(self, form):
-        obj = form.save(commit=False)
+        obj: models.Voucher = form.save(commit=False)
         obj.created_by = self.request.user
         obj.updated_by = self.request.user
         obj.save()

@@ -1,11 +1,7 @@
 {% load i18n %}
 
 <c-layout.modal>
-  <form
-    hx-post="{{ index_url }}{% querystring %}"
-    hx-target="#{{ table_id }}"
-    hx-vals='{"kind": "action", "name": "audit"}'
-  >
+  <form hx-post="{{ index_url }}{% querystring %}" hx-vals='{"kind": "action", "name": "audit"}'>
     <c-layout.modal.body>
       <c-slot name="header"> {% translate 'delete'|title %} </c-slot>
       <c-slot name="body">
@@ -16,19 +12,14 @@
         <ul class="text-neutral-600 dark:text-neutral-300">
           {% for obj in qs %}
           <li class="flex items-center gap-1 ps-2 text-sm">
-            <input type="hidden" value="{{ obj.pk }}" name="action-check" />
+            <input type="hidden" value="{{ obj.pk }}" name="action_check" />
             <span>{{ forloop.counter }} - {{ obj }}</span>
           </li>
           {% endfor %}
         </ul>
       </c-slot>
       <c-slot name="footer">
-        <c-button
-          theme="primary"
-          title="{% translate 'audit'|title %}"
-          @click="hideModal"
-          :hide_icon="True"
-        >
+        <c-button theme="primary" title="{% translate 'audit'|title %}" :hide_icon="True">
           {% translate 'audit'|title %}
         </c-button>
       </c-slot>

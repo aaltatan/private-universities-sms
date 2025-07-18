@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
@@ -7,6 +8,7 @@ from apps.core.forms import BehaviorForm, CustomModelForm
 from apps.core.widgets import (
     get_date_widget,
     get_file_widget,
+    get_input_datalist_widget,
     get_text_widget,
     get_textarea_widget,
 )
@@ -15,18 +17,37 @@ from apps.fin.models import Period, VoucherKind
 from .. import models
 
 
-class VoucherMigrateForm(BehaviorForm):
-    slug = forms.CharField(required=True)
+class AccountingJournalSequenceMixin(BehaviorForm):
     accounting_journal_sequence = forms.CharField(
-        label=_("type accounting journal sequence to confirm migration").upper(),
+        label=_(
+            "type accounting journal sequence to confirm migration",
+        ).upper(),
         max_length=255,
         required=True,
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": _("e.g. JOV000001"),
-            }
+        widget=get_input_datalist_widget(
+            model=models.Voucher,
+            field_name="accounting_journal_sequence",
+            placeholder=_("e.g. JOV000001 2025"),
         ),
     )
+
+
+class VoucherBulkMigrateForm(AccountingJournalSequenceMixin):
+    action_check = forms.ModelMultipleChoiceField(
+        queryset=models.Voucher.objects.all(),
+    )
+
+    def save(self):
+        queryset: QuerySet = self.cleaned_data.get("action_check")
+        accounting_journal_sequence = self.cleaned_data.get(
+            "accounting_journal_sequence"
+        )
+
+        queryset.update(accounting_journal_sequence=accounting_journal_sequence)
+
+
+class VoucherMigrateForm(AccountingJournalSequenceMixin):
+    slug = forms.CharField(required=True)
 
     def save(self):
         slug = self.cleaned_data["slug"]
