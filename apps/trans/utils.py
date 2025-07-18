@@ -77,13 +77,9 @@ class VoucherAuditor(ActionBehavior[Voucher]):
 
 class VoucherMigrator(ActionBehavior[Voucher]):
     success_obj_msg = _("voucher migrated successfully")
-    error_obj_msg = _(
-        "you can't migrate unaudited voucher, please audit it first.",
-    )
+    error_obj_msg = _("you can't migrate unaudited or migrated voucher")
     success_qs_msg = _("vouchers migrated successfully")
-    error_qs_msg = _(
-        "you can't migrate unaudited vouchers, please audit them first.",
-    )
+    error_qs_msg = _("you can't migrate unaudited or migrated vouchers")
 
     def check_obj_executing_possibility(self, obj) -> bool:
         if obj.is_migrated:
@@ -91,7 +87,13 @@ class VoucherMigrator(ActionBehavior[Voucher]):
         return obj.is_audited
 
     def check_queryset_executing_possibility(self, qs) -> bool:
-        return False if qs.filter(is_audited=False).exists() else True
+        return (
+            False
+            if qs.filter(
+                models.Q(is_audited=False) | models.Q(is_migrated=True)
+            ).exists()
+            else True
+        )
 
     def action(self, **kwargs) -> tuple[int, dict[str, int]] | None:
         if self._kind == "obj":
@@ -115,15 +117,17 @@ class VoucherMigrator(ActionBehavior[Voucher]):
 
 class VoucherUnMigrator(ActionBehavior[Voucher]):
     success_obj_msg = _("voucher unmigrated successfully")
-    error_obj_msg = _("you can't unmigrate voucher")
+    error_obj_msg = _("you can't unmigrate unmigrated voucher")
     success_qs_msg = _("vouchers migrated successfully")
-    error_qs_msg = _("you can't unmigrate vouchers")
+    error_qs_msg = _("you can't unmigrate unmigrated vouchers")
 
     def check_obj_executing_possibility(self, obj) -> bool:
         return obj.is_migrated
 
     def check_queryset_executing_possibility(self, qs) -> bool:
-        return qs.filter(is_migrated=False).exists()
+        if qs.filter(is_migrated=False).exists():
+            return False
+        return qs.filter(is_migrated=True).exists()
 
     def action(self) -> tuple[int, dict[str, int]] | None:
         if self._kind == "obj":
