@@ -3,6 +3,15 @@ from django import forms
 from .fields import CustomModelChoiceField
 
 
+class BehaviorForm(forms.Form):
+    """
+    A base class for forms that have a behavior
+    """
+
+    def save(self):
+        raise NotImplementedError("save method must be implemented")
+
+
 class CustomModelForm(forms.ModelForm):
     """
     A custom ModelForm.
