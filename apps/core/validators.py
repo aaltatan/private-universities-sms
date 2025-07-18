@@ -47,6 +47,11 @@ docx_extension_validator = FileExtensionValidator(
     message=_("the field must be a valid docx file."),
 )
 
+xlsx_extension_validator = FileExtensionValidator(
+    allowed_extensions=["xlsx"],
+    message=_("the field must be a valid xlsx file."),
+)
+
 
 def validate_pdf_image_mimetype(file) -> None:
     accepted_mimetypes = ["application/pdf", "image/jpeg", "image/png"]
@@ -74,4 +79,13 @@ def validate_docx_mimetype(file) -> None:
     if file_mimetype not in accepted_mimetypes:
         raise ValidationError(
             _("file must be a valid docx file."),
+        )
+
+
+def validate_xlsx_mimetype(file) -> None:
+    accepted_mimetypes = ["application/vnd.ms-excel"]
+    file_mimetype = puremagic.from_stream(file, mime=True)
+    if file_mimetype not in accepted_mimetypes:
+        raise ValidationError(
+            _("file must be a valid xlsx file. xxx"),
         )

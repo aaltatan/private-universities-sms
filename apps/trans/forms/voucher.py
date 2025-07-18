@@ -1,10 +1,13 @@
+import openpyxl
 from django import forms
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
 from apps.core.fields import get_autocomplete_field
 from apps.core.forms import BehaviorForm, CustomModelForm
+from apps.core.validators import xlsx_extension_validator
 from apps.core.widgets import (
     get_date_widget,
     get_file_widget,
@@ -12,9 +15,51 @@ from apps.core.widgets import (
     get_text_widget,
     get_textarea_widget,
 )
-from apps.fin.models import Period, VoucherKind
+from apps.fin.models import Compensation, Period, VoucherKind
+from apps.hr.models import Employee
 
 from .. import models
+
+
+class VoucherTransactionsImportForm(forms.Form):
+    slug = forms.CharField(required=True)
+    file = forms.FileField(
+        widget=get_file_widget(),
+        required=True,
+        validators=[xlsx_extension_validator],
+    )
+
+    def save(self):
+        file: InMemoryUploadedFile = self.cleaned_data.get("file")
+        wb = openpyxl.load_workbook(file)
+        voucher = get_object_or_404(
+            models.Voucher,
+            slug=self.cleaned_data.get("slug"),
+        )
+        for idx, row in enumerate(wb["data"]):
+            if idx == 0:
+                continue
+
+            _, uuid, compensation_name, quantity, value, notes = [
+                cell.value for cell in row
+            ]
+
+            employee = get_object_or_404(Employee, uuid=uuid)
+            compensation = get_object_or_404(
+                Compensation,
+                name=compensation_name,
+            )
+
+            trans = models.VoucherTransaction(
+                voucher=voucher,
+                employee=employee,
+                compensation=compensation,
+                quantity=quantity,
+                value=value,
+                notes=notes if notes else "",
+            )
+
+            trans.save()
 
 
 class AccountingJournalSequenceMixin(BehaviorForm):

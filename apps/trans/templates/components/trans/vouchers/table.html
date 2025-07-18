@@ -200,8 +200,9 @@
             </c-layout.contextmenu.section>
             {% endif %}
             <!--  -->
-            {% if can_export %}
+            {% if can_export or can_change %}
             <c-layout.contextmenu.section>
+              {% if can_export %}
               <c-layout.contextmenu.item
                 icon="document"
                 href="{{ obj.get_word_url }}"
@@ -209,6 +210,21 @@
               >
                 {% translate 'export to MSWord' %}
               </c-layout.contextmenu.item>
+              {% endif %}
+              <!--  -->
+              {% if can_change and not obj.is_migrated %}
+              <c-layout.contextmenu.item
+                icon="arrow-up-tray"
+                href="#"
+                hx-get="{{ obj.get_import_url }}{% querystring %}"
+                hx-target="#modal-container"
+                hx-indicator="#modal-spinner"
+                @click="showModal"
+                aria-label="import voucher transactions"
+              >
+                {% translate 'import transactions'|capfirst %}
+              </c-layout.contextmenu.item>
+              {% endif %}
             </c-layout.contextmenu.section>
             {% endif %}
             <!--  -->

@@ -274,6 +274,12 @@ class Voucher(
             kwargs={"slug": self.slug},
         )
 
+    def get_import_url(self):
+        return reverse(
+            "trans:vouchers:import",
+            kwargs={"slug": self.slug},
+        )
+
     def __str__(self):
         return f"{self.voucher_serial} ({self.title})"
 

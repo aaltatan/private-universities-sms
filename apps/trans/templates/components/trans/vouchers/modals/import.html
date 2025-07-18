@@ -1,0 +1,25 @@
+{% load i18n widget_tweaks %}
+
+<c-layout.modal>
+  <form hx-post="{{ obj.get_import_url }}{% querystring %}" hx-encoding="multipart/form-data">
+    <c-layout.modal.body>
+      <c-slot name="header">
+        {% translate 'import transactions'|capfirst %}
+        <span>{{ obj }}</span>
+      </c-slot>
+      <c-slot name="body">
+        <div class="py-4">
+          {% translate 'download template'|capfirst %}
+          <a href="{{ obj.get_import_url }}?template=template"> {% translate 'here'|capfirst %} </a>
+          {% render_field form.slug value=obj.slug class="hidden" %}
+          <c-inputs.file :field="form.file" />
+        </div>
+      </c-slot>
+      <c-slot name="footer">
+        <c-button title="{% translate 'import'|title %}" type="submit" :hide_icon="True">
+          {% translate 'import'|title %}
+        </c-button>
+      </c-slot>
+    </c-layout.modal.body>
+  </form>
+</c-layout.modal>

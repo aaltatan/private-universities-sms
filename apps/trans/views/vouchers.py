@@ -1,10 +1,17 @@
+import json
+from typing import Any
+
+import openpyxl
+from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import QuerySet
-from django.shortcuts import get_object_or_404
-from django.urls import resolve
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.urls import resolve, reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, View
 from django_filters import rest_framework as django_filters
+from openpyxl.worksheet.worksheet import Worksheet
 from rest_framework import filters as rest_filters
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -16,6 +23,8 @@ from apps.core.inline import InlineFormsetFactory
 from apps.core.models import Template
 from apps.core.schemas import Action
 from apps.core.utils import Deleter
+from apps.fin.models import Compensation
+from apps.hr.models import Employee
 
 from .. import filters, forms, models, resources, serializers
 from ..constants import vouchers as constants
@@ -258,3 +267,126 @@ class ExportToMSWordView(
                 slug=resolved.kwargs.get("slug"),
             ),
         }
+
+
+class ImportView(View):
+    model = models.Voucher
+    form_class = forms.VoucherTransactionsImportForm
+
+    def get(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
+        if request.GET.get("template"):
+            return self.get_template_response()
+
+        self.obj = get_object_or_404(self.model, slug=slug)
+
+        template_name = self.get_template_name()
+        context = self.get_context_data(obj=self.obj, table_id=self.get_table_id())
+
+        return render(request, template_name, context)
+
+    def post(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
+        self.obj = get_object_or_404(self.model, slug=slug)
+
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return self.get_success_response(request, "ddd")
+        else:
+            return render(
+                request=request,
+                template_name=self.get_template_name(),
+                context=self.get_context_data(obj=self.obj, form=form),
+            )
+
+    def get_template_response(self):
+        filename = self.get_filename()
+        response = HttpResponse(content_type="application/vnd.ms-excel")
+        response["Content-Disposition"] = f'attachment; filename="{filename}.xlsx"'
+        wb = self.get_template_workbook()
+        wb.save(response)
+
+        return response
+
+    def get_filename(self):
+        return "Voucher Transactions template"
+
+    def get_template_workbook(self):
+        employees = Employee.objects.only("cost_center", "uuid", "fullname")
+        compensations = Compensation.objects.only("name", "tax")
+
+        wb = openpyxl.Workbook()
+
+        wb.create_sheet("data")
+        wb.create_sheet("employees")
+        wb.create_sheet("compensations")
+
+        employees_sheet: Worksheet = wb["employees"]
+        employees_sheet.append(["fullname", "uuid"])
+        for employee in employees:
+            employees_sheet.append([employee.fullname, employee.uuid.hex])
+
+        compensations_sheet: Worksheet = wb["compensations"]
+        compensations_sheet.append(["name"])
+        for compensation in compensations:
+            compensations_sheet.append([compensation.name])
+
+        wb["data"].append(
+            [
+                "employee",
+                "employee uuid",
+                "compensation",
+                "quantity",
+                "value",
+                "notes",
+            ]
+        )
+
+        return wb
+
+    def get_codename_plural(self):
+        return self.model._meta.codename_plural
+
+    def get_app_label(self):
+        return self.model._meta.app_label
+
+    def get_index_url(self):
+        app_label = self.get_app_label()
+        codename_plural = self.get_codename_plural()
+        return reverse(f"{app_label}:{codename_plural}:index")
+
+    def get_table_id(self):
+        return f"{self.get_codename_plural()}-table"
+
+    def get_template_name(self):
+        app_label = self.get_app_label()
+        codename_plural = self.get_codename_plural()
+        return f"components/{app_label}/{codename_plural}/modals/import.html"
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        return {
+            "form": self.form_class(),
+            **kwargs,
+        }
+
+    def get_success_response(self, request: HttpRequest, message: str):
+        response = HttpResponse()
+        querystring = request.GET.urlencode() and f"?{request.GET.urlencode()}"
+        messages.success(request, message)
+        response["Hx-Location"] = json.dumps(
+            {
+                "path": self.get_index_url() + querystring,
+                "target": f"#{self.get_table_id()}",
+            }
+        )
+        response["HX-Trigger"] = "messages, hidemodal"
+        return response
+
+    def get_error_response(self, request: HttpRequest, message: str):
+        response = HttpResponse()
+
+        response["Hx-Retarget"] = "#no-content"
+        response["HX-Reswap"] = "innerHTML"
+        messages.error(request, message)
+        response["HX-Trigger"] = "messages, hidemodal"
+
+        return response

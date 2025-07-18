@@ -61,4 +61,10 @@ urlpatterns = [
         name="word",
         kwargs={"title": _("word")},
     ),
+    path(
+        route="import/<str:slug>/",
+        view=views.ImportView.as_view(),
+        name="import",
+        kwargs={"title": _("import")},
+    ),
 ]
