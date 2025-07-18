@@ -24,6 +24,7 @@ from apps.core.utils.behaviors import ActionBehavior
 
 from ..constants import PERMISSION
 from ..filters import BaseQSearchFilter, get_ordering_filter
+from ..forms import BehaviorForm
 from ..schemas import Action
 
 
@@ -436,8 +437,7 @@ class ListMixin(
             else:
                 form = actions[action_name].form_class(request.POST)
                 if form.is_valid():
-                    form.save()
-                    return self.get_behavior_action_response(request, behavior)
+                    return self.get_behavior_action_response(request, behavior, form)
                 else:
                     return render(
                         request=request,
@@ -466,7 +466,10 @@ class ListMixin(
         return response
 
     def get_behavior_action_response(
-        self, request: HttpRequest, behavior: ActionBehavior
+        self,
+        request: HttpRequest,
+        behavior: ActionBehavior,
+        form: BehaviorForm | None = None,
     ) -> HttpResponse:
         """
         Performs the action.
@@ -474,6 +477,8 @@ class ListMixin(
         behavior.action()
         message = behavior.get_message()
         if behavior.has_executed:
+            if form is not None:
+                form.save()
             return self.get_success_bulk_response(request, message)
         else:
             return self.get_error_bulk_response(request, message)
