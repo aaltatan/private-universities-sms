@@ -102,7 +102,7 @@ class BehaviorMixin(ABC):
         messages.success(request, message)
         response["Hx-Location"] = json.dumps(
             {
-                "path": self.get_app_urls()["index_url"] + querystring,
+                "path": self.get_index_url() + querystring,
                 "target": f"#{self.get_html_ids()['table_id']}",
             }
         )
@@ -179,15 +179,13 @@ class BehaviorMixin(ABC):
             "table_id": f"{self.get_codename_plural()}-table",
         }
 
-    def get_app_urls(self) -> dict[str, str]:
+    def get_index_url(self) -> str:
         """
         Returns the app links.
         """
         app_label = self.get_app_label()
         codename_plural = self.get_codename_plural()
-        return {
-            "index_url": reverse(f"{app_label}:{codename_plural}:index"),
-        }
+        return reverse(f"{app_label}:{codename_plural}:index")
 
     def get_modal_template_name(self) -> str:
         """
