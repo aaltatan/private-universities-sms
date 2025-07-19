@@ -17,7 +17,7 @@ class APIViewSet(
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
 ):
-    queryset = models.Group.objects.all()
+    queryset = models.Group.objects.annotate_employees_count().all()
     serializer_class = serializers.GroupSerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
@@ -37,6 +37,9 @@ class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
     resource_class = resources.GroupResource
     ordering_fields = constants.ORDERING_FIELDS
 
+    def get_queryset(self):
+        return models.Group.objects.annotate_employees_count().all()
+
     def get_actions(self) -> dict[str, Action]:
         return {
             "delete": Action(
@@ -50,6 +53,9 @@ class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
 class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
     permission_required = "org.view_group"
     model = models.Group
+
+    def get_queryset(self):
+        return models.Group.objects.annotate_employees_count().all()
 
 
 class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):

@@ -11,17 +11,29 @@ from apps.core.utils import annotate_search
 from ..constants import school_kinds as constants
 
 
+class SchoolKindQuerySet(models.QuerySet):
+    def annotate_employees_count(self):
+        return self.annotate(
+            employees_count=models.Count("schools__employees", distinct=True),
+        )
+
+    def annotate_schools_count(self):
+        return self.annotate(
+            schools_count=models.Count("schools", distinct=True),
+        )
+
+
 class SchoolKindManager(models.Manager):
+    def annotate_employees_count(self):
+        return self.get_queryset().annotate_employees_count()
+
+    def annotate_schools_count(self):
+        return self.get_queryset().annotate_schools_count()
+
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .prefetch_related("schools")
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-                schools_count=models.Count("schools", distinct=True),
-                employees_count=models.Count("schools__employees"),
-            )
+        queryset = SchoolKindQuerySet(self.model, using=self._db)
+        return queryset.annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 

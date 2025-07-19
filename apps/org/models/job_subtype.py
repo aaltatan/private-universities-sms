@@ -7,21 +7,29 @@ from apps.core import signals
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search
-
+from apps.core.querysets import (
+    EmployeesCountQuerysetMixin,
+    EmployeesCountManagerMixin,
+)
 from ..constants import job_subtypes as constants
 from .job_type import JobType
 
 
-class JobSubtypeManager(models.Manager):
+class JobSubtypeQuerySet(
+    EmployeesCountQuerysetMixin["JobSubtypeQuerySet"],
+    models.QuerySet,
+):
+    pass
+
+
+class JobSubtypeManager(
+    EmployeesCountManagerMixin[JobSubtypeQuerySet],
+    models.Manager,
+):
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .select_related("job_type")
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-                employees_count=models.Count("employees"),
-            )
+        queryset = JobSubtypeQuerySet(self.model, using=self._db)
+        return queryset.select_related("job_type").annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 

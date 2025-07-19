@@ -22,6 +22,14 @@
               {{ object.description }}
             </c-table.td>
           </c-table.tr>
+          <c-table.tr>
+            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+              {% translate 'vouchers count'|capfirst %}
+            </c-table.td>
+            <c-table.td data-header="{% translate 'vouchers count'|capfirst %}">
+              {{ object.vouchers_count }}
+            </c-table.td>
+          </c-table.tr>
         </c-table.table>
       </c-table>
     </c-slot>

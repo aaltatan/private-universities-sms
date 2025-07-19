@@ -7,21 +7,27 @@ from apps.core import signals
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search
+from apps.core.querysets import (
+    EmployeesCountQuerysetMixin,
+    EmployeesCountManagerMixin,
+)
 
 from ..constants import cities as constants
 from .governorate import Governorate
 
 
-class CityManager(models.Manager):
+class CityQuerySet(
+    EmployeesCountQuerysetMixin["CityQuerySet"],
+    models.QuerySet,
+):
+    pass
+
+
+class CityManager(EmployeesCountManagerMixin[CityQuerySet], models.Manager):
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .select_related("governorate")
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-                employees_count=models.Count("employees"),
-            )
+        queryset = CityQuerySet(self.model, using=self._db)
+        return queryset.select_related("governorate").annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 

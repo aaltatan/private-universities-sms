@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.signals import pre_save, pre_delete
+from django.db.models.signals import pre_delete, pre_save
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
@@ -11,14 +11,25 @@ from apps.core.utils import annotate_search
 from ..constants import voucher_kinds as constants
 
 
+class VoucherKindQuerySet(models.QuerySet):
+    def annotate_vouchers_count(self):
+        return self.annotate(
+            vouchers_count=models.Count(
+                "vouchers",
+                distinct=True,
+                filter=models.Q(vouchers__is_deleted=False),
+            ),
+        )
+
+
 class VoucherKindManager(models.Manager):
+    def annotate_vouchers_count(self):
+        return self.get_queryset().annotate_vouchers_count()
+
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-            )
+        queryset = VoucherKindQuerySet(self.model, using=self._db)
+        return queryset.annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 

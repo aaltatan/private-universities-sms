@@ -1,50 +1,39 @@
 from django.db import models
-from django.db.models.signals import pre_save, pre_delete
+from django.db.models.signals import pre_delete, pre_save
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from apps.core import signals
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
-from apps.core.schemas import ReportSchema
 from apps.core.utils import annotate_search
 
 from ..constants import governorates as constants
 
 
+class GovernorateQuerySet(models.QuerySet):
+    def annotate_employees_count(self):
+        return self.annotate(
+            employees_count=models.Count("cities__employees", distinct=True),
+        )
+
+    def annotate_cities_count(self):
+        return self.annotate(
+            cities_count=models.Count("cities", distinct=True),
+        )
+
+
 class GovernorateManager(models.Manager):
-    def get_report_cities_count(self, include_zeros=False) -> ReportSchema:
-        """
-        Returns a queryset of governorates with the number of cities in each.
-        """
-        report = (
-            self.get_queryset()
-            .values("name")
-            .annotate(
-                counts=models.Count("cities"),
-            )
-        )
-        if not include_zeros:
-            report = report.filter(counts__gt=0)
+    def annotate_employees_count(self):
+        return self.get_queryset().annotate_employees_count()
 
-        report_schema = ReportSchema(
-            title=_("governorates count"),
-            headers=[_("name"), _("counts")],
-            report=list(report),
-        )
-
-        return report_schema
+    def annotate_cities_count(self):
+        return self.get_queryset().annotate_cities_count()
 
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .prefetch_related("cities")
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-                cities_count=models.Count("cities", distinct=True),
-                employees_count=models.Count("cities__employees", distinct=True),
-            )
+        queryset = GovernorateQuerySet(self.model, using=self._db)
+        return queryset.prefetch_related("cities").annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 

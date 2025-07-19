@@ -69,6 +69,7 @@
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'name' }}</c-table.th>
+        <c-table.th>{% translate 'vouchers count' %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'description' }}</c-table.th>
       </c-table.tr>
       {% for obj in page %}
@@ -136,6 +137,9 @@
           >
             {{ obj.name }}
           </a>
+        </c-table.td>
+        <c-table.td data-header="{% translate 'vouchers count'|capfirst %}">
+          {{ obj.vouchers_count }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'description' }}">
           {{ obj.description }}

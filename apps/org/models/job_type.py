@@ -6,45 +6,34 @@ from rest_framework import serializers
 from apps.core import signals
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
-from apps.core.schemas import ReportSchema
 from apps.core.utils import annotate_search
 
 from ..constants import job_types as constants
 
 
+class JobTypeQuerySet(models.QuerySet):
+    def annotate_employees_count(self):
+        return self.annotate(
+            employees_count=models.Count("job_subtypes__employees", distinct=True),
+        )
+
+    def annotate_job_subtypes_count(self):
+        return self.annotate(
+            job_subtypes_count=models.Count("job_subtypes", distinct=True),
+        )
+
+
 class JobTypeManager(models.Manager):
-    def get_report_job_types_count(self, include_zeros=False) -> ReportSchema:
-        """
-        Returns a queryset of job subtypes with the number of job types in each.
-        """
-        report = (
-            self.get_queryset()
-            .values("name")
-            .annotate(
-                counts=models.Count("job_subtypes"),
-            )
-        )
-        if not include_zeros:
-            report = report.filter(counts__gt=0)
+    def annotate_employees_count(self):
+        return self.get_queryset().annotate_employees_count()
 
-        report_schema = ReportSchema(
-            title=_("job subtypes count"),
-            headers=[_("name"), _("count")],
-            report=list(report),
-        )
-
-        return report_schema
+    def annotate_job_subtypes_count(self):
+        return self.get_queryset().annotate_job_subtypes_count()
 
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .prefetch_related("job_subtypes")
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-                job_subtypes_count=models.Count("job_subtypes", distinct=True),
-                employees_count=models.Count("job_subtypes__employees", distinct=True),
-            )
+        queryset = JobTypeQuerySet(self.model, using=self._db)
+        return queryset.prefetch_related("job_subtypes").annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 

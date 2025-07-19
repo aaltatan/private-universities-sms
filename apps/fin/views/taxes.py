@@ -17,7 +17,11 @@ class APIViewSet(
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
 ):
-    queryset = models.Tax.objects.all()
+    queryset = (
+        models.Tax.objects.annotate_compensations_count()
+        .annotate_brackets_count()
+        .all()
+    )
     serializer_class = serializers.TaxSerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
@@ -37,6 +41,13 @@ class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
     resource_class = resources.TaxResource
     ordering_fields = constants.ORDERING_FIELDS
 
+    def get_queryset(self):
+        return (
+            models.Tax.objects.annotate_compensations_count()
+            .annotate_brackets_count()
+            .all()
+        )
+
     def get_actions(self) -> dict[str, Action]:
         return {
             "delete": Action(
@@ -50,6 +61,13 @@ class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
 class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
     permission_required = "fin.view_tax"
     model = models.Tax
+
+    def get_queryset(self):
+        return (
+            models.Tax.objects.annotate_compensations_count()
+            .annotate_brackets_count()
+            .all()
+        )
 
 
 class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):

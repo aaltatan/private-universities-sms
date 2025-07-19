@@ -7,19 +7,26 @@ from apps.core import signals
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search
+from apps.core.querysets import (
+    EmployeesCountQuerysetMixin,
+    EmployeesCountManagerMixin,
+)
 
 from ..constants import degrees as constants
 
 
-class DegreeManager(models.Manager):
+class DegreeQuerySet(
+    EmployeesCountQuerysetMixin["DegreeQuerySet"],
+    models.QuerySet,
+):
+    pass
+
+
+class DegreeManager(EmployeesCountManagerMixin[DegreeQuerySet], models.Manager):
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-                employees_count=models.Count("employees"),
-            )
+        queryset = DegreeQuerySet(self.model, using=self._db)
+        return queryset.annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 

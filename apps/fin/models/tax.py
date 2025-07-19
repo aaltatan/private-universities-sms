@@ -16,17 +16,29 @@ from apps.core.utils import annotate_search, round_to_nearest
 from ..constants import taxes as constants
 
 
+class TaxQuerySet(models.QuerySet):
+    def annotate_compensations_count(self):
+        return self.annotate(
+            compensations_count=models.Count("compensations", distinct=True),
+        )
+
+    def annotate_brackets_count(self):
+        return self.annotate(
+            brackets_count=models.Count("brackets", distinct=True),
+        )
+
+
 class TaxManager(models.Manager):
+    def annotate_compensations_count(self):
+        return self.get_queryset().annotate_compensations_count()
+
+    def annotate_brackets_count(self):
+        return self.get_queryset().annotate_brackets_count()
+
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .prefetch_related("brackets", "compensations")
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-                brackets_count=models.Count("brackets", distinct=True),
-                compensations_count=models.Count("compensations", distinct=True),
-            )
+        queryset = TaxQuerySet(self.model, using=self._db)
+        return queryset.prefetch_related("brackets", "compensations").annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 

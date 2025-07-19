@@ -6,20 +6,27 @@ from rest_framework import serializers
 from apps.core import signals
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
+from apps.core.querysets import (
+    EmployeesCountManagerMixin,
+    EmployeesCountQuerysetMixin,
+)
 from apps.core.utils import annotate_search
 
 from ..constants import statuses as constants
 
 
-class StatusManager(models.Manager):
+class StatusQuerySet(
+    EmployeesCountQuerysetMixin["StatusQuerySet"],
+    models.QuerySet,
+):
+    pass
+
+
+class StatusManager(EmployeesCountManagerMixin[StatusQuerySet], models.Manager):
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-                employees_count=models.Count("employees"),
-            )
+        queryset = StatusQuerySet(self.model, using=self._db)
+        return queryset.annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 

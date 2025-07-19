@@ -17,7 +17,7 @@ class APIViewSet(
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
 ):
-    queryset = models.VoucherKind.objects.all()
+    queryset = models.VoucherKind.objects.annotate_vouchers_count().all()
     serializer_class = serializers.VoucherKindSerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
@@ -37,6 +37,9 @@ class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
     resource_class = resources.VoucherKindResource
     ordering_fields = constants.ORDERING_FIELDS
 
+    def get_queryset(self):
+        return models.VoucherKind.objects.annotate_vouchers_count().all()
+
     def get_actions(self) -> dict[str, Action]:
         return {
             "delete": Action(
@@ -50,6 +53,9 @@ class ListView(PermissionRequiredMixin, mixins.ListMixin, View):
 class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
     permission_required = "fin.view_voucherkind"
     model = models.VoucherKind
+
+    def get_queryset(self):
+        return models.VoucherKind.objects.annotate_vouchers_count().all()
 
 
 class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):

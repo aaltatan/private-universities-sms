@@ -9,7 +9,9 @@ T = TypeVar("T")
 
 class EmployeesCountQuerysetMixin(Generic[T]):
     def annotate_employees_count(self) -> T:
-        return self.annotate(employees_count=models.Count("employees"))
+        return self.annotate(
+            employees_count=models.Count("employees", distinct=True),
+        )
 
 
 class EmployeesCountManagerMixin(Generic[T]):

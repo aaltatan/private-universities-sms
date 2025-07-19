@@ -8,21 +8,27 @@ from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
 from apps.core.utils import annotate_search
 from apps.geo.models import Nationality
+from apps.core.querysets import (
+    EmployeesCountQuerysetMixin,
+    EmployeesCountManagerMixin,
+)
 
 from ..constants import schools as constants
 from .school_kind import SchoolKind
 
 
-class SchoolManager(models.Manager):
+class SchoolQuerySet(
+    EmployeesCountQuerysetMixin["SchoolQuerySet"],
+    models.QuerySet,
+):
+    pass
+
+
+class SchoolManager(EmployeesCountManagerMixin[SchoolQuerySet], models.Manager):
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .select_related("nationality", "kind")
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-                employees_count=models.Count("employees"),
-            )
+        queryset = SchoolQuerySet(self.model, using=self._db)
+        return queryset.select_related("nationality", "kind").annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 

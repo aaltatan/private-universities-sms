@@ -6,20 +6,29 @@ from rest_framework import serializers
 from apps.core import signals
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
+from apps.core.querysets import (
+    EmployeesCountManagerMixin,
+    EmployeesCountQuerysetMixin,
+)
 from apps.core.utils import annotate_search
 
 from ..constants import specialization as constants
 
 
-class SpecializationManager(models.Manager):
+class SpecializationQuerySet(
+    EmployeesCountQuerysetMixin["SpecializationQuerySet"],
+    models.QuerySet,
+):
+    pass
+
+
+class SpecializationManager(
+    EmployeesCountManagerMixin[SpecializationQuerySet], models.Manager
+):
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-                employees_count=models.Count("employees"),
-            )
+        queryset = SpecializationQuerySet(self.model, using=self._db)
+        return queryset.annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 
@@ -55,4 +64,6 @@ class ActivitySerializer(serializers.ModelSerializer):
 
 pre_save.connect(signals.slugify_name, sender=Specialization)
 pre_save.connect(signals.add_update_activity(ActivitySerializer), sender=Specialization)
-pre_delete.connect(signals.add_delete_activity(ActivitySerializer), sender=Specialization)
+pre_delete.connect(
+    signals.add_delete_activity(ActivitySerializer), sender=Specialization
+)

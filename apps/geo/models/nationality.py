@@ -6,21 +6,29 @@ from rest_framework import serializers
 from apps.core import signals
 from apps.core.mixins import AddCreateActivityMixin
 from apps.core.models import AbstractUniqueNameModel
+from apps.core.querysets import (
+    EmployeesCountManagerMixin,
+    EmployeesCountQuerysetMixin,
+)
 from apps.core.utils import annotate_search
 
 from ..constants import nationalities as constants
 
 
-class NationalityManager(models.Manager):
+class NationalityQuerySet(
+    EmployeesCountQuerysetMixin["NationalityQuerySet"],
+    models.QuerySet,
+):
+    pass
+
+
+class NationalityManager(
+    EmployeesCountManagerMixin[NationalityQuerySet], models.Manager
+):
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .prefetch_related("schools")
-            .annotate(
-                search=annotate_search(constants.SEARCH_FIELDS),
-                employees_count=models.Count("employees"),
-            )
+        queryset = NationalityQuerySet(self.model, using=self._db)
+        return queryset.prefetch_related("schools").annotate(
+            search=annotate_search(constants.SEARCH_FIELDS),
         )
 
 
