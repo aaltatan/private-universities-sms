@@ -42,8 +42,8 @@ class GovernorateManager(models.Manager):
             .prefetch_related("cities")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
-                cities_count=models.Count("cities"),
-                employees_count=models.Count("cities__employees"),
+                cities_count=models.Count("cities", distinct=True),
+                employees_count=models.Count("cities__employees", distinct=True),
             )
         )
 

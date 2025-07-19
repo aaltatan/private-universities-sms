@@ -24,8 +24,8 @@ class TaxManager(models.Manager):
             .prefetch_related("brackets", "compensations")
             .annotate(
                 search=annotate_search(constants.SEARCH_FIELDS),
-                brackets_count=models.Count("brackets"),
-                compensations_count=models.Count("compensations"),
+                brackets_count=models.Count("brackets", distinct=True),
+                compensations_count=models.Count("compensations", distinct=True),
             )
         )
 
