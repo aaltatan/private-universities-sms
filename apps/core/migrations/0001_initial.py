@@ -315,4 +315,7 @@ class Migration(migrations.Migration):
                 "ordering": ("voucher__name",),
             },
         ),
+        migrations.RunPython(
+            create_default_template, reverse_code=migrations.RunPython.noop
+        ),
     ]
