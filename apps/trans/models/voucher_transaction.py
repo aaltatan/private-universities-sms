@@ -3,6 +3,7 @@ from decimal import Decimal
 from typing import Literal
 
 from django.contrib.contenttypes.models import ContentType
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
@@ -115,8 +116,13 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
                     "the formula is not valid, REASON: {}".format(e.args[0]),
                 )
 
-        # performance issue (access status is_payable)
-        if getattr(self, "employee", None) and self.employee.status.is_payable is False:
+        employee_ids_false_statuses: list[int] = cache.get(
+            "employee_ids_false_statuses", {}
+        )
+        if (
+            getattr(self, "employee", None)
+            and self.employee.id in employee_ids_false_statuses
+        ):
             errors["employee"] = ValidationError(
                 _("the employee ({}) is {}").format(
                     self.employee.fullname,

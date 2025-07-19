@@ -4,6 +4,7 @@ from typing import Any
 import openpyxl
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.cache import cache
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
@@ -183,6 +184,18 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "trans.change_voucher"
     form_class = forms.VoucherForm
     inlines = (VoucherTransactionInline,)
+
+    def post(self, request, slug, *args, **kwargs):
+        employee_ids_false_statuses = (
+            models.Voucher.objects.filter(
+                slug=slug,
+                transactions__employee__status__is_payable=False,
+            )
+            .values_list("transactions__employee", flat=True)
+            .distinct()
+        )
+        cache.set("employee_ids_false_statuses", employee_ids_false_statuses)
+        return super().post(request, slug, *args, **kwargs)
 
     def can_access(self, request, obj: models.Voucher) -> bool:
         return not obj.is_migrated
