@@ -195,12 +195,14 @@ class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
         for formset in formsets:
             last_order = 1
             for form in formset.forms:
-                if form.is_valid() and form.cleaned_data:
-                    item = form.save(commit=False)
-                    item.ordering = form.cleaned_data.get("ORDER") or last_order
-                    item.save()
-                    last_order += 1
-            formset.save()
+                if form.has_changed():
+                    if form.is_valid() and form.cleaned_data:
+                        item = form.save(commit=False)
+                        item.ordering = form.cleaned_data.get("ORDER") or last_order
+                        item.save()
+                        last_order += 1
+            if formset.has_changed():
+                formset.save()
 
         obj.updated_by = self.request.user
         obj.save()

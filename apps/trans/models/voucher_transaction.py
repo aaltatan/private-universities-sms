@@ -115,6 +115,7 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
                     "the formula is not valid, REASON: {}".format(e.args[0]),
                 )
 
+        # performance issue (access status is_payable)
         if getattr(self, "employee", None) and self.employee.status.is_payable is False:
             errors["employee"] = ValidationError(
                 _("the employee ({}) is {}").format(

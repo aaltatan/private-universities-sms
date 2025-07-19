@@ -97,15 +97,10 @@ class UpdateMixin(ABC):
                 Formset = inline.get_formset_class(
                     request=request, parent_model=self.get_model_class()
                 )
-                formset = Formset(
-                    request.POST,
-                    instance=self.obj,
-                    queryset=qs,
-                )
+                formset = Formset(request.POST, instance=self.obj, queryset=qs)
                 formsets.append(formset)
 
-        self.perform_update_before_validation(self.obj, form)
-
+        # performance issue
         if form.is_valid() and all(formset.is_valid() for formset in formsets):
             for formset in formsets:
                 new_objects = [
@@ -142,12 +137,6 @@ class UpdateMixin(ABC):
         """
         return _("you cannot access this page")
 
-    def perform_update_before_validation(self, obj: Model, form: ModelForm) -> None:
-        """
-        Hook for preforming update before form validation.
-        """
-        pass
-
     def perform_update(
         self,
         form: ModelForm,
@@ -160,12 +149,14 @@ class UpdateMixin(ABC):
         for formset in formsets:
             last_order = 1
             for form in formset.forms:
-                if form.is_valid() and form.cleaned_data:
-                    item = form.save(commit=False)
-                    item.ordering = form.cleaned_data.get("ORDER") or last_order
-                    item.save()
-                    last_order += 1
-            formset.save()
+                if form.has_changed():
+                    if form.is_valid() and form.cleaned_data:
+                        item = form.save(commit=False)
+                        item.ordering = form.cleaned_data.get("ORDER") or last_order
+                        item.save()
+                        last_order += 1
+            if formset.has_changed():
+                formset.save()
 
         return obj
 
