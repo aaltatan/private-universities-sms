@@ -20,9 +20,6 @@ export function autocomplete(data = { url, initial, eventName }) {
     resetList() {
       this.$refs.autocompleteList.innerHTML = "";
     },
-    resetKeywords() {
-      this.keywords = "";
-    },
     selectInput() {
       this.$refs.autocompleteInput.select();
     },
@@ -32,10 +29,15 @@ export function autocomplete(data = { url, initial, eventName }) {
     handleSelectOption(pk) {
       this.keywords = pk;
       this.title = pk;
+      this.selectInput();
       this.closeList();
     },
     reset() {
-      this.resetKeywords();
+      this.closeList();
+      this.selectInput();
+    },
+    onOpenAutocompleteList() {
+      this.openList();
     },
     handleRequest() {
       this.closeList();

@@ -13,7 +13,7 @@ class="relative"
     <input
     @input="resetList"
     @input.debounce.750="handleRequest"
-    @openautocompletelist="openList();$el.focus()"
+    @openautocompletelist="openList"
     @keydown.enter.prevent=""
     :title="title"
     x-model="keywords"
@@ -51,7 +51,7 @@ class="relative"
   {% spaceless %}
   <ul 
     x-show="isListOpen && keywords" 
-    x-trap="isListOpen && keywords"
+    x-trap.noautofocus="isListOpen && keywords"
     x-transition:enter="duration-200"
     x-transition:enter-start="-translate-y-2"
     x-transition:enter-end="translate-y-0"
