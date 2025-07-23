@@ -176,7 +176,7 @@ class VoucherTransactionInline(InlineFormsetFactory):
     deleter = Deleter
 
     @classmethod
-    def get_queryset(cls, obj: models.VoucherTransaction):
+    def get_queryset(cls, obj: models.Voucher):
         return obj.transactions.all().order_by("ordering", "id")
 
 
