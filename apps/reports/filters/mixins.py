@@ -80,7 +80,7 @@ class JournalsPeriodFilter(filters.FilterSet):
 class JournalsCostCenterFilter(filters.FilterSet):
     cost_center = get_combobox_choices_filter(
         queryset=CostCenter.objects.filter(journals__isnull=False).distinct(),
-        field_name="cost_center",
+        field_name="name",
         label=_("cost center"),
         method_name="filter_cost_center",
     )
