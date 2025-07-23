@@ -8,7 +8,7 @@ from apps.trans.models import Voucher, VoucherTransaction
 def generate_long_voucher(voucher: Voucher, voucher_counts: int = 100):
     compensation = Compensation.objects.filter(name__contains="ساعة تدريسية").first()
 
-    for idx in range(voucher_counts):
+    for _ in range(voucher_counts):
         vt = VoucherTransaction(
             voucher=voucher,
             employee=random.choice(list(Employee.objects.all()[:100])),
