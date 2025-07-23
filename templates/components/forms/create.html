@@ -24,10 +24,10 @@
   {% endif %}
   x-trap.noautofocus="true"
   id="{{ form_id }}"
-  class="{{ widths|get_item:width }} relative"
+  class="{{ widths|get_item:width }} hx-swap:[&#{{ form_id }}-indicator]:!flex"
 >
   <div 
-    class="absolute left-0 top-0 w-full h-full bg-white/30 dark:bg-black/30 z-20 items-center justify-center hidden hx-request:flex"
+    class="fixed left-0 top-0 w-full h-full backdrop-blur-sm bg-white/30 dark:bg-black/30 z-20 items-center justify-center hidden hx-request:flex"
     id="{{ form_id }}-indicator"
   >
     <div class="animate-spin">
