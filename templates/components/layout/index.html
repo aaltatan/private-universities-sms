@@ -4,7 +4,7 @@
 <!--  -->
 {% get_breadcrumbs as breadcrumbs %}
 
-<c-vars 
+<c-vars
   :containers="{
     'base': '',
     'sm': 'max-w-sm mx-auto',
@@ -50,9 +50,7 @@
         }"
         class="py-2 max-md:px-2"
       >
-        <div class="{{ containers|get_item:container }} @container">
-          {{ slot }}
-        </div>
+        <div class="{{ containers|get_item:container }} @container">{{ slot }}</div>
       </main>
     </c-layout.sidebar>
   </body>
