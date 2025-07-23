@@ -121,7 +121,7 @@ def get_combobox_choices_filter(
         kwargs["choices"] = choices
         return filters.MultipleChoiceFilter(**kwargs)
     else:
-        if type(queryset) == QuerySet:
+        if isinstance(queryset, QuerySet):
             kwargs["choices"] = (
                 queryset.values_list(field_name, field_name)
                 .order_by(field_name)
