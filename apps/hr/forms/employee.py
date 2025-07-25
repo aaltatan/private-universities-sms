@@ -104,9 +104,10 @@ class EmployeeForm(CustomModelForm):
         field_name="search",
     )
     user = get_autocomplete_field(
-        User.objects.all(),
+        User.objects.filter(is_active=True, is_staff=False),
         to_field_name="username",
         widget_attributes={"placeholder": _("search users")},
+        queryset_filters={"is_active": True, "is_staff": False},
         app_label="core",
         model_name="User",
         object_name="user",
