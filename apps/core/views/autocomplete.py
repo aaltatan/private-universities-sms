@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views import View
 
 from ..schemas import AutocompleteRequestParser
-from ..utils import get_djangoql_query, get_keywords_query
+from ..utils import get_keywords_query
 
 
 class AutocompleteView(View):
@@ -23,23 +23,18 @@ class AutocompleteView(View):
         Model = self.get_model_class(parser=parser)
 
         try:
-            default_queryset = Model.objects.filter(
+            queryset = Model.objects.filter(
                 get_keywords_query(
                     parser.term,
                     field_name=parser.field_name,
                 ),
+                **parser.queryset_filters,
             )
         except FieldError as e:
             return HttpResponse(str(e), status=400)
-
-        qs = get_djangoql_query(
-            qs_to_filter=Model.objects.all(),
-            djangoql_query=parser.term,
-            default_queryset=default_queryset,
-        )
-
+        
         context = {
-            "object_list": qs,
+            "object_list": queryset,
             "label_field_name": parser.label_field_name,
         }
 

@@ -3,7 +3,6 @@ from dataclasses import InitVar, asdict, dataclass, field
 from typing import Any, Literal, Sequence
 
 from django.http import Http404, HttpRequest
-from rest_framework.response import Response
 
 from apps.core.utils.behaviors import ActionBehavior
 
@@ -163,6 +162,7 @@ class AutocompleteRequestParser:
     label_field_name: str = field(init=False)
     term: str = field(init=False)
     view_perm: str = field(init=False)
+    queryset_filters: dict = field(init=False, default_factory=dict)
 
     def __post_init__(self):
         self.app_label = self.request.GET.get("app_label", "")
@@ -180,6 +180,9 @@ class AutocompleteRequestParser:
         self.field_name = self.request.GET.get("field_name", "")
         if not self.field_name:
             raise AttributeError("field_name is required")
+
+        queryset_filters = self.request.GET.get("filters", "")
+        self.queryset_filters = json.loads(queryset_filters) if queryset_filters else {}
 
         self.label_field_name = self.request.GET.get("label_field_name", "pk")
         self.view_perm = f"{self.app_label}.view_{self.object_name}"
@@ -203,34 +206,3 @@ class ActivityRequestParser:
 
     def asdict(self) -> dict[str, str]:
         return asdict(self)
-
-
-@dataclass
-class ReportSchema:
-    title: str
-    report: list[dict[str, Any]] | dict = field(default=...)
-    headers: list[str] = field(default_factory=list)
-
-    def asdict(self) -> dict:
-        return {
-            "title": self.title,
-            "headers": self.headers,
-            "report": self.report,
-        }
-
-    def get_response(self, status_code: int = 200) -> Response:
-        return Response(self.asdict(), status=status_code)
-
-    def __post_init__(self):
-        if not self.headers:
-            if isinstance(self.report, dict):
-                self.headers = list(self.report.keys())
-            elif isinstance(self.report, list):
-                if len(self.report) > 0:
-                    self.headers = list(self.report[0].keys())
-                else:
-                    self.headers = []
-            else:
-                raise NotImplementedError(
-                    "data must be an instance of list or dict",
-                )

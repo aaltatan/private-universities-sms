@@ -1,3 +1,4 @@
+import json
 from typing import Any
 from urllib.parse import urlencode
 
@@ -32,6 +33,7 @@ def get_autocomplete_field(
     to_field_name: str = "pk",
     widget_attributes: dict[str, str] = {},
     field_attributes: dict[str, Any] = {},
+    queryset_filters: dict[str, Any] = {},
     **kwargs: dict[str, str],
 ) -> CustomModelChoiceField:
     """Get autocomplete field."""
@@ -49,6 +51,7 @@ def get_autocomplete_field(
         widget=AutocompleteWidget(
             {
                 "querystring": urlencode(kwargs),
+                "queryset_filters": json.dumps(queryset_filters),
                 **widget_attributes,
             }
         ),
