@@ -77,7 +77,7 @@ class TaxBracket(AddCreateActivityMixin, UrlsMixin, models.Model):
     def clean(self):
         errors: dict[str, ValidationError] = {}
 
-        if self.tax.fixed:
+        if getattr(self, "tax", None) and self.tax.fixed:
             errors["tax"] = ValidationError(
                 _("you can't add a bracket to a fixed tax."),
             )
