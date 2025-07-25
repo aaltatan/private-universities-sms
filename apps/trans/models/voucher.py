@@ -347,10 +347,7 @@ class ActivitySerializer(serializers.ModelSerializer):
 
 def slugify_voucher(sender, instance: Voucher, *args, **kwargs):
     if instance.slug is None:
-        instance.slug = slugify(
-            f"{instance.voucher_serial}-{instance.title}",
-            allow_unicode=True,
-        )
+        instance.slug = slugify(instance.voucher_serial, allow_unicode=True)
 
 
 def generate_voucher_serial(sender, instance: Voucher, *args, **kwargs):
