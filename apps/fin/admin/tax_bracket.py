@@ -17,3 +17,4 @@ class TaxBracketAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = constants.SEARCH_FIELDS
     list_per_page = 20
     resource_classes = (resources.TaxBracketResource,)
+    autocomplete_fields = ("tax",)

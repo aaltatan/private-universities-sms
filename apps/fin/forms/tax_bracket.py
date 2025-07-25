@@ -1,16 +1,22 @@
-from django import forms
 from django.utils.translation import gettext as _
 
 from apps.core import widgets
+from apps.core.fields import get_autocomplete_field
 from apps.core.forms import CustomModelForm
 
 from .. import models
 
 
 class BaseTaxBracketForm(CustomModelForm):
-    tax = forms.ModelChoiceField(
+    tax = get_autocomplete_field(
         queryset=models.Tax.objects.filter(fixed=False),
-        label=_("tax"),
+        to_field_name="name",
+        widget_attributes={"placeholder": _("search taxes")},
+        queryset_filters={"fixed": False},
+        app_label="fin",
+        model_name="Tax",
+        object_name="tax",
+        field_name="search",
     )
 
     class Meta:
