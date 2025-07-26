@@ -6,6 +6,11 @@ class DetailsMixin:
     template_name: str | None = None
     model: Model | None = None
 
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        response["Hx-Trigger"] = "showmodal"
+        return response
+
     def get_codename_plural(self) -> str:
         return self.model._meta.codename_plural
 

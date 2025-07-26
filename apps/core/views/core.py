@@ -41,4 +41,6 @@ def ledger(request: HttpRequest, *args, **kwargs) -> HttpResponse:
 
         return response
 
-    return render(request, template_name, {"form": form})
+    response = render(request, template_name, {"form": form})
+    response["Hx-Trigger"] = "showmodal"
+    return response
