@@ -1,7 +1,6 @@
 {% load i18n heroicons %}
 
 <c-vars
-  close_padding="md"
   :overflow="True"
   :widths="{
   'base': 'w-[min(500px,100%)]',
@@ -11,10 +10,15 @@
   '3xl': 'w-[min(1200px,100%)]',
   }"
   width="lg"
+  :close_on_esc="True"
+  :close_on_click_outside="True"
+  :overflow="True"
 />
 
 <div
   class="flex flex-col gap-2 rounded-lg border {% if overflow %}overflow-hidden{% endif %} border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 bg-white dark:bg-neutral-950 {{ widths|get_item:width }} empty:hidden mx-auto"
+  {% if close_on_esc %}@keydown.esc.window="hideModal"{% endif %}
+  {% if close_on_click_outside %}@click.outside="hideModal"{% endif %}
 >
   <!-- Dialog Header -->
   <div

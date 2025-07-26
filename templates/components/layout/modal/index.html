@@ -1,5 +1,3 @@
-<c-vars :overflow="True" />
-
 <div
   x-show="modalStatus"
   x-transition:enter="transition ease-out duration-150"
@@ -9,10 +7,9 @@
   x-transition:leave-start="translate-y-0 opacity-100"
   x-transition:leave-end="-translate-y-8 opacity-0"
   x-trap.inert.noscroll="modalStatus"
-  @keydown.esc.window="hideModal"
   @showmodal.window="showModal"
   @hidemodal="hideModal"
-  class="fixed inset-0 z-50 flex items-center justify-center p-4 pb-8 lg:p-8 @container backdrop-blur-md"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 pb-8 lg:p-8 @container bg-black/20 dark:bg-black/80"
   role="dialog"
   aria-modal="true"
 >
