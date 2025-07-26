@@ -1,6 +1,5 @@
 <c-vars 
   trigger="submit"
-  spinner="#table-spinner"
   :prevent="False"
   :include="True"
   :included="True"
@@ -17,7 +16,7 @@
   hx-include="[aria-included={% if include %}true{% else %}false{% endif %}]"
   {% if prevent %}@submit.prevent{% endif %}
   hx-trigger="{{ trigger }}"
-  hx-indicator="{{ spinner }}"
+  hx-indicator="#spinner"
   {{ attrs }}
 >
   {{ slot }}

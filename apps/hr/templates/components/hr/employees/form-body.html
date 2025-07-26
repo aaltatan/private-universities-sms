@@ -52,7 +52,7 @@
       hx-get="{% url 'geo:nationalities:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
-      @click.prevent="showModal"
+      hx-swap="innerHTML"
     />
   </c-inputs.text>
   {% else %}
@@ -69,7 +69,7 @@
       hx-get="{% url 'geo:cities:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
-      @click.prevent="showModal"
+      hx-swap="innerHTML"
     />
   </c-inputs.text>
   {% else %}
@@ -88,7 +88,7 @@
       hx-get="{% url 'org:statuses:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
-      @click.prevent="showModal"
+      hx-swap="innerHTML"
     />
   </c-inputs.text>
   {% else %}
@@ -108,7 +108,7 @@
       hx-get="{% url 'org:cost_centers:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
-      @click.prevent="showModal"
+      hx-swap="innerHTML"
     />
   </c-inputs.text>
   {% else %}
@@ -125,7 +125,7 @@
       hx-get="{% url 'org:job_subtypes:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
-      @click.prevent="showModal"
+      hx-swap="innerHTML"
     />
   </c-inputs.text>
   {% else %}
@@ -142,7 +142,7 @@
       hx-get="{% url 'org:positions:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
-      @click.prevent="showModal"
+      hx-swap="innerHTML"
     />
   </c-inputs.text>
   {% else %}
@@ -160,7 +160,7 @@
       hx-get="{% url 'edu:schools:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
-      @click.prevent="showModal"
+      hx-swap="innerHTML"
     />
   </c-inputs.text>
   {% else %}
@@ -177,7 +177,7 @@
       hx-get="{% url 'edu:specializations:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
-      @click.prevent="showModal"
+      hx-swap="innerHTML"
     />
   </c-inputs.text>
   {% else %}
@@ -194,7 +194,7 @@
       hx-get="{% url 'edu:degrees:create' %}"
       hx-target="#modal-container"
       hx-headers='{"modal": true, "target": "#no-content"}'
-      @click.prevent="showModal"
+      hx-swap="innerHTML"
     />
   </c-inputs.text>
   {% else %}
