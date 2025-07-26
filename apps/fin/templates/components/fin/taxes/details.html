@@ -1,151 +1,151 @@
 {% load i18n utils humanize formats %}
 
-<c-layout.modal width="xl">
-  <c-layout.modal.body :close_padding="buttons_padding">
-    <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
-    <c-slot name="body">
-      <c-table height="sm">
-        <c-table.table>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'name' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'name' }}">
-              {{ object.name }}
-            </c-table.td>
-          </c-table.tr>
-          <!--  -->
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'fixed' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'fixed' }}">
-              {{ object.fixed|yesno|title }}
-            </c-table.td>
-          </c-table.tr>
-          <!--  -->
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'rate' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'rate' }}">
-              {{ object.rate|percentage }}
-            </c-table.td>
-          </c-table.tr>
-          <!--  -->
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'rounded_to' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'rounded_to' }}">
-              {{ object.rounded_to|money }}
-            </c-table.td>
-          </c-table.tr>
-          <!--  -->
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'round_method' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'round_method' }}">
-              {{ object.get_round_method_display }}
-            </c-table.td>
-          </c-table.tr>
-          <!--  -->
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'affected_by_working_days' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'affected_by_working_days' }}">
-              {{ object.affected_by_working_days|yesno|title }}
-            </c-table.td>
-          </c-table.tr>
-          <!--  -->
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {% translate 'brackets count'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'brackets count'|title %}">
-              {{ object.brackets_count }}
-            </c-table.td>
-          </c-table.tr>
-          <!--  -->
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {% translate 'compensations count'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'compensations count'|title %}">
-              {{ object.compensations_count }}
-            </c-table.td>
-          </c-table.tr>
-          <!--  -->
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'description' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'description' }}">
-              {{ object.description }}
-            </c-table.td>
-          </c-table.tr>
-        </c-table.table>
-      </c-table>
-      <!-- brackets table -->
-      {% if object.brackets.all %}
-      <c-separator> {% translate 'brackets'|title %} </c-separator>
-      <c-table height="sm">
-        <c-table.table>
-          <c-table.tr>
-            <c-table.th>#</c-table.td>
-            <c-table.th>{% translate 'from'|title %}</c-table.td>
-            <c-table.th>{% translate 'to'|title %}</c-table.td>
-            <c-table.th>{% translate 'rate'|title %}</c-table.td>
-          </c-table.tr>
-          {% for bracket in object.brackets.all %}
-          <c-table.tr>
-            <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
-            <c-table.td data-header="{% translate 'from'|title %}">
-              {{ bracket.amount_from|money:True }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'to'|title %}">
-              {{ bracket.amount_to|money:True }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'rate'|title %}">
-              {{ bracket.rate|percentage:True }}
-            </c-table.td>
-          </c-table.tr>
-          {% endfor %}
-        </c-table.table>
-      </c-table>
-      {% endif %}
-      <!-- compensations table -->
-      {% if object.compensations.all %}
-      <c-separator> {% translate 'compensations'|title %} </c-separator>
-      <c-table height="sm">
-        <c-table.table>
-          <c-table.tr>
-            <c-table.th>#</c-table.td>
-            <c-table.th>{% translate 'name'|title %}</c-table.td>
-          </c-table.tr>
-          {% for compensation in object.compensations.all %}
-          <c-table.tr>
-            <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
-            <c-table.td data-header="{% translate 'name'|title %}">
-              {{ compensation.name }}
-            </c-table.td>
-          </c-table.tr>
-          {% endfor %}
-        </c-table.table>
-      </c-table>
-      {% endif %}
-    </c-slot>
-    <c-slot name="footer">
-      <c-button
-        theme="outline"
-        title="{% translate 'close'|title %}"
-        @click="hideModal"
-        :hide_icon="True"
-      >
-        {% translate 'close'|title %}
-      </c-button>
-    </c-slot>
-  </c-layout.modal.body>
-</c-layout.modal>
+
+<c-layout.modal.body :close_padding="buttons_padding">
+  <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
+  <c-slot name="body">
+    <c-table height="sm">
+      <c-table.table>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'name' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'name' }}">
+            {{ object.name }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'fixed' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'fixed' }}">
+            {{ object.fixed|yesno|title }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'rate' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'rate' }}">
+            {{ object.rate|percentage }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'rounded_to' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'rounded_to' }}">
+            {{ object.rounded_to|money }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'round_method' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'round_method' }}">
+            {{ object.get_round_method_display }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'affected_by_working_days' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'affected_by_working_days' }}">
+            {{ object.affected_by_working_days|yesno|title }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {% translate 'brackets count'|title %}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'brackets count'|title %}">
+            {{ object.brackets_count }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {% translate 'compensations count'|title %}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'compensations count'|title %}">
+            {{ object.compensations_count }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'description' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'description' }}">
+            {{ object.description }}
+          </c-table.td>
+        </c-table.tr>
+      </c-table.table>
+    </c-table>
+    <!-- brackets table -->
+    {% if object.brackets.all %}
+    <c-separator> {% translate 'brackets'|title %} </c-separator>
+    <c-table height="sm">
+      <c-table.table>
+        <c-table.tr>
+          <c-table.th>#</c-table.td>
+          <c-table.th>{% translate 'from'|title %}</c-table.td>
+          <c-table.th>{% translate 'to'|title %}</c-table.td>
+          <c-table.th>{% translate 'rate'|title %}</c-table.td>
+        </c-table.tr>
+        {% for bracket in object.brackets.all %}
+        <c-table.tr>
+          <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
+          <c-table.td data-header="{% translate 'from'|title %}">
+            {{ bracket.amount_from|money:True }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'to'|title %}">
+            {{ bracket.amount_to|money:True }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'rate'|title %}">
+            {{ bracket.rate|percentage:True }}
+          </c-table.td>
+        </c-table.tr>
+        {% endfor %}
+      </c-table.table>
+    </c-table>
+    {% endif %}
+    <!-- compensations table -->
+    {% if object.compensations.all %}
+    <c-separator> {% translate 'compensations'|title %} </c-separator>
+    <c-table height="sm">
+      <c-table.table>
+        <c-table.tr>
+          <c-table.th>#</c-table.td>
+          <c-table.th>{% translate 'name'|title %}</c-table.td>
+        </c-table.tr>
+        {% for compensation in object.compensations.all %}
+        <c-table.tr>
+          <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
+          <c-table.td data-header="{% translate 'name'|title %}">
+            {{ compensation.name }}
+          </c-table.td>
+        </c-table.tr>
+        {% endfor %}
+      </c-table.table>
+    </c-table>
+    {% endif %}
+  </c-slot>
+  <c-slot name="footer">
+    <c-button
+      theme="outline"
+      title="{% translate 'close'|title %}"
+      @click="hideModal"
+      :hide_icon="True"
+    >
+      {% translate 'close'|title %}
+    </c-button>
+  </c-slot>
+</c-layout.modal.body>
+

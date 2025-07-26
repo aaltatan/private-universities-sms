@@ -3,7 +3,8 @@
 <c-card id="upcoming-job-anniversaries">
   <c-slot name="title">
     <div class="flex items-center gap-1">
-      ⚒️ <span class="first-letter:uppercase">{% translate 'upcoming job anniversaries this' %}</span>
+      ⚒️
+      <span class="first-letter:uppercase">{% translate 'upcoming job anniversaries this' %}</span>
     </div>
   </c-slot>
   <c-slot name="options">
@@ -26,25 +27,14 @@
       {% for obj in object_list %}
       <c-table.tr>
         <c-table.td data-header="{% translate 'fullname' %}">
-          <a
-            href="#"
-            hx-get="{{ obj.get_absolute_url }}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.get_absolute_url }}" aria-label="object details">
             {{ obj.fullname }}
-          </a>
+          </c-modal-a>
         </c-table.td>
-        <c-table.td
-          title="{{ obj.hire_date|timesince }}"
-          data-header="{% translate 'hire date' %}"
-        >
+        <c-table.td title="{{ obj.hire_date|timesince }}" data-header="{% translate 'hire date' %}">
           {{ obj.hire_date|date:'Y-m-d' }}
         </c-table.td>
-        <c-table.td 
+        <c-table.td
           data-header="{% translate 'next anniversary' %}"
           title="{{ obj.next_nth_job_anniversary|timeuntil:now }}"
         >

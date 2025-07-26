@@ -55,7 +55,8 @@
           value="{% translate 'delete' %}"
           hx-post="{{ index_url }}{% querystring %}"
           hx-target="#modal-container"
-          hx-indicator="#modal-spinner"
+          hx-indicator="#spinner"
+          hx-swap="innerHTML"
           aria-label="delete all objects"
         />
       </c-layout.contextmenu.item>
@@ -115,8 +116,8 @@
                 href="#"
                 hx-get="{{ obj.get_activities_url }}"
                 hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
+                hx-indicator="#spinner"
+                hx-swap="innerHTML"
                 aria-label="object activities"
               >
                 {% translate 'activities' %}
@@ -143,8 +144,8 @@
                 href="#"
                 hx-get="{{ obj.get_delete_url }}{% querystring %}"
                 hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
+                hx-indicator="#spinner"
+                hx-swap="innerHTML"
                 aria-label="delete object"
               >
                 {% translate 'delete' %}
@@ -155,13 +156,8 @@
           {% endif %}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'fullname' }}">
-          <a
-            href="#"
+          <c-modal-a
             hx-get="{{ obj.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
             aria-label="object details"
           >
             <div class="flex items-center gap-1">
@@ -170,101 +166,48 @@
               ></span>
               <span>{{ obj.fullname }}</span>
             </div>
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'cost_center' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.cost_center.get_absolute_url }}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.cost_center.get_absolute_url }}" aria-label="object details">
             {{ obj.cost_center }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{% translate 'job type' %}">
-          <a
-            href="#"
+          <c-modal-a
             hx-get="{{ obj.job_subtype.job_type.get_absolute_url }}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
             aria-label="object details"
           >
             {{ obj.job_subtype.job_type }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'job_subtype' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.job_subtype.get_absolute_url }}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.job_subtype.get_absolute_url }}" aria-label="object details">
             {{ obj.job_subtype }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'position' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.position.get_absolute_url }}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.position.get_absolute_url }}" aria-label="object details">
             {{ obj.position }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'degree' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.degree.get_absolute_url }}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.degree.get_absolute_url }}" aria-label="object details">
             {{ obj.degree }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'specialization' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.specialization.get_absolute_url }}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.specialization.get_absolute_url }}" aria-label="object details">
             {{ obj.specialization }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'groups' }}">
           <div class="flex items-center gap-0.5">
             {% for group in obj.groups.all %}
             <c-badge>
-              <a
-                href="#"
-                hx-get="{{ group.get_absolute_url }}"
-                hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
-                class="hover:underline cursor-pointer"
-                aria-label="object details"
-              >
+              <c-modal-a hx-get="{{ group.get_absolute_url }}" aria-label="object details">
                 {{ group }}
-              </a>
+              </c-modal-a>
             </c-badge>
             {% endfor %}
           </div>
@@ -280,30 +223,17 @@
           {{ obj.birth_date|date:'Y-m-d' }}
         </c-table.td>
         <c-table.td data-header="{% translate 'governorate' %}">
-          <a
-            href="#"
+          <c-modal-a
             hx-get="{{ obj.city.governorate.get_absolute_url }}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
             aria-label="object details"
           >
             {{ obj.city.governorate }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{% translate 'city' %}">
-          <a
-            href="#"
-            hx-get="{{ obj.city.get_absolute_url }}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.city.get_absolute_url }}" aria-label="object details">
             {{ obj.city }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td
           data-header="{{ model|verbose_name:'hire_date' }}"
@@ -316,21 +246,13 @@
           {{ obj.hire_date|date:'Y-m-d' }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'status' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.status.get_absolute_url }}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.status.get_absolute_url }}" aria-label="object details">
             {% if obj.status.is_payable %}
             <c-badge theme="green"> {{ obj.status }} </c-badge>
             {% else %}
             <c-badge theme="red"> {{ obj.status }} </c-badge>
             {% endif %}
-          </a>
+          </c-modal-a>
         </c-table.td>
       </c-table.tr>
       {% empty %}

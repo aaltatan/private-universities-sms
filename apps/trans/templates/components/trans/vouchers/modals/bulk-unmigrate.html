@@ -1,41 +1,36 @@
 {% load i18n %}
 
-<c-layout.modal>
-  <form
-    hx-post="{{ index_url }}{% querystring %}"
-    hx-vals='{"kind": "action", "name": "unmigrate"}'
-  >
-    <c-layout.modal.body>
-      <c-slot name="header"> {% translate 'delete'|title %} </c-slot>
-      <c-slot name="body">
-        <p class="text-neutral-600 dark:text-neutral-300 first-letter:capitalize">
-          {% translate 'are you sure you want to unmigrate all' %} {{ qs.count }} {% translate
-          'selected objects ?' %}
-        </p>
-        <ul class="text-neutral-600 dark:text-neutral-300">
-          {% for obj in qs %}
-          <li class="flex items-center gap-1 ps-2 text-sm">
-            <input type="hidden" value="{{ obj.pk }}" name="action_check" />
-            <span>{{ forloop.counter }} - {{ obj }}</span>
-          </li>
-          {% endfor %}
-        </ul>
-      </c-slot>
-      <c-slot name="footer">
-        <c-button
-          theme="primary"
-          title="{% translate 'unmigrate'|title %}"
-          :hide_icon="True"
-          ::disabled="disabled"
-          x-data="setConfirmationTimer(
+<form hx-post="{{ index_url }}{% querystring %}" hx-vals='{"kind": "action", "name": "unmigrate"}'>
+  <c-layout.modal.body>
+    <c-slot name="header"> {% translate 'delete'|title %} </c-slot>
+    <c-slot name="body">
+      <p class="text-neutral-600 dark:text-neutral-300 first-letter:capitalize">
+        {% translate 'are you sure you want to unmigrate all' %} {{ qs.count }} {% translate
+        'selected objects ?' %}
+      </p>
+      <ul class="text-neutral-600 dark:text-neutral-300">
+        {% for obj in qs %}
+        <li class="flex items-center gap-1 ps-2 text-sm">
+          <input type="hidden" value="{{ obj.pk }}" name="action_check" />
+          <span>{{ forloop.counter }} - {{ obj }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </c-slot>
+    <c-slot name="footer">
+      <c-button
+        theme="primary"
+        title="{% translate 'unmigrate'|title %}"
+        :hide_icon="True"
+        ::disabled="disabled"
+        x-data="setConfirmationTimer(
             $el, 
             '{% translate 'unmigrate'|title %}', 
             {{ settings.unmigrate_confirmation_timeout }}
           )"
-        >
-          {% translate 'unmigrate'|title %}
-        </c-button>
-      </c-slot>
-    </c-layout.modal.body>
-  </form>
-</c-layout.modal>
+      >
+        {% translate 'unmigrate'|title %}
+      </c-button>
+    </c-slot>
+  </c-layout.modal.body>
+</form>

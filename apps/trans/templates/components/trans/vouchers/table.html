@@ -56,7 +56,8 @@
           value="{% translate 'delete' %}"
           hx-post="{{ index_url }}{% querystring %}"
           hx-target="#modal-container"
-          hx-indicator="#modal-spinner"
+          hx-indicator="#spinner"
+          hx-swap="innerHTML"
           aria-label="delete all objects"
         />
       </c-layout.contextmenu.item>
@@ -69,7 +70,8 @@
           value="{% translate 'audit' %}"
           hx-post="{{ index_url }}{% querystring %}"
           hx-target="#modal-container"
-          hx-indicator="#modal-spinner"
+          hx-indicator="#spinner"
+          hx-swap="innerHTML"
           aria-label="audit all objects"
         />
       </c-layout.contextmenu.item>
@@ -82,7 +84,8 @@
           value="{% translate 'migrate' %}"
           hx-post="{{ index_url }}{% querystring %}"
           hx-target="#modal-container"
-          hx-indicator="#modal-spinner"
+          hx-indicator="#spinner"
+          hx-swap="innerHTML"
           aria-label="migrate all objects"
         />
       </c-layout.contextmenu.item>
@@ -95,7 +98,8 @@
           value="{% translate 'unmigrate' %}"
           hx-post="{{ index_url }}{% querystring %}"
           hx-target="#modal-container"
-          hx-indicator="#modal-spinner"
+          hx-indicator="#spinner"
+          hx-swap="innerHTML"
           aria-label="unmigrate all objects"
         />
       </c-layout.contextmenu.item>
@@ -138,8 +142,8 @@
                 href="#"
                 hx-get="{{ obj.get_activities_url }}"
                 hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
+                hx-indicator="#spinner"
+                hx-swap="innerHTML"
                 aria-label="object activities"
               >
                 {% translate 'activities' %}
@@ -162,8 +166,8 @@
                 href="#"
                 hx-get="{{ obj.get_audit_url }}{% querystring %}"
                 hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
+                hx-indicator="#spinner"
+                hx-swap="innerHTML"
                 aria-label="audit object"
               >
                 {% translate 'audit' %}
@@ -176,8 +180,8 @@
                 href="#"
                 hx-get="{{ obj.get_migrate_url }}{% querystring %}"
                 hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
+                hx-indicator="#spinner"
+                hx-swap="innerHTML"
                 aria-label="migrate object"
               >
                 {% translate 'migrate' %}
@@ -190,8 +194,8 @@
                 href="#"
                 hx-get="{{ obj.get_unmigrate_url }}{% querystring %}"
                 hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
+                hx-indicator="#spinner"
+                hx-swap="innerHTML"
                 aria-label="unmigrate object"
               >
                 {% translate 'unmigrate' %}
@@ -218,8 +222,8 @@
                 href="#"
                 hx-get="{{ obj.get_import_url }}{% querystring %}"
                 hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
+                hx-indicator="#spinner"
+                hx-swap="innerHTML"
                 aria-label="import voucher transactions"
               >
                 {% translate 'import transactions'|capfirst %}
@@ -236,8 +240,8 @@
                 href="#"
                 hx-get="{{ obj.get_delete_url }}{% querystring %}"
                 hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
+                hx-indicator="#spinner"
+                hx-swap="innerHTML"
                 aria-label="delete object"
               >
                 {% translate 'delete' %}
@@ -248,17 +252,9 @@
           {% endif %}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'voucher_serial' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.get_absolute_url }}{% querystring %}" aria-label="object details">
             {{ obj.voucher_serial }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'title' }}"> {{ obj.title }} </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'date' }}">
@@ -274,43 +270,19 @@
           {{ obj.transactions_count|money:True }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'kind' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.kind.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.kind.get_absolute_url }}{% querystring %}" aria-label="object details">
             {{ obj.kind }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{% translate 'year' %}">
-          <a
-            href="#"
-            hx-get="{{ obj.period.year.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
-            {{ obj.period.year }}
-          </a>
+          <c-modal-a hx-get="{{ obj.period.year.get_absolute_url }}{% querystring %}" aria-label="object details">
+            {{ obj.period.year.name }}
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'period' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.period.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
-            {{ obj.period }}
-          </a>
+          <c-modal-a hx-get="{{ obj.period.get_absolute_url }}{% querystring %}" aria-label="object details">
+            {{ obj.period.name }}
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'month' }}">
             {{ obj.get_month_display }}
