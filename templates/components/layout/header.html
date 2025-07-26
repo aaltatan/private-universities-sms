@@ -54,24 +54,21 @@
       </li>
       {% if perms.reports.view_ledger %}
       <li>
-        <c-button role="button" aria-label="ledger modal">
-          <c-slot name="icon_slot">
-            <a
-              href="#"
-              hx-get="{% url 'core:ledger' %}"
-              hx-target="#modal-container"
-              hx-indicator="#header-spinner"
-              hx-swap="innerHTML"
-              @keyup.alt.slash.prevent.window="$el.click()"
-              @keyup.alt.ظ.prevent.window="$el.click()"
-              class="hover:underline cursor-pointer"
-              aria-label="object details"
-              title="{% translate 'employee ledger'|capfirst %}"
-            >
-              {% heroicon_outline "magnifying-glass" size=icons_size %}
-            </a>
-          </c-slot>
-        </c-button>
+        <c-button
+          icon="magnifying-glass"
+          href="#"
+          hx-get="{% url 'core:ledger' %}"
+          hx-target="#modal-container"
+          hx-indicator="#header-spinner"
+          hx-swap="innerHTML"
+          @keyup.alt.slash.prevent.window="$el.click()"
+          @keyup.alt.ظ.prevent.window="$el.click()"
+          class="hover:underline cursor-pointer"
+          aria-label="object details"
+          title="{% translate 'employee ledger'|capfirst %}"
+          role="button"
+          aria-label="ledger modal"
+        />
       </li>
       {% endif %}
       <li x-show="!sidebarFixed" class="hidden sm:block">

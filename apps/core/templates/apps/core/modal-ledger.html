@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<form hx-post="{% url 'core:ledger' %}">
+<form hx-post="{% url 'core:ledger' %}" hx-indicator="#header-spinner">
   <c-layout.modal.body :overflow="False">
     <c-slot name="header">
       {% translate 'search'|capfirst %}

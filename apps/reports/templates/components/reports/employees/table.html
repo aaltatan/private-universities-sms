@@ -26,7 +26,7 @@
       hx-get="{{ index_url }}{% querystring %}"
       hx-vals='{"filters": true}'
       hx-target="#overlay-sidebar-container"
-hx-indicator="#spinner"
+      hx-indicator="#header-spinner"
       hx-swap="innerHTML"
       data-fields="{% for field in filter.form.fields %}
       {% if forloop.last %}{{ field }}{% else %}{{ field }},{% endif %}
