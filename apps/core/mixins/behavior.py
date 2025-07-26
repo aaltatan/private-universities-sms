@@ -65,7 +65,9 @@ class BehaviorMixin(ABC):
         else:
             context = self.context_data()
 
-        return render(request, modal_template_name, context)
+        response = render(request, modal_template_name, context)
+        response["HX-Trigger"] = "showmodal"
+        return response
 
     def post(self, request: HttpRequest, slug: str, *args, **kwargs) -> HttpResponse:
         """

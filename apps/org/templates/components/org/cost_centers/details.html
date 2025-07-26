@@ -1,55 +1,51 @@
 {% load i18n utils %}
 
-<c-layout.modal width="xl">
-  <c-layout.modal.body :close_padding="buttons_padding">
-    <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
-    <c-slot name="body">
-      <c-table height="sm">
-        <c-table.table>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'name' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'name' }}">
-              {{ object.name }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'accounting_id' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'accounting_id' }}">
-              {{ object.accounting_id }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {% translate 'employees count'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'employees count'|title %}">
-              {{ object.employees_count }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'description' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'description' }}">
-              {{ object.description }}
-            </c-table.td>
-          </c-table.tr>
-        </c-table.table>
-      </c-table>
-    </c-slot>
-    <c-slot name="footer">
-      <c-button
-        theme="outline"
-        title="{% translate 'close'|title %}"
-        @click="hideModal"
-        :hide_icon="True"
-      >
-        {% translate 'close'|title %}
-      </c-button>
-    </c-slot>
-  </c-layout.modal.body>
-</c-layout.modal>
+<c-layout.modal.body :close_padding="buttons_padding">
+  <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
+  <c-slot name="body">
+    <c-table height="sm">
+      <c-table.table>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'name' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'name' }}"> {{ object.name }} </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'accounting_id' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'accounting_id' }}">
+            {{ object.accounting_id }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {% translate 'employees count'|title %}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'employees count'|title %}">
+            {{ object.employees_count }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'description' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'description' }}">
+            {{ object.description }}
+          </c-table.td>
+        </c-table.tr>
+      </c-table.table>
+    </c-table>
+  </c-slot>
+  <c-slot name="footer">
+    <c-button
+      theme="outline"
+      title="{% translate 'close'|title %}"
+      @click="hideModal"
+      :hide_icon="True"
+    >
+      {% translate 'close'|title %}
+    </c-button>
+  </c-slot>
+</c-layout.modal.body>

@@ -425,11 +425,13 @@ class ListMixin(
             kwargs = {"qs": qs}
             if actions[action_name].form_class is not None:
                 kwargs["form"] = actions[action_name].form_class()
-            return render(
+            response = render(
                 request=request,
                 template_name=actions[action_name].template,
                 context=self.get_bulk_context_data(**kwargs),
             )
+            response["HX-Trigger"] = "showmodal"
+            return response
         else:
             behavior = self.get_actions()[action_name].behavior(request, queryset=qs)
             if actions[action_name].form_class is None:

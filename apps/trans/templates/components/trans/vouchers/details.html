@@ -1,324 +1,320 @@
 {% load i18n utils formats %}
 
-<c-layout.modal width="3xl">
-  <c-layout.modal.body :close_padding="buttons_padding">
-    <c-slot name="header">{% translate 'details'|title %}: {{ object }} </c-slot>
-    <c-slot name="body">
-      <c-table height="none" overflow="False">
-        <c-table.table>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'voucher_serial' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'voucher_serial' }}">
-              {{ object.voucher_serial }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'title' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'title' }}">
-              {{ object.title }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'date' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'date' }}">
-              {{ object.date|date:'Y-m-d' }}
-            </c-table.td>
-          </c-table.tr>
-          {% if object.due_date %}
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'due_date' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'due_date' }}">
-              {{ object.due_date|date:'Y-m-d' }}
-            </c-table.td>
-          </c-table.tr>
-          {% endif %}
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'created_at' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'created_at' }}">
-              {{ object.created_at|date:'Y-m-d H:i:s' }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'created_by' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'created_by' }}">
-              {{ object.created_by.username }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'updated_at' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'updated_at' }}">
-              {{ object.updated_at|date:'Y-m-d H:i:s' }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'updated_by' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'updated_by' }}">
-              {{ object.updated_by.username }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'kind' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'kind' }}">
-              {{ object.kind }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'month' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'month' }}">
-              {{ object.get_month_display }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'quarter' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'quarter' }}">
-              {{ object.get_quarter_display }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'period' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'period' }}">
-              {{ object.period }}
-            </c-table.td>
-          </c-table.tr>
-          {% if object.notes %}
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'notes' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'notes' }}">
-              {{ object.notes }}
-            </c-table.td>
-          </c-table.tr>
-          {% endif %}
-          <!--  -->
-          {% if object.serial_id %}
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'serial_id' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'serial_id' }}">
-              {{ object.serial_id }}
-            </c-table.td>
-          </c-table.tr>
-          {% endif %}
-          <!--  -->
-          {% if object.serial_date %}
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'serial_date' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'serial_date' }}">
-              {{ object.serial_date|date:'Y-m-d' }}
-            </c-table.td>
-          </c-table.tr>
-          {% endif %}
-          <!--  -->
-          {% if object.approve_date %}
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'approve_date' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'approve_date' }}">
-              {{ object.approve_date|date:'Y-m-d' }}
-            </c-table.td>
-          </c-table.tr>
-          {% endif %}
-          <!--  -->
-          {% if object.document %}
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'document' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'document' }}">
-              {{ object.document|default:'-' }}
-            </c-table.td>
-          </c-table.tr>
-          {% endif %}
-          <!--  -->
-          {% if object.accounting_journal_sequence %}
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'accounting_journal_sequence' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'accounting_journal_sequence' }}">
-              {{ object.accounting_journal_sequence }}
-            </c-table.td>
-          </c-table.tr>
-          {% endif %}
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'is_audited' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'is_audited' }}">
-              {{ object.is_audited|yesno|title }}
-            </c-table.td>
-          </c-table.tr>
-          <!--  -->
-          {% if object.is_audited %}
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'audited_by' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'audited_by' }}">
-              {{ object.audited_by }}
-            </c-table.td>
-          </c-table.tr>
-          {% endif %}
-          <!--  -->
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'is_migrated' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'is_migrated' }}">
-              {{ object.is_migrated|yesno|title }}
-            </c-table.td>
-          </c-table.tr>
-          {% if object.document %}
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'document' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'document' }}">
-              <c-external-link href="{{ object.document.url }}" target="_blank">
-                {{ object.document.name }}
-              </c-external-link>
-            </c-table.td>
-          </c-table.tr>
-          {% endif %}
-        </c-table.table>
-      </c-table>
-      <!-- transactions table -->
-      {% if object.transactions.all %}
-      <c-separator> {% translate 'transactions'|title %} </c-separator>
-      <c-table height="sm">
-        <c-table.table>
-          <c-table.tr>
-            <c-table.th data-header="#"> # </c-table.th>
-            <c-table.th data-header="{% translate 'employee'|title %}">
-              {% translate 'employee'|title %}
-            </c-table.th>
-            <c-table.th data-header="{% translate 'cost center'|title %}">
-              {% translate 'cost center'|title %}
-            </c-table.th>
-            <c-table.th data-header="{% translate 'compensation'|title %}">
-              {% translate 'compensation'|title %}
-            </c-table.th>
-            <c-table.th data-header="{% translate 'quantity'|title %}">
-              {% translate 'quantity'|title %}
-            </c-table.th>
-            <c-table.th data-header="{% translate 'value'|title %}">
-              {% translate 'value'|title %}
-            </c-table.th>
-            <c-table.th data-header="{% translate 'total'|title %}">
-              {% translate 'total'|title %}
-            </c-table.th>
-            <c-table.th data-header="{% translate 'tax'|title %}">
-              {% translate 'tax'|title %}
-            </c-table.th>
-            <c-table.th data-header="{% translate 'net'|title %}">
-              {% translate 'net'|title %}
-            </c-table.th>
-            <c-table.th data-header="{% translate 'notes'|title %}">
-              {% translate 'notes'|title %}
-            </c-table.th>
-          </c-table.tr>
-          {% for transaction in object.transactions.all %}
-          <c-table.tr>
-            <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
-            <c-table.td data-header="{% translate 'employee'|title %}">
-              <span> {{ transaction.employee.fullname }}</span>
-            </c-table.td>
-            <c-table.td :wrap="True" data-header="{% translate 'cost center'|title %}">
-              {{ transaction.employee.cost_center }}
-            </c-table.td>
-            <c-table.td :wrap="True" data-header="{% translate 'compensation'|title %}">
-              {{ transaction.compensation }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ transaction.quantity|money:True }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ transaction.value|money:True }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'total'|title %}">
-              {{ transaction.total|money:True }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'tax'|title %}">
-              {{ transaction.tax|money:True }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'net'|title %}">
-              {{ transaction.net|money:True }}
-            </c-table.td>
-            <c-table.td :warp="True" data-header="{% translate 'notes'|title %}">
-              {{ transaction.notes }}
-            </c-table.td>
-          </c-table.tr>
-          {% endfor %}
-          <c-table.tr bolded="True">
-            <c-table.td colspan="4" data-header="#"></c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.quantity_total|money:True }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'value'|title %}">
-              {{ object.value_total|money:True }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'total'|title %}">
-              {{ object.total|money:True }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'tax'|title %}">
-              {{ object.tax_total|money:True }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'net'|title %}">
-              {{ object.net|money:True }}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'net'|title %}"> </c-table.td>
-          </c-table.tr>
-        </c-table.table>
-      </c-table>
-      {% endif %}
-    </c-slot>
-    <c-slot name="footer">
-      <c-button
-        theme="outline"
-        kind="a"
-        href="{{ object.get_word_url }}"
-        title="{% translate 'close'|title %}"
-        :hide_icon="True"
-      >
-        {% translate 'export to MS Word'|capfirst %}
-      </c-button>
-      <c-button
-        theme="outline"
-        title="{% translate 'close'|title %}"
-        @click="hideModal"
-        :hide_icon="True"
-      >
-        {% translate 'close'|title %}
-      </c-button>
-    </c-slot>
-  </c-layout.modal.body>
-</c-layout.modal>
+<c-layout.modal.body width="3xl" :close_padding="buttons_padding">
+  <c-slot name="header">{% translate 'details'|title %}: {{ object }} </c-slot>
+  <c-slot name="body">
+    <c-table height="none" overflow="False">
+      <c-table.table>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'voucher_serial' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'voucher_serial' }}">
+            {{ object.voucher_serial }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'title' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'title' }}">
+            {{ object.title }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'date' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'date' }}">
+            {{ object.date|date:'Y-m-d' }}
+          </c-table.td>
+        </c-table.tr>
+        {% if object.due_date %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'due_date' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'due_date' }}">
+            {{ object.due_date|date:'Y-m-d' }}
+          </c-table.td>
+        </c-table.tr>
+        {% endif %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'created_at' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'created_at' }}">
+            {{ object.created_at|date:'Y-m-d H:i:s' }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'created_by' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'created_by' }}">
+            {{ object.created_by.username }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'updated_at' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'updated_at' }}">
+            {{ object.updated_at|date:'Y-m-d H:i:s' }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'updated_by' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'updated_by' }}">
+            {{ object.updated_by.username }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'kind' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'kind' }}"> {{ object.kind }} </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'month' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'month' }}">
+            {{ object.get_month_display }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'quarter' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'quarter' }}">
+            {{ object.get_quarter_display }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'period' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'period' }}">
+            {{ object.period }}
+          </c-table.td>
+        </c-table.tr>
+        {% if object.notes %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'notes' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'notes' }}">
+            {{ object.notes }}
+          </c-table.td>
+        </c-table.tr>
+        {% endif %}
+        <!--  -->
+        {% if object.serial_id %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'serial_id' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'serial_id' }}">
+            {{ object.serial_id }}
+          </c-table.td>
+        </c-table.tr>
+        {% endif %}
+        <!--  -->
+        {% if object.serial_date %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'serial_date' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'serial_date' }}">
+            {{ object.serial_date|date:'Y-m-d' }}
+          </c-table.td>
+        </c-table.tr>
+        {% endif %}
+        <!--  -->
+        {% if object.approve_date %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'approve_date' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'approve_date' }}">
+            {{ object.approve_date|date:'Y-m-d' }}
+          </c-table.td>
+        </c-table.tr>
+        {% endif %}
+        <!--  -->
+        {% if object.document %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'document' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'document' }}">
+            {{ object.document|default:'-' }}
+          </c-table.td>
+        </c-table.tr>
+        {% endif %}
+        <!--  -->
+        {% if object.accounting_journal_sequence %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'accounting_journal_sequence' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'accounting_journal_sequence' }}">
+            {{ object.accounting_journal_sequence }}
+          </c-table.td>
+        </c-table.tr>
+        {% endif %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'is_audited' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'is_audited' }}">
+            {{ object.is_audited|yesno|title }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        {% if object.is_audited %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'audited_by' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'audited_by' }}">
+            {{ object.audited_by }}
+          </c-table.td>
+        </c-table.tr>
+        {% endif %}
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'is_migrated' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'is_migrated' }}">
+            {{ object.is_migrated|yesno|title }}
+          </c-table.td>
+        </c-table.tr>
+        {% if object.document %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'document' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'document' }}">
+            <c-external-link href="{{ object.document.url }}" target="_blank">
+              {{ object.document.name }}
+            </c-external-link>
+          </c-table.td>
+        </c-table.tr>
+        {% endif %}
+      </c-table.table>
+    </c-table>
+    <!-- transactions table -->
+    {% if object.transactions.all %}
+    <c-separator> {% translate 'transactions'|title %} </c-separator>
+    <c-table height="sm">
+      <c-table.table>
+        <c-table.tr>
+          <c-table.th data-header="#"> # </c-table.th>
+          <c-table.th data-header="{% translate 'employee'|title %}">
+            {% translate 'employee'|title %}
+          </c-table.th>
+          <c-table.th data-header="{% translate 'cost center'|title %}">
+            {% translate 'cost center'|title %}
+          </c-table.th>
+          <c-table.th data-header="{% translate 'compensation'|title %}">
+            {% translate 'compensation'|title %}
+          </c-table.th>
+          <c-table.th data-header="{% translate 'quantity'|title %}">
+            {% translate 'quantity'|title %}
+          </c-table.th>
+          <c-table.th data-header="{% translate 'value'|title %}">
+            {% translate 'value'|title %}
+          </c-table.th>
+          <c-table.th data-header="{% translate 'total'|title %}">
+            {% translate 'total'|title %}
+          </c-table.th>
+          <c-table.th data-header="{% translate 'tax'|title %}">
+            {% translate 'tax'|title %}
+          </c-table.th>
+          <c-table.th data-header="{% translate 'net'|title %}">
+            {% translate 'net'|title %}
+          </c-table.th>
+          <c-table.th data-header="{% translate 'notes'|title %}">
+            {% translate 'notes'|title %}
+          </c-table.th>
+        </c-table.tr>
+        {% for transaction in object.transactions.all %}
+        <c-table.tr>
+          <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
+          <c-table.td data-header="{% translate 'employee'|title %}">
+            <span> {{ transaction.employee.fullname }}</span>
+          </c-table.td>
+          <c-table.td :wrap="True" data-header="{% translate 'cost center'|title %}">
+            {{ transaction.employee.cost_center }}
+          </c-table.td>
+          <c-table.td :wrap="True" data-header="{% translate 'compensation'|title %}">
+            {{ transaction.compensation }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'value'|title %}">
+            {{ transaction.quantity|money:True }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'value'|title %}">
+            {{ transaction.value|money:True }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'total'|title %}">
+            {{ transaction.total|money:True }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'tax'|title %}">
+            {{ transaction.tax|money:True }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'net'|title %}">
+            {{ transaction.net|money:True }}
+          </c-table.td>
+          <c-table.td :warp="True" data-header="{% translate 'notes'|title %}">
+            {{ transaction.notes }}
+          </c-table.td>
+        </c-table.tr>
+        {% endfor %}
+        <c-table.tr bolded="True">
+          <c-table.td colspan="4" data-header="#"></c-table.td>
+          <c-table.td data-header="{% translate 'value'|title %}">
+            {{ object.quantity_total|money:True }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'value'|title %}">
+            {{ object.value_total|money:True }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'total'|title %}">
+            {{ object.total|money:True }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'tax'|title %}">
+            {{ object.tax_total|money:True }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'net'|title %}">
+            {{ object.net|money:True }}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'net'|title %}"> </c-table.td>
+        </c-table.tr>
+      </c-table.table>
+    </c-table>
+    {% endif %}
+  </c-slot>
+  <c-slot name="footer">
+    <c-button
+      theme="outline"
+      kind="a"
+      href="{{ object.get_word_url }}"
+      title="{% translate 'close'|title %}"
+      :hide_icon="True"
+    >
+      {% translate 'export to MS Word'|capfirst %}
+    </c-button>
+    <c-button
+      theme="outline"
+      title="{% translate 'close'|title %}"
+      @click="hideModal"
+      :hide_icon="True"
+    >
+      {% translate 'close'|title %}
+    </c-button>
+  </c-slot>
+</c-layout.modal.body>

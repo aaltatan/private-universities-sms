@@ -1,39 +1,21 @@
-<c-vars
-  :widths="{
-    'base': 'w-[min(500px,100%)]',
-    'lg': 'w-[min(600px,100%)]',
-    'xl': 'w-[min(800px,100%)]',
-    '2xl': 'w-[min(1000px,100%)]',
-    '3xl': 'w-[min(1200px,100%)]',
-  }"
-  width="base"
-  :overflow="True"
-/>
+<c-vars :overflow="True" />
 
 <div
   x-show="modalStatus"
-  x-transition.opacity.duration.200ms
+  x-transition:enter="transition ease-out duration-150"
+  x-transition:enter-start="-translate-y-8 opacity-0"
+  x-transition:enter-end="translate-y-0 opacity-100"
+  x-transition:leave="transition ease-in duration-150"
+  x-transition:leave-start="translate-y-0 opacity-100"
+  x-transition:leave-end="-translate-y-8 opacity-0"
   x-trap.inert.noscroll="modalStatus"
   @keydown.esc.window="hideModal"
+  @showmodal.window="showModal"
   @hidemodal="hideModal"
-  @click.self="hideModal"
-  class="fixed inset-0 z-50 flex items-center justify-center p-4 pb-8 lg:p-8 backdrop-blur-lg @container"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 pb-8 lg:p-8 @container backdrop-blur-md"
   role="dialog"
   aria-modal="true"
-  id="modal-container"
 >
-  <span id="modal-spinner" class="animate-spin hidden hx-request:block">
-    {% heroicon_outline "arrow-path" size="32" %}
-  </span>
-
   <!-- Modal Dialog -->
-  <div
-    x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
-    x-transition:enter-start="opacity-0"
-    x-transition:enter-end="opacity-100"
-    x-ref="modal"
-    class="flex flex-col gap-2 rounded-lg border {% if overflow %}overflow-hidden{% endif %} border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 bg-white dark:bg-neutral-950 {{ widths|get_item:width }} empty:hidden"
-  >
-    {{ slot }}
-  </div>
+  <div x-ref="modal" class="w-full" id="modal-container">{{ slot }}</div>
 </div>

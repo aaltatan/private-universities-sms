@@ -1,85 +1,81 @@
 {% load i18n utils %}
 
-<c-layout.modal width="xl">
-  <c-layout.modal.body :close_padding="buttons_padding">
-    <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
-    <c-slot name="body">
-      <c-table height="sm">
-        <c-table.table>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'name' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'name' }}">
-              {{ object.name }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'is_governmental' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'is_governmental' }}">
-              {{ object.is_governmental|yesno|title }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'is_virtual' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'is_virtual' }}">
-              {{ object.is_virtual|yesno|title }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {% translate 'employees count'|title %}
-            </c-table.td>
-            <c-table.td data-header="{% translate 'employees count'|title %}">
-              {{ object.employees_count }}
-            </c-table.td>
-          </c-table.tr>
-          <c-table.tr>
-            <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-              {{ model|verbose_name:'description' }}
-            </c-table.td>
-            <c-table.td data-header="{{ model|verbose_name:'description' }}">
-              {{ object.description }}
-            </c-table.td>
-          </c-table.tr>
-        </c-table.table>
-      </c-table>
-      <!-- schools table -->
-      {% if object.schools.all %}
-      <c-separator> {% translate 'schools'|title %} </c-separator>
-      <c-table height="sm">
-        <c-table.table>
-          <c-table.tr header="True">
-            <c-table.th>#</c-table.th>
-            <c-table.th>{% translate 'name'|title %}</c-table.th>
-            <c-table.th>{% translate 'nationality'|title %}</c-table.th>
-          </c-table.tr>
-          {% for school in object.schools.all %}
-          <c-table.tr>
-            <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
-            <c-table.td data-header="{% translate 'name'|title %}"> {{ school }} </c-table.td>
-            <c-table.td data-header="{% translate 'nationality'|title %}">
-              {{ school.nationality }}
-            </c-table.td>
-          </c-table.tr>
-          {% endfor %}
-        </c-table.table>
-      </c-table>
-      {% endif %}
-    </c-slot>
-    <c-slot name="footer">
-      <c-button
-        theme="outline"
-        title="{% translate 'close'|title %}"
-        @click="hideModal"
-        :hide_icon="True"
-      >
-        {% translate 'close'|title %}
-      </c-button>
-    </c-slot>
-  </c-layout.modal.body>
-</c-layout.modal>
+<c-layout.modal.body :close_padding="buttons_padding">
+  <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
+  <c-slot name="body">
+    <c-table height="sm">
+      <c-table.table>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'name' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'name' }}"> {{ object.name }} </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'is_governmental' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'is_governmental' }}">
+            {{ object.is_governmental|yesno|title }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'is_virtual' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'is_virtual' }}">
+            {{ object.is_virtual|yesno|title }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {% translate 'employees count'|title %}
+          </c-table.td>
+          <c-table.td data-header="{% translate 'employees count'|title %}">
+            {{ object.employees_count }}
+          </c-table.td>
+        </c-table.tr>
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'description' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'description' }}">
+            {{ object.description }}
+          </c-table.td>
+        </c-table.tr>
+      </c-table.table>
+    </c-table>
+    <!-- schools table -->
+    {% if object.schools.all %}
+    <c-separator> {% translate 'schools'|title %} </c-separator>
+    <c-table height="sm">
+      <c-table.table>
+        <c-table.tr header="True">
+          <c-table.th>#</c-table.th>
+          <c-table.th>{% translate 'name'|title %}</c-table.th>
+          <c-table.th>{% translate 'nationality'|title %}</c-table.th>
+        </c-table.tr>
+        {% for school in object.schools.all %}
+        <c-table.tr>
+          <c-table.td data-header="#"> {{ forloop.counter }} </c-table.td>
+          <c-table.td data-header="{% translate 'name'|title %}"> {{ school }} </c-table.td>
+          <c-table.td data-header="{% translate 'nationality'|title %}">
+            {{ school.nationality }}
+          </c-table.td>
+        </c-table.tr>
+        {% endfor %}
+      </c-table.table>
+    </c-table>
+    {% endif %}
+  </c-slot>
+  <c-slot name="footer">
+    <c-button
+      theme="outline"
+      title="{% translate 'close'|title %}"
+      @click="hideModal"
+      :hide_icon="True"
+    >
+      {% translate 'close'|title %}
+    </c-button>
+  </c-slot>
+</c-layout.modal.body>

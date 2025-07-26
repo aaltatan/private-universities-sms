@@ -61,57 +61,25 @@
           {{ obj.net|money:True }}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'employee' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.employee.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.employee.get_absolute_url }}{% querystring %}" aria-label="object details">
             {{ obj.employee.fullname }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td :wrap="True" data-header="{{ model|verbose_name:'fiscal_object' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.fiscal_object.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.fiscal_object.get_absolute_url }}{% querystring %}" aria-label="object details">
             {{ obj.fiscal_object }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td :wrap="True" data-header="{{ model|verbose_name:'cost_center' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.cost_center.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.cost_center.get_absolute_url }}{% querystring %}" aria-label="object details">
             {{ obj.cost_center }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td :warp="True" data-header="{{ model|verbose_name:'voucher' }}">
           {% if obj.voucher %}
-          <a
-            href="#"
-            hx-get="{{ obj.voucher.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.voucher.get_absolute_url }}{% querystring %}" aria-label="object details">
             {{ obj.voucher }}
-          </a>
+          </c-modal-a>
           {% else %}
           <!--  -->
           -
@@ -122,30 +90,14 @@
           {{ obj.date|date:'Y-m-d' }}
         </c-table.td>
         <c-table.td :wrap="True" data-header="{% translate 'year'|capfirst %}">
-          <a
-            href="#"
-            hx-get="{{ obj.period.year.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.period.year.get_absolute_url }}{% querystring %}" aria-label="object details">
             {{ obj.period.year.name }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td :wrap="True" data-header="{{ model|verbose_name:'period' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.period.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.period.get_absolute_url }}{% querystring %}" aria-label="object details">
             {{ obj.period.name }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'month' }}">
           {{ obj.get_month_display }}

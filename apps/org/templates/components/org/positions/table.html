@@ -55,7 +55,8 @@
           value="{% translate 'delete' %}"
           hx-post="{{ index_url }}{% querystring %}"
           hx-target="#modal-container"
-          hx-indicator="#modal-spinner"
+          hx-swap="innerHTML"
+          hx-indicator="#spinner"
           aria-label="delete all objects"
         />
       </c-layout.contextmenu.item>
@@ -87,8 +88,8 @@
                 href="#"
                 hx-get="{{ obj.get_activities_url }}"
                 hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
+                hx-indicator="#spinner"
+                hx-swap="innerHTML"
                 aria-label="object activities"
               >
                 {% translate 'activities' %}
@@ -115,8 +116,8 @@
                 href="#"
                 hx-get="{{ obj.get_delete_url }}{% querystring %}"
                 hx-target="#modal-container"
-                hx-indicator="#modal-spinner"
-                @click="showModal"
+                hx-indicator="#spinner"
+                hx-swap="innerHTML"
                 aria-label="delete object"
               >
                 {% translate 'delete' %}
@@ -127,17 +128,12 @@
           {% endif %}
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'name' }}">
-          <a
-            href="#"
+          <c-modal-a
             hx-get="{{ obj.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
             aria-label="object details"
           >
             {{ obj.name }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'order' }}"> {{ obj.order }} </c-table.td>
         <c-table.td data-header="{% translate 'employees count' %}">

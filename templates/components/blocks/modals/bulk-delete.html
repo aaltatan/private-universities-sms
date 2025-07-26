@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<c-layout.modal>
+
   <form hx-post="{{ index_url }}{% querystring %}" hx-vals='{"kind": "action", "name": "delete"}'>
     <c-layout.modal.body>
       <c-slot name="header"> {% translate 'delete'|title %} </c-slot>
@@ -36,4 +36,4 @@
       </c-slot>
     </c-layout.modal.body>
   </form>
-</c-layout.modal>
+

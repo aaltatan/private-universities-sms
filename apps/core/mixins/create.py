@@ -50,6 +50,9 @@ class CreateMixin(ABC):
             if request_parser.is_modal_request:
                 context["request_parser"] = request_parser.asdict()
                 template_name = self.get_form_modal_template_name()
+                response = render(request, template_name, context)
+                response["Hx-Trigger"] = "showmodal"
+                return response
             else:
                 template_name = self.get_form_template_name()
 

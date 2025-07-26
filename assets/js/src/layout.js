@@ -47,8 +47,7 @@ function modal() {
   return {
     modalStatus: false,
     showModal() {
-      this.modalStatus = !this.modalStatus;
-      this.$refs.modal.remove();
+      this.modalStatus = true;
     },
     hideModal() {
       this.modalStatus = false;

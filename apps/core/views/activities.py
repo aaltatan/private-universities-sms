@@ -45,4 +45,6 @@ def activities(
 
     context = {"activities": qs}
 
-    return render(request, "apps/core/activities.html", context)
+    response = render(request, "apps/core/activities.html", context)
+    response["Hx-Trigger"] = "showmodal"
+    return response

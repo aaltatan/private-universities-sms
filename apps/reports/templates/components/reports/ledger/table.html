@@ -20,8 +20,8 @@
       href="#"
       hx-get="{{ employee.get_absolute_url }}{% querystring %}"
       hx-target="#modal-container"
-      hx-indicator="#modal-spinner"
-      @click="showModal"
+      hx-indicator="#spinner"
+      
       class="hover:underline cursor-pointer"
       aria-label="employee ledger"
     >
@@ -83,17 +83,9 @@
         </c-table.td>
         <c-table.td data-header="{% translate 'net' %}"> {{ obj.net|money:True }} </c-table.td>
         <c-table.td :wrap="True" data-header="{{ model|verbose_name:'fiscal_object' }}">
-          <a
-            href="#"
-            hx-get="{{ obj.fiscal_object.get_absolute_url }}{% querystring %}"
-            hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
-            class="hover:underline cursor-pointer"
-            aria-label="object details"
-          >
+          <c-modal-a hx-get="{{ obj.fiscal_object.get_absolute_url }}{% querystring %}" aria-label="object details">
             {{ obj.fiscal_object }}
-          </a>
+          </c-modal-a>
         </c-table.td>
         <c-table.td :wrap="True" data-header="{{ model|verbose_name:'explanation' }}">
           {{ obj.explanation }}
@@ -103,8 +95,8 @@
             href="#"
             hx-get="{{ obj.cost_center.get_absolute_url }}{% querystring %}"
             hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
+            hx-indicator="#spinner"
+            
             class="hover:underline cursor-pointer"
             aria-label="object details"
           >
@@ -117,8 +109,8 @@
             href="#"
             hx-get="{{ obj.voucher.get_absolute_url }}{% querystring %}"
             hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
+            hx-indicator="#spinner"
+            
             class="hover:underline cursor-pointer"
             aria-label="object details"
           >
@@ -138,8 +130,8 @@
             href="#"
             hx-get="{{ obj.period.year.get_absolute_url }}{% querystring %}"
             hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
+            hx-indicator="#spinner"
+            
             class="hover:underline cursor-pointer"
             aria-label="object details"
           >
@@ -151,8 +143,8 @@
             href="#"
             hx-get="{{ obj.period.get_absolute_url }}{% querystring %}"
             hx-target="#modal-container"
-            hx-indicator="#modal-spinner"
-            @click="showModal"
+            hx-indicator="#spinner"
+            
             class="hover:underline cursor-pointer"
             aria-label="object details"
           >

@@ -16,7 +16,7 @@
   container="base"
 />
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" :class="{'dark': dark}" class="scroll" x-data="theme">
   <head>
     <c-head />
@@ -31,6 +31,12 @@
     x-data="layout({ title: '{{ page_title }}' || '{{ project_name }}' })"
     x-cloak
   >
+    <div
+      class="fixed inset-0 w-full h-full z-50 empty:hidden hidden hx-request:flex items-center justify-center"
+      id="spinner"
+    >
+      <span class="animate-spin"> {% heroicon_outline "arrow-path" size="32" %} </span>
+    </div>
     <c-layout.modal />
     <c-layout.sidebar.overlay-sidebar />
     <c-layout.messages.wrapper>
