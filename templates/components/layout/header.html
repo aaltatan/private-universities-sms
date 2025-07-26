@@ -17,6 +17,10 @@
       <c-layout.breadcrumbs :breadcrumbs="breadcrumbs" />
     </div>
 
+    <div class="hidden hx-request:block" id="header-spinner">
+      <span class="animate-spin block"> {% heroicon_outline "arrow-path" size="18" %} </span>
+    </div>
+
     <ul class="ms-auto flex items-center justify-center gap-1">
       <li :class="{'md:hidden': sidebarFixed}">
         <c-button
@@ -56,7 +60,7 @@
               href="#"
               hx-get="{% url 'core:ledger' %}"
               hx-target="#modal-container"
-              hx-indicator="#spinner"
+              hx-indicator="#header-spinner"
               hx-swap="innerHTML"
               @keyup.alt.slash.prevent.window="$el.click()"
               @keyup.alt.ظ.prevent.window="$el.click()"
