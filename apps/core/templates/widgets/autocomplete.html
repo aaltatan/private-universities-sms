@@ -7,7 +7,7 @@ x-data="autocomplete({
 class="relative"
 @blur="closeList"
 @click.away="closeList"
-@keydown.esc.prevent="reset"
+@keydown.esc.stop="handleCloseAndSelect"
 >
   <div class="relative">
     <input

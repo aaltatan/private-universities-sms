@@ -32,7 +32,7 @@ export function autocomplete(data = { url, initial, eventName }) {
       this.selectInput();
       this.closeList();
     },
-    reset() {
+    handleCloseAndSelect() {
       this.closeList();
       this.selectInput();
     },
