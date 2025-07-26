@@ -3,19 +3,19 @@
 <c-layout.modal.body width="xl" :close_padding="buttons_padding">
   <c-slot name="header"> {% translate 'details'|title %}: {{ object.fullname }} </c-slot>
   <c-slot name="body">
-    <div class="grid grid-cols-1 @md:grid-cols-4 gap-2">
+    <div class="grid grid-cols-1 @xl:grid-cols-4 gap-2">
       <a
         href="{% if object.profile %}{{ object.profile.url }}{% else %}{% vite_asset_url 'assets/images/user.png' %}{% endif %}"
         target="{% if object.profile %}_blank{% else %}_self{% endif %}"
-        class="block"
+        class="block size-36 mx-auto"
       >
         <img
           src="{% if object.profile %}{{ object.profile.url }}{% else %}{% vite_asset_url 'assets/images/user.png' %}{% endif %}"
-          class="size-48 rounded-full object-cover block border border-neutral-300 dark:border-neutral-800"
+          class="rounded-full object-cover block border border-neutral-300 dark:border-neutral-800"
           alt="avatar"
         />
       </a>
-      <div class="@md:col-span-3">
+      <div class="@xl:col-span-3">
         <c-table height="none">
           <c-table.table>
             <c-table.tr>

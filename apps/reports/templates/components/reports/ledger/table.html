@@ -16,17 +16,12 @@
   </c-slot>
 
   <c-slot name="page_header">
-    <a
-      href="#"
+    <c-modal-a 
       hx-get="{{ employee.get_absolute_url }}{% querystring %}"
-      hx-target="#modal-container"
-      hx-indicator="#spinner"
-      
-      class="hover:underline cursor-pointer"
       aria-label="employee ledger"
     >
       {% translate 'ledger'|capfirst %} ({{ employee.fullname }})
-    </a>
+    </c-modal-a>
   </c-slot>
 
   <c-slot name="buttons_bar">
