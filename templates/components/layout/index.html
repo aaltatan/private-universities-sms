@@ -25,6 +25,7 @@
     dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}"
     class="dark:bg-black bg-white text-neutral-900 dark:text-neutral-100"
     hx-history="false"
+    hx-indicator="#header-spinner"
     hx-headers='{ "X-CSRFToken": "{{ csrf_token }}" }'
     :class="{'lg:me-72': overlaySidebarOpened}"
     @keyup.alt.equal="sidebarSearchFocus"
