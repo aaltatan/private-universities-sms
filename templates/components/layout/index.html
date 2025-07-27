@@ -16,7 +16,7 @@
   container="base"
 />
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" :class="{'dark': dark}" class="scroll" x-data="theme">
   <head>
     <c-head />
@@ -49,6 +49,7 @@
           'px-2': !fullWidthContainer || sidebarFixed,
           'lg:px-2': overlaySidebarOpened,
         }"
+        id="content"
         class="py-2 max-md:px-2"
       >
         <div class="{{ containers|get_item:container }} @container">{{ slot }}</div>
