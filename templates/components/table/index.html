@@ -26,7 +26,7 @@
 
 <div
   id="{{ id }}"
-  class="relative hx-swap:opacity-80 select-none @container/table 
+  class="relative hx-swap:pointer-events-none hx-swap:opacity-60 select-none @container/table 
   @{{ containers|get_item:container }}{% if relative_to_table_container %}/table{% endif %}:tb-th:!table-cell
   @{{ containers|get_item:container }}{% if relative_to_table_container %}/table{% endif %}:tb-td:!table-cell
   @{{ containers|get_item:container }}{% if relative_to_table_container %}/table{% endif %}:tb-td:before:!content-['']

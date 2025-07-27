@@ -24,7 +24,7 @@
   {% endif %}
   x-trap.noautofocus="true"
   id="{{ form_id }}"
-  class="{{ widths|get_item:width }} hx-swap:[&#spinner]:!flex"
+  class="{{ widths|get_item:width }} hx-swap:pointer-events-none hx-swap:opacity-60"
 >
   <h1 class="text-2xl my-2 first-letter:capitalize">{{ form_title }}</h1>
   {% if form.non_field_errors %}
