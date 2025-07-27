@@ -56,7 +56,6 @@
           hx-post="{{ index_url }}{% querystring %}"
           hx-target="#modal-container"
           hx-swap="innerHTML"
-          hx-indicator="#spinner"
           aria-label="delete all objects"
         />
       </c-layout.contextmenu.item>
@@ -90,7 +89,6 @@
                 hx-get="{{ obj.get_activities_url }}"
                 hx-target="#modal-container"
                 hx-swap="innerHTML"
-                hx-indicator="#spinner"
                 aria-label="object activities"
               >
                 {% translate 'activities' %}

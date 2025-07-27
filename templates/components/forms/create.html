@@ -12,19 +12,20 @@
   }"
   width="lg"
   encoding="urlencoded"
+  confirm_message=""
 />
 
 <form
+  id="{{ form_id }}"
+  class="{{ widths|get_item:width }} hx-swap:pointer-events-none hx-swap:opacity-60 hx-request:pointer-events-none htmx-pulse-animation"
+  data-indicator
   hx-post="{{ url }}"
   hx-swap="outerHTML show:top"
-  hx-indicator="#spinner"
+  hx-indicator="*[data-indicator]"
   hx-disabled-elt="#save-button, #save-and-add-another-button, #save-and-continue-editing-button"
-  {% if encoding == 'multipart' %}
-  hx-encoding="multipart/form-data"
-  {% endif %}
+  {% if encoding == 'multipart' %}hx-encoding="multipart/form-data"{% endif %}
   x-trap.noautofocus="true"
-  id="{{ form_id }}"
-  class="{{ widths|get_item:width }} hx-swap:pointer-events-none hx-swap:opacity-60"
+  {% if confirm_message %}hx-confirm="{{ confirm_message }}"{% endif %}
 >
   <h1 class="text-2xl my-2 first-letter:capitalize">{{ form_title }}</h1>
   {% if form.non_field_errors %}

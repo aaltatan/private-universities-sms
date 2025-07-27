@@ -16,7 +16,6 @@
   hx-include="[aria-included={% if include %}true{% else %}false{% endif %}]"
   {% if prevent %}@submit.prevent{% endif %}
   hx-trigger="{{ trigger }}"
-  hx-indicator="#spinner"
   {{ attrs }}
 >
   {{ slot }}

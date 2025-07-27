@@ -16,11 +16,12 @@
 />
 
 <form
+  id="{{ form_id }}"
+  class="{{ widths|get_item:width }} hx-swap:pointer-events-none hx-swap:opacity-60 hx-request:pointer-events-none htmx-pulse-animation"
+  data-indicator
   hx-post="{{ url }}"
   hx-target="#{{ form_id }}"
-  hx-indicator="#spinner"
-  id="{{ form_id }}"
-  class="{{ widths|get_item:width }} hx-swap:pointer-events-none hx-swap:opacity-60"
+  hx-indicator="*[data-indicator]"
   x-trap.noautofocus="true"
   {% if encoding == 'multipart' %}hx-encoding="multipart/form-data"{% endif %}
   {% if confirm_message %}hx-confirm="{{ confirm_message }}"{% endif %}

@@ -17,8 +17,8 @@
       <c-layout.breadcrumbs :breadcrumbs="breadcrumbs" />
     </div>
 
-    <div class="hidden hx-request:block" id="header-spinner">
-      <span class="animate-spin block"> {% heroicon_outline "arrow-path" size="18" %} </span>
+    <div class="hidden hx-request:block" id="header-spinner" data-indicator role="spinner">
+      <div class="spinner"></div>
     </div>
 
     <ul class="ms-auto flex items-center justify-center gap-1">

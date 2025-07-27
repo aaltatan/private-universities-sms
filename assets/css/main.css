@@ -70,3 +70,32 @@ svg.warning {
 svg.info {
   @apply text-sky-500;
 }
+
+/* indicator */
+
+@keyframes fade-in-animation {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.spinner {
+  display: block;
+  width: 1rem; /* size-4 = 16px = 1rem */
+  height: 1rem; /* size-4 = 16px = 1rem */
+  border: 2px solid; /* border-2 */
+  border-color: #d4d4d4; /* border-neutral-300 */
+  border-top-color: orangered; /* border-t-green-400 */
+  border-radius: 9999px; /* rounded-full */
+  animation: spin 500ms linear infinite; /* animate-spin with duration */
+}
+
+.htmx-request.htmx-pulse-animation {
+  animation: fade-in-animation 1200ms ease-in-out infinite; /* animate-spin with duration */
+}
