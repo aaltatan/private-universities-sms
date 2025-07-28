@@ -7,7 +7,7 @@
 <meta
   name="htmx-config"
   content='{
-    "globalViewTransitions": false
+    "globalViewTransitions": true,
     "refreshOnHistoryMiss": true,
     "defaultSwapStyle": "outerHTML"
 }'
@@ -16,45 +16,6 @@
 <style>
   [x-cloak] {
     display: none;
-  }
-
-  @view-transition {
-    navigation: auto;
-  }
-
-  @keyframes out {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-
-  @keyframes in {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  body {
-    view-transition-name: body;
-  }
-
-  #content {
-    view-transition-name: main-content;
-  }
-
-  ::view-transition-old(main-content) {
-    animation: out 1s linear forwards;
-  }
-
-
-  ::view-transition-old(body) {
-    animation: none;
   }
 </style>
 
