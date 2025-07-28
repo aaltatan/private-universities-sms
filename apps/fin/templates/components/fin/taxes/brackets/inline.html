@@ -1,0 +1,31 @@
+{% load i18n widget_tweaks %}
+
+<c-vars row_id="" :hide="False" />
+
+<c-table.tr x-sort:item="{{ forloop.counter }}" :hide="{{ hide }}" :id="row_id" hx-disable="true">
+  <c-table.td x-sort:handle data-header="#" :fixed="True"> # </c-table.td>
+  <c-table.td data-header="{% translate 'amount from' %}">
+    {{ form.id }}
+    <!--  -->
+    {{ form.ORDER }}
+    <c-inputs.number step="1" :show_help="False" :show_label="False" :field="form.amount_from" />
+  </c-table.td>
+  <c-table.td data-header="{% translate 'amount to' %}">
+    <c-inputs.number step="1" :show_help="False" :show_label="False" :field="form.amount_to" />
+  </c-table.td>
+  <c-table.td data-header="{% translate 'rate' %}">
+    <c-inputs.number step="0.01" :show_help="False" :show_label="False" :field="form.rate" />
+  </c-table.td>
+  <c-table.td data-header="{% translate 'notes' %}">
+    <c-inputs.text :show_help="False" :show_label="False" :field="form.notes" />
+  </c-table.td>
+  {% if perms.fin.delete_taxbracket %}
+  <c-table.td :fixed="True" data-header="{% translate 'delete' %}">
+    <div class="relative flex items-center justify-center">
+      {% render_field form.DELETE class="checkbox-input peer" %}
+      <!--  -->
+      {% heroicon_outline "check" class="checkbox-icon" %}
+    </div>
+  </c-table.td>
+  {% endif %}
+</c-table.tr>

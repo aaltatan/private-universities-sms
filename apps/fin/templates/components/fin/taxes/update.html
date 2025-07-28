@@ -5,6 +5,57 @@
   url="{{ update_url }}{% querystring %}"
   :form_id="form_id"
   :form="form"
+  width="2xl"
 >
   <c-fin.taxes.form-body />
+  {% if instance.fixed is False %}
+  <div
+    x-data="formset({
+      totalForms: {{ tax_brackets_formset.management_form.TOTAL_FORMS.value }},
+      emptyFormId: 'brackets-empty-form',
+      tableId: 'brackets-formset-table',
+    })"
+  >
+    <c-fin.taxes.brackets.management-form />
+    <c-error.wrapper>
+      {% for error in tax_brackets_formset.non_form_errors %}
+      <c-error.error>{{ error }}</c-error.error>
+      {% endfor %}
+    </c-error.wrapper>
+    <c-table height="none" id="brackets-formset-table">
+      <c-table.table>
+        <c-table.tr header="True">
+          <c-table.th alignment="center"> # </c-table.th>
+          <c-table.th alignment="center"> {% translate 'from' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'to' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'rate' %} </c-table.th>
+          <c-table.th alignment="center"> {% translate 'notes' %} </c-table.th>
+          {% if perms.fin.delete_taxbracket %}
+          <c-table.th alignment="center"> {% heroicon_outline 'trash' size="16" %} </c-table.th>
+          {% endif %}
+        </c-table.tr>
+        <tbody x-sort="sortHandler()">
+          {% for form in tax_brackets_formset %}
+          <c-fin.taxes.brackets.inline :form="form" />
+          {% endfor %}
+        </tbody>
+      </c-table.table>
+    </c-table>
+    {% if perms.fin.add_taxbracket %}
+    <div class="my-2">
+      <c-button @click.prevent="addNewForm" width="full">{% translate 'add new row' %} </c-button>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
 </c-forms.update>
+
+{% if form.instance.is_fixed is False %}
+<table>
+  <c-fin.taxes.brackets.inline
+    row_id="brackets-empty-form"
+    :hide="True"
+    :form="tax_brackets_formset.empty_form"
+  />
+</table>
+{% endif %}

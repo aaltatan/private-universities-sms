@@ -1,0 +1,13 @@
+{% load widget_tweaks %}
+
+<c-vars x_model="totalForms" />
+
+<div>
+  {% render_field tax_brackets_formset.management_form.TOTAL_FORMS x-model=x_model %}
+  <!--  -->
+  {{ tax_brackets_formset.management_form.INITIAL_FORMS }}
+  <!--  -->
+  {{ tax_brackets_formset.management_form.MIN_NUM_FORMS }}
+  <!--  -->
+  {{ tax_brackets_formset.management_form.MAX_NUM_FORMS }}
+</div>
