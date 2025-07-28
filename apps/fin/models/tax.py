@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django.contrib.contenttypes.fields import GenericRelation
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
@@ -86,6 +87,15 @@ class Tax(AddCreateActivityMixin, AbstractUniqueNameModel):
     )
 
     objects: TaxManager = TaxManager()
+
+    def clean(self):
+        errors: dict[str, str] = {}
+
+        if self.brackets.exists() and self.fixed:
+            errors["fixed"] = _("you can't have brackets if the tax is fixed.")
+
+        if errors:
+            raise ValidationError(errors)
 
     def _calculate_fixed(self, amount: Decimal | int | float) -> Decimal:
         return amount * self.rate
