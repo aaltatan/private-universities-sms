@@ -1,20 +1,17 @@
 from typing import Any
 
-from django.conf import settings
+from django.core.cache import cache
 from django.http import HttpRequest
-from django.utils.translation import gettext as _
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 
 def constants(request: HttpRequest) -> dict[str, Any]:
+    global_settings = cache.get("global_settings")
     data = {
         "project_name": "Salaries Management",
         "settings": {
-            "messages_timeout": settings.MESSAGES_TIMEOUT,
-            "per_page_array": settings.PER_PAGE_ARRAY,
-            "per_page": settings.PER_PAGE,
-            "delete_confirmation_timeout": settings.DELETE_CONFIRMATION_TIMEOUT,
-            "unmigrate_confirmation_timeout": settings.UNMIGRATE_CONFIRMATION_TIMEOUT,
+            "global": global_settings,
         },
         "sidebar_links": {
             "core": {

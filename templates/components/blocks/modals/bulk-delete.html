@@ -28,7 +28,7 @@
           x-data="setConfirmationTimer(
             $el, 
             '{% translate 'delete'|title %}', 
-            {{ settings.delete_confirmation_timeout }}
+            {{ settings.global.critical_confirmation_timeout }}
           )"
         >
           {% translate 'delete'|title %}

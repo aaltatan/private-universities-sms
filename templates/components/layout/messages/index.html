@@ -27,7 +27,7 @@ Attributes (extra_tags):
 <li
   class="w-full flex items-start gap-1 rounded-md p-2 text-xs ring-2 {{ ring_colors|get_item:message.level_tag }}"
   x-data="messages(
-    '{{ settings.messages_timeout }}000', 
+    '{{ settings.global.messages_timeout }}000', 
     {% if message.extra_tags == 'do_not_close' %}false{% else %}true{% endif %},
   )"
   x-show="open"

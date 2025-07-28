@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import options
 from django.urls import reverse
@@ -6,6 +7,25 @@ from django.utils.translation import gettext as _
 from .. import validators
 
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("icon", "codename_plural")
+
+
+class SingletonModelMixin:
+    class Meta:
+        abstract = True
+
+    def delete(self, using=None, keep_parents=False):
+        raise ValidationError(_("you cannot delete this object"))
+
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ):
+        if self.pk is None:
+            raise ValidationError(_("you cannot multiple templates"))
+        return super().save(force_insert, force_update, using, update_fields)
 
 
 class UrlsMixin:

@@ -1,8 +1,8 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext as _
 
 from .. import validators
+from .abstracts import SingletonModelMixin
 
 
 class TemplateItem(models.Model):
@@ -32,7 +32,7 @@ class TemplateItem(models.Model):
         ordering = ("name",)
 
 
-class Template(models.Model):
+class Template(SingletonModelMixin, models.Model):
     voucher = models.OneToOneField(
         TemplateItem,
         on_delete=models.PROTECT,
@@ -66,20 +66,6 @@ class Template(models.Model):
 
     def __str__(self):
         return f"VoucherSetting(voucher={self.voucher}, employee={self.employee}, ledger={self.ledger})"
-
-    def delete(self, using=None, keep_parents=False):
-        raise ValidationError(_("you cannot delete this object"))
-
-    def save(
-        self,
-        force_insert=False,
-        force_update=False,
-        using=None,
-        update_fields=None,
-    ):
-        if self.pk is None:
-            raise ValidationError(_("you cannot multiple templates"))
-        return super().save(force_insert, force_update, using, update_fields)
 
     class Meta:
         verbose_name = _("template").title()

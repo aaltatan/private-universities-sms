@@ -2,10 +2,19 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from import_export.admin import ImportExportModelAdmin
 
-from .models import Activity, Template, TemplateItem, User
+from .models import Activity, Template, TemplateItem, User, GlobalSetting
 from .utils import badge_component
 
 admin.site.register(User, UserAdmin)
+
+
+@admin.register(GlobalSetting)
+class GlobalSettingAdmin(admin.ModelAdmin):
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request):
+        return False
 
 
 @admin.register(TemplateItem)
@@ -16,8 +25,6 @@ class TemplateItemAdmin(admin.ModelAdmin):
 
 @admin.register(Template)
 class TemplateAdmin(admin.ModelAdmin):
-    search_fields = ("voucher__name",)
-
     def has_delete_permission(self, request, obj=None):
         return False
 

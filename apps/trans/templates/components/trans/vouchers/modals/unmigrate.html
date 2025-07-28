@@ -19,7 +19,7 @@
         x-data="setConfirmationTimer(
             $el, 
             '{% translate 'unmigrate'|title %}', 
-            {{ settings.unmigrate_confirmation_timeout }}
+            {{ settings.global.critical_confirmation_timeout }}
           )"
       >
         {% translate 'unmigrate'|title %}
