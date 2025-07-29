@@ -5,15 +5,18 @@
   <button
     class="block w-full text-xs text-start p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:bg-neutral-100 dark:focus:bg-neutral-800 focus:outline-none"
     role="option"
-    @click.prevent="handleSelectOption('{{ obj|get:label_field_name }}')"
+    @click.prevent.stop="handleSelectOption('{{ obj|get:label_field_name }}')"
     title="{{ obj }}"
   >
     {{ obj }}
   </button>
 </li>
 {% empty %}
-<li class="p-2">
-  <button x-init="handleNoResults" @focus.prevent="reset">
+<li>
+  <button
+    class="block p-2 w-full hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:bg-neutral-100 dark:focus:bg-neutral-800 outline-none"
+    @click.prevent
+  >
     {% translate 'no results'|title %}
   </button>
 </li>

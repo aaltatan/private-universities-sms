@@ -3,6 +3,7 @@ x-data="autocomplete({
   url: '{% url 'core:autocomplete' %}',
   initial: '{% if widget.value != None %}{{ widget.value|stringformat:'s' }}{% endif %}',
   eventName: 'autocomplete-{{ widget.name }}',
+  inputId: '{{ widget.attrs.id }}',
 })" 
 class="relative"
 @blur="closeList"

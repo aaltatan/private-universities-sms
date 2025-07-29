@@ -1,10 +1,9 @@
-import { getCookie } from "../utils";
-
-export function autocomplete(data = { url, initial, eventName }) {
+export function autocomplete(data = { url, initial, eventName, inputId }) {
   return {
     keywords: "",
     title: "",
     isListOpen: false,
+    timeout: null,
     async init() {
       if (data.initial) {
         this.keywords = data.initial;
@@ -21,16 +20,17 @@ export function autocomplete(data = { url, initial, eventName }) {
       this.$refs.autocompleteList.innerHTML = "";
     },
     selectInput() {
-      this.$refs.autocompleteInput.select();
-    },
-    handleNoResults() {
-      this.selectInput();
+      let input = document.getElementById(data.inputId);
+      input.focus();
+      input.select();
     },
     handleSelectOption(pk) {
       this.keywords = pk;
       this.title = pk;
-      this.selectInput();
-      this.closeList();
+      this.timeout = setTimeout(() => {
+        this.selectInput();
+        this.closeList();
+      }, 100);
     },
     handleCloseAndSelect() {
       this.closeList();
@@ -53,26 +53,8 @@ export function autocomplete(data = { url, initial, eventName }) {
       this.$refs.autocompleteInput.disabled = false;
       this.$refs.autocompleteIndicator.classList.add("hidden");
     },
-    async getInitialValue() {
-      this.handleDisableInput();
-      let querystring = this.$refs.autocompleteInput.getAttribute("querystring");
-      let csrfToken = getCookie("csrftoken");
-      let fullPath = `${data.url}${data.initial}/?${querystring}`;
-
-      let response = await fetch(fullPath, {
-        method: "POST",
-        headers: {
-          "X-CSRFToken": csrfToken,
-        },
-      });
-
-      if (response.status === 200) {
-        this.handleEnableInput();
-        let data = await response.json();
-        return data.value;
-      } else {
-        return "";
-      }
+    destroy() {
+      clearTimeout(this.timeout);
     },
   };
 }
