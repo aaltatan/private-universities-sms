@@ -91,7 +91,7 @@ class Tax(AddCreateActivityMixin, AbstractUniqueNameModel):
     def clean(self):
         errors: dict[str, str] = {}
 
-        if self.brackets.exists() and self.fixed:
+        if self.pk and self.brackets.all().exists() and self.fixed:
             errors["fixed"] = _("you can't have brackets if the tax is fixed.")
 
         if errors:
