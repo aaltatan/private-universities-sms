@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
@@ -53,7 +52,7 @@ class EmployeeCreateUpdateSerializer(serializers.ModelSerializer):
 
     def validate_birth_date(self, birth_date: timezone.datetime):
         age: int = calculate_age_in_years(birth_date)
-        min_age = settings.MIN_EMPLOYEE_AGE
+        min_age = models.HRSetting.get_solo().min_employee_age
 
         if timezone.now().date() < birth_date:
             raise serializers.ValidationError(

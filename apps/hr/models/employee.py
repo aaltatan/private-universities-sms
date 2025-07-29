@@ -1,6 +1,5 @@
 import uuid
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.functions import Concat
@@ -25,6 +24,7 @@ from apps.geo.models import City, Nationality
 from apps.org.models import CostCenter, Group, JobSubtype, Position, Status
 
 from ..managers import EmployeeManager
+from .setting import HRSetting
 
 
 class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
@@ -384,7 +384,7 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
                 _("birth date cannot be in the future"),
             )
 
-        min_age = settings.MIN_EMPLOYEE_AGE
+        min_age = HRSetting.get_solo().min_employee_age
         age = calculate_age_in_years(self.birth_date)
 
         if age < min_age:
@@ -457,7 +457,7 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
 
     def get_ledger_url(self):
         return reverse("reports:ledger:index", kwargs={"slug": self.slug})
-    
+
     def get_ledger_msword_url(self):
         return reverse("reports:ledger:msword", kwargs={"slug": self.slug})
 

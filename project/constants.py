@@ -1,17 +1,17 @@
 from typing import Any
 
-from django.core.cache import cache
 from django.http import HttpRequest
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
+from apps.core.models import GlobalSetting
+
 
 def constants(request: HttpRequest) -> dict[str, Any]:
-    global_settings = cache.get("global_settings")
     data = {
         "project_name": "Salaries Management",
         "settings": {
-            "global": global_settings,
+            "global": GlobalSetting.get_solo(),
         },
         "sidebar_links": {
             "core": {

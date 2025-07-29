@@ -4,7 +4,6 @@ from datetime import datetime
 from typing import Any, Literal
 
 import django_filters as filters
-from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import EmptyPage, Page, PageNotAnInteger, Paginator
 from django.db.models import Model, QuerySet
@@ -25,6 +24,7 @@ from apps.core.utils.behaviors import ActionBehavior
 from ..constants import PERMISSION
 from ..filters import BaseQSearchFilter, get_ordering_filter
 from ..forms import BehaviorForm
+from ..models import GlobalSetting
 from ..schemas import Action
 
 
@@ -292,11 +292,13 @@ class PaginationMixin:
         """
         Returns the number of items to show per page.
         """
-        default_per_page: int = settings.PER_PAGE
+        global_setting = GlobalSetting.get_solo()
+
+        default_per_page: int = global_setting.per_page
         request_per_page: str = request.GET.get("per_page", None)
 
         if request_per_page == "all":
-            return settings.MAX_PAGE_SIZE
+            return global_setting.max_page_size
 
         return request_per_page or default_per_page
 

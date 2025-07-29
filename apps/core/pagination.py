@@ -1,14 +1,14 @@
-from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.utils.urls import replace_query_param
 
+from apps.core.models import GlobalSetting
+
 
 class CorePagination(PageNumberPagination):
     page_size_query_param = "per_page"
-    max_page_size = settings.MAX_PAGE_SIZE
 
     def get_previous_link(self):
         if not self.page.has_previous():
@@ -54,7 +54,7 @@ class CorePagination(PageNumberPagination):
             return self.page_size
 
         if page_size.lower() == "all":
-            return self.max_page_size
+            return GlobalSetting.get_solo().max_page_size
 
         return page_size
 

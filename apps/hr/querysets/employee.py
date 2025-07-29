@@ -1,5 +1,3 @@
-from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.db.models.functions import Floor
 from django.utils import timezone
@@ -34,31 +32,9 @@ class EmployeeQuerySet(
         )
 
     def annotate_dates(self):
-        if getattr(settings, "NTH_JOB_ANNIVERSARY", None) is None:
-            raise ImproperlyConfigured("NTH_JOB_ANNIVERSARY is not set")
+        from ..models import HRSetting
 
-        if not isinstance(settings.NTH_JOB_ANNIVERSARY, int):
-            raise ImproperlyConfigured("NTH_JOB_ANNIVERSARY must be an integer")
-
-        if settings.NTH_JOB_ANNIVERSARY < 1:
-            raise ImproperlyConfigured(
-                "NTH_JOB_ANNIVERSARY must be greater than or equal to 1",
-            )
-
-        if getattr(settings, "YEARS_COUNT_TO_GROUP_JOB_AGE", None) is None:
-            raise ImproperlyConfigured(
-                "YEARS_COUNT_TO_GROUP_JOB_AGE is not set",
-            )
-
-        if not isinstance(settings.YEARS_COUNT_TO_GROUP_JOB_AGE, int):
-            raise ImproperlyConfigured(
-                "YEARS_COUNT_TO_GROUP_JOB_AGE must be an integer"
-            )
-
-        if settings.YEARS_COUNT_TO_GROUP_JOB_AGE < 2:
-            raise ImproperlyConfigured(
-                "YEARS_COUNT_TO_GROUP_JOB_AGE must be greater than or equal to 2",
-            )
+        settings = HRSetting.get_solo()
 
         current_date = timezone.now()
 
@@ -70,7 +46,7 @@ class EmployeeQuerySet(
         next_job_anniversary = db_get_next_anniversary(
             field_name="hire_date",
             label="job_anniversary",
-            n=settings.NTH_JOB_ANNIVERSARY,
+            n=settings.nth_job_anniversary,
             date=current_date,
         )
 
@@ -107,7 +83,7 @@ class EmployeeQuerySet(
                 ),
             ),
             "job_age_group": db_get_age_groups(
-                "job_age", n=settings.YEARS_COUNT_TO_GROUP_JOB_AGE
+                "job_age", n=settings.years_count_to_group_job_age
             ),
             **next_job_anniversary,
         }

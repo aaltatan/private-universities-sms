@@ -394,6 +394,19 @@ wheels = [
 ]
 
 [[package]]
+name = "django-solo"
+version = "2.4.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/98/69/c550d3bf82c7b4e75295b2e13c41b8f15c8d63b9379ee7ce2f7b7615f919/django_solo-2.4.0.tar.gz", hash = "sha256:ec92dc00aec75034a3f93b3a85152e57c4b03d7987f8cfd0ea8a47cc6e3c2084", size = 13571 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c3/3a/c5332bb9d3d58e2b6b7ed2a4c09ea2b0b1a8e3c5fe9d8169c0867922b6f4/django_solo-2.4.0-py3-none-any.whl", hash = "sha256:62e9c7d929620a61848515839833750ca142840051595cf5c8e617dcefc9e5cf", size = 16862 },
+]
+
+[[package]]
 name = "django-vite"
 version = "3.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -965,6 +978,7 @@ dependencies = [
     { name = "django-htmx" },
     { name = "django-import-export", extra = ["xlsx"] },
     { name = "django-silk" },
+    { name = "django-solo" },
     { name = "django-vite" },
     { name = "django-widget-tweaks" },
     { name = "djangoql" },
@@ -1006,6 +1020,7 @@ requires-dist = [
     { name = "django-htmx", specifier = ">=1.21.0" },
     { name = "django-import-export", extras = ["xlsx"], specifier = ">=4.3.3" },
     { name = "django-silk", specifier = ">=5.3.2" },
+    { name = "django-solo", specifier = ">=2.4.0" },
     { name = "django-vite", specifier = ">=3.1.0" },
     { name = "django-widget-tweaks", specifier = ">=1.5.0" },
     { name = "djangoql", specifier = ">=0.18.1" },

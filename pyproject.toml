@@ -27,6 +27,7 @@ dependencies = [
     "puremagic>=1.29",
     "docxtpl>=0.20.0",
     "django-cleanup>=9.0.0",
+    "django-solo>=2.4.0",
 ]
 
 [dependency-groups]

@@ -55,6 +55,7 @@ THIRTY_PARTY_APPS = [
     "django_vite",
     "corsheaders",
     "django_cleanup",
+    "solo",
 ]
 
 CORE_APPS = [
@@ -192,30 +193,25 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/accounts/login/"
 
 # Request settings
+
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000
 
 # Django Cotton settings
+
 COTTON_DIR = "components"
 COTTON_SNAKE_CASED_NAMES = False
 
-# Custom settings
-MAX_PAGE_SIZE = 100
+# Cache settings
 
-PER_PAGE = 25
-
-MESSAGES_TIMEOUT = 7
-
-DELETE_CONFIRMATION_TIMEOUT = 2
-
-UNMIGRATE_CONFIRMATION_TIMEOUT = 2
-
-PER_PAGE_ARRAY = [10, 25, 50, 100]
-
-MIN_EMPLOYEE_AGE = 18
-
-NTH_JOB_ANNIVERSARY = 2
-
-YEARS_COUNT_TO_GROUP_JOB_AGE = 2
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
+    },
+    "local": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    },
+}
 
 # CORS settings
 
@@ -223,6 +219,7 @@ CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=str).split(";")
 CORS_ALLOW_ALL_ORIGINS = config("CORS_ALLOW_ALL_ORIGINS", default=False, cast=bool)
 
 # Django Rest Framework settings
+
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "apps.core.pagination.CorePagination",
     "DEFAULT_PERMISSION_CLASSES": ("apps.core.permissions.ModelPermissions",),
@@ -243,3 +240,7 @@ DJANGO_VITE = {
         "dev_mode": DEBUG,
     }
 }
+
+# solo settings
+
+SOLO_CACHE = "local"

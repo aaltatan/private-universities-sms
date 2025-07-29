@@ -1,5 +1,6 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
+from solo.admin import SingletonModelAdmin
 
 from .. import models, resources
 from ..constants import employee as constants
@@ -100,3 +101,6 @@ class EmployeeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
             "degree",
             "specialization",
         )
+
+
+admin.site.register(models.HRSetting, SingletonModelAdmin)
