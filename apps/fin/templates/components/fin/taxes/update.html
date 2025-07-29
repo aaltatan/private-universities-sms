@@ -50,7 +50,6 @@
   {% endif %}
 </c-forms.update>
 
-{% if form.instance.is_fixed is False %}
 <table>
   <c-fin.taxes.brackets.inline
     row_id="brackets-empty-form"
@@ -58,4 +57,3 @@
     :form="tax_brackets_formset.empty_form"
   />
 </table>
-{% endif %}
