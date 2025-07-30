@@ -14,8 +14,9 @@
   hx-target="#{{ table_id }}"
   hx-push-url="{% if push %}true{% else %}false{% endif %}"
   hx-include="[aria-included={% if include %}true{% else %}false{% endif %}]"
-  {% if prevent %}@submit.prevent{% endif %}
+  hx-indicator="*[data-indicator]"
   hx-trigger="{{ trigger }}"
+  {% if prevent %}@submit.prevent{% endif %}
   {{ attrs }}
 >
   {{ slot }}
