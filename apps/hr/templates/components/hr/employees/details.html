@@ -11,7 +11,7 @@
       >
         <img
           src="{% if object.profile %}{{ object.profile.url }}{% else %}{% vite_asset_url 'assets/images/user.png' %}{% endif %}"
-          class="rounded-full object-cover block border border-neutral-300 dark:border-neutral-800"
+          class="rounded-full object-cover block aspect-square border border-neutral-300 dark:border-neutral-800"
           alt="avatar"
         />
       </a>
