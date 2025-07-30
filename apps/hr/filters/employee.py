@@ -42,7 +42,12 @@ class UpcomingBirthdayFilter(filters.FilterSet):
     )
 
     def filter_upcoming_birthday_this(self, queryset: EmployeeQuerySet, name, value):
-        return queryset.get_upcoming_birthdays(this=value)
+        settings = HRSetting.get_solo()
+        return queryset.get_upcoming_birthdays(
+            this=value,
+            nth_job_anniversary=settings.nth_job_anniversary,
+            years_count_to_group_job_age=settings.years_count_to_group_job_age,
+        )
 
     class Meta:
         model = Employee
@@ -59,7 +64,12 @@ class UpcomingJobAnniversaryFilter(filters.FilterSet):
     def filter_upcoming_job_anniversary_this(
         self, queryset: EmployeeQuerySet, name, value
     ):
-        return queryset.get_upcoming_job_anniversaries(this=value)
+        settings = HRSetting.get_solo()
+        return queryset.get_upcoming_job_anniversaries(
+            this=value,
+            nth_job_anniversary=settings.nth_job_anniversary,
+            years_count_to_group_job_age=settings.years_count_to_group_job_age,
+        )
 
     class Meta:
         model = Employee
@@ -87,6 +97,7 @@ class BaseEmployeeFilter(
         field_name="age_group",
         label=_("age group").title(),
         choices=choices.AgeGroupChoices,
+        method="filter_age_group",
     )
     national_id = get_text_filter(label=_("national id").title())
     card_id = get_text_filter(label=_("card id").title())
@@ -145,6 +156,13 @@ class BaseEmployeeFilter(
         choices=choices.DateUnitsChoices,
         method="filter_upcoming_job_anniversary_this",
     )
+
+    def filter_age_group(self, queryset: EmployeeQuerySet, name, value):
+        settings = HRSetting.get_solo()
+        return queryset.annotate_dates(
+            nth_job_anniversary=settings.nth_job_anniversary,
+            years_count_to_group_job_age=settings.years_count_to_group_job_age,
+        ).filter(age_group=value)
 
     def filter_age_from(self, queryset: EmployeeQuerySet, name, value):
         settings = HRSetting.get_solo()
