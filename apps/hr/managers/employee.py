@@ -12,8 +12,15 @@ class EmployeeManager(JournalsTotalsManagerMixin[EmployeeQuerySet], models.Manag
     def annotate_search(self):
         return self.get_queryset().annotate_search()
 
-    def annotate_dates(self):
-        return self.get_queryset().annotate_dates()
+    def annotate_dates(
+        self,
+        nth_job_anniversary: int = 2,
+        years_count_to_group_job_age: int = 2,
+    ):
+        return self.get_queryset().annotate_dates(
+            nth_job_anniversary=nth_job_anniversary,
+            years_count_to_group_job_age=years_count_to_group_job_age,
+        )
 
     def get_counts_grouped_by(self, group_by: str = "gender"):
         return (

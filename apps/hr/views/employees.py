@@ -21,28 +21,7 @@ class APIViewSet(
     mixins.BulkDeleteAPIMixin,
     viewsets.ModelViewSet,
 ):
-    queryset = (
-        models.Employee.objects.select_related(
-            # geo
-            "city",
-            "city__governorate",
-            "nationality",
-            # org
-            "cost_center",
-            "position",
-            "status",
-            "job_subtype",
-            "job_subtype__job_type",
-            # edu
-            "degree",
-            "school",
-            "school__kind",
-            "school__nationality",
-            "specialization",
-        )
-        .prefetch_related("emails", "phones", "mobiles", "groups")
-        .annotate_dates()
-    )
+    queryset = models.Employee.objects.all()
     serializer_class = serializers.EmployeeSerializer
     filter_backends = [
         filter_backends.DjangoQLSearchFilter,
@@ -58,6 +37,34 @@ class APIViewSet(
         parsers.MultiPartParser,
         parsers.FormParser,
     )
+
+    def get_queryset(self):
+        settings = models.HRSetting.get_solo()
+        return (
+            models.Employee.objects.select_related(
+                # geo
+                "city",
+                "city__governorate",
+                "nationality",
+                # org
+                "cost_center",
+                "position",
+                "status",
+                "job_subtype",
+                "job_subtype__job_type",
+                # edu
+                "degree",
+                "school",
+                "school__kind",
+                "school__nationality",
+                "specialization",
+            )
+            .prefetch_related("emails", "phones", "mobiles", "groups")
+            .annotate_dates(
+                settings.nth_job_anniversary,
+                settings.years_count_to_group_job_age,
+            )
+        )
 
     def get_serializer_class(self):
         if self.action in ("create", "update", "partial_update"):
@@ -108,6 +115,7 @@ class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
     model: models.Employee = models.Employee
 
     def get_queryset(self):
+        settings = models.HRSetting.get_solo()
         return (
             self.model.objects.select_related(
                 # geo
@@ -128,7 +136,10 @@ class DetailsView(PermissionRequiredMixin, mixins.DetailsMixin, DetailView):
                 "specialization",
             )
             .prefetch_related("emails", "phones", "mobiles", "groups")
-            .annotate_dates()
+            .annotate_dates(
+                settings.nth_job_anniversary,
+                settings.years_count_to_group_job_age,
+            )
         )
 
     def get_context_data(self, **kwargs):

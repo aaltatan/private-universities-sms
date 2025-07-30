@@ -36,3 +36,12 @@ class GroupByCountsView(PermissionRequiredMixin, FiltersetMixin, ListView):
     template_name = "components/hr/employees/widgets/group-by-counts.html"
     queryset = models.Employee.objects.annotate_dates().all()
     filterset_class = filters.GroupedByCountFilter
+
+    def get_queryset(self):
+        settings = models.HRSetting.get_solo()
+        qs = models.Employee.objects.annotate_dates(
+            nth_job_anniversary=settings.nth_job_anniversary,
+            years_count_to_group_job_age=settings.years_count_to_group_job_age,
+        ).all()
+        filterset = self.filterset_class(self.request.GET, queryset=qs)
+        return filterset.qs

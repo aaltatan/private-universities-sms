@@ -16,7 +16,7 @@ from apps.org.models import Status
 
 from .. import choices
 from ..querysets import EmployeeQuerySet
-from ..models import Employee
+from ..models import Employee, HRSetting
 
 
 class GroupedByCountFilter(filters.FilterSet):
@@ -147,24 +147,50 @@ class BaseEmployeeFilter(
     )
 
     def filter_age_from(self, queryset: EmployeeQuerySet, name, value):
-        return queryset.annotate_dates().filter(age__gte=value)
+        settings = HRSetting.get_solo()
+        return queryset.annotate_dates(
+            nth_job_anniversary=settings.nth_job_anniversary,
+            years_count_to_group_job_age=settings.years_count_to_group_job_age,
+        ).filter(age__gte=value)
 
     def filter_age_to(self, queryset: EmployeeQuerySet, name, value):
-        return queryset.annotate_dates().filter(age__lte=value)
+        settings = HRSetting.get_solo()
+        return queryset.annotate_dates(
+            nth_job_anniversary=settings.nth_job_anniversary,
+            years_count_to_group_job_age=settings.years_count_to_group_job_age,
+        ).filter(age__lte=value)
 
     def filter_job_age_from(self, queryset: EmployeeQuerySet, name, value):
-        return queryset.annotate_dates().filter(job_age__gte=value)
+        settings = HRSetting.get_solo()
+        return queryset.annotate_dates(
+            nth_job_anniversary=settings.nth_job_anniversary,
+            years_count_to_group_job_age=settings.years_count_to_group_job_age,
+        ).filter(job_age__gte=value)
 
     def filter_job_age_to(self, queryset: EmployeeQuerySet, name, value):
-        return queryset.annotate_dates().filter(job_age__lte=value)
+        settings = HRSetting.get_solo()
+        return queryset.annotate_dates(
+            nth_job_anniversary=settings.nth_job_anniversary,
+            years_count_to_group_job_age=settings.years_count_to_group_job_age,
+        ).filter(job_age__lte=value)
 
     def filter_upcoming_birthday_this(self, queryset: EmployeeQuerySet, name, value):
-        return queryset.get_upcoming_birthdays(this=value)
+        settings = HRSetting.get_solo()
+        return queryset.get_upcoming_birthdays(
+            this=value,
+            nth_job_anniversary=settings.nth_job_anniversary,
+            years_count_to_group_job_age=settings.years_count_to_group_job_age,
+        )
 
     def filter_upcoming_job_anniversary_this(
         self, queryset: EmployeeQuerySet, name, value
     ):
-        return queryset.get_upcoming_job_anniversaries(this=value)
+        settings = HRSetting.get_solo()
+        return queryset.get_upcoming_job_anniversaries(
+            this=value,
+            nth_job_anniversary=settings.nth_job_anniversary,
+            years_count_to_group_job_age=settings.years_count_to_group_job_age,
+        )
 
     class Meta:
         model = Employee

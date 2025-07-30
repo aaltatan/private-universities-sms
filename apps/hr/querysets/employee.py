@@ -31,11 +31,11 @@ class EmployeeQuerySet(
             search=annotate_search(constants.SEARCH_FIELDS),
         )
 
-    def annotate_dates(self):
-        from ..models import HRSetting
-
-        settings = HRSetting.get_solo()
-
+    def annotate_dates(
+        self,
+        nth_job_anniversary: int,
+        years_count_to_group_job_age: int,
+    ):
         current_date = timezone.now()
 
         next_birthday = db_get_next_anniversary(
@@ -46,7 +46,7 @@ class EmployeeQuerySet(
         next_job_anniversary = db_get_next_anniversary(
             field_name="hire_date",
             label="job_anniversary",
-            n=settings.nth_job_anniversary,
+            n=nth_job_anniversary,
             date=current_date,
         )
 
@@ -83,7 +83,7 @@ class EmployeeQuerySet(
                 ),
             ),
             "job_age_group": db_get_age_groups(
-                "job_age", n=settings.years_count_to_group_job_age
+                "job_age", n=years_count_to_group_job_age
             ),
             **next_job_anniversary,
         }
@@ -100,7 +100,12 @@ class EmployeeQuerySet(
         return self.values(group_by).annotate(counts=models.Count("pk"))
 
     def get_upcoming_birthdays(
-        self, *, this: DATE_UNITS = "day", date: timezone.datetime | None = None
+        self,
+        *,
+        this: DATE_UNITS = "day",
+        date: timezone.datetime | None = None,
+        nth_job_anniversary: int = 2,
+        years_count_to_group_job_age: int = 2,
     ):
         """
         Returns a queryset of employees whose birthday is in the future."
@@ -130,7 +135,10 @@ class EmployeeQuerySet(
         }
 
         return (
-            self.annotate_dates()
+            self.annotate_dates(
+                nth_job_anniversary=nth_job_anniversary,
+                years_count_to_group_job_age=years_count_to_group_job_age,
+            )
             .filter(**filter_kwargs[this])
             .order_by(
                 "birth_date__day",
@@ -139,7 +147,12 @@ class EmployeeQuerySet(
         )
 
     def get_upcoming_job_anniversaries(
-        self, *, this: DATE_UNITS = "day", date: timezone.datetime | None = None
+        self,
+        *,
+        this: DATE_UNITS = "day",
+        date: timezone.datetime | None = None,
+        nth_job_anniversary: int = 2,
+        years_count_to_group_job_age: int = 2,
     ):
         """
         Returns a queryset of employees whose birthday is in the future."
@@ -169,7 +182,10 @@ class EmployeeQuerySet(
         }
 
         return (
-            self.annotate_dates()
+            self.annotate_dates(
+                nth_job_anniversary=nth_job_anniversary,
+                years_count_to_group_job_age=years_count_to_group_job_age,
+            )
             .filter(**filter_kwargs[this])
             .order_by("hire_date__day", "hire_date__year")
         )
