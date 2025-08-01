@@ -5,7 +5,6 @@ from rest_framework import filters as rest_filters
 from rest_framework import viewsets
 
 from apps.core import filter_backends, mixins
-from apps.core.inline import InlineFormsetFactory
 from apps.core.schemas import Action
 from apps.core.utils import Deleter
 
@@ -76,21 +75,9 @@ class CreateView(PermissionRequiredMixin, mixins.CreateMixin, View):
     form_class = forms.TaxForm
 
 
-class TaxBracketInline(InlineFormsetFactory):
-    model = models.TaxBracket
-    form_class = forms.TaxBracketForm
-    fields = ("amount_from", "amount_to", "rate", "notes")
-    deleter = Deleter
-
-    @classmethod
-    def get_queryset(cls, obj: models.Tax):
-        return obj.brackets.all().order_by("ordering", "id")
-
-
 class UpdateView(PermissionRequiredMixin, mixins.UpdateMixin, View):
     permission_required = "fin.change_tax"
     form_class = forms.TaxForm
-    inlines = (TaxBracketInline,)
 
 
 class DeleteView(PermissionRequiredMixin, mixins.BehaviorMixin, View):

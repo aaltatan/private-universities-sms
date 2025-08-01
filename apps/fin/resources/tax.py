@@ -7,14 +7,28 @@ from .. import models
 
 
 class TaxResource(BaseResource):
-    fixed = fields.Field(
-        attribute="fixed",
-        column_name=_("fixed").title(),
+    shortname = fields.Field(
+        attribute="shortname",
+        column_name=_("short name").title(),
     )
-    rate = fields.Field(
-        attribute="rate",
-        column_name=_("rate").title(),
+    calculation_method = fields.Field(
+        attribute="calculation_method",
+        column_name=_("calculation method").title(),
+        dehydrate_method="dehydrate_calculation_method",
+    )
+    amount = fields.Field(
+        attribute="amount",
+        column_name=_("amount").title(),
         widget=widgets.DecimalWidget(coerce_to_string=False),
+    )
+    percentage = fields.Field(
+        attribute="percentage",
+        column_name=_("percentage").title(),
+        widget=widgets.DecimalWidget(coerce_to_string=False),
+    )
+    formula = fields.Field(
+        attribute="formula",
+        column_name=_("formula").title(),
     )
     rounded_to = fields.Field(
         attribute="rounded_to",
@@ -29,6 +43,10 @@ class TaxResource(BaseResource):
         attribute="affected_by_working_days",
         column_name=_("affected by working days").title(),
     )
+    accounting_id = fields.Field(
+        attribute="accounting_id",
+        column_name=_("accounting id").title(),
+    )
     description = fields.Field(
         attribute="description",
         column_name=_("description").title(),
@@ -40,18 +58,22 @@ class TaxResource(BaseResource):
     def dehydrate_round_method(self, obj: models.Compensation):
         return self._dehydrate_choices(obj, "round_method")
 
-    def dehydrate_fixed(self, obj: models.Tax):
-        return self._dehydrate_boolean(obj.fixed)
+    def dehydrate_calculation_method(self, obj: models.Compensation):
+        return self._dehydrate_choices(obj, "calculation_method")
 
     class Meta:
         model = models.Tax
         fields = (
             "serial",
             "name",
-            "fixed",
-            "rate",
+            "shortname",
+            "calculation_method",
+            "amount",
+            "percentage",
+            "formula",
             "rounded_to",
             "round_method",
+            "accounting_id",
             "affected_by_working_days",
             "description",
             "slug",

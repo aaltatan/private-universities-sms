@@ -17,21 +17,45 @@
         <!--  -->
         <c-table.tr>
           <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-            {{ model|verbose_name:'fixed' }}
+            {{ model|verbose_name:'calculation_method' }}
           </c-table.td>
-          <c-table.td data-header="{{ model|verbose_name:'fixed' }}">
-            {{ object.fixed|yesno|title }}
+          <c-table.td data-header="{{ model|verbose_name:'calculation_method' }}">
+            {{ object.get_calculation_method_display }}
           </c-table.td>
         </c-table.tr>
         <!--  -->
+        {% if object.rate %}
         <c-table.tr>
           <c-table.td :header="True" data-header="{% translate 'name'|title %}">
-            {{ model|verbose_name:'rate' }}
+            {{ model|verbose_name:'amount' }}
           </c-table.td>
-          <c-table.td data-header="{{ model|verbose_name:'rate' }}">
-            {{ object.rate|percentage }}
+          <c-table.td data-header="{{ model|verbose_name:'amount' }}">
+            {{ object.rate|money }}
           </c-table.td>
         </c-table.tr>
+        {% endif %}
+        <!--  -->
+        {% if object.percentage %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'percentage' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'percentage' }}">
+            {{ object.percentage|percentage }}
+          </c-table.td>
+        </c-table.tr>
+        {% endif %}
+        <!--  -->
+        {% if object.formula %}
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'formula' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'formula' }}">
+            {{ object.formula }}
+          </c-table.td>
+        </c-table.tr>
+        {% endif %}
         <!--  -->
         <c-table.tr>
           <c-table.td :header="True" data-header="{% translate 'name'|title %}">
@@ -57,6 +81,15 @@
           </c-table.td>
           <c-table.td data-header="{{ model|verbose_name:'affected_by_working_days' }}">
             {{ object.affected_by_working_days|yesno|title }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'accounting_id' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'accounting_id' }}">
+            {{ object.accounting_id }}
           </c-table.td>
         </c-table.tr>
         <!--  -->

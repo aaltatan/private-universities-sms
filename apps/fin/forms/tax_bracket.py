@@ -9,10 +9,14 @@ from .. import models
 
 class BaseTaxBracketForm(CustomModelForm):
     tax = get_autocomplete_field(
-        queryset=models.Tax.objects.filter(fixed=False),
+        queryset=models.Tax.objects.filter(
+            calculation_method=models.Tax.CalculationMethodChoices.BRACKETS
+        ),
         to_field_name="name",
         widget_attributes={"placeholder": _("search taxes")},
-        queryset_filters={"fixed": False},
+        queryset_filters={
+            "calculation_method": models.Tax.CalculationMethodChoices.BRACKETS,
+        },
         app_label="fin",
         model_name="Tax",
         object_name="tax",

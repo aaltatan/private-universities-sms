@@ -148,7 +148,7 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         <ul>
             <li>- It should be a valid python expression</li>
             <li>- It should return a decimal number</li>
-            <li>- Always use `obj` as argument</li>
+            <li>- You can use (compensation, employee and quantity) objects to calculate the value if based on any one of them</li>
             <li>- You can use underscores (_) to separate numbers as thousands</li>
         </ul>
         """,
@@ -181,7 +181,21 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
 
     objects: CompensationManager = CompensationManager()
 
-    def calculate(self, value: Decimal | int | float = 0, obj: Any = None) -> Decimal:
+    def _calculate_formula(self, value: Decimal | int | float, **context) -> Decimal:
+        try:
+            # formula should like this
+            # `2000 if obj.gender == "male" else 1000`
+            return eval(self.formula)
+        except Exception as e:
+            raise FormulaNotValid(*e.args)
+
+    def _calculate_fixed(self, value: Decimal | int | float, **context) -> Decimal:
+        return self.value
+
+    def _calculate_by_input(self, value: Decimal | int | float, **context) -> Decimal:
+        return value
+
+    def calculate(self, value: Decimal | int | float = 0, **context) -> Decimal:
         """
         a method to calculate compensation value
 
@@ -195,17 +209,13 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         if not self.is_active:
             return Decimal(0)
 
-        if self.calculation_method == self.CalculationChoices.BY_INPUT:
-            result = value
-        elif self.calculation_method == self.CalculationChoices.FIXED:
-            result = self.value
-        elif self.calculation_method == self.CalculationChoices.FORMULA:
-            try:
-                # formula should like this
-                # `2000 if obj.gender == "male" else 1000`
-                result = eval(self.formula)
-            except Exception as e:
-                raise FormulaNotValid(*e.args)
+        methods_map = {
+            self.CalculationChoices.FIXED: self._calculate_fixed,
+            self.CalculationChoices.BY_INPUT: self._calculate_by_input,
+            self.CalculationChoices.FORMULA: self._calculate_formula,
+        }
+
+        result = methods_map[self.calculation_method](value=value, **context)
 
         return round_to_nearest(result, self.round_method, self.rounded_to)
 

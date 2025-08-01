@@ -8,9 +8,9 @@ from .. import models
 
 
 class BaseTaxForm(CustomModelForm):
-    fixed = forms.ChoiceField(
-        choices=models.Tax.FixedChoices,
-        label=_("fixed"),
+    calculation_method = forms.ChoiceField(
+        choices=models.Tax.CalculationMethodChoices,
+        label=_("calculation method"),
     )
     affected_by_working_days = forms.ChoiceField(
         choices=models.Tax.AffectedByWorkingDaysChoices,
@@ -21,17 +21,27 @@ class BaseTaxForm(CustomModelForm):
         model = models.Tax
         fields = (
             "name",
-            "fixed",
-            "rate",
+            "shortname",
+            "calculation_method",
+            "amount",
+            "percentage",
+            "formula",
             "rounded_to",
             "round_method",
             "affected_by_working_days",
+            "accounting_id",
             "description",
         )
         widgets = {
             "name": get_text_widget(placeholder=_("e.g. Fixed Tax")),
-            "rate": get_text_widget(placeholder=_("e.g. 0.1")),
-            "rounded_to": get_text_widget(placeholder=_("e.g. 100")),
+            "shortname": get_text_widget(placeholder=_("e.g. Fixed")),
+            "accounting_id": get_text_widget(placeholder=_("e.g. 3111")),
+            "formula": get_textarea_widget(
+                rows=4,
+                placeholder=_(
+                    "e.g. 1000 if obj.gender == 'male' else 1000",
+                ),
+            ),
             "description": get_textarea_widget(),
         }
 

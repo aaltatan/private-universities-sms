@@ -57,6 +57,10 @@ def db_calculate_tax_brackets(
 
 def run():
     amount = 1_500_000
-    tax_object = Tax.objects.get(fixed=False)
+    tax_object = Tax.objects.get(
+        ~models.Q(
+            calculation_method=Tax.CalculationMethodChoices.BRACKETS,
+        )
+    )
 
     print(db_calculate_tax_brackets(amount, tax_object))

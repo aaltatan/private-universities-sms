@@ -1,6 +1,6 @@
 import uuid
 from decimal import Decimal
-from typing import Literal
+from typing import Any, Literal
 
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
@@ -82,15 +82,24 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 
     objects: VoucherTransactionManager = VoucherTransactionManager()
 
-    def calculate_compensation_value(self):
-        return self.compensation.calculate(self.value, self.employee)
+    def get_formula_context(self) -> dict[str, Any]:
+        return {
+            "compensation": self.compensation,
+            "employee": self.employee,
+            "quantity": self.quantity,
+        }
+
+    def calculate_compensation(self):
+        context = self.get_formula_context()
+        return self.compensation.calculate(self.value, **context)
 
     def calculate_tax(self, value: Decimal | int | float | None = None):
         if value is None:
-            value = self.calculate_compensation_value()
+            value = self.calculate_compensation()
 
         if self.compensation.tax:
-            tax_value = self.compensation.tax.calculate(value, rounded=False)
+            context = self.get_formula_context()
+            tax_value = self.compensation.tax.calculate(value, rounded=False, **context)
             tax = round_to_nearest(
                 number=tax_value * self.quantity,
                 method=self.compensation.tax.round_method,
@@ -246,37 +255,8 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 
     @property
     def tax_information(self):
-        result = 0
-        if self.compensation.tax is None:
-            return result
-
-        if self.compensation.tax.fixed:
-            tax_without_round = self.compensation.tax.rate * self.get_total()
-            difference = self.tax - tax_without_round
-
-            result = (
-                f"{self.get_total():,.2f} × {self.compensation.tax.rate * 100:,.2f} %"
-            )
-            if difference < 0:
-                result = f"({result})"
-                result += f" - {difference:,.2f}"
-            if difference > 0:
-                result = f"({result})"
-                result += f" + {difference:,.2f}"
-        else:
-            if self.quantity == 1:
-                result = _("{} on {:,.2f}").format(
-                    self.compensation.tax.name, self.value
-                )
-            else:
-                result = _("{} on {:,.2f} ({:,.2f} × {:,.2f})").format(
-                    self.compensation.tax.name,
-                    self.value,
-                    self.tax / self.quantity,
-                    self.quantity,
-                )
-
-        return result
+        # must implement
+        return ""
 
     @property
     def net_information(self):
@@ -339,7 +319,7 @@ def pre_save_calculations(
     *args,
     **kwargs,
 ):
-    compensation_value = instance.calculate_compensation_value()
+    compensation_value = instance.calculate_compensation()
     instance.value = compensation_value
     instance.tax = instance.calculate_tax(compensation_value)
 

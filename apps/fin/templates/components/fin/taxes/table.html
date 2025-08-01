@@ -69,12 +69,11 @@
         <c-table.th> {% if can_delete %}<c-table.check-all />{% endif %} </c-table.th>
         <c-table.th>{% translate 'options' %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'name' }}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'fixed' }}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'rate' }}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'rounded_to' }}</c-table.th>
-        <c-table.th>{{ model|verbose_name:'round_method' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'shortname' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'calculation_method' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'amount' }}</c-table.th>
+        <c-table.th>{{ model|verbose_name:'percentage' }}</c-table.th>
         <c-table.th>{{ model|verbose_name:'affected_by_working_days' }}</c-table.th>
-        <c-table.th>{% translate 'brackets count'|title %}</c-table.th>
         <c-table.th>{% translate 'compensations count'|title %}</c-table.th>
         <c-table.th>{{ model|verbose_name:'description' }}</c-table.th>
       </c-table.tr>
@@ -137,23 +136,20 @@
             {{ obj.name }}
           </c-modal-a>
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'fixed' }}">
-          {{ obj.fixed|yesno|title }}
+        <c-table.td data-header="{{ model|verbose_name:'shortname' }}">
+          {{ obj.shortname }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'rate' }}">
-          {{ obj.rate|percentage }}
+        <c-table.td data-header="{{ model|verbose_name:'calculation_method' }}">
+          {{ obj.get_calculation_method_display }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'rounded_to' }}">
-          {{ obj.rounded_to|money }}
+        <c-table.td data-header="{{ model|verbose_name:'amount' }}">
+          {{ obj.amount|money }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'round_method' }}">
-          {{ obj.get_round_method_display }}
+        <c-table.td data-header="{{ model|verbose_name:'percentage' }}">
+          {{ obj.percentage|percentage }}
         </c-table.td>
-        <c-table.td data-header="{{ model|verbose_name:'fixed' }}">
+        <c-table.td data-header="{{ model|verbose_name:'affected_by_working_days' }}">
           {{ obj.affected_by_working_days|yesno|title }}
-        </c-table.td>
-        <c-table.td data-header="{% translate 'brackets count'|title %}">
-          {{ obj.brackets_count }}
         </c-table.td>
         <c-table.td data-header="{% translate 'compensations count'|title %}">
           {{ obj.compensations_count }}

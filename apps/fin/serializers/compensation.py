@@ -7,7 +7,18 @@ class CompensationSerializer(serializers.ModelSerializer):
     class TaxSerializer(serializers.ModelSerializer):
         class Meta:
             model = models.Tax
-            fields = ("id", "name", "fixed", "rate", "rounded_to", "description")
+            fields = (
+                "id",
+                "name",
+                "shortname",
+                "percentage",
+                "amount",
+                "formula",
+                "round_method",
+                "rounded_to",
+                "accounting_id",
+                "description",
+            )
 
     tax = TaxSerializer(read_only=True)
 

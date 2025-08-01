@@ -5,29 +5,35 @@ from apps.core.filters import (
     BaseNameDescriptionFilter,
     FilterComboboxMixin,
     get_number_from_to_filters,
+    get_text_filter,
 )
 
 from .. import models
 
 
 class BaseTaxFilter(BaseNameDescriptionFilter):
-    fixed = filters.ChoiceFilter(
-        label=_("fixed").title(),
-        choices=models.Tax.FixedChoices,
+    shortname = get_text_filter(label=_("short name").title())
+    calculation_method = filters.ChoiceFilter(
+        label=_("calculation method").title(),
+        choices=models.Tax.CalculationMethodChoices,
     )
     affected_by_working_days = filters.ChoiceFilter(
         label=_("affected by working days").title(),
         choices=models.Tax.AffectedByWorkingDaysChoices,
     )
-    rate_from, rate_to = get_number_from_to_filters("rate")
+    amount_from, amount_to = get_number_from_to_filters("amount")
+    percentage_from, percentage_to = get_number_from_to_filters("percentage")
 
     class Meta:
         model = models.Tax
         fields = (
             "name",
-            "fixed",
-            "rate_from",
-            "rate_to",
+            "shortname",
+            "calculation_method",
+            "amount_from",
+            "amount_to",
+            "percentage_from",
+            "percentage_to",
             "affected_by_working_days",
             "description",
         )

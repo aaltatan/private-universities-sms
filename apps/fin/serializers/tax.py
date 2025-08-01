@@ -9,10 +9,14 @@ class TaxSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
-            "fixed",
+            "shortname",
+            "amount",
+            "percentage",
+            "formula",
             "rate",
             "rounded_to",
             "round_method",
             "affected_by_working_days",
+            "accounting_id",
             "description",
         )
