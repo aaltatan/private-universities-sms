@@ -164,7 +164,7 @@ class Tax(AddCreateActivityMixin, AbstractUniqueNameModel):
     def _calculate_fixed_amount(
         self, amount: Decimal | int | float, **context
     ) -> Decimal:
-        return amount
+        return self.amount
 
     def _calculate_fixed_percentage(
         self, amount: Decimal | int | float, **context
