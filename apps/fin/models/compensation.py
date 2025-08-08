@@ -68,6 +68,10 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         )
         OTHERS = "others", _("others").title()
 
+    class RestrictionChoices(models.TextChoices):
+        REPLACE = "replace", _("replace").title()
+        RAISE_ERROR = "raise_error", _("raise error").title()
+
     shortname = models.CharField(
         max_length=255,
         verbose_name=_("short name"),
@@ -130,6 +134,36 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         max_digits=20,
         decimal_places=4,
         default=500_000_000,
+    )
+    min_total = models.DecimalField(
+        verbose_name=_("min total value"),
+        max_digits=20,
+        decimal_places=4,
+        default=-500_000_000,
+        help_text=_("min total value to calculate the compensation value"),
+    )
+    restrict_to_min_total_value = models.TextField(
+        verbose_name=_("restrict to min total value"),
+        choices=RestrictionChoices.choices,
+        default=RestrictionChoices.RAISE_ERROR,
+        help_text=_(
+            "if Raise error, it will raise an error if the total value is less than min total value, otherwise it will replace the value with min total value"
+        ),
+    )
+    max_total = models.DecimalField(
+        verbose_name=_("max total value"),
+        max_digits=20,
+        decimal_places=4,
+        default=500_000_000,
+        help_text=_("max total value to calculate the compensation value"),
+    )
+    restrict_to_max_total_value = models.TextField(
+        verbose_name=_("restrict to max total value"),
+        choices=RestrictionChoices.choices,
+        default=RestrictionChoices.RAISE_ERROR,
+        help_text=_(
+            "if Raise error, it will raise an error if the total value is greater than max total value, otherwise it will replace the value with max total value"
+        ),
     )
     affected_by_working_days = models.BooleanField(
         verbose_name=_("affected by working days"),
@@ -289,6 +323,12 @@ class ActivitySerializer(serializers.ModelSerializer):
             "tax_classification",
             "round_method",
             "rounded_to",
+            "min_value",
+            "max_value",
+            "min_total",
+            "max_total",
+            "restrict_to_min_total_value",
+            "restrict_to_max_total_value",
             "value",
             "affected_by_working_days",
             "is_active",

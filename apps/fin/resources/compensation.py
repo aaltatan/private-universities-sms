@@ -51,6 +51,24 @@ class CompensationResource(BaseResource):
         column_name=_("max value").title(),
         widget=widgets.DecimalWidget(coerce_to_string=False),
     )
+    min_total = fields.Field(
+        attribute="min_total",
+        column_name=_("min total value").title(),
+        widget=widgets.DecimalWidget(coerce_to_string=False),
+    )
+    max_total = fields.Field(
+        attribute="max_total",
+        column_name=_("max total value").title(),
+        widget=widgets.DecimalWidget(coerce_to_string=False),
+    )
+    restricted_min_total_value = fields.Field(
+        attribute="restrict_to_min_total_value",
+        column_name=_("restrict to min total value").title(),
+    )
+    restricted_max_total_value = fields.Field(
+        attribute="restrict_to_max_total_value",
+        column_name=_("restrict to max total value").title(),
+    )
     affected_by_working_days = fields.Field(
         attribute="affected_by_working_days",
         column_name=_("affected by working days").title(),
@@ -70,7 +88,7 @@ class CompensationResource(BaseResource):
 
     def dehydrate_calculation_method(self, obj: models.Compensation):
         return self._dehydrate_choices(obj, "calculation_method")
-    
+
     def dehydrate_kind(self, obj: models.Compensation):
         return self._dehydrate_choices(obj, "kind")
 
@@ -101,6 +119,10 @@ class CompensationResource(BaseResource):
             "value",
             "min_value",
             "max_value",
+            "min_total",
+            "restrict_to_min_total_value",
+            "max_total",
+            "restrict_to_max_total_value",
             "formula",
             "affected_by_working_days",
             "is_active",

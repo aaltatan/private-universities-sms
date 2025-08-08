@@ -34,6 +34,14 @@ class BaseCompensationForm(CustomModelForm):
         field_name="search",
         field_attributes={"required": False},
     )
+    restricted_min_total_value = forms.ChoiceField(
+        choices=models.Compensation.RestrictionChoices,
+        label=_("restrict to min total value"),
+    )
+    restricted_max_total_value = forms.ChoiceField(
+        choices=models.Compensation.RestrictionChoices,
+        label=_("restrict to max total value"),
+    )
 
     class Meta:
         model = models.Compensation
@@ -46,6 +54,10 @@ class BaseCompensationForm(CustomModelForm):
             "formula",
             "min_value",
             "max_value",
+            "min_total",
+            "restrict_to_min_total_value",
+            "max_total",
+            "restrict_to_max_total_value",
             "round_method",
             "rounded_to",
             "tax",
@@ -62,6 +74,8 @@ class BaseCompensationForm(CustomModelForm):
             "value": widgets.get_number_widget(placeholder=_("e.g. 1000")),
             "min_value": widgets.get_number_widget(placeholder=_("e.g. 0")),
             "max_value": widgets.get_number_widget(placeholder=_("e.g. 50000")),
+            "min_total": widgets.get_number_widget(placeholder=_("e.g. 50000")),
+            "max_total": widgets.get_number_widget(placeholder=_("e.g. 50000")),
             "rounded_to": widgets.get_number_widget(placeholder=_("e.g. 100")),
             "accounting_id": widgets.get_text_widget(placeholder=_("e.g. 3111")),
             "description": widgets.get_textarea_widget(),

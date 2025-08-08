@@ -17,6 +17,16 @@
     <c-inputs.text :field="filter.form.max_value_from" :show_label="False" />
     <c-inputs.text :field="filter.form.max_value_to" :show_label="False" />
   </c-inputs.range-wrapper>
+  <c-inputs.range-wrapper title="{% translate 'min total value'|title %}">
+    <c-inputs.text :field="filter.form.min_total_from" :show_label="False" />
+    <c-inputs.text :field="filter.form.min_total_to" :show_label="False" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.restrict_to_min_total_value" />
+  <c-inputs.range-wrapper title="{% translate 'max total value'|title %}">
+    <c-inputs.text :field="filter.form.max_total_from" :show_label="False" />
+    <c-inputs.text :field="filter.form.max_total_to" :show_label="False" />
+  </c-inputs.range-wrapper>
+  <c-inputs.text :field="filter.form.restrict_to_max_total_value" />
   <c-inputs.text :field="filter.form.tax" />
   <c-inputs.text :field="filter.form.tax_classification" />
   <c-inputs.text :field="filter.form.affected_by_working_days" />

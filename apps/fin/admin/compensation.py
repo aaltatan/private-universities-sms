@@ -25,6 +25,8 @@ class CompensationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         ("name", "shortname", "kind"),
         "calculation_method",
         ("value", "min_value", "max_value"),
+        ("min_total", "restrict_to_min_total_value"),
+        ("max_total", "restrict_to_max_total_value"),
         "formula",
         ("round_method", "rounded_to"),
         ("tax", "tax_classification"),

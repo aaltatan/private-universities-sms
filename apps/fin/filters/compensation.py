@@ -34,6 +34,18 @@ class BaseCompensationFilter(BaseQSearchFilter, BaseNameDescriptionFilter):
     value_from, value_to = get_number_from_to_filters("value")
     min_value_from, min_value_to = get_number_from_to_filters("min_value")
     max_value_from, max_value_to = get_number_from_to_filters("max_value")
+    min_total_from, min_total_to = get_number_from_to_filters("min_total")
+    max_total_from, max_total_to = get_number_from_to_filters("max_total")
+    restrict_to_min_total_value = filters.ChoiceFilter(
+        field_name="restrict_to_min_total_value",
+        label=_("restrict to min total value"),
+        choices=models.Compensation.RestrictionChoices,
+    )
+    restrict_to_max_total_value = filters.ChoiceFilter(
+        field_name="restrict_to_max_total_value",
+        label=_("restrict to max total value"),
+        choices=models.Compensation.RestrictionChoices,
+    )
 
     class Meta:
         model = models.Compensation
@@ -48,6 +60,12 @@ class BaseCompensationFilter(BaseQSearchFilter, BaseNameDescriptionFilter):
             "min_value_to",
             "max_value_from",
             "max_value_to",
+            "min_total_from",
+            "min_total_to",
+            "restrict_to_min_total_value",
+            "max_total_from",
+            "max_total_to",
+            "restrict_to_max_total_value",
             "tax",
             "tax_classification",
             "round_method",
