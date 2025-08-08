@@ -58,10 +58,22 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
         verbose_name=_("value"),
         default=0,
     )
+    total = models.DecimalField(
+        max_digits=20,
+        decimal_places=4,
+        verbose_name=_("total"),
+        default=0,
+    )
     tax = models.DecimalField(
         max_digits=20,
         decimal_places=4,
         verbose_name=_("tax"),
+        default=0,
+    )
+    net = models.DecimalField(
+        max_digits=20,
+        decimal_places=4,
+        verbose_name=_("net"),
         default=0,
     )
     notes = models.TextField(
@@ -82,6 +94,10 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 
     objects: VoucherTransactionManager = VoucherTransactionManager()
 
+    # cached properties
+
+    cached_compensation_value = None
+
     def get_formula_context(self) -> dict[str, Any]:
         return {
             "compensation": self.compensation,
@@ -90,8 +106,31 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
         }
 
     def calculate_compensation(self):
-        context = self.get_formula_context()
-        return self.compensation.calculate(self.value, **context)
+        if self.cached_compensation_value is None:
+            context = self.get_formula_context()
+            self.cached_compensation_value = self.compensation.calculate(
+                self.value, **context
+            )
+        return self.cached_compensation_value
+
+    def calculate_total(self, compensation_total: Decimal) -> Decimal:
+        total = self.quantity * compensation_total
+
+        if (
+            self.compensation.restrict_to_min_total_value
+            == self.compensation.RestrictionChoices.REPLACE
+            and total < self.compensation.min_total
+        ):
+            total = self.compensation.min_total
+
+        if (
+            self.compensation.restrict_to_max_total_value
+            == self.compensation.RestrictionChoices.REPLACE
+            and total > self.compensation.max_total
+        ):
+            total = self.compensation.max_total
+
+        return total
 
     def calculate_tax(self, value: Decimal | int | float | None = None):
         if value is None:
@@ -99,12 +138,30 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 
         if self.compensation.tax:
             context = self.get_formula_context()
-            tax_value = self.compensation.tax.calculate(value, rounded=False, **context)
+            total = self.quantity * value
+
+            if (
+                self.compensation.tax.calculation_method
+                == self.compensation.tax.CalculationMethodChoices.FIXED_PERCENTAGE
+                and self.compensation.restrict_to_max_total_value
+                == self.compensation.RestrictionChoices.REPLACE
+                and total > self.compensation.max_total
+            ):
+                total_tax = (
+                    self.compensation.tax.percentage * self.compensation.max_total
+                )
+            else:
+                total_tax = (
+                    self.compensation.tax.calculate(value, rounded=False, **context)
+                    * self.quantity
+                )
+
             tax = round_to_nearest(
-                number=tax_value * self.quantity,
+                number=total_tax,
                 method=self.compensation.tax.round_method,
                 to_nearest=self.compensation.tax.rounded_to,
             )
+
         else:
             tax = Decimal(0)
 
@@ -119,11 +176,32 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
             == self.compensation.CalculationChoices.FORMULA
         ):
             try:
-                self.compensation.calculate(self.value, self.employee)
+                context = self.get_formula_context()
+                self.compensation.calculate(self.value, **context)
             except FormulaNotValid as e:
                 errors["compensation"] = ValidationError(
-                    "the formula is not valid, REASON: {}".format(e.args[0]),
+                    "compensation calculation formula is not valid, REASON: {}".format(
+                        e.args[0]
+                    ),
                 )
+                raise ValidationError(errors)
+
+        if (
+            getattr(self, "compensation", None)
+            and getattr(self.compensation, "tax", None)
+            and self.compensation.tax.calculation_method
+            == self.compensation.tax.CalculationMethodChoices.FORMULA
+        ):
+            try:
+                context = self.get_formula_context()
+                self.calculate_tax(0)
+            except FormulaNotValid as e:
+                errors["compensation"] = ValidationError(
+                    "tax calculation formula is not valid, REASON: {}".format(
+                        e.args[0]
+                    ),
+                )
+                raise ValidationError(errors)
 
         employee_ids_false_statuses: list[int] = cache.get(
             "employee_ids_false_statuses", {}
@@ -163,6 +241,36 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
                     ).format(self.compensation.max_value),
                 )
 
+        if (
+            getattr(self, "compensation", None) is not None
+            and self.compensation.restrict_to_min_total_value
+            == self.compensation.RestrictionChoices.RAISE_ERROR
+        ):
+            compensation_value = self.calculate_compensation()
+            total = self.calculate_total(compensation_value)
+
+            if total < self.compensation.min_total:
+                errors["value"] = ValidationError(
+                    _(
+                        "this compensation has max total and its must be greater than or equal to compensation min total ({:,.2f})"
+                    ).format(self.compensation.min_total),
+                )
+
+        if (
+            getattr(self, "compensation", None) is not None
+            and self.compensation.restrict_to_max_total_value
+            == self.compensation.RestrictionChoices.RAISE_ERROR
+        ):
+            compensation_value = self.calculate_compensation()
+            total = self.calculate_total(compensation_value)
+
+            if total > self.compensation.max_total:
+                errors["value"] = ValidationError(
+                    _(
+                        "this compensation has max total and its must be less than or equal to compensation max total ({:,.2f})"
+                    ).format(self.compensation.max_total),
+                )
+
         if errors:
             raise ValidationError(errors)
 
@@ -188,12 +296,13 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
             )
             kwargs["fiscal_object_id"] = self.compensation.id
 
-            amount = self.get_total()
+            compensation_value = self.calculate_compensation()
+            total = self.calculate_total(compensation_value)
 
-            if amount < 0:
-                kwargs["credit"] = abs(amount)
+            if total < 0:
+                kwargs["credit"] = abs(total)
             else:
-                kwargs["debit"] = amount
+                kwargs["debit"] = total
 
             kwargs["explanation"] = self.total_information
 
@@ -221,12 +330,6 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
         if self.tax != 0:
             self.__migrate(calculate_for="tax")
 
-    def get_total(self) -> Decimal:
-        return self.quantity * self.value
-
-    def get_net(self) -> Decimal:
-        return self.get_total() - self.tax
-
     @property
     def formatted_quantity(self) -> str:
         return f"{self.quantity:,.2f}"
@@ -237,7 +340,7 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 
     @property
     def formatted_total(self) -> str:
-        return f"{self.get_total():,.2f}"
+        return f"{self.total:,.2f}"
 
     @property
     def formatted_tax(self) -> str:
@@ -245,13 +348,21 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 
     @property
     def formatted_net(self) -> str:
-        return f"{self.get_net():,.2f}"
+        return f"{self.net:,.2f}"
 
     @property
     def total_information(self):
         if self.quantity == 1:
-            return f"{self.compensation.name} - {self.value:,.2f}"
-        return f"{self.quantity:,.2f} × {self.value:,.2f} {self.compensation.name}"
+            result = f"{self.compensation.name} - {self.value:,.2f}"
+        else:
+            result = (
+                f"{self.quantity:,.2f} × {self.value:,.2f} {self.compensation.name}"
+            )
+
+        return result + _("\n({min:,.2f} ~ {max:,.2f})").format(
+            min=self.compensation.min_total,
+            max=self.compensation.max_total,
+        )
 
     @property
     def tax_information(self):
@@ -320,8 +431,11 @@ def pre_save_calculations(
     **kwargs,
 ):
     compensation_value = instance.calculate_compensation()
+
     instance.value = compensation_value
+    instance.total = instance.calculate_total(compensation_value)
     instance.tax = instance.calculate_tax(compensation_value)
+    instance.net = instance.total - instance.tax
 
 
 pre_save.connect(slugify_voucher_transaction, sender=VoucherTransaction)
