@@ -34,14 +34,6 @@ class BaseCompensationForm(CustomModelForm):
         field_name="search",
         field_attributes={"required": False},
     )
-    restricted_min_total_value = forms.ChoiceField(
-        choices=models.Compensation.RestrictionChoices,
-        label=_("restrict to min total value"),
-    )
-    restricted_max_total_value = forms.ChoiceField(
-        choices=models.Compensation.RestrictionChoices,
-        label=_("restrict to max total value"),
-    )
 
     class Meta:
         model = models.Compensation
