@@ -142,6 +142,21 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         default=-500_000_000,
         help_text=_("min total value to calculate the compensation value"),
     )
+    min_total_formula = models.TextField(
+        verbose_name=_("min total formula"),
+        blank=True,
+        default="",
+        help_text="""
+        <strong>Formula to calculate compensation min total value</strong>
+        <strong>(this will override the min total value field)</strong>
+        <ul>
+            <li>- It should be a valid python expression</li>
+            <li>- It should return a decimal number</li>
+            <li>- You can use (compensation, employee and quantity) objects to calculate the value if based on any one of them</li>
+            <li>- You can use underscores (_) to separate numbers as thousands</li>
+        </ul>
+        """,
+    )
     restrict_to_min_total_value = models.TextField(
         verbose_name=_("restrict to min total value"),
         choices=RestrictionChoices.choices,
@@ -156,6 +171,21 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         decimal_places=4,
         default=500_000_000,
         help_text=_("max total value to calculate the compensation value"),
+    )
+    max_total_formula = models.TextField(
+        verbose_name=_("max total formula"),
+        blank=True,
+        default="",
+        help_text="""
+        <strong>Formula to calculate compensation max total value</strong>
+        <strong>(this will override the max total value field)</strong>
+        <ul>
+            <li>- It should be a valid python expression</li>
+            <li>- It should return a decimal number</li>
+            <li>- You can use (compensation, employee and quantity) objects to calculate the value if based on any one of them</li>
+            <li>- You can use underscores (_) to separate numbers as thousands</li>
+        </ul>
+        """,
     )
     restrict_to_max_total_value = models.TextField(
         verbose_name=_("restrict to max total value"),
@@ -179,6 +209,7 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         default="",
         help_text="""
         <strong>Formula to calculate compensation value</strong>
+        <strong>(this will override the value field)</strong>
         <ul>
             <li>- It should be a valid python expression</li>
             <li>- It should return a decimal number</li>
@@ -214,6 +245,28 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
     )
 
     objects: CompensationManager = CompensationManager()
+
+    def get_min_total(self, **context) -> Decimal:
+        if not self.min_total_formula:
+            return self.min_total
+
+        try:
+            # formula should like this
+            # `2000 if obj.gender == "male" else 1000`
+            return eval(self.min_total_formula)
+        except Exception as e:
+            raise FormulaNotValid(*e.args)
+
+    def get_max_total(self, **context) -> Decimal:
+        if not self.max_total_formula:
+            return self.max_total
+
+        try:
+            # formula should like this
+            # `2000 if obj.gender == "male" else 1000`
+            return eval(self.max_total_formula)
+        except Exception as e:
+            raise FormulaNotValid(*e.args)
 
     def _calculate_formula(self, value: Decimal | int | float, **context) -> Decimal:
         try:

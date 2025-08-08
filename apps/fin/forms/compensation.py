@@ -47,8 +47,10 @@ class BaseCompensationForm(CustomModelForm):
             "min_value",
             "max_value",
             "min_total",
+            "min_total_formula",
             "restrict_to_min_total_value",
             "max_total",
+            "max_total_formula",
             "restrict_to_max_total_value",
             "round_method",
             "rounded_to",
@@ -73,6 +75,18 @@ class BaseCompensationForm(CustomModelForm):
             "description": widgets.get_textarea_widget(),
             "document": widgets.get_file_widget(),
             "formula": widgets.get_textarea_widget(
+                rows=4,
+                placeholder=_(
+                    "e.g. 1000 if obj.gender == 'male' else 1000",
+                ),
+            ),
+            "min_total_formula": widgets.get_textarea_widget(
+                rows=4,
+                placeholder=_(
+                    "e.g. 1000 if obj.gender == 'male' else 1000",
+                ),
+            ),
+            "max_total_formula": widgets.get_textarea_widget(
                 rows=4,
                 placeholder=_(
                     "e.g. 1000 if obj.gender == 'male' else 1000",

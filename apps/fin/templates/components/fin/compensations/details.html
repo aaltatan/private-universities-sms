@@ -77,6 +77,15 @@
         <!--  -->
         <c-table.tr>
           <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'min_total_formula' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'min_total_formula' }}">
+            {{ object.min_total_formula }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
             {{ model|verbose_name:'restrict_to_min_total_value' }}
           </c-table.td>
           <c-table.td data-header="{{ model|verbose_name:'restrict_to_min_total_value' }}">
@@ -90,6 +99,15 @@
           </c-table.td>
           <c-table.td data-header="{{ model|verbose_name:'max_total' }}">
             {{ object.max_total|money }}
+          </c-table.td>
+        </c-table.tr>
+        <!--  -->
+        <c-table.tr>
+          <c-table.td :header="True" data-header="{% translate 'name'|title %}">
+            {{ model|verbose_name:'max_total_formula' }}
+          </c-table.td>
+          <c-table.td data-header="{{ model|verbose_name:'max_total_formula' }}">
+            {{ object.max_total_formula }}
           </c-table.td>
         </c-table.tr>
         <!--  -->

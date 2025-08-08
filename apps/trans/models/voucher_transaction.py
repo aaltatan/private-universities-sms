@@ -97,6 +97,8 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
     # cached properties
 
     cached_compensation_value = None
+    cached_compensation_min_total_value = None
+    cached_compensation_max_total_value = None
 
     def get_formula_context(self) -> dict[str, Any]:
         return {
@@ -104,6 +106,22 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
             "employee": self.employee,
             "quantity": self.quantity,
         }
+
+    def get_compensation_min_total(self):
+        if self.cached_compensation_min_total_value is None:
+            context = self.get_formula_context()
+            self.cached_compensation_min_total_value = self.compensation.get_min_total(
+                **context
+            )
+        return self.cached_compensation_min_total_value
+
+    def get_compensation_max_total(self):
+        if self.cached_compensation_max_total_value is None:
+            context = self.get_formula_context()
+            self.cached_compensation_max_total_value = self.compensation.get_max_total(
+                **context
+            )
+        return self.cached_compensation_max_total_value
 
     def calculate_compensation(self):
         if self.cached_compensation_value is None:
@@ -119,16 +137,16 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
         if (
             self.compensation.restrict_to_min_total_value
             == self.compensation.RestrictionChoices.REPLACE
-            and total < self.compensation.min_total
+            and total < self.get_compensation_min_total()
         ):
-            total = self.compensation.min_total
+            total = self.get_compensation_min_total()
 
         if (
             self.compensation.restrict_to_max_total_value
             == self.compensation.RestrictionChoices.REPLACE
-            and total > self.compensation.max_total
+            and total > self.get_compensation_max_total()
         ):
-            total = self.compensation.max_total
+            total = self.get_compensation_max_total()
 
         return total
 
@@ -145,10 +163,10 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
                 == self.compensation.tax.CalculationMethodChoices.FIXED_PERCENTAGE
                 and self.compensation.restrict_to_max_total_value
                 == self.compensation.RestrictionChoices.REPLACE
-                and total > self.compensation.max_total
+                and total > self.get_compensation_max_total()
             ):
                 total_tax = (
-                    self.compensation.tax.percentage * self.compensation.max_total
+                    self.compensation.tax.percentage * self.get_compensation_max_total()
                 )
             else:
                 total_tax = (
@@ -169,6 +187,29 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
 
     def clean(self):
         errors: dict[str, ValidationError] = {}
+        context = self.get_formula_context()
+
+        if getattr(self, "compensation", None) and self.compensation.min_total_formula:
+            try:
+                self.compensation.get_min_total(**context)
+            except FormulaNotValid as e:
+                errors["compensation"] = ValidationError(
+                    "compensation min total formula is not valid, REASON: {}".format(
+                        e.args[0]
+                    ),
+                )
+                raise ValidationError(errors)
+
+        if getattr(self, "compensation", None) and self.compensation.max_total_formula:
+            try:
+                self.compensation.get_max_total(**context)
+            except FormulaNotValid as e:
+                errors["compensation"] = ValidationError(
+                    "compensation max total formula is not valid, REASON: {}".format(
+                        e.args[0]
+                    ),
+                )
+                raise ValidationError(errors)
 
         if (
             getattr(self, "compensation", None)
@@ -176,7 +217,6 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
             == self.compensation.CalculationChoices.FORMULA
         ):
             try:
-                context = self.get_formula_context()
                 self.compensation.calculate(self.value, **context)
             except FormulaNotValid as e:
                 errors["compensation"] = ValidationError(
@@ -193,7 +233,6 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
             == self.compensation.tax.CalculationMethodChoices.FORMULA
         ):
             try:
-                context = self.get_formula_context()
                 self.calculate_tax(0)
             except FormulaNotValid as e:
                 errors["compensation"] = ValidationError(
@@ -249,11 +288,11 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
             compensation_value = self.calculate_compensation()
             total = self.calculate_total(compensation_value)
 
-            if total < self.compensation.min_total:
+            if total < self.get_compensation_min_total():
                 errors["value"] = ValidationError(
                     _(
                         "this compensation has max total and its must be greater than or equal to compensation min total ({:,.2f})"
-                    ).format(self.compensation.min_total),
+                    ).format(self.get_compensation_min_total()),
                 )
 
         if (
@@ -264,11 +303,11 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
             compensation_value = self.calculate_compensation()
             total = self.calculate_total(compensation_value)
 
-            if total > self.compensation.max_total:
+            if total > self.get_compensation_max_total():
                 errors["value"] = ValidationError(
                     _(
                         "this compensation has max total and its must be less than or equal to compensation max total ({:,.2f})"
-                    ).format(self.compensation.max_total),
+                    ).format(self.get_compensation_max_total()),
                 )
 
         if errors:
@@ -360,8 +399,8 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
             )
 
         return result + _("\n({min:,.2f} ~ {max:,.2f})").format(
-            min=self.compensation.min_total,
-            max=self.compensation.max_total,
+            min=self.get_compensation_min_total(),
+            max=self.get_compensation_max_total(),
         )
 
     @property

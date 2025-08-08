@@ -69,6 +69,14 @@ class CompensationResource(BaseResource):
         attribute="restrict_to_max_total_value",
         column_name=_("restrict to max total value").title(),
     )
+    min_total_formula = fields.Field(
+        attribute="min_total_formula",
+        column_name=_("min total formula").title(),
+    )
+    max_total_formula = fields.Field(
+        attribute="max_total_formula",
+        column_name=_("max total formula").title(),
+    )
     affected_by_working_days = fields.Field(
         attribute="affected_by_working_days",
         column_name=_("affected by working days").title(),
@@ -120,8 +128,10 @@ class CompensationResource(BaseResource):
             "min_value",
             "max_value",
             "min_total",
+            "min_total_formula",
             "restrict_to_min_total_value",
             "max_total",
+            "max_total_formula",
             "restrict_to_max_total_value",
             "formula",
             "affected_by_working_days",
