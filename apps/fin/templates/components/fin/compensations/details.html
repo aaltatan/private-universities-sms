@@ -1,6 +1,6 @@
 {% load i18n utils humanize formats %}
 
-<c-layout.modal.body :close_padding="buttons_padding">
+<c-layout.modal.body :close_padding="buttons_padding" width="xl">
   <c-slot name="header">{% translate 'details'|title %}: {{ object.name }} </c-slot>
   <c-slot name="body">
     <c-table height="sm">
