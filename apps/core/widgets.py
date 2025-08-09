@@ -159,11 +159,13 @@ def get_money_widget(
 
 def get_text_widget(**attributes: dict[str, str]) -> TextInput:
     """Get text field."""
+    attributes.setdefault("@keydown.enter.prevent", "")
     return TextInput(attrs=attributes)
 
 
 def get_number_widget(**attributes: dict[str, str]) -> TextInput:
     """Get text field."""
+    attributes.setdefault("@keydown.enter.prevent", "")
     return NumberInput(attrs=attributes)
 
 
