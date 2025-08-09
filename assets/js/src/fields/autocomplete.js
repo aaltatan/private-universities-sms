@@ -3,7 +3,6 @@ export function autocomplete(data = { url, initial, eventName, inputId }) {
     keywords: "",
     title: "",
     isListOpen: false,
-    timeout: null,
     async init() {
       if (data.initial) {
         this.keywords = data.initial;
@@ -27,10 +26,7 @@ export function autocomplete(data = { url, initial, eventName, inputId }) {
     handleSelectOption(pk) {
       this.keywords = pk;
       this.title = pk;
-      this.timeout = setTimeout(() => {
-        this.selectInput();
-        this.closeList();
-      }, 100);
+      this.closeList();
     },
     handleCloseAndSelect() {
       this.closeList();
@@ -52,9 +48,6 @@ export function autocomplete(data = { url, initial, eventName, inputId }) {
     handleEnableInput() {
       this.$refs.autocompleteInput.disabled = false;
       this.$refs.autocompleteIndicator.classList.add("hidden");
-    },
-    destroy() {
-      clearTimeout(this.timeout);
     },
   };
 }
