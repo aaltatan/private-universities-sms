@@ -22,15 +22,6 @@ class BaseVoucherManager(models.Manager):
     annotations = {
         "search": annotate_search(constants.SEARCH_FIELDS),
         "transactions_count": models.Count("transactions"),
-        "total": models.ExpressionWrapper(
-            Coalesce(
-                models.Sum(
-                    models.F("transactions__quantity") * models.F("transactions__value")
-                ),
-                Decimal(0),
-            ),
-            output_field=models.DecimalField(decimal_places=4, max_digits=20),
-        ),
         "quantity_total": models.ExpressionWrapper(
             Coalesce(models.Sum(models.F("transactions__quantity")), Decimal(0)),
             output_field=models.DecimalField(decimal_places=4, max_digits=20),
@@ -39,15 +30,19 @@ class BaseVoucherManager(models.Manager):
             Coalesce(models.Sum(models.F("transactions__value")), Decimal(0)),
             output_field=models.DecimalField(decimal_places=4, max_digits=20),
         ),
+        "total": models.ExpressionWrapper(
+            Coalesce(
+                models.Sum(models.F("transactions__total")),
+                Decimal(0),
+            ),
+            output_field=models.DecimalField(decimal_places=4, max_digits=20),
+        ),
         "tax_total": models.ExpressionWrapper(
             Coalesce(models.Sum(models.F("transactions__tax")), Decimal(0)),
             output_field=models.DecimalField(decimal_places=4, max_digits=20),
         ),
         "net": Coalesce(
-            models.Sum(
-                (models.F("transactions__quantity") * models.F("transactions__value"))
-                - models.F("transactions__tax")
-            ),
+            models.Sum(models.F("transactions__net")),
             Decimal(0),
         ),
     }
