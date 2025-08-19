@@ -1,14 +1,14 @@
+from decimal import Decimal
 import json
 from typing import Any
 from urllib.parse import urlencode
 
 from django.db.models import QuerySet
-from django.forms import FileInput, ModelChoiceField
+from django.forms import FileInput, ModelChoiceField, DecimalField
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from .widgets import AutocompleteWidget
-
 
 class CustomModelChoiceField(ModelChoiceField):
     """A custom ModelChoiceField."""
@@ -16,6 +16,20 @@ class CustomModelChoiceField(ModelChoiceField):
     default_error_messages = {
         "invalid_choice": _("this choice is not valid"),
     }
+
+
+class MoneyField(DecimalField):
+    """A custom DecimalField works with money mask in alpine.js."""
+
+    def to_python(self, value):
+        if value is None:
+            return None
+        if isinstance(value, str):
+            value = Decimal(value.replace(",", ""))
+        return super().to_python(value)
+    
+    def widget_attrs(self, widget):
+        return {"x-mask:dynamic": "$money($input, '.', ',', 4)"}
 
 
 def get_avatar_field(url: str, **kwargs: dict[str, str]) -> FileInput:
