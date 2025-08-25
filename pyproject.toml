@@ -28,6 +28,8 @@ dependencies = [
     "docxtpl>=0.20.0",
     "django-cleanup>=9.0.0",
     "django-solo>=2.4.0",
+    "pyparsing>=3.2.3",
+    "pydot>=4.0.1",
 ]
 
 [dependency-groups]
