@@ -132,7 +132,7 @@ def test_delete_activity(
     qs = model.objects.all()
     activity = activity_model.objects.first()
 
-    assert response.status_code == 204
+    assert response.status_code == 200
     assert qs.count() == 3
     assert activity.kind == "delete"
     assert activity.data == {"name": "محافظة ادلب", "description": "meta"}
@@ -273,7 +273,7 @@ def test_bulk_delete_activity(
         {"name": "محافظة المنيا", "description": "language mena"},
     ]
 
-    assert response.status_code == 204
+    assert response.status_code == 200
     assert model.objects.count() == 2
     assert activities.count() == 2
 

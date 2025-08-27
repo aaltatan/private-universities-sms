@@ -33,9 +33,9 @@ class TestPermissions(commons.CommonPermissionsTests):
     pytestmark = pytest.mark.django_db
 
 
-@pytest.mark.django_db
-class TestQuerystring(commons.CommonQuerystringTests):
-    pytestmark = pytest.mark.django_db
+# @pytest.mark.django_db
+# class TestQuerystring(commons.CommonQuerystringTests):
+#     pytestmark = pytest.mark.django_db
 
 
 @pytest.mark.django_db

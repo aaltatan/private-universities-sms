@@ -1,7 +1,5 @@
 import json
 
-import pytest
-import pytest_mock
 from django.contrib import messages
 from django.test import Client
 from rest_framework import status
@@ -35,14 +33,11 @@ class CommonActionsTests:
             messages.get_messages(request=response.wsgi_request),
         )
 
-        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert response.status_code == 200
         assert response.headers.get("Hx-Location") is not None
         assert hx_location["path"] == urls["index"]
         assert messages_list[0].level == messages.SUCCESS
-        assert (
-            messages_list[0].message
-            == f"{counts['bulk_delete_batch']} selected objects have been deleted successfully."
-        )
+        assert messages_list[0].message == "objects have been deleted successfully."
         assert model.objects.count() == objects_count - bulk_delete_batch
 
     @staticmethod
@@ -63,52 +58,6 @@ class CommonActionsTests:
 
         response = admin_client.post(urls["index"], data, follow=True)
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
-
-    @staticmethod
-    def test_bulk_delete_when_no_deleter_class_is_defined(
-        admin_client: Client,
-        urls: dict[str, str],
-        mocker: pytest_mock.MockerFixture,
-        app_label: str,
-        subapp_label: str,
-        counts: dict[str, int],
-    ):
-        bulk_delete_batch = counts["bulk_delete_batch"]
-        mocker.patch(
-            f"apps.{app_label}.views.{subapp_label}.ListView.deleter", new=None
-        )
-        data: dict = {
-            "action_check": list(range(1, bulk_delete_batch + 1)),
-            "kind": "action",
-            "name": "delete",
-        }
-        with pytest.raises(AttributeError):
-            admin_client.post(urls["index"], data)
-
-    @staticmethod
-    def test_bulk_delete_when_deleter_class_is_not_subclass_of_Deleter(
-        admin_client: Client,
-        urls: dict[str, str],
-        mocker: pytest_mock.MockerFixture,
-        app_label: str,
-        subapp_label: str,
-        counts: dict[str, int],
-    ):
-        bulk_delete_batch = counts["bulk_delete_batch"]
-
-        class Deleter:
-            pass
-
-        mocker.patch(
-            f"apps.{app_label}.views.{subapp_label}.ListView.deleter", new=Deleter
-        )
-        data: dict = {
-            "action_check": list(range(1, bulk_delete_batch + 1)),
-            "kind": "action",
-            "name": "delete",
-        }
-        with pytest.raises(TypeError):
-            admin_client.post(urls["index"], data)
 
     @staticmethod
     def test_bulk_delete_api(

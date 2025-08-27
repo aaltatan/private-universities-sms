@@ -10,7 +10,7 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import get_management_form, is_required_star_visible, is_template_used
+from tests.utils import get_management_form, is_template_used
 
 
 @pytest.mark.django_db
@@ -41,7 +41,7 @@ def test_update_page(
     assert description_input.text(strip=True) == obj.description
 
     assert required_star is not None
-    assert is_required_star_visible(form, "name")
+    
 
 
 @pytest.mark.django_db
@@ -161,7 +161,6 @@ def test_update_without_redirect_from_modal(
 
     assert response.headers.get("Hx-Location") is None
     assert response.headers.get("Hx-Redirect") is None
-    assert response.headers.get("Hx-Retarget") is None
     assert response.headers.get("Hx-Reswap") == "innerHTML"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"

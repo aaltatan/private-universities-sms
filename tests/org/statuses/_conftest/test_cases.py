@@ -105,21 +105,32 @@ def export_test_cases(request: pytest.FixtureRequest):
     scope="package",
     params=[
         (
-            {"name": "Ha", "is_payable": True, "description": "google"},
+            {
+                "name": "Ha",
+                "is_payable": True,
+                "is_separated": True,
+                "description": "google",
+            },
             ["the field must be at least 4 characters long."],
         ),
         (
-            {"name": "", "is_payable": True, "description": ""},
+            {"name": "", "is_payable": True, "is_separated": True, "description": ""},
             ["This field is required."],
         ),
         (
-            {"name": "a" * 265, "is_payable": True, "description": ""},
+            {
+                "name": "a" * 265,
+                "is_payable": True,
+                "is_separated": True,
+                "description": "",
+            },
             ["Ensure this value has at most 255 characters (it has 265)."],
         ),
         (
             {
                 "name": "Status 100",
                 "is_payable": True,
+                "is_separated": True,
                 "description": "google",
             },
             ["Status with this Name already exists."],
@@ -128,6 +139,7 @@ def export_test_cases(request: pytest.FixtureRequest):
             {
                 "name": "Status 100",
                 "is_payable": "sss",
+                "is_separated": True,
                 "description": "google",
             },
             [
@@ -139,6 +151,7 @@ def export_test_cases(request: pytest.FixtureRequest):
             {
                 "name": "Status 1312",
                 "is_payable": 4,
+                "is_separated": True,
                 "description": "google",
             },
             [
@@ -149,6 +162,7 @@ def export_test_cases(request: pytest.FixtureRequest):
             {
                 "name": "Na",
                 "is_payable": 4,
+                "is_separated": True,
                 "description": "google",
             },
             [

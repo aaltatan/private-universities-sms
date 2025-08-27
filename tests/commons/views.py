@@ -73,7 +73,7 @@ class CommonViewsTests:
         parser = HTMLParser(response.content)
         modal_body = (
             parser.css_first(
-                "#modal-container > div > form > div:nth-child(2) p",
+                "#modal-body p",
             )
             .text(strip=True)
             .replace("\n", "")
@@ -123,7 +123,7 @@ class CommonViewsTests:
         assert messages_list[0].level == messages.ERROR
         assert (
             messages_list[0].message
-            == "you can't delete this object because you are not using htmx."
+            == "you can't execute this action because you are not using htmx."
         )
 
     @staticmethod
@@ -148,9 +148,7 @@ class CommonViewsTests:
             headers=headers_modal_GET,
         )
         parser = HTMLParser(response.content)
-        modal_body = parser.css_first(
-            "#modal-container p",
-        ).text(strip=True)
+        modal_body = parser.css_first("#modal-body p").text(strip=True)
 
         modal_body = re.sub(r"\s+", " ", modal_body)
 
@@ -201,7 +199,7 @@ class CommonViewsTests:
         parser = HTMLParser(response.content)
         checkboxes = parser.css("input[id^='row-check-']")
 
-        assert len(checkboxes) == 10
+        assert len(checkboxes) == 25
         assert response.status_code == status.HTTP_200_OK
         assert is_template_used(templates["index"], response)
 
@@ -221,7 +219,7 @@ class CommonViewsTests:
         checkboxes = parser.css("input[id^='row-check-']")
 
         assert response.status_code == status.HTTP_200_OK
-        assert len(checkboxes) == 10
+        assert len(checkboxes) == 25
         assert is_template_used(templates["index"], response)
 
     @staticmethod
@@ -359,9 +357,12 @@ class CommonViewsTests:
         edit_btns = parser.css("a[aria-label='edit object']")
         activities_btns = parser.css("a[aria-label='object activities']")
 
+        print(f"{tds_name=}")
+        print("#" * 100)
+
         assert response.status_code == status.HTTP_200_OK
-        assert len(tds_name) == 10
-        assert len(context_menu_btns) == 30
+        assert len(tds_name) == 25
+        assert len(context_menu_btns) == 75
 
         for pk, td in zip(tds_id, tds_name):
             pk = int(pk.attributes["data-id"])

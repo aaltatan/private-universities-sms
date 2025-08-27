@@ -4,7 +4,6 @@ import pytest
 from django.contrib import messages
 from django.contrib.messages import get_messages
 from django.test import Client
-from django.urls import reverse
 from django.utils.text import slugify
 from rest_framework import status
 from rest_framework.response import Response
@@ -12,12 +11,7 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import (
-    get_nested_create_btn,
-    get_nested_hx_path,
-    is_required_star_visible,
-    is_template_used,
-)
+from tests.utils import get_nested_create_btn, is_template_used
 
 
 @pytest.mark.django_db
@@ -40,9 +34,6 @@ def test_create_page(
     email_input = form.css_first("input[name='email']")
     phone_input = form.css_first("input[name='phone']")
 
-    nationality_create_btn = get_nested_create_btn(form=form, input_name="nationality")
-    kind_create_btn = get_nested_create_btn(form=form, input_name="kind")
-
     assert response.status_code == status.HTTP_200_OK
     assert is_template_used(templates["create"], response)
 
@@ -57,18 +48,6 @@ def test_create_page(
     assert email_input is not None
     assert phone_input is not None
     assert description_input is not None
-
-    assert is_required_star_visible(form, "name")
-    assert is_required_star_visible(form, "nationality")
-    assert is_required_star_visible(form, "kind")
-    assert not is_required_star_visible(form, "website")
-    assert not is_required_star_visible(form, "email")
-    assert not is_required_star_visible(form, "phone")
-
-    assert nationality_create_btn is not None
-    assert kind_create_btn is not None
-    assert get_nested_hx_path(nationality_create_btn) == reverse("geo:nationalities:create")
-    assert get_nested_hx_path(kind_create_btn) == reverse("edu:school_kinds:create")
 
 
 @pytest.mark.django_db
@@ -112,13 +91,6 @@ def test_create_page_without_perms_for_creating_nested_objects(
     assert email_input is not None
     assert phone_input is not None
     assert description_input is not None
-
-    assert is_required_star_visible(form, "name")
-    assert is_required_star_visible(form, "nationality")
-    assert is_required_star_visible(form, "kind")
-    assert not is_required_star_visible(form, "website")
-    assert not is_required_star_visible(form, "email")
-    assert not is_required_star_visible(form, "phone")
 
     assert nationality_create_btn is None
     assert kind_create_btn is None

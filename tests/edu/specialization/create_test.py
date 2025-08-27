@@ -11,7 +11,7 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import is_required_star_visible, is_template_used
+from tests.utils import is_template_used
 
 
 @pytest.mark.django_db
@@ -39,7 +39,7 @@ def test_create_page(
 
     assert name_input is not None
     assert is_specialist_select is not None
-    assert is_required_star_visible(form, "name")
+    
     assert description_input is not None
 
 

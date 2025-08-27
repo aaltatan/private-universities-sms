@@ -24,8 +24,7 @@ def test_index_page_has_update_link_for_nested_objects(
     assert is_template_used(templates["index"], response)
     assert nationality is not None
     assert kind is not None
-    assert obj.nationality.get_update_url() in nationality.attributes["hx-get"]
-    assert obj.nationality.get_update_url() in nationality.attributes["hx-get"]
+    assert obj.nationality.get_absolute_url() in nationality.attributes["hx-get"]
 
 
 @pytest.mark.django_db

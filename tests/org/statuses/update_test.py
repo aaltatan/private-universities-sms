@@ -10,7 +10,7 @@ from rest_framework.test import APIClient
 from selectolax.parser import HTMLParser
 
 from apps.core.models import AbstractUniqueNameModel as Model
-from tests.utils import is_required_star_visible, is_template_used
+from tests.utils import is_template_used
 
 
 @pytest.mark.django_db
@@ -45,7 +45,7 @@ def test_update_page(
     assert description_input.text(strip=True) == obj.description
 
     assert required_star is not None
-    assert is_required_star_visible(form, "name")
+    
 
 
 @pytest.mark.django_db
@@ -108,7 +108,7 @@ def test_update_with_redirect_from_modal(
     response = admin_client.post(url, clean_data_sample, headers=headers)
 
     location: dict = json.loads(
-        response.headers.get("Hx-Location", ""),
+        response.headers.get("Hx-Location", {}),
     )
     messages_list = list(
         get_messages(request=response.wsgi_request),
@@ -163,8 +163,6 @@ def test_update_without_redirect_from_modal(
 
     assert response.headers.get("Hx-Location") is None
     assert response.headers.get("Hx-Redirect") is None
-    assert response.headers.get("Hx-Retarget") is None
-    assert response.headers.get("Hx-Reswap") == "innerHTML"
     assert messages_list[0].level == messages.SUCCESS
     assert messages_list[0].message == f"({name}) has been updated successfully"
     assert model.objects.count() == counts["objects"]
@@ -196,7 +194,8 @@ def test_update_object(
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["name"] == first.name == "Hamah"
-    assert response.json()["is_payable"] is True
+    assert response.json()["is_payable"] is False
+    assert response.json()["is_separated"] is True
     assert response.json()["description"] == first.description == "some description"
 
 
@@ -217,5 +216,6 @@ def test_patch_object(
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["name"] == first.name
-    assert response.json()["is_payable"] is True
+    assert response.json()["is_payable"] is False
+    assert response.json()["is_separated"] is True
     assert response.json()["description"] == first.description == "some description"

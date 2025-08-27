@@ -22,7 +22,7 @@ def test_index_page_has_update_link_for_governorate(
     assert response.status_code == 200
     assert is_template_used(templates["index"], response)
     assert governorate is not None
-    assert obj.governorate.get_update_url() in governorate.attributes["hx-get"]
+    assert obj.governorate.get_absolute_url() in governorate.attributes["hx-get"]
 
 
 @pytest.mark.django_db

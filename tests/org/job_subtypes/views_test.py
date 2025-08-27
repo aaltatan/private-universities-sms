@@ -22,7 +22,7 @@ def test_index_page_has_update_link_for_job_type(
     assert response.status_code == 200
     assert is_template_used(templates["index"], response)
     assert job_type is not None
-    assert obj.job_type.get_update_url() in job_type.attributes["hx-get"]
+    assert obj.job_type.get_absolute_url() in job_type.attributes["hx-get"]
 
 
 @pytest.mark.django_db

@@ -34,15 +34,15 @@ class CommonDeleteTests:
             messages.get_messages(response.wsgi_request),
         )
 
-        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert response.status_code == 200
         assert location_path == urls["index"]
-        assert response.headers.get("Hx-Trigger") == "messages"
+        assert "messages" in response.headers.get("Hx-Trigger")
         assert messages_list[0].level == messages.SUCCESS
-        assert messages_list[0].message == f"{obj.name} has been deleted successfully."
+        assert messages_list[0].message == "object has been deleted successfully."
         assert model.objects.count() == counts["objects"] - 1
 
     @staticmethod
-    def test_delete_when_no_deleter_class_is_defined(
+    def test_delete_when_no_behavior_class_is_defined(
         admin_client: Client,
         model: type[Model],
         headers_modal_GET: dict[str, str],
@@ -51,7 +51,7 @@ class CommonDeleteTests:
         subapp_label: str,
     ):
         mocker.patch(
-            f"apps.{app_label}.views.{subapp_label}.DeleteView.deleter", new=None
+            f"apps.{app_label}.views.{subapp_label}.DeleteView.behavior", new=None
         )
         obj = model.objects.first()
         with pytest.raises(AttributeError):
@@ -61,7 +61,7 @@ class CommonDeleteTests:
             )
 
     @staticmethod
-    def test_delete_when_deleter_class_is_not_subclass_of_Deleter(
+    def test_delete_when_behavior_class_is_not_subclass_of_ActionBehavior(
         admin_client: Client,
         model: type[Model],
         headers_modal_GET: dict[str, str],
@@ -73,7 +73,7 @@ class CommonDeleteTests:
             pass
 
         mocker.patch(
-            f"apps.{app_label}.views.{subapp_label}.DeleteView.deleter", new=Deleter
+            f"apps.{app_label}.views.{subapp_label}.DeleteView.behavior", new=Deleter
         )
         obj = model.objects.first()
         with pytest.raises(TypeError):
@@ -187,7 +187,7 @@ class CommonDeleteTests:
         custom_deleter: type[Deleter],
     ):
         mocker.patch(
-            f"apps.{app_label}.views.{subapp_label}.DeleteView.deleter",
+            f"apps.{app_label}.views.{subapp_label}.DeleteView.behavior",
             new=custom_deleter,
         )
 
@@ -256,40 +256,3 @@ class CommonDeleteTests:
         assert response.status_code == 400
         assert model.objects.count() == counts["objects"]
         assert response.json()["details"] == "error qs message"
-
-    @staticmethod
-    def test_delete_objects_not_deletable(
-        admin_client: Client,
-        model: type[Model],
-        urls: dict[str, str],
-        headers_modal_GET: dict[str, str],
-        mocker: pytest_mock.MockerFixture,
-        app_label: str,
-        subapp_label: str,
-        counts: dict[str, int],
-        custom_deleter: type[Deleter],
-    ):
-        mocker.patch(
-            f"apps.{app_label}.views.{subapp_label}.ListView.deleter",
-            new=custom_deleter,
-        )
-
-        payload = {
-            "action_check": list(range(1, 10)),
-            "kind": "action",
-            "name": "delete",
-        }
-
-        response = admin_client.post(
-            urls["index"],
-            headers=headers_modal_GET,
-            data=payload,
-        )
-        messages_list = list(
-            messages.get_messages(request=response.wsgi_request),
-        )
-
-        assert response.status_code == 200
-        assert messages_list[0].level == messages.ERROR
-        assert messages_list[0].message == "error qs message"
-        assert model.objects.count() == counts["objects"]

@@ -161,5 +161,5 @@ class CommonPermissionsTests:
             update_url = model.objects.get(pk=pk).name
             assert update_url == td.text(strip=True)
 
-        assert len(delete_context_menu_btns) == 10
+        assert len(delete_context_menu_btns) == 25
         assert update_response.status_code == status.HTTP_403_FORBIDDEN

@@ -88,7 +88,7 @@ def export_test_cases(request: pytest.FixtureRequest):
             ["Ensure this value has at most 255 characters (it has 265)."],
         ),
         (
-            {"name": "Group 002", "kind": "academic", "description": "google"},
+            {"name": "Group 003", "kind": "academic", "description": "google"},
             ["Group with this Name already exists."],
         ),
     ],

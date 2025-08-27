@@ -49,7 +49,14 @@ def api_keys() -> list[str]:
 
 @pytest.fixture
 def index_columns() -> list[str]:
-    return ["name", "is payable", "employees count", "description", "options"]
+    return [
+        "name",
+        "is payable",
+        "is separated",
+        "employees count",
+        "description",
+        "options",
+    ]
 
 
 @pytest.fixture
@@ -89,6 +96,7 @@ def clean_data_sample() -> dict[str, str]:
     return {
         "name": "معلق",
         "is_payable": True,
+        "is_separated": False,
         "description": "دمشق",
     }
 

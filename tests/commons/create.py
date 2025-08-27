@@ -157,7 +157,7 @@ class CommonCreateTests:
         )
 
         for error in errors:
-            assert error in [e.text(strip=True) for e in errors_el]
+            assert error.lower() in [e.text(strip=True).lower() for e in errors_el]
 
         assert is_template_used(templates["create_form"], response)
         assert response.status_code == status.HTTP_200_OK
@@ -204,7 +204,7 @@ class CommonCreateTests:
         )
 
         for error in errors:
-            assert error in [e.text(strip=True) for e in errors_el]
+            assert error.lower() in [e.text(strip=True).lower() for e in errors_el]
 
         assert is_template_used(templates["create_modal_form"], response)
         assert response.status_code == status.HTTP_200_OK

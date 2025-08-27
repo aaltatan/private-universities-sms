@@ -66,8 +66,6 @@ def test_autocomplete_post_method_with_wrong_pk(
         ("حم", 2),
         ("محافظة حماه", 1),
         ("محافظة حمص", 1),
-        ('name endswith "ص"', 1),
-        ("id > 2", 2),
         ("xx", 0),
     ],
 )

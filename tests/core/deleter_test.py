@@ -30,11 +30,14 @@ class CustomMessagesDeleter(Deleter[Model]):
 @pytest.mark.django_db
 def test_deleter_class_with_obj_error_status(model: type[Model]):
     obj = model.objects.filter(name__contains="حماه").first()
-    deleter: Deleter = Deleter(obj=obj)
+    deleter = Deleter(obj=obj)
 
     assert deleter.action() is None
     assert deleter.has_executed is False
-    assert deleter.get_message() == "{} cannot be deleted.".format("محافظة حماه")
+    assert (
+        deleter.get_message()
+        == "you can't delete this object because it is related to other objects."
+    )
     assert model.objects.count() == 4
 
 
@@ -45,9 +48,7 @@ def test_deleter_class_with_obj_success_status(model: type[Model]):
 
     assert deleter.action() == (1, {"geo.Governorate": 1})
     assert deleter.has_executed is True
-    assert deleter.get_message() == "{} has been deleted successfully.".format(
-        "محافظة ادلب"
-    )
+    assert deleter.get_message() == "object has been deleted successfully."
     assert model.objects.count() == 3
 
 
@@ -60,7 +61,7 @@ def test_deleter_class_with_qs_error_status(model: type[Model]):
     assert deleter.has_executed is False
     assert (
         deleter.get_message()
-        == "selected objects CANNOT be deleted because they are related to other objects."
+        == "you can't delete objects because they are related to other objects."
     )
     assert model.objects.count() == 4
 
@@ -74,7 +75,7 @@ def test_deleter_class_with_qs_error_status_2(model: type[Model]):
     assert deleter.has_executed is False
     assert (
         deleter.get_message()
-        == "selected objects CANNOT be deleted because they are related to other objects."
+        == "you can't delete objects because they are related to other objects."
     )
     assert model.objects.count() == 4
 
@@ -86,7 +87,7 @@ def test_deleter_class_with_qs_success_status(model: type[Model]):
 
     assert deleter.action() == (2, {"geo.Governorate": 2})
     assert deleter.has_executed is True
-    assert deleter.get_message() == "2 selected objects have been deleted successfully."
+    assert deleter.get_message() == "objects have been deleted successfully."
     assert model.objects.count() == 2
 
 
