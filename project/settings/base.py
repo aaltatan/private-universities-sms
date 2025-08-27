@@ -244,3 +244,10 @@ DJANGO_VITE = {
 # solo settings
 
 SOLO_CACHE = "local"
+
+# graph models
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
