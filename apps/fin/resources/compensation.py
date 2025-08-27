@@ -61,11 +61,11 @@ class CompensationResource(BaseResource):
         column_name=_("max total value").title(),
         widget=widgets.DecimalWidget(coerce_to_string=False),
     )
-    restricted_min_total_value = fields.Field(
+    restrict_to_min_total_value = fields.Field(
         attribute="restrict_to_min_total_value",
         column_name=_("restrict to min total value").title(),
     )
-    restricted_max_total_value = fields.Field(
+    restrict_to_max_total_value = fields.Field(
         attribute="restrict_to_max_total_value",
         column_name=_("restrict to max total value").title(),
     )
