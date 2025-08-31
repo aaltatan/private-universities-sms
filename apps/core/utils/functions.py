@@ -39,6 +39,9 @@ def get_apps_links(
             if object_name in unlinked_models:
                 continue
 
+            if getattr(model._meta, "codename_plural", None) is None:
+                continue
+
             app_link = AppLink(
                 icon=getattr(model._meta, "icon", "star"),
                 text=getattr(model._meta, "verbose_name_plural", "some app"),
