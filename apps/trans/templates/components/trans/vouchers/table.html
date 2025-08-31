@@ -208,6 +208,7 @@
               </c-layout.contextmenu.item>
               {% endif %}
               <!--  -->
+              {% comment %}
               {% if can_change and not obj.is_migrated %}
               <c-layout.contextmenu.item
                 icon="arrow-up-tray"
@@ -220,6 +221,7 @@
                 {% translate 'import transactions'|capfirst %}
               </c-layout.contextmenu.item>
               {% endif %}
+              {% endcomment %}
             </c-layout.contextmenu.section>
             {% endif %}
             <!--  -->
