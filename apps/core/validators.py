@@ -87,5 +87,5 @@ def validate_xlsx_mimetype(file) -> None:
     file_mimetype = puremagic.from_stream(file, mime=True)
     if file_mimetype not in accepted_mimetypes:
         raise ValidationError(
-            _("file must be a valid xlsx file. xxx"),
+            _("file must be a valid xlsx file."),
         )
