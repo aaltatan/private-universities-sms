@@ -1,0 +1,4283 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-31 11:38+0300\n"
+"PO-Revision-Date: 2025-08-31 20:59+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"X-Generator: Poedit 3.7\n"
+
+#: .\apps\core\choices.py:6
+msgid "normal"
+msgstr "طبيعى"
+
+#: .\apps\core\choices.py:7
+msgid "down"
+msgstr "لأسفل"
+
+#: .\apps\core\choices.py:8
+msgid "up"
+msgstr "أعلى"
+
+#: .\apps\core\choices.py:12
+msgid "january"
+msgstr "كانون الثاني"
+
+#: .\apps\core\choices.py:13
+msgid "february"
+msgstr "شباط"
+
+#: .\apps\core\choices.py:14
+msgid "march"
+msgstr "آذار"
+
+#: .\apps\core\choices.py:15
+msgid "april"
+msgstr "نيسان"
+
+#: .\apps\core\choices.py:16
+msgid "may"
+msgstr "أيار"
+
+#: .\apps\core\choices.py:17
+msgid "june"
+msgstr "نيسان"
+
+#: .\apps\core\choices.py:18
+msgid "july"
+msgstr "تموز"
+
+#: .\apps\core\choices.py:19
+msgid "august"
+msgstr "آب"
+
+#: .\apps\core\choices.py:20
+msgid "september"
+msgstr "أيلول"
+
+#: .\apps\core\choices.py:21
+msgid "october"
+msgstr "تشرين الاول"
+
+#: .\apps\core\choices.py:22
+msgid "november"
+msgstr "تشرين الثاني"
+
+#: .\apps\core\choices.py:23
+msgid "december"
+msgstr "كانون الاول"
+
+#: .\apps\core\choices.py:27
+msgid "first quarter"
+msgstr "الربع الاول"
+
+#: .\apps\core\choices.py:28
+msgid "second quarter"
+msgstr "الربع الثاني"
+
+#: .\apps\core\choices.py:29
+msgid "third quarter"
+msgstr "الربع الثالث"
+
+#: .\apps\core\choices.py:30
+msgid "fourth quarter"
+msgstr "الربع الرابع"
+
+#: .\apps\core\fields.py:17
+msgid "this choice is not valid"
+msgstr "الاختيار ليس صالحاً"
+
+#: .\apps\core\fields.py:56 .\apps\core\filters.py:269
+#: .\apps\core\templates\apps\core\modal-ledger.html:6
+#: .\apps\core\templates\widgets\combobox.html:72
+#: .\apps\core\templates\widgets\select-multiple.html:53
+#: .\apps\edu\templates\components\edu\degrees\table.html:12
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:12
+#: .\apps\edu\templates\components\edu\schools\table.html:12
+#: .\apps\edu\templates\components\edu\specializations\table.html:12
+#: .\apps\fin\templates\components\fin\compensations\table.html:12
+#: .\apps\fin\templates\components\fin\periods\table.html:12
+#: .\apps\fin\templates\components\fin\tax_brackets\table.html:12
+#: .\apps\fin\templates\components\fin\taxes\table.html:12
+#: .\apps\fin\templates\components\fin\voucher_kinds\table.html:12
+#: .\apps\fin\templates\components\fin\years\table.html:12
+#: .\apps\geo\templates\components\geo\cities\table.html:12
+#: .\apps\geo\templates\components\geo\governorates\table.html:12
+#: .\apps\geo\templates\components\geo\nationalities\table.html:12
+#: .\apps\hr\templates\components\hr\employees\table.html:12
+#: .\apps\org\templates\components\org\cost_centers\table.html:12
+#: .\apps\org\templates\components\org\groups\table.html:12
+#: .\apps\org\templates\components\org\job_subtypes\table.html:12
+#: .\apps\org\templates\components\org\job_types\table.html:12
+#: .\apps\org\templates\components\org\positions\table.html:12
+#: .\apps\org\templates\components\org\statuses\table.html:12
+#: .\apps\reports\templates\components\reports\compensations\table.html:12
+#: .\apps\reports\templates\components\reports\cost_centers\table.html:12
+#: .\apps\reports\templates\components\reports\employees\table.html:12
+#: .\apps\reports\templates\components\reports\ledger\table.html:12
+#: .\apps\reports\templates\components\reports\periods\table.html:12
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:12
+#: .\apps\trans\templates\components\trans\journal_entries\table.html:12
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:12
+#: .\apps\trans\templates\components\trans\vouchers\table.html:12
+msgid "search"
+msgstr "البحث"
+
+#: .\apps\core\filters.py:84
+#, python-format
+msgid "%s (desc)"
+msgstr "%s (تنازلي)"
+
+#: .\apps\core\filters.py:187 .\apps\core\filters.py:222
+#: .\apps\fin\templates\components\fin\taxes\details.html:131
+#: .\apps\fin\templates\components\fin\taxes\details.html:138
+msgid "from"
+msgstr "من"
+
+#: .\apps\core\filters.py:188 .\apps\core\filters.py:224
+#: .\apps\fin\templates\components\fin\taxes\details.html:132
+#: .\apps\fin\templates\components\fin\taxes\details.html:141
+msgid "to"
+msgstr "الى"
+
+#: .\apps\core\filters.py:256 .\apps\core\models\abstracts.py:83
+#: .\apps\core\models\template.py:15 .\apps\core\resources.py:45
+#: .\apps\edu\constants\degrees.py:6 .\apps\edu\constants\school_kinds.py:6
+#: .\apps\edu\constants\schools.py:5 .\apps\edu\constants\specialization.py:6
+#: .\apps\edu\templates\components\edu\degrees\details.html:9
+#: .\apps\edu\templates\components\edu\degrees\details.html:23
+#: .\apps\edu\templates\components\edu\degrees\details.html:31
+#: .\apps\edu\templates\components\edu\degrees\details.html:39
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:9
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:15
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:23
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:31
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:39
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:55
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:61
+#: .\apps\edu\templates\components\edu\schools\details.html:9
+#: .\apps\edu\templates\components\edu\schools\details.html:15
+#: .\apps\edu\templates\components\edu\schools\details.html:23
+#: .\apps\edu\templates\components\edu\schools\details.html:31
+#: .\apps\edu\templates\components\edu\schools\details.html:39
+#: .\apps\edu\templates\components\edu\schools\details.html:47
+#: .\apps\edu\templates\components\edu\schools\details.html:55
+#: .\apps\edu\templates\components\edu\schools\details.html:63
+#: .\apps\edu\templates\components\edu\schools\details.html:71
+#: .\apps\edu\templates\components\edu\specializations\details.html:9
+#: .\apps\edu\templates\components\edu\specializations\details.html:15
+#: .\apps\edu\templates\components\edu\specializations\details.html:23
+#: .\apps\edu\templates\components\edu\specializations\details.html:31
+#: .\apps\fin\constants\compensations.py:6 .\apps\fin\constants\periods.py:6
+#: .\apps\fin\constants\taxes.py:6 .\apps\fin\constants\voucher_kinds.py:6
+#: .\apps\fin\constants\years.py:6
+#: .\apps\fin\templates\components\fin\compensations\details.html:9
+#: .\apps\fin\templates\components\fin\compensations\details.html:16
+#: .\apps\fin\templates\components\fin\compensations\details.html:25
+#: .\apps\fin\templates\components\fin\compensations\details.html:34
+#: .\apps\fin\templates\components\fin\compensations\details.html:43
+#: .\apps\fin\templates\components\fin\compensations\details.html:52
+#: .\apps\fin\templates\components\fin\compensations\details.html:61
+#: .\apps\fin\templates\components\fin\compensations\details.html:70
+#: .\apps\fin\templates\components\fin\compensations\details.html:79
+#: .\apps\fin\templates\components\fin\compensations\details.html:88
+#: .\apps\fin\templates\components\fin\compensations\details.html:97
+#: .\apps\fin\templates\components\fin\compensations\details.html:106
+#: .\apps\fin\templates\components\fin\compensations\details.html:115
+#: .\apps\fin\templates\components\fin\compensations\details.html:124
+#: .\apps\fin\templates\components\fin\compensations\details.html:133
+#: .\apps\fin\templates\components\fin\compensations\details.html:142
+#: .\apps\fin\templates\components\fin\compensations\details.html:151
+#: .\apps\fin\templates\components\fin\compensations\details.html:160
+#: .\apps\fin\templates\components\fin\compensations\details.html:169
+#: .\apps\fin\templates\components\fin\compensations\details.html:179
+#: .\apps\fin\templates\components\fin\compensations\details.html:189
+#: .\apps\fin\templates\components\fin\compensations\details.html:198
+#: .\apps\fin\templates\components\fin\compensations\details.html:208
+#: .\apps\fin\templates\components\fin\periods\details.html:9
+#: .\apps\fin\templates\components\fin\periods\details.html:15
+#: .\apps\fin\templates\components\fin\periods\details.html:37
+#: .\apps\fin\templates\components\fin\tax_brackets\details.html:10
+#: .\apps\fin\templates\components\fin\tax_brackets\details.html:17
+#: .\apps\fin\templates\components\fin\tax_brackets\details.html:26
+#: .\apps\fin\templates\components\fin\tax_brackets\details.html:35
+#: .\apps\fin\templates\components\fin\tax_brackets\details.html:44
+#: .\apps\fin\templates\components\fin\taxes\details.html:10
+#: .\apps\fin\templates\components\fin\taxes\details.html:19
+#: .\apps\fin\templates\components\fin\taxes\details.html:29
+#: .\apps\fin\templates\components\fin\taxes\details.html:40
+#: .\apps\fin\templates\components\fin\taxes\details.html:51
+#: .\apps\fin\templates\components\fin\taxes\details.html:61
+#: .\apps\fin\templates\components\fin\taxes\details.html:70
+#: .\apps\fin\templates\components\fin\taxes\details.html:79
+#: .\apps\fin\templates\components\fin\taxes\details.html:88
+#: .\apps\fin\templates\components\fin\taxes\details.html:97
+#: .\apps\fin\templates\components\fin\taxes\details.html:106
+#: .\apps\fin\templates\components\fin\taxes\details.html:115
+#: .\apps\fin\templates\components\fin\taxes\details.html:159
+#: .\apps\fin\templates\components\fin\taxes\details.html:164
+#: .\apps\fin\templates\components\fin\voucher_kinds\details.html:9
+#: .\apps\fin\templates\components\fin\voucher_kinds\details.html:15
+#: .\apps\fin\templates\components\fin\voucher_kinds\details.html:23
+#: .\apps\fin\templates\components\fin\years\details.html:9
+#: .\apps\fin\templates\components\fin\years\details.html:15
+#: .\apps\fin\templates\components\fin\years\details.html:31
+#: .\apps\fin\templates\components\fin\years\details.html:39
+#: .\apps\geo\constants\cities.py:6 .\apps\geo\constants\governorates.py:6
+#: .\apps\geo\constants\nationalities.py:6
+#: .\apps\geo\templates\components\geo\cities\details.html:9
+#: .\apps\geo\templates\components\geo\cities\details.html:15
+#: .\apps\geo\templates\components\geo\cities\details.html:23
+#: .\apps\geo\templates\components\geo\cities\details.html:31
+#: .\apps\geo\templates\components\geo\cities\details.html:39
+#: .\apps\geo\templates\components\geo\governorates\cities\inline.html:7
+#: .\apps\geo\templates\components\geo\governorates\details.html:9
+#: .\apps\geo\templates\components\geo\governorates\details.html:15
+#: .\apps\geo\templates\components\geo\governorates\details.html:23
+#: .\apps\geo\templates\components\geo\governorates\details.html:39
+#: .\apps\geo\templates\components\geo\governorates\details.html:46
+#: .\apps\geo\templates\components\geo\governorates\update.html:31
+#: .\apps\geo\templates\components\geo\nationalities\details.html:9
+#: .\apps\geo\templates\components\geo\nationalities\details.html:15
+#: .\apps\geo\templates\components\geo\nationalities\details.html:23
+#: .\apps\geo\templates\components\geo\nationalities\details.html:31
+#: .\apps\geo\templates\components\geo\nationalities\details.html:47
+#: .\apps\geo\templates\components\geo\nationalities\details.html:53
+#: .\apps\hr\templates\components\hr\employees\details.html:22
+#: .\apps\hr\templates\components\hr\employees\details.html:31
+#: .\apps\hr\templates\components\hr\employees\details.html:40
+#: .\apps\hr\templates\components\hr\employees\details.html:49
+#: .\apps\hr\templates\components\hr\employees\details.html:58
+#: .\apps\hr\templates\components\hr\employees\details.html:67
+#: .\apps\hr\templates\components\hr\employees\details.html:76
+#: .\apps\hr\templates\components\hr\employees\details.html:85
+#: .\apps\hr\templates\components\hr\employees\details.html:94
+#: .\apps\hr\templates\components\hr\employees\details.html:103
+#: .\apps\hr\templates\components\hr\employees\details.html:112
+#: .\apps\hr\templates\components\hr\employees\details.html:121
+#: .\apps\hr\templates\components\hr\employees\details.html:130
+#: .\apps\hr\templates\components\hr\employees\details.html:139
+#: .\apps\hr\templates\components\hr\employees\details.html:148
+#: .\apps\hr\templates\components\hr\employees\details.html:157
+#: .\apps\hr\templates\components\hr\employees\details.html:166
+#: .\apps\hr\templates\components\hr\employees\details.html:175
+#: .\apps\hr\templates\components\hr\employees\details.html:184
+#: .\apps\hr\templates\components\hr\employees\details.html:193
+#: .\apps\hr\templates\components\hr\employees\details.html:202
+#: .\apps\hr\templates\components\hr\employees\details.html:211
+#: .\apps\hr\templates\components\hr\employees\details.html:220
+#: .\apps\hr\templates\components\hr\employees\details.html:229
+#: .\apps\hr\templates\components\hr\employees\details.html:238
+#: .\apps\hr\templates\components\hr\employees\details.html:247
+#: .\apps\hr\templates\components\hr\employees\details.html:256
+#: .\apps\hr\templates\components\hr\employees\details.html:265
+#: .\apps\hr\templates\components\hr\employees\details.html:274
+#: .\apps\hr\templates\components\hr\employees\details.html:283
+#: .\apps\hr\templates\components\hr\employees\details.html:292
+#: .\apps\hr\templates\components\hr\employees\details.html:301
+#: .\apps\hr\templates\components\hr\employees\details.html:310
+#: .\apps\hr\templates\components\hr\employees\details.html:319
+#: .\apps\hr\templates\components\hr\employees\details.html:329
+#: .\apps\hr\templates\components\hr\employees\details.html:339
+#: .\apps\hr\templates\components\hr\employees\details.html:356
+#: .\apps\hr\templates\components\hr\employees\details.html:365
+#: .\apps\hr\templates\components\hr\employees\details.html:374
+#: .\apps\hr\templates\components\hr\employees\details.html:383
+#: .\apps\hr\templates\components\hr\employees\details.html:392
+#: .\apps\hr\templates\components\hr\employees\details.html:401
+#: .\apps\hr\templates\components\hr\employees\details.html:410
+#: .\apps\hr\templates\components\hr\employees\details.html:419
+#: .\apps\hr\templates\components\hr\employees\details.html:428
+#: .\apps\hr\templates\components\hr\employees\details.html:437
+#: .\apps\hr\templates\components\hr\employees\details.html:446
+#: .\apps\hr\templates\components\hr\employees\details.html:455
+#: .\apps\hr\templates\components\hr\employees\details.html:464
+#: .\apps\hr\templates\components\hr\employees\details.html:473
+#: .\apps\org\constants\cost_centers.py:6 .\apps\org\constants\groups.py:6
+#: .\apps\org\constants\job_subtypes.py:6 .\apps\org\constants\job_types.py:6
+#: .\apps\org\constants\positions.py:6 .\apps\org\constants\statuses.py:6
+#: .\apps\org\templates\components\org\cost_centers\details.html:9
+#: .\apps\org\templates\components\org\cost_centers\details.html:15
+#: .\apps\org\templates\components\org\cost_centers\details.html:23
+#: .\apps\org\templates\components\org\cost_centers\details.html:31
+#: .\apps\org\templates\components\org\groups\details.html:9
+#: .\apps\org\templates\components\org\groups\details.html:15
+#: .\apps\org\templates\components\org\groups\details.html:23
+#: .\apps\org\templates\components\org\groups\details.html:31
+#: .\apps\org\templates\components\org\job_subtypes\details.html:9
+#: .\apps\org\templates\components\org\job_subtypes\details.html:15
+#: .\apps\org\templates\components\org\job_subtypes\details.html:23
+#: .\apps\org\templates\components\org\job_subtypes\details.html:31
+#: .\apps\org\templates\components\org\job_types\details.html:9
+#: .\apps\org\templates\components\org\job_types\details.html:15
+#: .\apps\org\templates\components\org\job_types\details.html:23
+#: .\apps\org\templates\components\org\job_types\details.html:39
+#: .\apps\org\templates\components\org\job_types\details.html:44
+#: .\apps\org\templates\components\org\job_types\job_subtypes\inline.html:7
+#: .\apps\org\templates\components\org\job_types\update.html:31
+#: .\apps\org\templates\components\org\positions\details.html:9
+#: .\apps\org\templates\components\org\positions\details.html:15
+#: .\apps\org\templates\components\org\positions\details.html:23
+#: .\apps\org\templates\components\org\positions\details.html:31
+#: .\apps\org\templates\components\org\statuses\details.html:9
+#: .\apps\org\templates\components\org\statuses\details.html:15
+#: .\apps\org\templates\components\org\statuses\details.html:23
+#: .\apps\org\templates\components\org\statuses\details.html:31
+#: .\apps\org\templates\components\org\statuses\details.html:39
+#: .\apps\reports\views\compensations.py:20
+#: .\apps\reports\views\cost_centers.py:20 .\apps\reports\views\employees.py:20
+#: .\apps\trans\templates\components\trans\vouchers\details.html:9
+#: .\apps\trans\templates\components\trans\vouchers\details.html:17
+#: .\apps\trans\templates\components\trans\vouchers\details.html:25
+#: .\apps\trans\templates\components\trans\vouchers\details.html:34
+#: .\apps\trans\templates\components\trans\vouchers\details.html:43
+#: .\apps\trans\templates\components\trans\vouchers\details.html:51
+#: .\apps\trans\templates\components\trans\vouchers\details.html:59
+#: .\apps\trans\templates\components\trans\vouchers\details.html:67
+#: .\apps\trans\templates\components\trans\vouchers\details.html:75
+#: .\apps\trans\templates\components\trans\vouchers\details.html:81
+#: .\apps\trans\templates\components\trans\vouchers\details.html:89
+#: .\apps\trans\templates\components\trans\vouchers\details.html:97
+#: .\apps\trans\templates\components\trans\vouchers\details.html:106
+#: .\apps\trans\templates\components\trans\vouchers\details.html:117
+#: .\apps\trans\templates\components\trans\vouchers\details.html:128
+#: .\apps\trans\templates\components\trans\vouchers\details.html:139
+#: .\apps\trans\templates\components\trans\vouchers\details.html:150
+#: .\apps\trans\templates\components\trans\vouchers\details.html:161
+#: .\apps\trans\templates\components\trans\vouchers\details.html:170
+#: .\apps\trans\templates\components\trans\vouchers\details.html:180
+#: .\apps\trans\templates\components\trans\vouchers\details.html:190
+#: .\apps\trans\templates\components\trans\vouchers\details.html:199
+msgid "name"
+msgstr "الاسم"
+
+#: .\apps\core\filters.py:257 .\apps\core\models\abstracts.py:89
+#: .\apps\core\resources.py:49 .\apps\edu\constants\degrees.py:9
+#: .\apps\edu\constants\school_kinds.py:10 .\apps\edu\constants\schools.py:12
+#: .\apps\edu\constants\specialization.py:8
+#: .\apps\fin\constants\compensations.py:18 .\apps\fin\constants\periods.py:10
+#: .\apps\fin\constants\taxes.py:8 .\apps\fin\constants\voucher_kinds.py:7
+#: .\apps\fin\constants\years.py:7 .\apps\fin\resources\tax.py:52
+#: .\apps\fin\templates\components\fin\years\details.html:34
+#: .\apps\fin\templates\components\fin\years\details.html:46
+#: .\apps\geo\constants\cities.py:9 .\apps\geo\constants\governorates.py:8
+#: .\apps\geo\constants\nationalities.py:8
+#: .\apps\geo\templates\components\geo\governorates\cities\inline.html:16
+#: .\apps\geo\templates\components\geo\governorates\details.html:41
+#: .\apps\geo\templates\components\geo\governorates\details.html:50
+#: .\apps\geo\templates\components\geo\governorates\update.html:33
+#: .\apps\org\constants\cost_centers.py:8 .\apps\org\constants\groups.py:8
+#: .\apps\org\constants\job_subtypes.py:8 .\apps\org\constants\job_types.py:8
+#: .\apps\org\constants\positions.py:8 .\apps\org\constants\statuses.py:9
+#: .\apps\org\templates\components\org\job_types\job_subtypes\inline.html:13
+#: .\apps\org\templates\components\org\job_types\update.html:32
+msgid "description"
+msgstr "الشرح"
+
+#: .\apps\core\mixins\actions.py:32 .\apps\trans\views\vouchers.py:106
+msgid "no objects found"
+msgstr "لا يوجد عناصر"
+
+#: .\apps\core\mixins\behavior.py:47 .\apps\core\mixins\behavior.py:79
+msgid "you can't execute this action because you are not using htmx."
+msgstr "لا يمكنك تنفيذ هذه العملية لانك لا تستخدم htmx."
+
+#: .\apps\core\mixins\behavior.py:150 .\apps\core\mixins\create.py:95
+#: .\apps\core\mixins\update.py:141
+msgid "you cannot access this page"
+msgstr "لا يمكنك الوصول الى هذه الصفحة"
+
+#: .\apps\core\mixins\create.py:119 .\apps\core\mixins\update.py:241
+msgid "form is invalid"
+msgstr "النموذج غير صالح"
+
+#: .\apps\core\mixins\create.py:142
+msgid "{} has been created successfully"
+msgstr "تم انشاء {} بنجاح"
+
+#: .\apps\core\mixins\update.py:180
+msgid "({}) has been updated successfully"
+msgstr "تم التعديل على {} بنجاح"
+
+#: .\apps\core\models\abstracts.py:17
+msgid "you cannot delete this object"
+msgstr "لا يمكنك حذف هذا العنصر"
+
+#: .\apps\core\models\abstracts.py:27
+msgid "you cannot multiple templates"
+msgstr "لا يمكنك استخدام أكثر من قالب"
+
+#: .\apps\core\models\activity.py:12 .\apps\edu\urls\degrees.py:27
+#: .\apps\edu\urls\school_kinds.py:27 .\apps\edu\urls\schools.py:27
+#: .\apps\edu\urls\specializations.py:27 .\apps\fin\urls\compensations.py:27
+#: .\apps\fin\urls\periods.py:27 .\apps\fin\urls\tax_brackets.py:27
+#: .\apps\fin\urls\taxes.py:27 .\apps\fin\urls\voucher_kinds.py:27
+#: .\apps\fin\urls\years.py:27 .\apps\geo\urls\cities.py:27
+#: .\apps\geo\urls\governorates.py:26 .\apps\geo\urls\nationalities.py:27
+#: .\apps\hr\urls\employees.py:27 .\apps\org\urls\cost_centers.py:27
+#: .\apps\org\urls\groups.py:27 .\apps\org\urls\job_subtypes.py:27
+#: .\apps\org\urls\job_types.py:27 .\apps\org\urls\positions.py:27
+#: .\apps\org\urls\statuses.py:27 .\apps\trans\urls\vouchers.py:26
+msgid "create"
+msgstr "انشاء"
+
+#: .\apps\core\models\activity.py:13
+#: .\apps\edu\templates\apps\edu\degrees\update.html:4
+#: .\apps\edu\templates\apps\edu\school_kinds\update.html:4
+#: .\apps\edu\templates\apps\edu\schools\update.html:4
+#: .\apps\edu\templates\apps\edu\specializations\update.html:4
+#: .\apps\edu\templates\components\edu\degrees\modal-update.html:4
+#: .\apps\edu\templates\components\edu\degrees\update.html:4
+#: .\apps\edu\templates\components\edu\school_kinds\modal-update.html:4
+#: .\apps\edu\templates\components\edu\school_kinds\update.html:4
+#: .\apps\edu\templates\components\edu\schools\modal-update.html:4
+#: .\apps\edu\templates\components\edu\schools\update.html:4
+#: .\apps\edu\templates\components\edu\specializations\modal-update.html:4
+#: .\apps\edu\templates\components\edu\specializations\update.html:4
+#: .\apps\edu\urls\degrees.py:33 .\apps\edu\urls\school_kinds.py:33
+#: .\apps\edu\urls\schools.py:33 .\apps\edu\urls\specializations.py:33
+#: .\apps\fin\templates\apps\fin\compensations\update.html:4
+#: .\apps\fin\templates\apps\fin\periods\update.html:4
+#: .\apps\fin\templates\apps\fin\tax_brackets\update.html:4
+#: .\apps\fin\templates\apps\fin\taxes\update.html:4
+#: .\apps\fin\templates\apps\fin\voucher_kinds\update.html:4
+#: .\apps\fin\templates\apps\fin\years\update.html:4
+#: .\apps\fin\templates\components\fin\compensations\modal-update.html:4
+#: .\apps\fin\templates\components\fin\compensations\update.html:4
+#: .\apps\fin\templates\components\fin\periods\modal-update.html:4
+#: .\apps\fin\templates\components\fin\periods\update.html:4
+#: .\apps\fin\templates\components\fin\tax_brackets\modal-update.html:4
+#: .\apps\fin\templates\components\fin\tax_brackets\update.html:4
+#: .\apps\fin\templates\components\fin\taxes\modal-update.html:4
+#: .\apps\fin\templates\components\fin\taxes\update.html:4
+#: .\apps\fin\templates\components\fin\voucher_kinds\modal-update.html:4
+#: .\apps\fin\templates\components\fin\voucher_kinds\update.html:4
+#: .\apps\fin\templates\components\fin\years\modal-update.html:4
+#: .\apps\fin\templates\components\fin\years\update.html:4
+#: .\apps\fin\urls\compensations.py:33 .\apps\fin\urls\periods.py:33
+#: .\apps\fin\urls\tax_brackets.py:33 .\apps\fin\urls\taxes.py:33
+#: .\apps\fin\urls\voucher_kinds.py:33 .\apps\fin\urls\years.py:33
+#: .\apps\geo\templates\apps\geo\cities\update.html:4
+#: .\apps\geo\templates\apps\geo\governorates\update.html:4
+#: .\apps\geo\templates\apps\geo\nationalities\update.html:4
+#: .\apps\geo\templates\components\geo\cities\modal-update.html:4
+#: .\apps\geo\templates\components\geo\cities\update.html:4
+#: .\apps\geo\templates\components\geo\governorates\modal-update.html:4
+#: .\apps\geo\templates\components\geo\governorates\update.html:4
+#: .\apps\geo\templates\components\geo\nationalities\modal-update.html:4
+#: .\apps\geo\templates\components\geo\nationalities\update.html:4
+#: .\apps\geo\urls\cities.py:33 .\apps\geo\urls\governorates.py:32
+#: .\apps\geo\urls\nationalities.py:33
+#: .\apps\hr\templates\apps\hr\employees\update.html:4
+#: .\apps\hr\templates\components\hr\employees\update.html:4
+#: .\apps\hr\urls\employees.py:33
+#: .\apps\org\templates\apps\org\cost_centers\update.html:4
+#: .\apps\org\templates\apps\org\groups\update.html:4
+#: .\apps\org\templates\apps\org\job_subtypes\update.html:4
+#: .\apps\org\templates\apps\org\job_types\update.html:4
+#: .\apps\org\templates\apps\org\positions\update.html:4
+#: .\apps\org\templates\apps\org\statuses\update.html:4
+#: .\apps\org\templates\components\org\cost_centers\modal-update.html:4
+#: .\apps\org\templates\components\org\cost_centers\update.html:4
+#: .\apps\org\templates\components\org\groups\modal-update.html:4
+#: .\apps\org\templates\components\org\groups\update.html:4
+#: .\apps\org\templates\components\org\job_subtypes\modal-update.html:4
+#: .\apps\org\templates\components\org\job_subtypes\update.html:4
+#: .\apps\org\templates\components\org\job_types\modal-update.html:4
+#: .\apps\org\templates\components\org\job_types\update.html:4
+#: .\apps\org\templates\components\org\positions\modal-update.html:4
+#: .\apps\org\templates\components\org\positions\update.html:4
+#: .\apps\org\templates\components\org\statuses\modal-update.html:4
+#: .\apps\org\templates\components\org\statuses\update.html:4
+#: .\apps\org\urls\cost_centers.py:33 .\apps\org\urls\groups.py:33
+#: .\apps\org\urls\job_subtypes.py:33 .\apps\org\urls\job_types.py:33
+#: .\apps\org\urls\positions.py:33 .\apps\org\urls\statuses.py:33
+#: .\apps\trans\templates\apps\trans\vouchers\update.html:4
+#: .\apps\trans\templates\components\trans\vouchers\modal-update.html:4
+#: .\apps\trans\templates\components\trans\vouchers\update.html:4
+#: .\apps\trans\urls\vouchers.py:32
+#: .\templates\components\forms\modal-update.html:39
+#: .\templates\components\forms\modal-update.html:40
+#: .\templates\components\forms\modal-update.html:42
+#: .\templates\components\forms\update.html:46
+msgid "update"
+msgstr "تعديل"
+
+#: .\apps\core\models\activity.py:14 .\apps\core\templates\widgets\file.html:40
+#: .\apps\edu\templates\components\edu\degrees\table.html:55
+#: .\apps\edu\templates\components\edu\degrees\table.html:121
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:55
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:122
+#: .\apps\edu\templates\components\edu\schools\table.html:55
+#: .\apps\edu\templates\components\edu\schools\table.html:121
+#: .\apps\edu\templates\components\edu\specializations\table.html:55
+#: .\apps\edu\templates\components\edu\specializations\table.html:120
+#: .\apps\edu\urls\degrees.py:39 .\apps\edu\urls\school_kinds.py:39
+#: .\apps\edu\urls\schools.py:39 .\apps\edu\urls\specializations.py:39
+#: .\apps\fin\templates\components\fin\compensations\table.html:55
+#: .\apps\fin\templates\components\fin\compensations\table.html:125
+#: .\apps\fin\templates\components\fin\periods\table.html:55
+#: .\apps\fin\templates\components\fin\periods\table.html:121
+#: .\apps\fin\templates\components\fin\tax_brackets\table.html:55
+#: .\apps\fin\templates\components\fin\tax_brackets\table.html:121
+#: .\apps\fin\templates\components\fin\taxes\table.html:55
+#: .\apps\fin\templates\components\fin\taxes\table.html:124
+#: .\apps\fin\templates\components\fin\voucher_kinds\table.html:55
+#: .\apps\fin\templates\components\fin\voucher_kinds\table.html:119
+#: .\apps\fin\templates\components\fin\years\table.html:55
+#: .\apps\fin\templates\components\fin\years\table.html:118
+#: .\apps\fin\urls\compensations.py:39 .\apps\fin\urls\periods.py:39
+#: .\apps\fin\urls\tax_brackets.py:39 .\apps\fin\urls\taxes.py:39
+#: .\apps\fin\urls\voucher_kinds.py:39 .\apps\fin\urls\years.py:39
+#: .\apps\geo\templates\components\geo\cities\table.html:55
+#: .\apps\geo\templates\components\geo\cities\table.html:121
+#: .\apps\geo\templates\components\geo\governorates\cities\inline.html:20
+#: .\apps\geo\templates\components\geo\governorates\table.html:55
+#: .\apps\geo\templates\components\geo\governorates\table.html:120
+#: .\apps\geo\templates\components\geo\nationalities\table.html:55
+#: .\apps\geo\templates\components\geo\nationalities\table.html:120
+#: .\apps\geo\urls\cities.py:39 .\apps\geo\urls\governorates.py:38
+#: .\apps\geo\urls\nationalities.py:39
+#: .\apps\hr\templates\components\hr\employees\emails\inline.html:17
+#: .\apps\hr\templates\components\hr\employees\mobiles\inline.html:20
+#: .\apps\hr\templates\components\hr\employees\phones\inline.html:17
+#: .\apps\hr\templates\components\hr\employees\table.html:55
+#: .\apps\hr\templates\components\hr\employees\table.html:147
+#: .\apps\hr\urls\employees.py:39
+#: .\apps\org\templates\components\org\cost_centers\table.html:55
+#: .\apps\org\templates\components\org\cost_centers\table.html:120
+#: .\apps\org\templates\components\org\groups\table.html:55
+#: .\apps\org\templates\components\org\groups\table.html:120
+#: .\apps\org\templates\components\org\job_subtypes\table.html:55
+#: .\apps\org\templates\components\org\job_subtypes\table.html:120
+#: .\apps\org\templates\components\org\job_types\job_subtypes\inline.html:17
+#: .\apps\org\templates\components\org\job_types\table.html:55
+#: .\apps\org\templates\components\org\job_types\table.html:120
+#: .\apps\org\templates\components\org\positions\table.html:55
+#: .\apps\org\templates\components\org\positions\table.html:120
+#: .\apps\org\templates\components\org\statuses\table.html:55
+#: .\apps\org\templates\components\org\statuses\table.html:121
+#: .\apps\org\urls\cost_centers.py:39 .\apps\org\urls\groups.py:39
+#: .\apps\org\urls\job_subtypes.py:39 .\apps\org\urls\job_types.py:39
+#: .\apps\org\urls\positions.py:39 .\apps\org\urls\statuses.py:39
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-audit.html:5
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-migrate.html:5
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-unmigrate.html:5
+#: .\apps\trans\templates\components\trans\vouchers\table.html:56
+#: .\apps\trans\templates\components\trans\vouchers\table.html:240
+#: .\apps\trans\templates\components\trans\vouchers\transactions\inline.html:54
+#: .\apps\trans\urls\vouchers.py:38
+#: .\templates\components\blocks\modals\bulk-delete.html:6
+#: .\templates\components\blocks\modals\bulk-delete.html:23
+#: .\templates\components\blocks\modals\bulk-delete.html:29
+#: .\templates\components\blocks\modals\bulk-delete.html:33
+#: .\templates\components\blocks\modals\delete.html:6
+#: .\templates\components\blocks\modals\delete.html:17
+#: .\templates\components\blocks\modals\delete.html:23
+#: .\templates\components\blocks\modals\delete.html:27
+msgid "delete"
+msgstr "حذف"
+
+#: .\apps\core\models\activity.py:15
+#: .\templates\components\blocks\table.html:36
+msgid "export"
+msgstr "تصدير"
+
+#: .\apps\core\models\activity.py:16 .\apps\geo\models\city.py:40
+#: .\apps\hr\models\email.py:21 .\apps\hr\models\employee.py:35
+#: .\apps\hr\models\employee.py:45 .\apps\hr\models\employee.py:52
+#: .\apps\hr\models\mobile.py:26 .\apps\hr\models\phone.py:21
+msgid "other"
+msgstr "أخرى"
+
+#: .\apps\core\models\activity.py:63
+msgid "activity"
+msgstr "نشاط"
+
+#: .\apps\core\models\activity.py:64
+#: .\apps\core\templates\apps\core\activities.html:13
+#: .\apps\edu\templates\components\edu\degrees\table.html:94
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:95
+#: .\apps\edu\templates\components\edu\schools\table.html:94
+#: .\apps\edu\templates\components\edu\specializations\table.html:93
+#: .\apps\fin\templates\components\fin\compensations\table.html:98
+#: .\apps\fin\templates\components\fin\periods\table.html:94
+#: .\apps\fin\templates\components\fin\tax_brackets\table.html:94
+#: .\apps\fin\templates\components\fin\taxes\table.html:97
+#: .\apps\fin\templates\components\fin\voucher_kinds\table.html:92
+#: .\apps\fin\templates\components\fin\years\table.html:91
+#: .\apps\geo\templates\components\geo\cities\table.html:94
+#: .\apps\geo\templates\components\geo\governorates\table.html:93
+#: .\apps\geo\templates\components\geo\nationalities\table.html:93
+#: .\apps\hr\templates\components\hr\employees\table.html:120
+#: .\apps\org\templates\components\org\cost_centers\table.html:93
+#: .\apps\org\templates\components\org\groups\table.html:93
+#: .\apps\org\templates\components\org\job_subtypes\table.html:93
+#: .\apps\org\templates\components\org\job_types\table.html:93
+#: .\apps\org\templates\components\org\positions\table.html:93
+#: .\apps\org\templates\components\org\statuses\table.html:94
+#: .\apps\trans\templates\components\trans\vouchers\table.html:144
+msgid "activities"
+msgstr "النشاطات"
+
+#: .\apps\core\models\setting.py:13
+msgid "max page size"
+msgstr "الحجم الأقصى للصفحة"
+
+#: .\apps\core\models\setting.py:14
+msgid "max page size for pagination purposes"
+msgstr "الحجم الأقصى للصفحة لغرض تقسيم الصفحات"
+
+#: .\apps\core\models\setting.py:18
+#: .\templates\components\table\pagination.html:21
+msgid "per page"
+msgstr "عدد العناصر المراد اظهارها"
+
+#: .\apps\core\models\setting.py:19
+msgid "per page for pagination purposes"
+msgstr "عدد العناصر المراد اظهارها لأغراض تقسيم الصفحات"
+
+#: .\apps\core\models\setting.py:23
+msgid "messages timeout"
+msgstr "توقيت الرسائل"
+
+#: .\apps\core\models\setting.py:24
+msgid "messages timeout in seconds"
+msgstr "توقيت الرسائل بالثواني"
+
+#: .\apps\core\models\setting.py:28
+msgid "critical confirmation timeout"
+msgstr "توقيت رسائل التأكيد للعمليات الهامة"
+
+#: .\apps\core\models\setting.py:29
+msgid "critical confirmation timeout in seconds"
+msgstr "توقيت رسائل التأكيد للعمليات الهامة بالثواني"
+
+#: .\apps\core\models\setting.py:33
+msgid "per page list"
+msgstr "قائمة عدد العناصر المراد اظهارها"
+
+#: .\apps\core\models\setting.py:34
+msgid "per page list for pagination purposes"
+msgstr "قائمة عدد العناصر المراد اظهارها لغرض تقسيم الصفحات"
+
+#: .\apps\core\models\setting.py:41
+msgid "global settings"
+msgstr "الإعدادات العامة"
+
+#: .\apps\core\models\template.py:19
+msgid "file"
+msgstr "ملف"
+
+#: .\apps\core\models\template.py:30
+msgid "template item"
+msgstr "عنصر القالب"
+
+#: .\apps\core\models\template.py:31
+msgid "template items"
+msgstr "عناصر القوالب"
+
+#: .\apps\core\models\template.py:40
+msgid "voucher template"
+msgstr "قالب أمر الصرف"
+
+#: .\apps\core\models\template.py:46
+msgid "employee template"
+msgstr "قالب الموظف"
+
+#: .\apps\core\models\template.py:52
+msgid "ledger template"
+msgstr "قالب كشف الحساب"
+
+#: .\apps\core\models\template.py:71
+msgid "template"
+msgstr "قالب"
+
+#: .\apps\core\models\template.py:72
+msgid "templates"
+msgstr "القوالب"
+
+#: .\apps\core\resources.py:21 .\apps\fin\models\compensation.py:56
+#: .\apps\fin\models\tax.py:49 .\apps\hr\models\mobile.py:20
+#: .\apps\trans\templates\admin\migration-confirmation.html:50
+msgid "yes"
+msgstr "نعم"
+
+#: .\apps\core\resources.py:21 .\apps\fin\models\compensation.py:57
+#: .\apps\fin\models\tax.py:50 .\apps\hr\models\mobile.py:21
+msgid "no"
+msgstr "لا"
+
+#: .\apps\core\resources.py:53 .\apps\trans\resources\voucher.py:141
+msgid "slug"
+msgstr "slug"
+
+#: .\apps\core\templates\apps\core\activities.html:18
+#: .\apps\core\templates\apps\core\activities.html:25
+#: .\apps\hr\models\employee.py:339 .\apps\trans\models\voucher.py:50
+msgid "user"
+msgstr "المستخدم"
+
+#: .\apps\core\templates\apps\core\activities.html:19
+#: .\apps\core\templates\apps\core\activities.html:26
+#: .\apps\reports\resources\ledger.py:36
+#: .\apps\reports\templates\components\reports\compensations\filter-form.html:19
+#: .\apps\reports\templates\components\reports\cost_centers\filter-form.html:19
+#: .\apps\reports\templates\components\reports\employees\filter-form.html:19
+#: .\apps\reports\templates\components\reports\ledger\filter-form.html:20
+#: .\apps\reports\templates\components\reports\periods\filter-form.html:19
+#: .\apps\reports\templates\components\reports\trial_balance\filter-form.html:19
+#: .\apps\trans\constants\vouchers.py:8 .\apps\trans\models\journal_entry.py:38
+#: .\apps\trans\resources\journal_entry.py:37
+#: .\apps\trans\resources\voucher.py:55
+#: .\apps\trans\resources\voucher_transaction.py:53
+#: .\apps\trans\templates\components\trans\journal_entries\filter-form.html:21
+#: .\apps\trans\templates\components\trans\voucher_transactions\filter-form.html:36
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:43
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:62
+#: .\apps\trans\templates\components\trans\vouchers\filter-form.html:34
+msgid "date"
+msgstr "التاريخ"
+
+#: .\apps\core\templates\apps\core\activities.html:20
+#: .\apps\core\templates\apps\core\activities.html:29
+#: .\apps\edu\constants\schools.py:6 .\apps\edu\filters\school.py:18
+#: .\apps\edu\filters\school.py:67 .\apps\edu\models\school.py:46
+#: .\apps\edu\resources\school.py:12 .\apps\fin\constants\compensations.py:8
+#: .\apps\fin\filters\compensation.py:16 .\apps\fin\forms\compensation.py:13
+#: .\apps\fin\models\compensation.py:81 .\apps\fin\resources\compensation.py:16
+#: .\apps\geo\models\city.py:52
+#: .\apps\geo\templates\components\geo\governorates\cities\inline.html:13
+#: .\apps\geo\templates\components\geo\governorates\details.html:40
+#: .\apps\geo\templates\components\geo\governorates\details.html:47
+#: .\apps\geo\templates\components\geo\governorates\update.html:32
+#: .\apps\geo\templates\components\geo\nationalities\details.html:48
+#: .\apps\geo\templates\components\geo\nationalities\details.html:54
+#: .\apps\hr\resources\_base.py:22
+#: .\apps\hr\templates\components\hr\employees\details.html:499
+#: .\apps\hr\templates\components\hr\employees\details.html:523
+#: .\apps\hr\templates\components\hr\employees\details.html:537
+#: .\apps\hr\templates\components\hr\employees\details.html:547
+#: .\apps\hr\templates\components\hr\employees\details.html:562
+#: .\apps\hr\templates\components\hr\employees\details.html:571
+#: .\apps\hr\templates\components\hr\employees\emails\inline.html:13
+#: .\apps\hr\templates\components\hr\employees\mobiles\inline.html:16
+#: .\apps\hr\templates\components\hr\employees\phones\inline.html:13
+#: .\apps\hr\templates\components\hr\employees\update.html:32
+#: .\apps\hr\templates\components\hr\employees\update.html:69
+#: .\apps\hr\templates\components\hr\employees\update.html:106
+#: .\apps\org\constants\groups.py:7 .\apps\org\models\group.py:42
+#: .\apps\org\resources\group.py:12 .\apps\trans\constants\vouchers.py:9
+#: .\apps\trans\filters\voucher.py:23 .\apps\trans\filters\voucher.py:98
+#: .\apps\trans\filters\voucher_transaction.py:35
+#: .\apps\trans\filters\voucher_transaction.py:155
+#: .\apps\trans\models\voucher.py:80 .\apps\trans\resources\voucher.py:59
+#: .\apps\trans\resources\voucher_transaction.py:57
+msgid "kind"
+msgstr "النوع"
+
+#: .\apps\core\templates\apps\core\activities.html:21
+#: .\apps\core\templates\apps\core\activities.html:32
+msgid "data"
+msgstr "البيانات"
+
+#: .\apps\core\templates\apps\core\activities.html:45
+#: .\apps\core\templates\apps\core\activities.html:49
+#: .\apps\edu\templates\components\edu\degrees\details.html:52
+#: .\apps\edu\templates\components\edu\degrees\details.html:56
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:74
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:78
+#: .\apps\edu\templates\components\edu\schools\details.html:84
+#: .\apps\edu\templates\components\edu\schools\details.html:88
+#: .\apps\edu\templates\components\edu\specializations\details.html:44
+#: .\apps\edu\templates\components\edu\specializations\details.html:48
+#: .\apps\fin\templates\components\fin\compensations\details.html:224
+#: .\apps\fin\templates\components\fin\compensations\details.html:228
+#: .\apps\fin\templates\components\fin\periods\details.html:50
+#: .\apps\fin\templates\components\fin\periods\details.html:54
+#: .\apps\fin\templates\components\fin\tax_brackets\details.html:57
+#: .\apps\fin\templates\components\fin\tax_brackets\details.html:61
+#: .\apps\fin\templates\components\fin\taxes\details.html:176
+#: .\apps\fin\templates\components\fin\taxes\details.html:180
+#: .\apps\fin\templates\components\fin\voucher_kinds\details.html:36
+#: .\apps\fin\templates\components\fin\voucher_kinds\details.html:40
+#: .\apps\fin\templates\components\fin\years\details.html:58
+#: .\apps\fin\templates\components\fin\years\details.html:62
+#: .\apps\geo\templates\components\geo\cities\details.html:52
+#: .\apps\geo\templates\components\geo\cities\details.html:56
+#: .\apps\geo\templates\components\geo\governorates\details.html:62
+#: .\apps\geo\templates\components\geo\governorates\details.html:66
+#: .\apps\geo\templates\components\geo\nationalities\details.html:64
+#: .\apps\geo\templates\components\geo\nationalities\details.html:68
+#: .\apps\hr\templates\components\hr\employees\details.html:585
+#: .\apps\hr\templates\components\hr\employees\details.html:589
+#: .\apps\org\templates\components\org\cost_centers\details.html:44
+#: .\apps\org\templates\components\org\cost_centers\details.html:48
+#: .\apps\org\templates\components\org\groups\details.html:44
+#: .\apps\org\templates\components\org\groups\details.html:48
+#: .\apps\org\templates\components\org\job_subtypes\details.html:44
+#: .\apps\org\templates\components\org\job_subtypes\details.html:48
+#: .\apps\org\templates\components\org\job_types\details.html:54
+#: .\apps\org\templates\components\org\job_types\details.html:58
+#: .\apps\org\templates\components\org\positions\details.html:44
+#: .\apps\org\templates\components\org\positions\details.html:48
+#: .\apps\org\templates\components\org\statuses\details.html:52
+#: .\apps\org\templates\components\org\statuses\details.html:56
+#: .\apps\trans\templates\components\trans\vouchers\details.html:306
+#: .\apps\trans\templates\components\trans\vouchers\details.html:313
+#: .\apps\trans\templates\components\trans\vouchers\details.html:317
+msgid "close"
+msgstr "اغلق"
+
+#: .\apps\core\templates\apps\core\modal-ledger.html:15
+#: .\apps\core\templates\apps\core\modal-ledger.html:16 .\apps\core\urls.py:39
+#: .\apps\hr\templates\components\hr\employees\table.html:97
+#: .\apps\reports\templates\apps\reports\ledger\index.html:3
+#: .\apps\reports\templates\components\reports\employees\table.html:61
+#: .\apps\reports\templates\components\reports\ledger\table.html:23
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:61
+#: .\apps\reports\urls\ledger.py:15
+msgid "ledger"
+msgstr "كشف الحساب"
+
+#: .\apps\core\templates\apps\core\modal-ledger.html:20
+#: .\apps\core\templates\apps\core\modal-ledger.html:23
+#: .\apps\edu\templates\components\edu\degrees\details.html:4
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:4
+#: .\apps\edu\templates\components\edu\schools\details.html:4
+#: .\apps\edu\templates\components\edu\specializations\details.html:4
+#: .\apps\fin\templates\components\fin\compensations\details.html:4
+#: .\apps\fin\templates\components\fin\periods\details.html:4
+#: .\apps\fin\templates\components\fin\tax_brackets\details.html:4
+#: .\apps\fin\templates\components\fin\taxes\details.html:5
+#: .\apps\fin\templates\components\fin\voucher_kinds\details.html:4
+#: .\apps\fin\templates\components\fin\years\details.html:4
+#: .\apps\geo\templates\components\geo\cities\details.html:4
+#: .\apps\geo\templates\components\geo\governorates\details.html:4
+#: .\apps\geo\templates\components\geo\nationalities\details.html:4
+#: .\apps\hr\templates\components\hr\employees\details.html:4
+#: .\apps\org\templates\components\org\cost_centers\details.html:4
+#: .\apps\org\templates\components\org\groups\details.html:4
+#: .\apps\org\templates\components\org\job_subtypes\details.html:4
+#: .\apps\org\templates\components\org\job_types\details.html:4
+#: .\apps\org\templates\components\org\positions\details.html:4
+#: .\apps\org\templates\components\org\statuses\details.html:4
+#: .\apps\trans\templates\components\trans\vouchers\details.html:4
+msgid "details"
+msgstr "التفاصيل"
+
+#: .\apps\core\templates\widgets\autocomplete-item.html:20
+#: .\templates\components\table\empty-tr.html:8
+msgid "no results"
+msgstr "لا يوجد نتائج"
+
+#: .\apps\core\templates\widgets\combobox.html:26
+msgid "selected"
+msgstr "المختارة"
+
+#: .\apps\core\templates\widgets\combobox.html:95
+msgid "select all"
+msgstr "اختر الكل"
+
+#: .\apps\core\templates\widgets\combobox.html:125
+msgid "no options"
+msgstr "لا يوجد خيارات"
+
+#: .\apps\core\templates\widgets\ordering.html:7
+msgid "order by"
+msgstr "الترتيب حسب"
+
+#: .\apps\core\urls.py:12 .\templates\components\layout\breadcrumbs.html:11
+msgid "home"
+msgstr "الرئيسية"
+
+#: .\apps\core\urls.py:18 .\project\constants.py:19
+msgid "dashboard"
+msgstr "لوحة التحكم"
+
+#: .\apps\core\utils\behaviors.py:94 .\apps\core\utils\behaviors.py:98
+msgid "done"
+msgstr "تم"
+
+#: .\apps\core\utils\behaviors.py:95 .\apps\core\utils\behaviors.py:99
+msgid "the operation was not completed."
+msgstr "لم تكتمل العملية."
+
+#: .\apps\core\utils\behaviors.py:105
+msgid "object has been deleted successfully."
+msgstr "تم الحذف بنجاح."
+
+#: .\apps\core\utils\behaviors.py:107
+msgid "you can't delete this object because it is related to other objects."
+msgstr "لا يمكنك حذف هذا العنصر، قد يكون مرتبطاً بعناصر أخرى."
+
+#: .\apps\core\utils\behaviors.py:109
+msgid "objects have been deleted successfully."
+msgstr "تم حذف العناصر بنجاح."
+
+#: .\apps\core\utils\behaviors.py:111
+msgid "you can't delete objects because they are related to other objects."
+msgstr "لا يمكنك حذف العناصر لانها قد تكون مرتبطة بعناصر أخرى."
+
+#: .\apps\core\utils\db.py:298
+msgid "between {} and below {} years"
+msgstr "بين {} و {} سنة"
+
+#: .\apps\core\utils\db.py:306
+msgid "below {} years"
+msgstr "اقل من {} سنة"
+
+#: .\apps\core\validators.py:12
+msgid "the field must be at least 4 characters long."
+msgstr "يجب ان تكون عدد محارف الحقل 4 محارف أو اكثر."
+
+#: .\apps\core\validators.py:17
+msgid "the field must be at least 2 characters long."
+msgstr "يجب ان تكون عدد محارف الحقل محرفين أو اكثر."
+
+#: .\apps\core\validators.py:22
+msgid "the field must be numeric."
+msgstr "الحقل يجب ان يحتوي على رقم."
+
+#: .\apps\core\validators.py:27
+msgid "the field must be syrian mobile number like 0947302503."
+msgstr "يجب ان يحتوي الحقل على رقم هاتف محمول سوري، مثل: 0947302503."
+
+#: .\apps\core\validators.py:32
+msgid "the field must be syrian phone number like 0332756651."
+msgstr "يجب ان يحتوي الحقل على رقم هاتف ثابت سوري، مثل: 0332756651."
+
+#: .\apps\core\validators.py:37
+msgid "the field must be a valid pdf, png, jpg or jpeg file."
+msgstr "يجب ان يكون الملف من نوع pdf أو png أو jpg أو jpeg."
+
+#: .\apps\core\validators.py:42
+msgid "the field must be a valid jpg, jpeg or png file."
+msgstr "يجب ان يكون الملف من نوع png أو jpg أو jpeg."
+
+#: .\apps\core\validators.py:47
+msgid "the field must be a valid docx file."
+msgstr "يجب ان يكون الملف من نوع docx."
+
+#: .\apps\core\validators.py:52
+msgid "the field must be a valid xlsx file."
+msgstr "يجب ان يكون الملف من نوع xlsx."
+
+#: .\apps\core\validators.py:61
+msgid "file must be a valid pdf, png, jpg or jpeg file."
+msgstr "يجب ان يكون الملف من نوع pdf أو png أو jpg أو jpeg."
+
+#: .\apps\core\validators.py:70
+msgid "file must be a valid jpg, jpeg or png file."
+msgstr "يجب ان يكون الملف من نوع png أو jpg أو jpeg."
+
+#: .\apps\core\validators.py:81
+msgid "file must be a valid docx file."
+msgstr "يجب ان يكون الملف من نوع docx."
+
+#: .\apps\core\validators.py:90
+msgid "file must be a valid xlsx file."
+msgstr "يجب ان يكون الملف من نوع xlsx."
+
+#: .\apps\core\widgets.py:115
+msgid "some description"
+msgstr "الشرح"
+
+#: .\apps\core\widgets.py:175 .\apps\edu\filters\school.py:33
+msgid "some-email@example.com"
+msgstr "some-email@example.com"
+
+#: .\apps\edu\constants\degrees.py:5 .\apps\edu\constants\school_kinds.py:5
+#: .\apps\edu\constants\schools.py:4 .\apps\edu\constants\specialization.py:5
+#: .\apps\fin\constants\compensations.py:5 .\apps\fin\constants\periods.py:5
+#: .\apps\fin\constants\tax_brackets.py:5 .\apps\fin\constants\taxes.py:5
+#: .\apps\fin\constants\voucher_kinds.py:5 .\apps\fin\constants\years.py:5
+#: .\apps\geo\constants\cities.py:5 .\apps\geo\constants\governorates.py:5
+#: .\apps\geo\constants\nationalities.py:5 .\apps\hr\constants\employee.py:6
+#: .\apps\org\constants\cost_centers.py:5 .\apps\org\constants\groups.py:5
+#: .\apps\org\constants\job_subtypes.py:5 .\apps\org\constants\job_types.py:5
+#: .\apps\org\constants\positions.py:5 .\apps\org\constants\statuses.py:5
+#: .\apps\trans\constants\journal_entries.py:5
+#: .\apps\trans\constants\voucher_transactions.py:5
+#: .\apps\trans\constants\vouchers.py:5
+msgid "id"
+msgstr "رقم المعرف"
+
+#: .\apps\edu\constants\degrees.py:7 .\apps\edu\models\degree.py:39
+#: .\apps\edu\templates\components\edu\degrees\details.html:15
+#: .\apps\edu\templates\components\edu\degrees\filter-form.html:5
+#: .\apps\org\constants\positions.py:7 .\apps\org\models\position.py:38
+#: .\apps\org\resources\position.py:12
+#: .\apps\org\templates\components\org\positions\filter-form.html:5
+msgid "order"
+msgstr "الترتيب"
+
+#: .\apps\edu\constants\degrees.py:8 .\apps\edu\filters\degree.py:11
+#: .\apps\edu\forms\degree.py:13 .\apps\edu\models\degree.py:46
+msgid "is academic"
+msgstr "هل هو أكاديمي"
+
+#: .\apps\edu\constants\school_kinds.py:7 .\apps\edu\filters\school_kind.py:11
+#: .\apps\edu\forms\school_kind.py:13 .\apps\edu\models\school_kind.py:50
+msgid "is governmental"
+msgstr "هل هو حكومي"
+
+#: .\apps\edu\constants\school_kinds.py:8 .\apps\edu\filters\school_kind.py:15
+#: .\apps\edu\forms\school_kind.py:18 .\apps\edu\models\school_kind.py:54
+msgid "is virtual"
+msgstr "هل هو افتراضي"
+
+#: .\apps\edu\constants\school_kinds.py:9
+#: .\apps\edu\resources\school_kind.py:20
+#: .\apps\edu\templates\components\edu\school_kinds\filter-form.html:7
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:74
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:163
+msgid "schools count"
+msgstr "عدد الجامعات"
+
+#: .\apps\edu\constants\schools.py:7 .\apps\edu\filters\school.py:23
+#: .\apps\edu\filters\school.py:73 .\apps\edu\models\school.py:40
+#: .\apps\edu\resources\school.py:16
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:56
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:62
+#: .\apps\geo\models\nationality.py:65 .\apps\hr\choices.py:38
+#: .\apps\hr\constants\employee.py:31 .\apps\hr\filters\employee.py:267
+#: .\apps\hr\filters\employee.py:383 .\apps\hr\models\employee.py:242
+#: .\apps\hr\resources\employee.py:144
+msgid "nationality"
+msgstr "الجنسية"
+
+#: .\apps\edu\constants\schools.py:8 .\apps\edu\filters\school.py:26
+#: .\apps\edu\models\school.py:49 .\apps\edu\resources\school.py:20
+msgid "website"
+msgstr "الموقع الالكتروني"
+
+#: .\apps\edu\constants\schools.py:9 .\apps\edu\filters\school.py:31
+#: .\apps\edu\models\school.py:57 .\apps\edu\resources\school.py:28
+#: .\apps\hr\filters\email.py:10 .\apps\hr\models\email.py:25
+#: .\apps\hr\models\email.py:57 .\apps\hr\resources\email.py:11
+#: .\apps\hr\templates\components\hr\employees\details.html:566
+#: .\apps\hr\templates\components\hr\employees\emails\inline.html:7
+#: .\apps\hr\templates\components\hr\employees\update.html:105
+msgid "email"
+msgstr "البريد الالكتروني"
+
+#: .\apps\edu\constants\schools.py:10 .\apps\edu\filters\school.py:36
+#: .\apps\edu\models\school.py:65 .\apps\edu\resources\school.py:24
+#: .\apps\hr\models\phone.py:58
+msgid "phone"
+msgstr "الهاتف الثابت"
+
+#: .\apps\edu\constants\schools.py:11 .\apps\edu\filters\school.py:40
+#: .\apps\edu\filters\school.py:41 .\apps\edu\models\school.py:72
+#: .\apps\edu\resources\school.py:32 .\apps\hr\constants\employee.py:24
+#: .\apps\hr\filters\employee.py:112 .\apps\hr\models\employee.py:200
+#: .\apps\hr\resources\employee.py:115
+msgid "address"
+msgstr "العنوان"
+
+#: .\apps\edu\constants\specialization.py:7
+#: .\apps\edu\filters\specialization.py:11
+#: .\apps\edu\forms\specialization.py:13 .\apps\edu\models\specialization.py:41
+msgid "is specialist"
+msgstr "هل هو اختصاصي"
+
+#: .\apps\edu\filters\school.py:28
+msgid "https://example.com"
+msgstr "https://example.com"
+
+#: .\apps\edu\filters\school.py:37 .\apps\hr\forms\phone.py:15
+#: .\apps\hr\models\phone.py:25
+msgid "phone number"
+msgstr "رقم الهاتف"
+
+#: .\apps\edu\forms\degree.py:21
+msgid "e.g. Bachelor"
+msgstr "مثال: شهادة ثانوية"
+
+#: .\apps\edu\forms\degree.py:22 .\apps\org\forms\position.py:15
+#: .\apps\trans\forms\voucher_transaction.py:42
+msgid "e.g. 1"
+msgstr "مثال: 1"
+
+#: .\apps\edu\forms\school.py:18
+msgid "search school kinds"
+msgstr "البحث ضمن انواع الحامعات"
+
+#: .\apps\edu\forms\school.py:27 .\apps\hr\forms\employee.py:37
+msgid "search nationalities"
+msgstr "البحث ضمن الجنسيات"
+
+#: .\apps\edu\forms\school.py:48
+msgid "e.g. AlWatniya Private University"
+msgstr "مثال: الجامعة الوطنية الخاصة"
+
+#: .\apps\edu\forms\school.py:53
+msgid "e.g. 0947302503"
+msgstr "مثال: 0947302503"
+
+#: .\apps\edu\forms\school.py:56
+msgid "e.g. Warsaw, Poland"
+msgstr "مثال حماه، سوريا"
+
+#: .\apps\edu\forms\school_kind.py:31
+msgid "e.g. High School"
+msgstr "مثال: مدرسة ثانوية"
+
+#: .\apps\edu\forms\specialization.py:21
+msgid "e.g. Computer Science"
+msgstr "مثال: علوم الحاسوب"
+
+#: .\apps\edu\models\degree.py:35
+#: .\apps\edu\templates\components\edu\degrees\table.html:139
+#: .\apps\hr\filters\employee.py:136 .\apps\org\models\group.py:35
+msgid "academic"
+msgstr "أكاديمي"
+
+#: .\apps\edu\models\degree.py:36
+#: .\apps\edu\templates\components\edu\degrees\table.html:141
+msgid "applied"
+msgstr "تطبيقي"
+
+#: .\apps\edu\models\degree.py:41
+msgid "for sorting purposes, you can use the same order for different degrees"
+msgstr "لغرض الترتيب، يمكن استخدام نفس الترتيب لأكثر من درجة"
+
+#: .\apps\edu\models\degree.py:55 .\apps\hr\choices.py:49
+#: .\apps\hr\constants\employee.py:41 .\apps\hr\filters\employee.py:328
+#: .\apps\hr\filters\employee.py:434 .\apps\hr\models\employee.py:318
+#: .\apps\hr\resources\employee.py:219
+msgid "degree"
+msgstr "درجة"
+
+#: .\apps\edu\models\degree.py:56
+#: .\apps\edu\templates\apps\edu\degrees\index.html:3
+#: .\apps\edu\urls\degrees.py:15 .\project\constants.py:73
+msgid "degrees"
+msgstr "الدرجات"
+
+#: .\apps\edu\models\school.py:85 .\apps\hr\choices.py:50
+#: .\apps\hr\constants\employee.py:42 .\apps\hr\filters\employee.py:334
+#: .\apps\hr\filters\employee.py:439 .\apps\hr\models\employee.py:324
+#: .\apps\hr\resources\employee.py:227
+msgid "school"
+msgstr "جامعة"
+
+#: .\apps\edu\models\school.py:86
+#: .\apps\edu\templates\apps\edu\schools\index.html:3
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:50
+#: .\apps\edu\urls\schools.py:15
+#: .\apps\geo\templates\components\geo\nationalities\details.html:42
+#: .\project\constants.py:69
+msgid "schools"
+msgstr "الجامعات"
+
+#: .\apps\edu\models\school_kind.py:42
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:141
+msgid "governmental"
+msgstr "حكومي"
+
+#: .\apps\edu\models\school_kind.py:43
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:145
+msgid "private"
+msgstr "خاص"
+
+#: .\apps\edu\models\school_kind.py:46
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:154
+msgid "virtual"
+msgstr "افتراضي"
+
+#: .\apps\edu\models\school_kind.py:47
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:158
+msgid "ordinary"
+msgstr "عادي"
+
+#: .\apps\edu\models\school_kind.py:64 .\apps\hr\choices.py:51
+#: .\apps\hr\filters\employee.py:340 .\apps\hr\filters\employee.py:444
+#: .\apps\hr\resources\employee.py:231
+msgid "school kind"
+msgstr "نوع الجامعة"
+
+#: .\apps\edu\models\school_kind.py:65
+#: .\apps\edu\templates\apps\edu\school_kinds\index.html:3
+#: .\apps\edu\urls\school_kinds.py:15 .\project\constants.py:65
+msgid "school kinds"
+msgstr "أنواع الجامعات"
+
+#: .\apps\edu\models\specialization.py:37
+#: .\apps\edu\templates\components\edu\specializations\table.html:137
+msgid "specialist"
+msgstr "تخصصي"
+
+#: .\apps\edu\models\specialization.py:38
+#: .\apps\edu\templates\components\edu\specializations\table.html:139
+msgid "supporter"
+msgstr "داعم"
+
+#: .\apps\edu\models\specialization.py:50 .\apps\hr\choices.py:52
+#: .\apps\hr\constants\employee.py:43 .\apps\hr\filters\employee.py:346
+#: .\apps\hr\filters\employee.py:449 .\apps\hr\models\employee.py:330
+#: .\apps\hr\resources\employee.py:243
+msgid "specialization"
+msgstr "الاختصاص"
+
+#: .\apps\edu\models\specialization.py:51
+#: .\apps\edu\templates\apps\edu\specializations\index.html:3
+#: .\apps\edu\urls\specializations.py:15 .\project\constants.py:77
+msgid "specializations"
+msgstr "الاختصاصات"
+
+#: .\apps\edu\resources\degree.py:12 .\apps\hr\resources\employee.py:223
+#: .\apps\hr\templates\components\hr\employees\details.html:456
+#: .\apps\hr\templates\components\hr\employees\details.html:458
+msgid "academic?"
+msgstr "أكاديمي؟"
+
+#: .\apps\edu\resources\degree.py:16 .\apps\edu\resources\school.py:36
+#: .\apps\edu\resources\school_kind.py:24
+#: .\apps\edu\resources\specialization.py:16
+#: .\apps\edu\templates\components\edu\degrees\details.html:32
+#: .\apps\edu\templates\components\edu\degrees\details.html:34
+#: .\apps\edu\templates\components\edu\degrees\filter-form.html:10
+#: .\apps\edu\templates\components\edu\degrees\table.html:74
+#: .\apps\edu\templates\components\edu\degrees\table.html:144
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:32
+#: .\apps\edu\templates\components\edu\school_kinds\details.html:34
+#: .\apps\edu\templates\components\edu\school_kinds\filter-form.html:11
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:75
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:166
+#: .\apps\edu\templates\components\edu\schools\details.html:64
+#: .\apps\edu\templates\components\edu\schools\details.html:66
+#: .\apps\edu\templates\components\edu\schools\filter-form.html:11
+#: .\apps\edu\templates\components\edu\schools\table.html:74
+#: .\apps\edu\templates\components\edu\schools\table.html:164
+#: .\apps\edu\templates\components\edu\specializations\details.html:24
+#: .\apps\edu\templates\components\edu\specializations\details.html:26
+#: .\apps\edu\templates\components\edu\specializations\filter-form.html:6
+#: .\apps\edu\templates\components\edu\specializations\table.html:73
+#: .\apps\edu\templates\components\edu\specializations\table.html:142
+#: .\apps\geo\constants\cities.py:10 .\apps\geo\constants\governorates.py:9
+#: .\apps\geo\constants\nationalities.py:9 .\apps\geo\resources\city.py:16
+#: .\apps\geo\templates\components\geo\cities\details.html:32
+#: .\apps\geo\templates\components\geo\cities\details.html:34
+#: .\apps\geo\templates\components\geo\cities\filter-form.html:6
+#: .\apps\geo\templates\components\geo\cities\table.html:74
+#: .\apps\geo\templates\components\geo\cities\table.html:153
+#: .\apps\geo\templates\components\geo\governorates\details.html:16
+#: .\apps\geo\templates\components\geo\governorates\details.html:18
+#: .\apps\geo\templates\components\geo\governorates\filter-form.html:9
+#: .\apps\geo\templates\components\geo\governorates\table.html:73
+#: .\apps\geo\templates\components\geo\governorates\table.html:138
+#: .\apps\geo\templates\components\geo\nationalities\details.html:24
+#: .\apps\geo\templates\components\geo\nationalities\details.html:26
+#: .\apps\geo\templates\components\geo\nationalities\filter-form.html:6
+#: .\apps\geo\templates\components\geo\nationalities\table.html:73
+#: .\apps\geo\templates\components\geo\nationalities\table.html:142
+#: .\apps\org\resources\cost_center.py:16 .\apps\org\resources\group.py:16
+#: .\apps\org\resources\job_subtype.py:16 .\apps\org\resources\job_type.py:16
+#: .\apps\org\resources\position.py:16 .\apps\org\resources\status.py:20
+#: .\apps\org\templates\components\org\cost_centers\details.html:24
+#: .\apps\org\templates\components\org\cost_centers\details.html:26
+#: .\apps\org\templates\components\org\cost_centers\filter-form.html:6
+#: .\apps\org\templates\components\org\cost_centers\table.html:73
+#: .\apps\org\templates\components\org\cost_centers\table.html:138
+#: .\apps\org\templates\components\org\groups\details.html:24
+#: .\apps\org\templates\components\org\groups\details.html:26
+#: .\apps\org\templates\components\org\groups\filter-form.html:6
+#: .\apps\org\templates\components\org\groups\table.html:73
+#: .\apps\org\templates\components\org\groups\table.html:138
+#: .\apps\org\templates\components\org\job_subtypes\details.html:24
+#: .\apps\org\templates\components\org\job_subtypes\details.html:26
+#: .\apps\org\templates\components\org\job_subtypes\filter-form.html:6
+#: .\apps\org\templates\components\org\job_subtypes\table.html:73
+#: .\apps\org\templates\components\org\job_subtypes\table.html:149
+#: .\apps\org\templates\components\org\job_types\details.html:16
+#: .\apps\org\templates\components\org\job_types\details.html:18
+#: .\apps\org\templates\components\org\job_types\filter-form.html:9
+#: .\apps\org\templates\components\org\job_types\table.html:73
+#: .\apps\org\templates\components\org\job_types\table.html:138
+#: .\apps\org\templates\components\org\positions\details.html:24
+#: .\apps\org\templates\components\org\positions\details.html:26
+#: .\apps\org\templates\components\org\positions\filter-form.html:9
+#: .\apps\org\templates\components\org\positions\table.html:73
+#: .\apps\org\templates\components\org\positions\table.html:136
+#: .\apps\org\templates\components\org\statuses\details.html:32
+#: .\apps\org\templates\components\org\statuses\details.html:34
+#: .\apps\org\templates\components\org\statuses\filter-form.html:7
+#: .\apps\org\templates\components\org\statuses\table.html:74
+#: .\apps\org\templates\components\org\statuses\table.html:150
+msgid "employees count"
+msgstr "عدد الموظفين"
+
+#: .\apps\edu\resources\school_kind.py:12
+msgid "governmental?"
+msgstr "حكومي؟"
+
+#: .\apps\edu\resources\school_kind.py:16
+msgid "virtual?"
+msgstr "افتراضي؟"
+
+#: .\apps\edu\resources\specialization.py:12
+#: .\apps\hr\resources\employee.py:247
+#: .\apps\hr\templates\components\hr\employees\details.html:482
+#: .\apps\hr\templates\components\hr\employees\details.html:483
+#: .\apps\hr\templates\components\hr\employees\details.html:485
+msgid "specialist?"
+msgstr "اختصاصي؟"
+
+#: .\apps\edu\templates\apps\edu\degrees\create.html:3
+msgid "create new degree"
+msgstr "انشاء درجة جديدة"
+
+#: .\apps\edu\templates\apps\edu\school_kinds\create.html:3
+msgid "create new school kind"
+msgstr "انشاء نوع جامعة جديد"
+
+#: .\apps\edu\templates\apps\edu\schools\create.html:3
+msgid "create new school"
+msgstr "انشاء جامعة جديدة"
+
+#: .\apps\edu\templates\apps\edu\specializations\create.html:3
+msgid "create new specialization"
+msgstr "انشاء اختصاص جديد"
+
+#: .\apps\edu\templates\components\edu\degrees\create.html:4
+#: .\apps\edu\templates\components\edu\degrees\modal-create.html:4
+msgid "add new degree"
+msgstr "انشاء درجة جديدة"
+
+#: .\apps\edu\templates\components\edu\degrees\table.html:25
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:25
+#: .\apps\edu\templates\components\edu\schools\table.html:25
+#: .\apps\edu\templates\components\edu\specializations\table.html:25
+#: .\apps\fin\templates\components\fin\compensations\table.html:25
+#: .\apps\fin\templates\components\fin\periods\table.html:25
+#: .\apps\fin\templates\components\fin\tax_brackets\table.html:25
+#: .\apps\fin\templates\components\fin\taxes\table.html:25
+#: .\apps\fin\templates\components\fin\voucher_kinds\table.html:25
+#: .\apps\fin\templates\components\fin\years\table.html:25
+#: .\apps\geo\templates\components\geo\cities\table.html:25
+#: .\apps\geo\templates\components\geo\governorates\table.html:25
+#: .\apps\geo\templates\components\geo\nationalities\table.html:25
+#: .\apps\hr\templates\components\hr\employees\table.html:25
+#: .\apps\org\templates\components\org\cost_centers\table.html:25
+#: .\apps\org\templates\components\org\groups\table.html:25
+#: .\apps\org\templates\components\org\job_subtypes\table.html:25
+#: .\apps\org\templates\components\org\job_types\table.html:25
+#: .\apps\org\templates\components\org\positions\table.html:25
+#: .\apps\org\templates\components\org\statuses\table.html:25
+#: .\apps\trans\templates\components\trans\vouchers\table.html:25
+msgid "add new"
+msgstr "انشاء جديد"
+
+#: .\apps\edu\templates\components\edu\degrees\table.html:45
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:45
+#: .\apps\edu\templates\components\edu\schools\table.html:45
+#: .\apps\edu\templates\components\edu\specializations\table.html:45
+#: .\apps\fin\templates\components\fin\compensations\table.html:45
+#: .\apps\fin\templates\components\fin\periods\table.html:45
+#: .\apps\fin\templates\components\fin\tax_brackets\table.html:45
+#: .\apps\fin\templates\components\fin\taxes\table.html:45
+#: .\apps\fin\templates\components\fin\voucher_kinds\table.html:45
+#: .\apps\fin\templates\components\fin\years\table.html:45
+#: .\apps\geo\templates\components\geo\cities\table.html:45
+#: .\apps\geo\templates\components\geo\governorates\table.html:45
+#: .\apps\geo\templates\components\geo\nationalities\table.html:45
+#: .\apps\hr\templates\components\hr\employees\table.html:45
+#: .\apps\org\templates\components\org\cost_centers\table.html:45
+#: .\apps\org\templates\components\org\groups\table.html:45
+#: .\apps\org\templates\components\org\job_subtypes\table.html:45
+#: .\apps\org\templates\components\org\job_types\table.html:45
+#: .\apps\org\templates\components\org\positions\table.html:45
+#: .\apps\org\templates\components\org\statuses\table.html:45
+#: .\apps\reports\templates\components\reports\compensations\table.html:34
+#: .\apps\reports\templates\components\reports\cost_centers\table.html:34
+#: .\apps\reports\templates\components\reports\employees\table.html:34
+#: .\apps\reports\templates\components\reports\ledger\table.html:39
+#: .\apps\reports\templates\components\reports\periods\table.html:34
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:34
+#: .\apps\trans\templates\components\trans\journal_entries\table.html:30
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:34
+#: .\apps\trans\templates\components\trans\vouchers\table.html:45
+#: .\templates\components\blocks\table-filters.html:5
+#: .\templates\components\blocks\table-filters.html:12
+msgid "filters"
+msgstr "وحدات التصفية"
+
+#: .\apps\edu\templates\components\edu\degrees\table.html:70
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:70
+#: .\apps\edu\templates\components\edu\schools\table.html:70
+#: .\apps\edu\templates\components\edu\specializations\table.html:70
+#: .\apps\fin\templates\components\fin\compensations\table.html:70
+#: .\apps\fin\templates\components\fin\periods\table.html:70
+#: .\apps\fin\templates\components\fin\tax_brackets\table.html:70
+#: .\apps\fin\templates\components\fin\taxes\table.html:70
+#: .\apps\fin\templates\components\fin\voucher_kinds\table.html:70
+#: .\apps\fin\templates\components\fin\years\table.html:70
+#: .\apps\geo\templates\components\geo\cities\table.html:70
+#: .\apps\geo\templates\components\geo\governorates\table.html:70
+#: .\apps\geo\templates\components\geo\nationalities\table.html:70
+#: .\apps\hr\templates\components\hr\employees\table.html:70
+#: .\apps\org\templates\components\org\cost_centers\table.html:70
+#: .\apps\org\templates\components\org\groups\table.html:70
+#: .\apps\org\templates\components\org\job_subtypes\table.html:70
+#: .\apps\org\templates\components\org\job_types\table.html:70
+#: .\apps\org\templates\components\org\positions\table.html:70
+#: .\apps\org\templates\components\org\statuses\table.html:70
+#: .\apps\reports\templates\components\reports\employees\table.html:42
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:42
+#: .\apps\trans\templates\components\trans\vouchers\table.html:115
+msgid "options"
+msgstr "الخيارات"
+
+#: .\apps\edu\templates\components\edu\degrees\table.html:104
+#: .\apps\edu\templates\components\edu\school_kinds\table.html:105
+#: .\apps\edu\templates\components\edu\schools\table.html:104
+#: .\apps\edu\templates\components\edu\specializations\table.html:103
+#: .\apps\fin\templates\components\fin\compensations\table.html:108
+#: .\apps\fin\templates\components\fin\periods\table.html:104
+#: .\apps\fin\templates\components\fin\tax_brackets\table.html:104
+#: .\apps\fin\templates\components\fin\taxes\table.html:107
+#: .\apps\fin\templates\components\fin\voucher_kinds\table.html:102
+#: .\apps\fin\templates\components\fin\years\table.html:101
+#: .\apps\geo\templates\components\geo\cities\table.html:104
+#: .\apps\geo\templates\components\geo\governorates\table.html:103
+#: .\apps\geo\templates\components\geo\nationalities\table.html:103
+#: .\apps\hr\templates\components\hr\employees\table.html:130
+#: .\apps\org\templates\components\org\cost_centers\table.html:103
+#: .\apps\org\templates\components\org\groups\table.html:103
+#: .\apps\org\templates\components\org\job_subtypes\table.html:103
+#: .\apps\org\templates\components\org\job_types\table.html:103
+#: .\apps\org\templates\components\org\positions\table.html:103
+#: .\apps\org\templates\components\org\statuses\table.html:104
+#: .\apps\trans\templates\components\trans\vouchers\table.html:154
+msgid "edit"
+msgstr "تعديل"
+
+#: .\apps\edu\templates\components\edu\school_kinds\create.html:4
+#: .\apps\edu\templates\components\edu\school_kinds\modal-create.html:4
+msgid "add new school kind"
+msgstr "انشاء نوع جامعة جديد"
+
+#: .\apps\edu\templates\components\edu\schools\create.html:4
+#: .\apps\edu\templates\components\edu\schools\modal-create.html:4
+msgid "add new school"
+msgstr "انشاء جامعة جديدة"
+
+#: .\apps\edu\templates\components\edu\specializations\create.html:4
+#: .\apps\edu\templates\components\edu\specializations\modal-create.html:4
+msgid "add new specialization"
+msgstr "انشاء اختصاص جديد"
+
+#: .\apps\edu\urls\__init__.py:8 .\apps\edu\views\__init__.py:9
+msgid "education"
+msgstr "تعليمي"
+
+#: .\apps\fin\constants\compensations.py:7 .\apps\fin\filters\tax.py:15
+#: .\apps\fin\models\compensation.py:77 .\apps\fin\models\tax.py:60
+#: .\apps\fin\resources\compensation.py:12 .\apps\fin\resources\tax.py:12
+#: .\apps\hr\models\employee.py:92
+msgid "short name"
+msgstr "الاسم المختصر"
+
+#: .\apps\fin\constants\compensations.py:9 .\apps\fin\constants\taxes.py:7
+#: .\apps\fin\filters\compensation.py:21 .\apps\fin\filters\tax.py:17
+#: .\apps\fin\forms\compensation.py:17 .\apps\fin\forms\tax.py:13
+#: .\apps\fin\models\compensation.py:87 .\apps\fin\models\tax.py:64
+#: .\apps\fin\resources\compensation.py:20 .\apps\fin\resources\tax.py:16
+msgid "calculation method"
+msgstr "طريقة الاحتساب"
+
+#: .\apps\fin\constants\compensations.py:10
+#: .\apps\fin\constants\tax_brackets.py:6 .\apps\fin\filters\tax_bracket.py:40
+#: .\apps\fin\filters\tax_bracket.py:50 .\apps\fin\models\compensation.py:96
+#: .\apps\fin\models\tax.py:218 .\apps\fin\models\tax_bracket.py:35
+#: .\apps\fin\resources\compensation.py:24
+#: .\apps\fin\resources\tax_bracket.py:16
+#: .\apps\trans\models\voucher_transaction.py:70
+#: .\apps\trans\resources\voucher_transaction.py:104
+#: .\apps\trans\templates\components\trans\voucher_transactions\filter-form.html:62
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:49
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:87
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:131
+#: .\apps\trans\templates\components\trans\vouchers\details.html:236
+#: .\apps\trans\templates\components\trans\vouchers\details.html:237
+#: .\apps\trans\templates\components\trans\vouchers\details.html:267
+#: .\apps\trans\templates\components\trans\vouchers\details.html:289
+#: .\apps\trans\templates\components\trans\vouchers\transactions\inline.html:39
+#: .\apps\trans\templates\components\trans\vouchers\update.html:42
+msgid "tax"
+msgstr "الضريبة"
+
+#: .\apps\fin\constants\compensations.py:11
+#: .\apps\fin\models\compensation.py:101
+#: .\apps\fin\resources\compensation.py:28
+msgid "tax classification"
+msgstr "التصنيف الضريبي"
+
+#: .\apps\fin\constants\compensations.py:12
+#: .\apps\fin\models\compensation.py:121
+#: .\apps\fin\resources\compensation.py:41
+#: .\apps\fin\templates\components\fin\compensations\filter-form.html:8
+#: .\apps\hr\templates\components\hr\employees\widgets\group-by-counts.html:30
+#: .\apps\trans\models\voucher_transaction.py:58
+#: .\apps\trans\resources\voucher_transaction.py:94
+#: .\apps\trans\templates\components\trans\voucher_transactions\filter-form.html:50
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:129
+#: .\apps\trans\templates\components\trans\vouchers\details.html:230
+#: .\apps\trans\templates\components\trans\vouchers\details.html:231
+#: .\apps\trans\templates\components\trans\vouchers\details.html:258
+#: .\apps\trans\templates\components\trans\vouchers\details.html:261
+#: .\apps\trans\templates\components\trans\vouchers\details.html:280
+#: .\apps\trans\templates\components\trans\vouchers\details.html:283
+#: .\apps\trans\templates\components\trans\vouchers\transactions\inline.html:26
+#: .\apps\trans\templates\components\trans\vouchers\update.html:40
+msgid "value"
+msgstr "القيمة"
+
+#: .\apps\fin\constants\compensations.py:13
+#: .\apps\fin\models\compensation.py:127
+#: .\apps\fin\resources\compensation.py:46
+#: .\apps\fin\templates\components\fin\compensations\filter-form.html:12
+msgid "min value"
+msgstr "الحد الأدنى من القيمة"
+
+#: .\apps\fin\constants\compensations.py:14
+#: .\apps\fin\models\compensation.py:133
+#: .\apps\fin\resources\compensation.py:51
+#: .\apps\fin\templates\components\fin\compensations\filter-form.html:16
+msgid "max value"
+msgstr "الحد الأعلى من القيمة"
+
+#: .\apps\fin\constants\compensations.py:15
+#: .\apps\fin\filters\compensation.py:26 .\apps\fin\filters\tax.py:21
+#: .\apps\fin\forms\compensation.py:21 .\apps\fin\forms\tax.py:17
+#: .\apps\fin\models\compensation.py:199 .\apps\fin\models\tax.py:110
+#: .\apps\fin\resources\compensation.py:82 .\apps\fin\resources\tax.py:44
+msgid "affected by working days"
+msgstr "يتأثر بعدد أيام الدوام"
+
+#: .\apps\fin\constants\compensations.py:16
+#: .\apps\fin\filters\compensation.py:31 .\apps\fin\forms\compensation.py:25
+#: .\apps\fin\models\compensation.py:204
+#: .\apps\fin\resources\compensation.py:86
+msgid "is active"
+msgstr "هل هو مفعل"
+
+#: .\apps\fin\constants\compensations.py:17
+#: .\apps\fin\models\compensation.py:232 .\apps\fin\models\tax.py:114
+#: .\apps\fin\resources\compensation.py:94 .\apps\fin\resources\tax.py:48
+#: .\apps\org\constants\cost_centers.py:7 .\apps\org\filters\cost_center.py:14
+#: .\apps\org\resources\cost_center.py:12
+msgid "accounting id"
+msgstr "الرقم في المحاسبة العامة"
+
+#: .\apps\fin\constants\periods.py:7 .\apps\fin\models\period.py:35
+#: .\apps\fin\models\year.py:33 .\apps\fin\resources\period.py:12
+#: .\apps\hr\choices.py:20 .\apps\reports\filters\mixins.py:160
+#: .\apps\reports\resources\ledger.py:52
+#: .\apps\reports\templates\components\reports\ledger\table.html:65
+#: .\apps\reports\templates\components\reports\ledger\table.html:107
+#: .\apps\trans\filters\journal_entry.py:48
+#: .\apps\trans\filters\journal_entry.py:156
+#: .\apps\trans\resources\journal_entry.py:53
+#: .\apps\trans\templates\components\trans\journal_entries\table.html:46
+#: .\apps\trans\templates\components\trans\journal_entries\table.html:92
+#: .\apps\trans\templates\components\trans\vouchers\table.html:122
+#: .\apps\trans\templates\components\trans\vouchers\table.html:270
+msgid "year"
+msgstr "العام"
+
+#: .\apps\fin\constants\periods.py:8 .\apps\fin\models\period.py:40
+#: .\apps\fin\templates\components\fin\periods\filter-form.html:6
+#: .\apps\fin\templates\components\fin\years\details.html:32
+#: .\apps\fin\templates\components\fin\years\details.html:40
+msgid "start date"
+msgstr "تاريخ البداية"
+
+#: .\apps\fin\constants\periods.py:9 .\apps\fin\forms\period.py:14
+#: .\apps\fin\models\period.py:44 .\apps\fin\resources\period.py:21
+#: .\apps\fin\templates\components\fin\years\details.html:33
+#: .\apps\fin\templates\components\fin\years\details.html:43
+msgid "is closed"
+msgstr "هل هو مغلق"
+
+#: .\apps\fin\constants\tax_brackets.py:7 .\apps\fin\models\tax_bracket.py:40
+#: .\apps\fin\resources\tax_bracket.py:20
+#: .\apps\fin\templates\components\fin\tax_brackets\filter-form.html:5
+msgid "amount from"
+msgstr "المبلغ من"
+
+#: .\apps\fin\constants\tax_brackets.py:8 .\apps\fin\models\tax_bracket.py:47
+#: .\apps\fin\resources\tax_bracket.py:25
+#: .\apps\fin\templates\components\fin\tax_brackets\filter-form.html:9
+msgid "amount to"
+msgstr "المبلغ الى"
+
+#: .\apps\fin\constants\tax_brackets.py:9 .\apps\fin\models\tax_bracket.py:54
+#: .\apps\fin\resources\tax_bracket.py:30
+#: .\apps\fin\templates\components\fin\tax_brackets\filter-form.html:13
+#: .\apps\fin\templates\components\fin\taxes\details.html:133
+#: .\apps\fin\templates\components\fin\taxes\details.html:144
+msgid "rate"
+msgstr "النسبة"
+
+#: .\apps\fin\constants\tax_brackets.py:10 .\apps\fin\filters\tax_bracket.py:18
+#: .\apps\fin\resources\tax_bracket.py:35 .\apps\hr\models\email.py:42
+#: .\apps\hr\models\mobile.py:52 .\apps\hr\resources\_base.py:26
+#: .\apps\reports\resources\ledger.py:83 .\apps\trans\constants\vouchers.py:13
+#: .\apps\trans\filters\journal_entry.py:78
+#: .\apps\trans\models\journal_entry.py:116 .\apps\trans\models\voucher.py:103
+#: .\apps\trans\models\voucher_transaction.py:80
+#: .\apps\trans\resources\journal_entry.py:92
+#: .\apps\trans\resources\voucher.py:105
+#: .\apps\trans\resources\voucher_transaction.py:73
+#: .\apps\trans\resources\voucher_transaction.py:114
+#: .\apps\trans\templates\components\trans\vouchers\details.html:242
+#: .\apps\trans\templates\components\trans\vouchers\details.html:243
+#: .\apps\trans\templates\components\trans\vouchers\details.html:273
+#: .\apps\trans\templates\components\trans\vouchers\transactions\inline.html:50
+#: .\apps\trans\templates\components\trans\vouchers\update.html:44
+msgid "notes"
+msgstr "ملاحظات"
+
+#: .\apps\fin\filters\compensation.py:41 .\apps\fin\models\compensation.py:161
+#: .\apps\fin\resources\compensation.py:66
+msgid "restrict to min total value"
+msgstr "التقييد بالحد الأدنى الاجمالي"
+
+#: .\apps\fin\filters\compensation.py:46 .\apps\fin\models\compensation.py:191
+#: .\apps\fin\resources\compensation.py:70
+msgid "restrict to max total value"
+msgstr "التقييد بالحد الأعلى الاجمالي"
+
+#: .\apps\fin\filters\period.py:15 .\apps\fin\models\period.py:30
+msgid "closed"
+msgstr "مغلق"
+
+#: .\apps\fin\forms\compensation.py:30 .\apps\fin\forms\tax_bracket.py:16
+msgid "search taxes"
+msgstr "البحث ضمن الضرائب"
+
+#: .\apps\fin\forms\compensation.py:66 .\apps\fin\forms\compensation.py:67
+msgid "e.g. Salary"
+msgstr "مثال: الراتب"
+
+#: .\apps\fin\forms\compensation.py:68 .\apps\fin\forms\tax_bracket.py:36
+#: .\apps\trans\forms\voucher_transaction.py:43
+msgid "e.g. 1000"
+msgstr "مثال: 1000"
+
+#: .\apps\fin\forms\compensation.py:69
+msgid "e.g. 0"
+msgstr "مثال: 0"
+
+#: .\apps\fin\forms\compensation.py:70 .\apps\fin\forms\compensation.py:71
+#: .\apps\fin\forms\compensation.py:72 .\apps\fin\forms\tax_bracket.py:37
+msgid "e.g. 50000"
+msgstr "مثال: 50000"
+
+#: .\apps\fin\forms\compensation.py:73
+msgid "e.g. 100"
+msgstr "مثال: 100"
+
+#: .\apps\fin\forms\compensation.py:74 .\apps\fin\forms\tax.py:38
+msgid "e.g. 3111"
+msgstr "مثال: 3111"
+
+#: .\apps\fin\forms\compensation.py:80 .\apps\fin\forms\compensation.py:86
+#: .\apps\fin\forms\compensation.py:92 .\apps\fin\forms\tax.py:42
+msgid "e.g. 1000 if obj.gender == 'male' else 1000"
+msgstr "مثال 1000 if obj.gender == 'male' else 1000"
+
+#: .\apps\fin\forms\period.py:19
+msgid "search years"
+msgstr "البحث ضمن السنوات"
+
+#: .\apps\fin\forms\period.py:30
+msgid "e.g. 20221 - First Chapter"
+msgstr "مثال: الفصل الدراسي الاول - 20221"
+
+#: .\apps\fin\forms\period.py:31 .\apps\hr\forms\employee.py:183
+#: .\apps\hr\forms\employee.py:184 .\apps\hr\forms\employee.py:186
+msgid "e.g. 2022-01-01"
+msgstr "مثال: 2022-01-01"
+
+#: .\apps\fin\forms\tax.py:36
+msgid "e.g. Fixed Tax"
+msgstr "مثال: ضريبة الدفعة الواحدة"
+
+#: .\apps\fin\forms\tax.py:37
+msgid "e.g. Fixed"
+msgstr "مثال: ثابتة"
+
+#: .\apps\fin\forms\tax_bracket.py:38
+msgid "e.g. 0.1"
+msgstr "مثال: 0.1"
+
+#: .\apps\fin\forms\voucher_kind.py:14
+msgid "e.g. salaries"
+msgstr "مثال: الرواتب"
+
+#: .\apps\fin\forms\year.py:14
+msgid "e.g. 2022"
+msgstr "مثال 2022"
+
+#: .\apps\fin\models\compensation.py:43 .\apps\fin\models\compensation.py:51
+msgid "fixed"
+msgstr "ثابتة"
+
+#: .\apps\fin\models\compensation.py:44 .\apps\fin\models\compensation.py:52
+msgid "by input"
+msgstr "حسب الادخال"
+
+#: .\apps\fin\models\compensation.py:47
+msgid "benefit"
+msgstr "منفعة"
+
+#: .\apps\fin\models\compensation.py:48
+msgid "cut"
+msgstr "اقتطاع"
+
+#: .\apps\fin\models\compensation.py:53 .\apps\fin\models\compensation.py:207
+#: .\apps\fin\models\tax.py:56 .\apps\fin\models\tax.py:85
+#: .\apps\fin\resources\compensation.py:90 .\apps\fin\resources\tax.py:31
+msgid "formula"
+msgstr "معادلة"
+
+#: .\apps\fin\models\compensation.py:60
+msgid "salary"
+msgstr "الراتب"
+
+#: .\apps\fin\models\compensation.py:63
+msgid "withholding tax applicable"
+msgstr "خاضة لضريبة الدفعة الواحدة"
+
+#: .\apps\fin\models\compensation.py:67
+msgid "withholding tax not applicable"
+msgstr "غير خاضة لضريبة الدفعة الواحدة"
+
+#: .\apps\fin\models\compensation.py:69
+msgid "others"
+msgstr "أخرى"
+
+#: .\apps\fin\models\compensation.py:72
+msgid "replace"
+msgstr "استبدال"
+
+#: .\apps\fin\models\compensation.py:73
+msgid "raise error"
+msgstr "إعادة مع الخطاً"
+
+#: .\apps\fin\models\compensation.py:78 .\apps\fin\models\tax.py:61
+msgid "to use it in services like sms, whatsapp, etc."
+msgstr "لاستخدامه في الخدمات مثل: خدمة الرسائل القصيرةـ واتساب ..."
+
+#: .\apps\fin\models\compensation.py:106
+msgid ""
+"classify the nature of compensation to know how to calculate it in the "
+"periodic tax statement"
+msgstr ""
+"تصنيف طبيعة التعويض لمعرفة كيف يتم احتسابه خلال التقارير المعدة لمديرية "
+"المالية"
+
+#: .\apps\fin\models\compensation.py:110 .\apps\fin\models\tax.py:104
+#: .\apps\fin\resources\compensation.py:32 .\apps\fin\resources\tax.py:40
+msgid "round method"
+msgstr "طريقة التقريب"
+
+#: .\apps\fin\models\compensation.py:116 .\apps\fin\models\tax.py:99
+#: .\apps\fin\resources\compensation.py:36 .\apps\fin\resources\tax.py:35
+msgid "rounded to"
+msgstr "التقريب الى"
+
+#: .\apps\fin\models\compensation.py:139
+#: .\apps\fin\resources\compensation.py:56
+#: .\apps\fin\templates\components\fin\compensations\filter-form.html:20
+msgid "min total value"
+msgstr "الحد الأدنى الاجمالي"
+
+#: .\apps\fin\models\compensation.py:143
+msgid "min total value to calculate the compensation value"
+msgstr "الحد الأدنى للاجمالي لاحتساب قيمة التعويض"
+
+#: .\apps\fin\models\compensation.py:146
+#: .\apps\fin\resources\compensation.py:74
+msgid "min total formula"
+msgstr "معادلة الحد الأدنى الاجمالي"
+
+#: .\apps\fin\models\compensation.py:165
+msgid ""
+"if Raise error, it will raise an error if the total value is less than min "
+"total value, otherwise it will replace the value with min total value"
+msgstr ""
+"اذا اخترت \"‘اعادة مع الخطأ\"، سيتم رفض أمر الصرف اذا كان اجمالي التعويض أقل "
+"من الحد الأدنى الاجمالي، أما باختيار \"استبدال\" النظام سيقوم باستبدال "
+"القيمة الاجمالية للتعويض بالحد الأدنى"
+
+#: .\apps\fin\models\compensation.py:169
+#: .\apps\fin\resources\compensation.py:61
+#: .\apps\fin\templates\components\fin\compensations\filter-form.html:25
+msgid "max total value"
+msgstr "الحد الأعلى الاجمالي"
+
+#: .\apps\fin\models\compensation.py:173
+msgid "max total value to calculate the compensation value"
+msgstr "الجد الأعلى الاجمالي لاحتساب قيمة التعويض"
+
+#: .\apps\fin\models\compensation.py:176
+#: .\apps\fin\resources\compensation.py:78
+msgid "max total formula"
+msgstr "معادلة الحد الأعلى"
+
+#: .\apps\fin\models\compensation.py:195
+msgid ""
+"if Raise error, it will raise an error if the total value is greater than "
+"max total value, otherwise it will replace the value with max total value"
+msgstr ""
+"اذا اخترت \"اعادة مع الخطأ\"، سيتم رفض أمر الصرف اذا كان اجمالي التعويض أكثر "
+"من الحد الأعلى الاجمالي، أما باختيار \"استبدال\" النظام سيقوم باستبدال "
+"القيمة الاجمالية للتعويض بالحد الأعلى"
+
+#: .\apps\fin\models\compensation.py:223 .\apps\trans\models\voucher.py:133
+msgid "document"
+msgstr "المستند"
+
+#: .\apps\fin\models\compensation.py:233 .\apps\fin\models\tax.py:115
+msgid "accounting id in accounting system (in chart of accounts)"
+msgstr "رقم التسلسل الخاص بالمحاسبة العامة (شجرة الحسابات)"
+
+#: .\apps\fin\models\compensation.py:315
+msgid "value must be greater than 0."
+msgstr "القيمة يجب ان تكون أكبر من الصفر."
+
+#: .\apps\fin\models\compensation.py:320
+msgid "min value must be less than value."
+msgstr "الحد الأدنى يجب ان يكون أقل من القيمة."
+
+#: .\apps\fin\models\compensation.py:325
+msgid "max value must be greater than value."
+msgstr "الحد الأعلى يجب ان يكون أكبر من القيمة."
+
+#: .\apps\fin\models\compensation.py:330
+msgid "min value must be less than max value."
+msgstr "الحد الأدنى يجب ان يكون أقل من الحد الاعلى."
+
+#: .\apps\fin\models\compensation.py:336 .\apps\fin\models\tax.py:147
+msgid "formula must be filled."
+msgstr "يجب ان تملأ حقل المعادلة."
+
+#: .\apps\fin\models\compensation.py:349
+msgid " (not activated)"
+msgstr " (غير مفعل)"
+
+#: .\apps\fin\models\compensation.py:357
+#: .\apps\fin\templates\apps\fin\compensations\index.html:3
+#: .\apps\reports\filters\mixins.py:60
+#: .\apps\reports\resources\compensations.py:15
+#: .\apps\trans\filters\voucher_transaction.py:62
+#: .\apps\trans\filters\voucher_transaction.py:149
+#: .\apps\trans\models\voucher_transaction.py:47
+#: .\apps\trans\resources\voucher_transaction.py:85
+#: .\apps\trans\templates\components\trans\vouchers\details.html:224
+#: .\apps\trans\templates\components\trans\vouchers\details.html:225
+#: .\apps\trans\templates\components\trans\vouchers\details.html:255
+#: .\apps\trans\templates\components\trans\vouchers\transactions\inline.html:13
+#: .\apps\trans\templates\components\trans\vouchers\update.html:38
+msgid "compensation"
+msgstr "التعويض"
+
+#: .\apps\fin\models\compensation.py:358
+#: .\apps\fin\templates\components\fin\taxes\details.html:154
+#: .\apps\fin\urls\compensations.py:15
+#: .\apps\reports\templates\apps\reports\compensations\index.html:3
+#: .\apps\reports\urls\compensations.py:15 .\project\constants.py:99
+#: .\project\constants.py:145
+msgid "compensations"
+msgstr "التعويضات"
+
+#: .\apps\fin\models\period.py:31
+msgid "open"
+msgstr "مفتوح"
+
+#: .\apps\fin\models\period.py:53 .\apps\reports\filters\mixins.py:72
+#: .\apps\reports\resources\ledger.py:48 .\apps\reports\resources\periods.py:15
+#: .\apps\trans\constants\vouchers.py:12
+#: .\apps\trans\filters\journal_entry.py:43
+#: .\apps\trans\filters\journal_entry.py:150 .\apps\trans\filters\voucher.py:40
+#: .\apps\trans\filters\voucher_transaction.py:52
+#: .\apps\trans\filters\voucher_transaction.py:175
+#: .\apps\trans\models\journal_entry.py:56 .\apps\trans\models\voucher.py:98
+#: .\apps\trans\resources\journal_entry.py:49
+#: .\apps\trans\resources\voucher.py:71
+#: .\apps\trans\resources\voucher_transaction.py:69
+msgid "period"
+msgstr "الفترة"
+
+#: .\apps\fin\models\period.py:54
+#: .\apps\fin\templates\apps\fin\periods\index.html:3
+#: .\apps\fin\templates\components\fin\years\details.html:26
+#: .\apps\fin\urls\periods.py:15
+#: .\apps\reports\templates\apps\reports\periods\index.html:3
+#: .\apps\reports\urls\periods.py:15 .\project\constants.py:87
+#: .\project\constants.py:141
+msgid "periods"
+msgstr "الفترات"
+
+#: .\apps\fin\models\tax.py:53
+msgid "fixed amount"
+msgstr "مبلغ ثابت"
+
+#: .\apps\fin\models\tax.py:54
+msgid "fixed percentage"
+msgstr "نسبة ثابتة"
+
+#: .\apps\fin\models\tax.py:55
+#: .\apps\fin\templates\components\fin\taxes\details.html:126
+msgid "brackets"
+msgstr "شرائح"
+
+#: .\apps\fin\models\tax.py:70 .\apps\fin\resources\tax.py:21
+#: .\apps\fin\templates\components\fin\taxes\filter-form.html:7
+#: .\apps\trans\models\journal_entry.py:73
+msgid "amount"
+msgstr "المبلغ"
+
+#: .\apps\fin\models\tax.py:74
+msgid "if you choose fixed amount, this field will be used"
+msgstr "اذا اخترت \"مبلغ ثابت\" يجب ان تملئ هذا الحقل"
+
+#: .\apps\fin\models\tax.py:77 .\apps\fin\resources\tax.py:26
+#: .\apps\fin\templates\components\fin\taxes\filter-form.html:11
+msgid "percentage"
+msgstr "النسبة"
+
+#: .\apps\fin\models\tax.py:82
+msgid "if you choose fixed percentage, this field will be used"
+msgstr "اذا اخترت \"نسبة ثابتة\" يجب ان تملئ هذا الحقل"
+
+#: .\apps\fin\models\tax.py:140
+msgid "you can't have brackets if the calculation method is not brackets."
+msgstr "لا يمكنك اضافة شرائح اذا لم تكن مختار طريقة الاحتساب \"شرائح\"."
+
+#: .\apps\fin\models\tax.py:153
+msgid "amount must be greater than 0."
+msgstr "المبلغ يجب ان يكون أكبر من الصفر."
+
+#: .\apps\fin\models\tax.py:159
+msgid "percentage must be greater than 0."
+msgstr "النسبة يجب أن تكون أكبر من الصفر."
+
+#: .\apps\fin\models\tax.py:219
+#: .\apps\fin\templates\apps\fin\taxes\index.html:3 .\apps\fin\urls\taxes.py:15
+msgid "taxes"
+msgstr "الضرائب"
+
+#: .\apps\fin\models\tax_bracket.py:85 .\apps\fin\models\tax_bracket.py:88
+msgid "you can't add a bracket to a not brackets tax."
+msgstr "لا يمكن اضافة الشرائح الى ضريبة طريقة احتسابها لا تكون \"شرائح\"."
+
+#: .\apps\fin\models\tax_bracket.py:93
+msgid "amount from must be greater than amount to."
+msgstr "\"المبلغ من\" يجب ان يكون أكبر من \"المبلغ الى\"."
+
+#: .\apps\fin\models\tax_bracket.py:106
+msgid "tax bracket"
+msgstr "شريحة الضرائب"
+
+#: .\apps\fin\models\tax_bracket.py:107
+#: .\apps\fin\templates\apps\fin\tax_brackets\index.html:3
+#: .\apps\fin\urls\tax_brackets.py:15 .\project\constants.py:95
+msgid "tax brackets"
+msgstr "شرائح الضرائب"
+
+#: .\apps\fin\models\voucher_kind.py:43
+#: .\apps\trans\constants\voucher_transactions.py:8
+msgid "voucher kind"
+msgstr "نوع أمر الصرف"
+
+#: .\apps\fin\models\voucher_kind.py:44
+#: .\apps\fin\templates\apps\fin\voucher_kinds\index.html:3
+#: .\apps\fin\urls\voucher_kinds.py:15 .\project\constants.py:103
+msgid "voucher kinds"
+msgstr "أنواع أوامر الصرف"
+
+#: .\apps\fin\models\year.py:34
+#: .\apps\fin\templates\apps\fin\years\index.html:3 .\apps\fin\urls\years.py:15
+msgid "years"
+msgstr "السنوات"
+
+#: .\apps\fin\resources\period.py:16 .\apps\hr\constants\employee.py:14
+#: .\apps\hr\models\employee.py:132 .\apps\hr\resources\employee.py:61
+#: .\apps\hr\templates\components\hr\employees\filter-form.html:9
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-birthdays.html:35
+msgid "birth date"
+msgstr "تاريخ الميلاد"
+
+#: .\apps\fin\templates\apps\fin\compensations\create.html:3
+msgid "create new compensation"
+msgstr "انشاء تعويض جديد"
+
+#: .\apps\fin\templates\apps\fin\periods\create.html:3
+msgid "create new period"
+msgstr "انشاء فترة جديدة"
+
+#: .\apps\fin\templates\apps\fin\tax_brackets\create.html:3
+msgid "create new tax bracket"
+msgstr "انشاء شريحة ضريبة جديدة"
+
+#: .\apps\fin\templates\apps\fin\taxes\create.html:3
+msgid "create new tax"
+msgstr "انشاء ضريبة جديدة"
+
+#: .\apps\fin\templates\apps\fin\voucher_kinds\create.html:3
+msgid "create new voucher kind"
+msgstr "انشاء نوع أمر صرف جديد"
+
+#: .\apps\fin\templates\apps\fin\years\create.html:3
+msgid "create new year"
+msgstr "انشاء سنة جديدة"
+
+#: .\apps\fin\templates\components\fin\compensations\create.html:4
+#: .\apps\fin\templates\components\fin\compensations\modal-create.html:4
+msgid "add new compensation"
+msgstr "انشاء تعويض جديد"
+
+#: .\apps\fin\templates\components\fin\compensations\table.html:140
+msgid "not activated"
+msgstr "غير مفعل"
+
+#: .\apps\fin\templates\components\fin\periods\create.html:4
+#: .\apps\fin\templates\components\fin\periods\modal-create.html:4
+msgid "add new period"
+msgstr "انشاء فترة جديدة"
+
+#: .\apps\fin\templates\components\fin\periods\details.html:21
+msgid "start_date"
+msgstr "تاريخ البداية"
+
+#: .\apps\fin\templates\components\fin\periods\details.html:29
+msgid "is_closed"
+msgstr "هل هو مغلق"
+
+#: .\apps\fin\templates\components\fin\tax_brackets\create.html:4
+#: .\apps\fin\templates\components\fin\tax_brackets\modal-create.html:4
+msgid "add new tax bracket"
+msgstr "انشاء شريحة ضريبة جديدة"
+
+#: .\apps\fin\templates\components\fin\taxes\create.html:4
+#: .\apps\fin\templates\components\fin\taxes\modal-create.html:4
+msgid "add new tax"
+msgstr "انشاء ضريبة جديدة"
+
+#: .\apps\fin\templates\components\fin\taxes\details.html:98
+#: .\apps\fin\templates\components\fin\taxes\details.html:100
+msgid "brackets count"
+msgstr "عدد الشرائح"
+
+#: .\apps\fin\templates\components\fin\taxes\details.html:107
+#: .\apps\fin\templates\components\fin\taxes\details.html:109
+#: .\apps\fin\templates\components\fin\taxes\table.html:77
+#: .\apps\fin\templates\components\fin\taxes\table.html:154
+msgid "compensations count"
+msgstr "عدد التعويضات"
+
+#: .\apps\fin\templates\components\fin\voucher_kinds\create.html:4
+#: .\apps\fin\templates\components\fin\voucher_kinds\modal-create.html:4
+msgid "add new voucher kind"
+msgstr "انشاء نوع أمر صرف جديد"
+
+#: .\apps\fin\templates\components\fin\voucher_kinds\details.html:24
+#: .\apps\fin\templates\components\fin\voucher_kinds\details.html:26
+#: .\apps\fin\templates\components\fin\voucher_kinds\table.html:72
+#: .\apps\fin\templates\components\fin\voucher_kinds\table.html:134
+msgid "vouchers count"
+msgstr "عدد أوامر الصرف"
+
+#: .\apps\fin\templates\components\fin\years\create.html:4
+#: .\apps\fin\templates\components\fin\years\modal-create.html:4
+msgid "add new year"
+msgstr "انشاء سنة جديدة"
+
+#: .\apps\fin\urls\__init__.py:7 .\apps\fin\views\__init__.py:9
+#: .\templates\components\layout\sidebar\index.html:178
+msgid "financial"
+msgstr "القسم المالي"
+
+#: .\apps\geo\constants\cities.py:8 .\apps\geo\filters\city.py:34
+#: .\apps\geo\filters\city.py:43 .\apps\geo\models\city.py:46
+#: .\apps\geo\models\governorate.py:47 .\apps\geo\resources\city.py:12
+#: .\apps\geo\templates\components\geo\cities\table.html:139
+#: .\apps\hr\choices.py:36 .\apps\hr\filters\employee.py:273
+#: .\apps\hr\filters\employee.py:388 .\apps\hr\resources\employee.py:148
+#: .\apps\hr\templates\components\hr\employees\details.html:302
+#: .\apps\hr\templates\components\hr\employees\details.html:304
+#: .\apps\hr\templates\components\hr\employees\table.html:80
+#: .\apps\hr\templates\components\hr\employees\table.html:221
+msgid "governorate"
+msgstr "المحافظة"
+
+#: .\apps\geo\constants\governorates.py:7
+#: .\apps\geo\resources\governorate.py:12
+#: .\apps\geo\templates\components\geo\governorates\filter-form.html:5
+#: .\apps\geo\templates\components\geo\governorates\table.html:72
+#: .\apps\geo\templates\components\geo\governorates\table.html:135
+msgid "cities count"
+msgstr "عدد المدن"
+
+#: .\apps\geo\constants\nationalities.py:7 .\apps\geo\filters\nationality.py:11
+#: .\apps\hr\filters\employee.py:146
+msgid "locality"
+msgstr "هل هي محلية"
+
+#: .\apps\geo\forms\city.py:14
+msgid "search governorates"
+msgstr "البحث ضمن المحافظات"
+
+#: .\apps\geo\forms\city.py:25
+msgid "e.g. Hamah"
+msgstr "مثال: حماه"
+
+#: .\apps\geo\forms\governorate.py:14
+msgid "e.g. Al-Bayda"
+msgstr "مثال: البيضا"
+
+#: .\apps\geo\forms\nationality.py:20
+msgid "e.g. Syrian"
+msgstr "مثال: سوري"
+
+#: .\apps\geo\models\city.py:36 .\apps\geo\models\city.py:61
+#: .\apps\hr\choices.py:37 .\apps\hr\constants\employee.py:32
+#: .\apps\hr\filters\employee.py:279 .\apps\hr\filters\employee.py:393
+#: .\apps\hr\models\employee.py:248 .\apps\hr\resources\employee.py:152
+#: .\apps\hr\templates\components\hr\employees\table.html:229
+msgid "city"
+msgstr "مدينة"
+
+#: .\apps\geo\models\city.py:37
+msgid "area"
+msgstr "منطقة"
+
+#: .\apps\geo\models\city.py:38
+msgid "town"
+msgstr "بلدة"
+
+#: .\apps\geo\models\city.py:39
+msgid "village"
+msgstr "قرية"
+
+#: .\apps\geo\models\city.py:62
+#: .\apps\geo\templates\apps\geo\cities\index.html:3
+#: .\apps\geo\templates\components\geo\governorates\details.html:34
+#: .\apps\geo\urls\cities.py:15 .\project\constants.py:29
+msgid "cities"
+msgstr "المدن"
+
+#: .\apps\geo\models\governorate.py:48
+#: .\apps\geo\templates\apps\geo\governorates\index.html:3
+#: .\apps\geo\urls\governorates.py:14 .\project\constants.py:25
+msgid "governorates"
+msgstr "المحافظات"
+
+#: .\apps\geo\models\nationality.py:37
+#: .\apps\geo\templates\components\geo\nationalities\table.html:137
+msgid "local"
+msgstr "محلي"
+
+#: .\apps\geo\models\nationality.py:38
+#: .\apps\geo\templates\components\geo\nationalities\table.html:139
+msgid "foreign"
+msgstr "اجنبي"
+
+#: .\apps\geo\models\nationality.py:41 .\apps\geo\resources\nationality.py:12
+msgid "is local"
+msgstr "هل هي محلية"
+
+#: .\apps\geo\models\nationality.py:66
+#: .\apps\geo\templates\apps\geo\nationalities\index.html:3
+#: .\apps\geo\urls\nationalities.py:15 .\project\constants.py:33
+msgid "nationalities"
+msgstr "الجنسيات"
+
+#: .\apps\geo\templates\apps\geo\cities\create.html:3
+msgid "create new city"
+msgstr "انشاء مدينة جديدة"
+
+#: .\apps\geo\templates\apps\geo\governorates\create.html:3
+msgid "create new governorate"
+msgstr "انشاء محافظة جديدة"
+
+#: .\apps\geo\templates\apps\geo\nationalities\create.html:3
+msgid "create new nationality"
+msgstr "انشاء جنسية جديدة"
+
+#: .\apps\geo\templates\components\geo\cities\create.html:4
+#: .\apps\geo\templates\components\geo\cities\modal-create.html:4
+msgid "add new city"
+msgstr "انشاء مدينة جديدة"
+
+#: .\apps\geo\templates\components\geo\governorates\create.html:4
+#: .\apps\geo\templates\components\geo\governorates\modal-create.html:4
+msgid "add new governorate"
+msgstr "انشاء محافظة جديدة"
+
+#: .\apps\geo\templates\components\geo\governorates\update.html:47
+#: .\apps\hr\templates\components\hr\employees\update.html:46
+#: .\apps\hr\templates\components\hr\employees\update.html:83
+#: .\apps\hr\templates\components\hr\employees\update.html:120
+#: .\apps\org\templates\components\org\job_types\update.html:46
+#: .\apps\trans\templates\components\trans\vouchers\update.html:63
+msgid "add new row"
+msgstr "اضافة سطر جديد"
+
+#: .\apps\geo\templates\components\geo\nationalities\create.html:4
+#: .\apps\geo\templates\components\geo\nationalities\modal-create.html:4
+msgid "add new nationality"
+msgstr "انشاء جنسية جديدة"
+
+#: .\apps\geo\urls\__init__.py:7 .\apps\geo\views\__init__.py:9
+#: .\templates\components\layout\sidebar\index.html:57
+msgid "geographical"
+msgstr "القسم الجغرافي"
+
+#: .\apps\hr\choices.py:6 .\apps\hr\querysets\employee.py:60
+msgid "children"
+msgstr "أطفال"
+
+#: .\apps\hr\choices.py:7
+msgid "teenagers"
+msgstr "مراهقين"
+
+#: .\apps\hr\choices.py:8
+msgid "twenties"
+msgstr "العشرينيات"
+
+#: .\apps\hr\choices.py:9
+msgid "thirties"
+msgstr "الثلاثينيات"
+
+#: .\apps\hr\choices.py:10
+msgid "forties"
+msgstr "الأربعينيات"
+
+#: .\apps\hr\choices.py:11
+msgid "fifties"
+msgstr "الخمسينيات"
+
+#: .\apps\hr\choices.py:12
+msgid "sixties"
+msgstr "الستينينات"
+
+#: .\apps\hr\choices.py:13
+msgid "seventies"
+msgstr "السبعينيات"
+
+#: .\apps\hr\choices.py:14
+msgid "eighties"
+msgstr "الثمانينيات"
+
+#: .\apps\hr\choices.py:15
+msgid "nineties"
+msgstr "التعسينيات"
+
+#: .\apps\hr\choices.py:16 .\apps\hr\querysets\employee.py:70
+msgid "above 100"
+msgstr "أكثر من 100 عام"
+
+#: .\apps\hr\choices.py:21 .\apps\reports\filters\mixins.py:170
+#: .\apps\reports\resources\ledger.py:40 .\apps\trans\constants\vouchers.py:10
+#: .\apps\trans\filters\journal_entry.py:31 .\apps\trans\filters\voucher.py:28
+#: .\apps\trans\filters\voucher.py:104
+#: .\apps\trans\filters\voucher_transaction.py:40
+#: .\apps\trans\filters\voucher_transaction.py:161
+#: .\apps\trans\models\journal_entry.py:45 .\apps\trans\models\voucher.py:87
+#: .\apps\trans\resources\journal_entry.py:41
+#: .\apps\trans\resources\voucher.py:63
+#: .\apps\trans\resources\voucher_transaction.py:61
+msgid "month"
+msgstr "الشهر"
+
+#: .\apps\hr\choices.py:22
+msgid "day"
+msgstr "اليوم"
+
+#: .\apps\hr\choices.py:26 .\apps\hr\constants\employee.py:21
+#: .\apps\hr\models\employee.py:182 .\apps\hr\resources\employee.py:103
+msgid "gender"
+msgstr "الجنس"
+
+#: .\apps\hr\choices.py:27 .\apps\hr\constants\employee.py:22
+#: .\apps\hr\filters\employee.py:234 .\apps\hr\filters\employee.py:355
+#: .\apps\hr\models\employee.py:188 .\apps\hr\resources\employee.py:107
+msgid "face color"
+msgstr "لون الوجه"
+
+#: .\apps\hr\choices.py:28 .\apps\hr\constants\employee.py:23
+#: .\apps\hr\filters\employee.py:240 .\apps\hr\filters\employee.py:360
+#: .\apps\hr\models\employee.py:194 .\apps\hr\resources\employee.py:111
+msgid "eyes color"
+msgstr "لون العينين"
+
+#: .\apps\hr\choices.py:29 .\apps\hr\constants\employee.py:27
+#: .\apps\hr\filters\employee.py:246 .\apps\hr\filters\employee.py:365
+#: .\apps\hr\models\employee.py:217 .\apps\hr\resources\employee.py:128
+msgid "martial status"
+msgstr "الحالة الاجتماعية"
+
+#: .\apps\hr\choices.py:30 .\apps\hr\constants\employee.py:28
+#: .\apps\hr\filters\employee.py:253 .\apps\hr\filters\employee.py:371
+#: .\apps\hr\models\employee.py:223 .\apps\hr\resources\employee.py:132
+msgid "military status"
+msgstr "الحالة العسكرية"
+
+#: .\apps\hr\choices.py:31 .\apps\hr\constants\employee.py:29
+#: .\apps\hr\filters\employee.py:260 .\apps\hr\filters\employee.py:377
+#: .\apps\hr\models\employee.py:229 .\apps\hr\resources\employee.py:136
+msgid "religion"
+msgstr "الديانة"
+
+#: .\apps\hr\choices.py:32 .\apps\hr\constants\employee.py:13
+#: .\apps\hr\filters\employee.py:88 .\apps\hr\models\employee.py:128
+#: .\apps\hr\resources\employee.py:57
+msgid "birth place"
+msgstr "مكان الولادة"
+
+#: .\apps\hr\choices.py:33 .\apps\hr\filters\employee.py:98
+#: .\apps\hr\resources\employee.py:71
+#: .\apps\hr\templates\components\hr\employees\details.html:122
+#: .\apps\hr\templates\components\hr\employees\details.html:124
+msgid "age group"
+msgstr "مجموعة العمر"
+
+#: .\apps\hr\choices.py:34 .\apps\hr\resources\employee.py:176
+#: .\apps\hr\templates\components\hr\employees\details.html:357
+#: .\apps\hr\templates\components\hr\employees\details.html:359
+msgid "job age group"
+msgstr "مجموعة العمر الوظيفي"
+
+#: .\apps\hr\choices.py:40 .\apps\hr\constants\employee.py:35
+#: .\apps\hr\filters\employee.py:285 .\apps\hr\filters\employee.py:398
+#: .\apps\hr\models\employee.py:287 .\apps\hr\resources\employee.py:184
+#: .\apps\org\models\cost_center.py:56 .\apps\reports\filters\ledger.py:30
+#: .\apps\reports\filters\mixins.py:84
+#: .\apps\reports\resources\cost_centers.py:15
+#: .\apps\reports\resources\ledger.py:56
+#: .\apps\trans\filters\journal_entry.py:65
+#: .\apps\trans\filters\journal_entry.py:174
+#: .\apps\trans\models\journal_entry.py:87
+#: .\apps\trans\resources\journal_entry.py:65
+#: .\apps\trans\templates\components\trans\vouchers\details.html:221
+#: .\apps\trans\templates\components\trans\vouchers\details.html:222
+#: .\apps\trans\templates\components\trans\vouchers\details.html:252
+msgid "cost center"
+msgstr "مركز الكلفة"
+
+#: .\apps\hr\choices.py:41 .\apps\hr\constants\employee.py:36
+#: .\apps\hr\filters\employee.py:291 .\apps\hr\filters\employee.py:403
+#: .\apps\hr\models\employee.py:293 .\apps\hr\resources\employee.py:188
+#: .\apps\org\models\position.py:50
+msgid "position"
+msgstr "المنصب"
+
+#: .\apps\hr\choices.py:42 .\apps\hr\constants\employee.py:37
+#: .\apps\hr\filters\employee.py:297 .\apps\hr\filters\employee.py:408
+#: .\apps\hr\models\employee.py:299 .\apps\hr\resources\employee.py:197
+#: .\apps\org\models\status.py:57
+msgid "status"
+msgstr "الحالة"
+
+#: .\apps\hr\choices.py:43
+msgid "payable status"
+msgstr "الحالة المدفوعة"
+
+#: .\apps\hr\choices.py:44
+msgid "separated status"
+msgstr "الحالة المفصولة"
+
+#: .\apps\hr\choices.py:45 .\apps\hr\filters\employee.py:303
+#: .\apps\hr\filters\employee.py:413 .\apps\hr\resources\employee.py:205
+#: .\apps\hr\templates\components\hr\employees\details.html:420
+#: .\apps\hr\templates\components\hr\employees\details.html:422
+#: .\apps\hr\templates\components\hr\employees\table.html:73
+#: .\apps\hr\templates\components\hr\employees\table.html:172
+#: .\apps\org\constants\job_subtypes.py:7 .\apps\org\filters\job_subtype.py:33
+#: .\apps\org\filters\job_subtype.py:42 .\apps\org\models\job_subtype.py:41
+#: .\apps\org\models\job_type.py:46 .\apps\org\resources\job_subtype.py:12
+msgid "job type"
+msgstr "نوع العمل"
+
+#: .\apps\hr\choices.py:46 .\apps\hr\constants\employee.py:40
+#: .\apps\hr\filters\employee.py:309 .\apps\hr\filters\employee.py:418
+#: .\apps\hr\models\employee.py:305 .\apps\hr\resources\employee.py:209
+#: .\apps\org\models\job_subtype.py:49
+msgid "job subtype"
+msgstr "نوع العمل الفرعي"
+
+#: .\apps\hr\choices.py:47 .\apps\hr\filters\employee.py:315
+#: .\apps\hr\filters\employee.py:423 .\apps\hr\models\employee.py:311
+#: .\apps\hr\resources\employee.py:212 .\apps\org\models\group.py:50
+#: .\apps\org\templates\apps\org\groups\index.html:3
+#: .\apps\org\urls\groups.py:15 .\project\constants.py:51
+msgid "groups"
+msgstr "المجموعات"
+
+#: .\apps\hr\constants\employee.py:7 .\apps\hr\models\employee.py:82
+msgid "full name"
+msgstr "الاسم الكامل"
+
+#: .\apps\hr\constants\employee.py:8 .\apps\hr\filters\employee.py:84
+#: .\apps\hr\models\employee.py:61 .\apps\hr\resources\employee.py:37
+msgid "first name"
+msgstr "الاسم الاول"
+
+#: .\apps\hr\constants\employee.py:9 .\apps\hr\filters\employee.py:85
+#: .\apps\hr\models\employee.py:66 .\apps\hr\resources\employee.py:41
+msgid "last name"
+msgstr "الكنية"
+
+#: .\apps\hr\constants\employee.py:10 .\apps\hr\filters\employee.py:86
+#: .\apps\hr\models\employee.py:71 .\apps\hr\resources\employee.py:45
+msgid "father name"
+msgstr "اسم الاب"
+
+#: .\apps\hr\constants\employee.py:11 .\apps\hr\models\employee.py:102
+msgid "father full name"
+msgstr "اسم الاب الكامل"
+
+#: .\apps\hr\constants\employee.py:12 .\apps\hr\filters\employee.py:87
+#: .\apps\hr\models\employee.py:123 .\apps\hr\resources\employee.py:53
+msgid "mother name"
+msgstr "اسم الام"
+
+#: .\apps\hr\constants\employee.py:15 .\apps\hr\filters\employee.py:102
+#: .\apps\hr\models\employee.py:136 .\apps\hr\resources\employee.py:79
+msgid "national id"
+msgstr "الرقم الوطني"
+
+#: .\apps\hr\constants\employee.py:16 .\apps\hr\filters\employee.py:104
+#: .\apps\hr\models\employee.py:142 .\apps\hr\resources\employee.py:87
+msgid "passport id"
+msgstr "رقم جواز السفر"
+
+#: .\apps\hr\constants\employee.py:17 .\apps\hr\filters\employee.py:103
+#: .\apps\hr\models\employee.py:150 .\apps\hr\resources\employee.py:83
+msgid "card id"
+msgstr "رقم البطاقة"
+
+#: .\apps\hr\constants\employee.py:18 .\apps\hr\filters\employee.py:106
+#: .\apps\hr\models\employee.py:161 .\apps\hr\resources\employee.py:91
+msgid "civil registry office"
+msgstr "امانة السجل المدني"
+
+#: .\apps\hr\constants\employee.py:19 .\apps\hr\filters\employee.py:109
+#: .\apps\hr\models\employee.py:168 .\apps\hr\resources\employee.py:95
+msgid "registry office name"
+msgstr "قيد السجل المدني"
+
+#: .\apps\hr\constants\employee.py:20 .\apps\hr\filters\employee.py:111
+#: .\apps\hr\models\employee.py:175 .\apps\hr\resources\employee.py:99
+msgid "registry office id"
+msgstr "رقم السجل المدني"
+
+#: .\apps\hr\constants\employee.py:25 .\apps\hr\filters\employee.py:113
+#: .\apps\hr\models\employee.py:206 .\apps\hr\resources\employee.py:119
+msgid "special signs"
+msgstr "العلامات المميزة"
+
+#: .\apps\hr\constants\employee.py:26 .\apps\hr\models\employee.py:211
+#: .\apps\hr\resources\employee.py:123
+#: .\apps\hr\templates\components\hr\employees\filter-form.html:101
+msgid "card date"
+msgstr "تاريخ استلام البطاقة"
+
+#: .\apps\hr\constants\employee.py:30 .\apps\hr\filters\employee.py:117
+#: .\apps\hr\models\employee.py:235 .\apps\hr\resources\employee.py:140
+msgid "current address"
+msgstr "العنوان الحالي"
+
+#: .\apps\hr\constants\employee.py:33 .\apps\hr\resources\employee.py:156
+#: .\apps\hr\templates\components\hr\employees\filter-form.html:31
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-job-anniversaries.html:24
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-job-anniversaries.html:34
+msgid "hire date"
+msgstr "تاريخ التعيين"
+
+#: .\apps\hr\constants\employee.py:34 .\apps\hr\models\employee.py:254
+#: .\apps\hr\resources\employee.py:161
+#: .\apps\hr\templates\components\hr\employees\filter-form.html:47
+msgid "separation date"
+msgstr "تاريه انهاء التعاقد"
+
+#: .\apps\hr\constants\employee.py:38 .\apps\hr\resources\employee.py:201
+msgid "payable?"
+msgstr "هل هو قابل للدفع؟"
+
+#: .\apps\hr\constants\employee.py:39
+msgid "separated?"
+msgstr "هل هو مفصول؟"
+
+#: .\apps\hr\filters\employee.py:24
+msgid "group by"
+msgstr "تجميع حسب"
+
+#: .\apps\hr\filters\employee.py:39 .\apps\hr\filters\employee.py:59
+msgid "this"
+msgstr "هذا"
+
+#: .\apps\hr\filters\employee.py:131
+msgid "specialty"
+msgstr "التخصص"
+
+#: .\apps\hr\filters\employee.py:141
+msgid "payability"
+msgstr "قابلية الدفع"
+
+#: .\apps\hr\filters\employee.py:150
+msgid "upcoming birthday this"
+msgstr "عيد الميلاد القادم هذا"
+
+#: .\apps\hr\filters\employee.py:155
+msgid "upcoming job anniversary this"
+msgstr "ذكرى العمل السنوية هذا"
+
+#: .\apps\hr\filters\employee.py:322 .\apps\hr\filters\employee.py:429
+msgid "groups combined"
+msgstr "المجموعات (مجمعة)"
+
+#: .\apps\hr\filters\mobile.py:10 .\apps\hr\filters\phone.py:10
+#: .\apps\hr\resources\mobile.py:17 .\apps\hr\resources\phone.py:11
+#: .\apps\hr\templates\components\hr\employees\details.html:497
+#: .\apps\hr\templates\components\hr\employees\details.html:503
+#: .\apps\hr\templates\components\hr\employees\details.html:536
+#: .\apps\hr\templates\components\hr\employees\details.html:542
+#: .\apps\hr\templates\components\hr\employees\details.html:561
+#: .\apps\hr\templates\components\hr\employees\mobiles\inline.html:7
+#: .\apps\hr\templates\components\hr\employees\phones\inline.html:7
+#: .\apps\hr\templates\components\hr\employees\update.html:30
+#: .\apps\hr\templates\components\hr\employees\update.html:68
+msgid "number"
+msgstr "الرقم"
+
+#: .\apps\hr\forms\employee.py:28
+msgid "search cities"
+msgstr "البحث ضمن المدن"
+
+#: .\apps\hr\forms\employee.py:46
+msgid "search positions"
+msgstr "البحث ضمن المناصب"
+
+#: .\apps\hr\forms\employee.py:55
+msgid "search cost centers"
+msgstr "البحث ضمن مراكز الكلفة"
+
+#: .\apps\hr\forms\employee.py:64
+msgid "search job subtypes"
+msgstr "البحث ضمن أنواع العمل الفرعية"
+
+#: .\apps\hr\forms\employee.py:73
+msgid "search statuses"
+msgstr "البحث ضمن الحالات"
+
+#: .\apps\hr\forms\employee.py:82
+msgid "search degrees"
+msgstr "البحث ضمن الدرجات"
+
+#: .\apps\hr\forms\employee.py:91
+msgid "search schools"
+msgstr "البحث ضمن الجامعات"
+
+#: .\apps\hr\forms\employee.py:100
+msgid "search specializations"
+msgstr "البحث ضمن الاختصاصات"
+
+#: .\apps\hr\forms\employee.py:109
+msgid "search users"
+msgstr "البحث ضمن المستخدمين"
+
+#: .\apps\hr\forms\employee.py:135 .\apps\hr\forms\employee.py:137
+msgid "e.g. John"
+msgstr "مثال: عبدالله"
+
+#: .\apps\hr\forms\employee.py:136
+msgid "e.g. Doe"
+msgstr "مثال: التتان"
+
+#: .\apps\hr\forms\employee.py:138
+msgid "e.g. Jane"
+msgstr "مثال: بشار"
+
+#: .\apps\hr\forms\employee.py:142
+msgid "e.g. Hama"
+msgstr "مثال: حماه"
+
+#: .\apps\hr\forms\employee.py:144
+msgid "e.g. 1990-01-01"
+msgstr "مثال: 1995-01-01"
+
+#: .\apps\hr\forms\employee.py:154 .\apps\hr\forms\employee.py:159
+msgid "e.g. Cairo"
+msgstr "مثال: حماه"
+
+#: .\apps\hr\forms\employee.py:165
+msgid "e.g. White"
+msgstr "مثال: ابيض"
+
+#: .\apps\hr\forms\employee.py:170
+msgid "e.g. Blue"
+msgstr "مثال: سماوي"
+
+#: .\apps\hr\forms\employee.py:173 .\apps\hr\forms\employee.py:176
+msgid "e.g. 123 Main Street, Cairo"
+msgstr "مثال: حماه، شارع النيل"
+
+#: .\apps\hr\forms\employee.py:181
+msgid "e.g. Glasses"
+msgstr "مثال: تام"
+
+#: .\apps\hr\forms\employee.py:188 .\apps\trans\forms\voucher.py:160
+#: .\apps\trans\forms\voucher_transaction.py:44
+msgid "some notes"
+msgstr "بعض الملاحظات"
+
+#: .\apps\hr\forms\mobile.py:13 .\apps\hr\models\mobile.py:46
+#: .\apps\hr\resources\mobile.py:21
+#: .\apps\hr\templates\components\hr\employees\mobiles\inline.html:13
+#: .\apps\hr\templates\components\hr\employees\update.html:31
+msgid "has whatsapp"
+msgstr "هل لديه واتساب"
+
+#: .\apps\hr\forms\mobile.py:21 .\apps\hr\models\mobile.py:30
+msgid "mobile number"
+msgstr "رثم الهاتف المحمول"
+
+#: .\apps\hr\models\email.py:19 .\apps\hr\models\mobile.py:24
+#: .\apps\hr\models\phone.py:19
+msgid "personal"
+msgstr "شخصي"
+
+#: .\apps\hr\models\email.py:20 .\apps\hr\models\mobile.py:25
+#: .\apps\hr\models\phone.py:20
+msgid "work"
+msgstr "عمل"
+
+#: .\apps\hr\models\email.py:58
+#: .\apps\hr\templates\components\hr\employees\details.html:557
+#: .\apps\hr\templates\components\hr\employees\update.html:94
+msgid "emails"
+msgstr "البريد الالكتروني"
+
+#: .\apps\hr\models\employee.py:32
+msgid "muslim"
+msgstr "مسلم"
+
+#: .\apps\hr\models\employee.py:33
+msgid "christian"
+msgstr "مسيحي"
+
+#: .\apps\hr\models\employee.py:34
+msgid "jewish"
+msgstr "يهودي"
+
+#: .\apps\hr\models\employee.py:38
+msgid "male"
+msgstr "ذكر"
+
+#: .\apps\hr\models\employee.py:39
+msgid "female"
+msgstr "أنثى"
+
+#: .\apps\hr\models\employee.py:42
+msgid "married"
+msgstr "متزوج"
+
+#: .\apps\hr\models\employee.py:43
+msgid "single"
+msgstr "أعزب"
+
+#: .\apps\hr\models\employee.py:44
+msgid "divorced"
+msgstr "مطلق"
+
+#: .\apps\hr\models\employee.py:48
+msgid "defremented"
+msgstr "مسرح"
+
+#: .\apps\hr\models\employee.py:49
+msgid "in progress"
+msgstr "في الخدمة"
+
+#: .\apps\hr\models\employee.py:50
+msgid "finished"
+msgstr "منتهي"
+
+#: .\apps\hr\models\employee.py:51
+msgid "excused"
+msgstr "معذور"
+
+#: .\apps\hr\models\employee.py:117
+msgid "autocomplete for searching"
+msgstr "التعبئة التقائية للبحث"
+
+#: .\apps\hr\models\employee.py:266
+msgid "profile"
+msgstr "الصورة الشخصية"
+
+#: .\apps\hr\models\employee.py:276
+msgid "identity document"
+msgstr "مستند الهوية الشخصية"
+
+#: .\apps\hr\models\employee.py:366 .\apps\reports\filters\mixins.py:48
+#: .\apps\reports\resources\trial_balance.py:19
+#: .\apps\trans\filters\journal_entry.py:117
+#: .\apps\trans\filters\journal_entry.py:168
+#: .\apps\trans\filters\voucher_transaction.py:57
+#: .\apps\trans\filters\voucher_transaction.py:143
+#: .\apps\trans\models\journal_entry.py:81
+#: .\apps\trans\models\voucher_transaction.py:41
+#: .\apps\trans\resources\journal_entry.py:61
+#: .\apps\trans\resources\voucher_transaction.py:81
+#: .\apps\trans\templates\components\trans\vouchers\details.html:218
+#: .\apps\trans\templates\components\trans\vouchers\details.html:219
+#: .\apps\trans\templates\components\trans\vouchers\details.html:249
+#: .\apps\trans\templates\components\trans\vouchers\transactions\inline.html:7
+#: .\apps\trans\templates\components\trans\vouchers\update.html:37
+msgid "employee"
+msgstr "موظف"
+
+#: .\apps\hr\models\employee.py:367
+#: .\apps\hr\templates\apps\hr\employees\index.html:3
+#: .\apps\hr\urls\employees.py:15
+#: .\apps\reports\templates\apps\reports\employees\index.html:3
+#: .\apps\reports\urls\employees.py:15 .\project\constants.py:109
+#: .\project\constants.py:133
+msgid "employees"
+msgstr "الموظفين"
+
+#: .\apps\hr\models\employee.py:384 .\apps\hr\serializers\employee\create.py:59
+msgid "birth date cannot be in the future"
+msgstr "تاريخ الميلاد لا يجب أن يكون في المستقبل"
+
+#: .\apps\hr\models\employee.py:392 .\apps\hr\serializers\employee\create.py:64
+msgid "employee's age must be at least {} years old"
+msgstr "عمر الموظف يجب أن يكون على الاقل {} سنة"
+
+#: .\apps\hr\models\employee.py:398 .\apps\hr\serializers\employee\create.py:72
+msgid "hire date cannot be in the future"
+msgstr "تاريخ التعيين لا يجب ان يكون في المستقبل"
+
+#: .\apps\hr\models\employee.py:403
+msgid "hire date cannot be earlier than birth date"
+msgstr "تاريخ التعيين لا يجب ان يكون قبل تاريخ الميلاد"
+
+#: .\apps\hr\models\employee.py:410 .\apps\hr\serializers\employee\create.py:79
+msgid "card date cannot be in the future"
+msgstr "تاريخ استلام البطاقة لا يجب ان يكون في المستقبل"
+
+#: .\apps\hr\models\employee.py:415
+msgid "card date cannot be earlier than birth date"
+msgstr "تاريخ استلام البطاقة لا يجب ان يكون قبل عيد الميلاد"
+
+#: .\apps\hr\models\employee.py:422
+msgid "separation date cannot be empty if the employee status is separated"
+msgstr "تاريخ انهاء التعاقد لا يمكن ان يكون فارغأ حين تكون حالة الموظف (مفصول)"
+
+#: .\apps\hr\models\employee.py:429
+msgid ""
+"separation date cannot be filled if the employee status is not separated"
+msgstr ""
+"تاريخ انهاء التعاقد لا يمكن ان يحتوي على قيمة في حال كانت حالة الموظف (غير "
+"مفصول)"
+
+#: .\apps\hr\models\employee.py:435
+msgid "separation date cannot be earlier than hire date"
+msgstr "تاريخ انهاء التعاقد لا يمكن ان يكون قبل تاريخ التعيين"
+
+#: .\apps\hr\models\mobile.py:70
+msgid "mobile"
+msgstr "الهاتف المحمول"
+
+#: .\apps\hr\models\mobile.py:71
+#: .\apps\hr\templates\components\hr\employees\details.html:493
+#: .\apps\hr\templates\components\hr\employees\update.html:19
+msgid "mobiles"
+msgstr "الهواتف المحمولة"
+
+#: .\apps\hr\models\phone.py:59
+#: .\apps\hr\templates\components\hr\employees\details.html:533
+#: .\apps\hr\templates\components\hr\employees\update.html:57
+msgid "phones"
+msgstr "الهواتف"
+
+#: .\apps\hr\models\setting.py:9
+msgid "min employee age"
+msgstr "الحد الأدنى لعمر الموظف"
+
+#: .\apps\hr\models\setting.py:10
+msgid "allowed min employee age"
+msgstr "الحد الأدنى لعمر الموظف المسموح به"
+
+#: .\apps\hr\models\setting.py:14
+msgid "nth job anniversary"
+msgstr "ذكرى العمل السنوية رقم"
+
+#: .\apps\hr\models\setting.py:15
+msgid "years count to calculate job anniversary"
+msgstr "عدد السنوات لاحتساب ذكرى العمل السنوية"
+
+#: .\apps\hr\models\setting.py:19 .\apps\hr\models\setting.py:20
+msgid "years count to group job age"
+msgstr "عدد السنوات لتجميع العمر الوظيفي"
+
+#: .\apps\hr\models\setting.py:27
+msgid "hr settings"
+msgstr "إعدادات الموارد البشرية"
+
+#: .\apps\hr\querysets\employee.py:61
+msgid "10's"
+msgstr "السنوات العشر الأولى"
+
+#: .\apps\hr\querysets\employee.py:62
+msgid "20's"
+msgstr "العشرينيات"
+
+#: .\apps\hr\querysets\employee.py:63
+msgid "30's"
+msgstr "الثلاثينيات"
+
+#: .\apps\hr\querysets\employee.py:64
+msgid "40's"
+msgstr "الأربعينيات"
+
+#: .\apps\hr\querysets\employee.py:65
+msgid "50's"
+msgstr "الخمسينيات"
+
+#: .\apps\hr\querysets\employee.py:66
+msgid "60's"
+msgstr "الستينيات"
+
+#: .\apps\hr\querysets\employee.py:67
+msgid "70's"
+msgstr "السبعينيات"
+
+#: .\apps\hr\querysets\employee.py:68
+msgid "80's"
+msgstr "الثمانينيات"
+
+#: .\apps\hr\querysets\employee.py:69
+msgid "90's"
+msgstr "التسعينيات"
+
+#: .\apps\hr\resources\_base.py:14
+msgid "employee name"
+msgstr "اسم الموظف"
+
+#: .\apps\hr\resources\_base.py:18
+msgid "employee national id"
+msgstr "الرقم الوطني للموظف"
+
+#: .\apps\hr\resources\employee.py:25 .\apps\reports\resources\employees.py:15
+#: .\apps\reports\resources\ledger.py:32
+#: .\apps\reports\resources\trial_balance.py:15
+#: .\apps\trans\resources\journal_entry.py:33
+#: .\apps\trans\resources\voucher.py:43
+#: .\apps\trans\resources\voucher_transaction.py:41
+msgid "uuid"
+msgstr "uuid"
+
+#: .\apps\hr\resources\employee.py:29
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-birthdays.html:22
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-birthdays.html:28
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-job-anniversaries.html:23
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-job-anniversaries.html:29
+#: .\apps\reports\resources\employees.py:19
+#: .\apps\reports\views\trial_balance.py:20
+msgid "fullname"
+msgstr "الاسم الكامل"
+
+#: .\apps\hr\resources\employee.py:33
+msgid "shortname"
+msgstr "الاسم المختصر"
+
+#: .\apps\hr\resources\employee.py:49
+msgid "father fullname"
+msgstr "اسم الاب الكامل"
+
+#: .\apps\hr\resources\employee.py:66
+#: .\apps\hr\templates\components\hr\employees\details.html:113
+#: .\apps\hr\templates\components\hr\employees\details.html:115
+#: .\apps\hr\templates\components\hr\employees\filter-form.html:26
+#: .\apps\hr\templates\components\hr\employees\table.html:215
+msgid "age"
+msgstr "العمر"
+
+#: .\apps\hr\resources\employee.py:74
+#: .\apps\hr\templates\components\hr\employees\details.html:131
+#: .\apps\hr\templates\components\hr\employees\details.html:133
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-birthdays.html:24
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-birthdays.html:40
+msgid "next birthday"
+msgstr "عيد الميلاد القادم"
+
+#: .\apps\hr\resources\employee.py:166
+#: .\apps\hr\templates\components\hr\employees\details.html:366
+#: .\apps\hr\templates\components\hr\employees\details.html:368
+msgid "next job anniversary"
+msgstr "ذكرى العمل السنوية القادمة"
+
+#: .\apps\hr\resources\employee.py:171
+#: .\apps\hr\templates\components\hr\employees\details.html:340
+#: .\apps\hr\templates\components\hr\employees\details.html:342
+#: .\apps\hr\templates\components\hr\employees\filter-form.html:63
+#: .\apps\hr\templates\components\hr\employees\table.html:238
+msgid "job age"
+msgstr "العمر الوظيفي"
+
+#: .\apps\hr\resources\employee.py:192
+msgid "position order"
+msgstr "ترتيب المنصب"
+
+#: .\apps\hr\resources\employee.py:215
+msgid "groups with types"
+msgstr "المجموعات مع الأنواع"
+
+#: .\apps\hr\resources\employee.py:235
+msgid "governmental school?"
+msgstr "جامعة حكومية؟"
+
+#: .\apps\hr\resources\employee.py:239
+msgid "virtual school?"
+msgstr "جامعة افتراضية؟"
+
+#: .\apps\hr\resources\employee.py:254 .\apps\hr\resources\employee.py:257
+msgid ", "
+msgstr "، "
+
+#: .\apps\hr\resources\mobile.py:24
+msgid "whatsapp url"
+msgstr "رابط الواتساب"
+
+#: .\apps\hr\serializers\employee\create.py:96
+msgid "some emails already exist"
+msgstr "يوجود بريد الكتروني موجود مسبقاً"
+
+#: .\apps\hr\serializers\employee\create.py:115
+msgid "some phones already exist"
+msgstr "بعض أرقام الهواتف موجودة مسبقاً"
+
+#: .\apps\hr\serializers\employee\create.py:132
+msgid "some mobiles already exist"
+msgstr "بعض أرقام الهواتف المحمولة موجودة مسبقاً"
+
+#: .\apps\hr\templates\apps\hr\employees\create.html:3
+msgid "create new employee"
+msgstr "اضافة موظف جديد"
+
+#: .\apps\hr\templates\components\hr\employees\create.html:4
+msgid "add new employee"
+msgstr "اضافة موظف جديد"
+
+#: .\apps\hr\templates\components\hr\employees\details.html:140
+#: .\apps\hr\templates\components\hr\employees\details.html:142
+msgid "until next birthday"
+msgstr "حتى عيد الميلاد القادم"
+
+#: .\apps\hr\templates\components\hr\employees\details.html:375
+#: .\apps\hr\templates\components\hr\employees\details.html:377
+msgid "until next job anniversary"
+msgstr "حتى ذكرى العمل السنوية القادمة"
+
+#: .\apps\hr\templates\components\hr\employees\details.html:498
+msgid "link"
+msgstr "رابط"
+
+#: .\apps\hr\templates\components\hr\employees\details.html:508
+#: .\apps\hr\templates\components\hr\employees\details.html:515
+msgid "whatsapp"
+msgstr "واتساب"
+
+#: .\apps\hr\templates\components\hr\employees\details.html:520
+msgid "has no whatsapp"
+msgstr "لا يملك واتساب"
+
+#: .\apps\hr\templates\components\hr\employees\table.html:105
+#: .\apps\reports\templates\components\reports\ledger\table.html:49
+#: .\apps\reports\urls\ledger.py:21
+#: .\apps\trans\templates\components\trans\vouchers\table.html:207
+msgid "export to MSWord"
+msgstr "التصدر الى ملف وورد"
+
+#: .\apps\hr\templates\components\hr\employees\widgets\group-by-counts.html:6
+msgid "employees counts grouped by"
+msgstr "أعداد الموظفين مجمعين حسب"
+
+#: .\apps\hr\templates\components\hr\employees\widgets\group-by-counts.html:22
+#: .\apps\hr\templates\components\hr\employees\widgets\group-by-counts.html:27
+msgid "key"
+msgstr "مفتاح"
+
+#: .\apps\hr\templates\components\hr\employees\widgets\group-by-counts.html:23
+msgid "counts"
+msgstr "أعداد"
+
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-birthdays.html:6
+msgid "upcoming birthdays this"
+msgstr "أعياد ميلاد قادمة"
+
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-birthdays.html:23
+msgid "birthdate"
+msgstr "عيد ميلاد"
+
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-birthdays.html:47
+msgid "No upcoming birthdays"
+msgstr "لا يوجد أعياد ميلاد قادمة"
+
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-job-anniversaries.html:7
+msgid "upcoming job anniversaries this"
+msgstr "ذكرى العمل السنوية القادمة في هذا\\هذه"
+
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-job-anniversaries.html:25
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-job-anniversaries.html:38
+msgid "next anniversary"
+msgstr "الذكرى السنوية القادمة"
+
+#: .\apps\hr\templates\components\hr\employees\widgets\upcoming-job-anniversaries.html:45
+msgid "No upcoming job anniversaries"
+msgstr "لا توجد ذكرى عمل سنوية قادمة"
+
+#: .\apps\hr\urls\__init__.py:7 .\apps\hr\views\__init__.py:9
+#: .\templates\components\layout\sidebar\index.html:229
+msgid "human resources"
+msgstr "الموارد البشرية"
+
+#: .\apps\hr\urls\employees.py:45 .\apps\trans\urls\vouchers.py:62
+msgid "word"
+msgstr "وورد"
+
+#: .\apps\org\constants\job_types.py:7 .\apps\org\resources\job_type.py:12
+#: .\apps\org\templates\components\org\job_types\filter-form.html:5
+#: .\apps\org\templates\components\org\job_types\table.html:72
+#: .\apps\org\templates\components\org\job_types\table.html:135
+msgid "job subtypes count"
+msgstr "عدد أنواع العمل الفرعية"
+
+#: .\apps\org\constants\statuses.py:7 .\apps\org\filters\status.py:11
+#: .\apps\org\models\status.py:35
+#: .\apps\org\templates\components\org\statuses\table.html:138
+msgid "payable"
+msgstr "قابل للدفع"
+
+#: .\apps\org\constants\statuses.py:8 .\apps\org\filters\status.py:15
+#: .\apps\org\models\status.py:39
+#: .\apps\org\templates\components\org\statuses\table.html:145
+msgid "separated"
+msgstr "مفصول"
+
+#: .\apps\org\forms\cost_center.py:18
+msgid "e.g. Architecture"
+msgstr "مثال: مهندس معماري"
+
+#: .\apps\org\forms\cost_center.py:20 .\apps\org\models\cost_center.py:43
+msgid "cost center id"
+msgstr "رقم المعرف مركز الكلفة"
+
+#: .\apps\org\forms\group.py:14
+msgid "e.g. Financial Department"
+msgstr "مثال: القسم المالي"
+
+#: .\apps\org\forms\job_subtype.py:14
+msgid "search job types"
+msgstr "البحث ضمن انواع العمل"
+
+#: .\apps\org\forms\job_subtype.py:25 .\apps\org\forms\job_type.py:14
+#: .\apps\org\forms\position.py:14
+msgid "e.g. Software Developer"
+msgstr "مثال: مطور برمجيات"
+
+#: .\apps\org\forms\status.py:13 .\apps\org\models\status.py:43
+#: .\apps\org\resources\status.py:12
+msgid "is payable"
+msgstr "هل هو قابل للدفع"
+
+#: .\apps\org\forms\status.py:17 .\apps\org\models\status.py:47
+#: .\apps\org\resources\status.py:16
+msgid "is separated"
+msgstr "هل هو مفصول"
+
+#: .\apps\org\forms\status.py:24
+msgid "e.g. Active"
+msgstr "مثال: مفعل"
+
+#: .\apps\org\models\cost_center.py:46
+msgid "cost center id in accounting system"
+msgstr "رقم مركز الكلفة في المحاسبة العامة"
+
+#: .\apps\org\models\cost_center.py:57
+#: .\apps\org\templates\apps\org\cost_centers\index.html:3
+#: .\apps\org\urls\cost_centers.py:15
+#: .\apps\reports\templates\apps\reports\cost_centers\index.html:3
+#: .\apps\reports\urls\cost_centers.py:15 .\project\constants.py:39
+#: .\project\constants.py:137
+msgid "cost centers"
+msgstr "مراكز الكلفة"
+
+#: .\apps\org\models\group.py:36
+msgid "administrative"
+msgstr "إداري"
+
+#: .\apps\org\models\group.py:49
+msgid "group"
+msgstr "مجموعة"
+
+#: .\apps\org\models\job_subtype.py:50
+#: .\apps\org\templates\apps\org\job_subtypes\index.html:3
+#: .\apps\org\templates\components\org\job_types\details.html:34
+#: .\apps\org\urls\job_subtypes.py:15 .\project\constants.py:47
+msgid "job subtypes"
+msgstr "انواع العمل الفرعية"
+
+#: .\apps\org\models\job_type.py:47
+#: .\apps\org\templates\apps\org\job_types\index.html:3
+#: .\apps\org\urls\job_types.py:15 .\project\constants.py:43
+msgid "job types"
+msgstr "انواع العمل"
+
+#: .\apps\org\models\position.py:40
+msgid ""
+"for sorting purposes, you can use the same order for different positions"
+msgstr "لأغراض الترتيب، يمكنك استخدام نفس الترتيب لأكثر من منصب"
+
+#: .\apps\org\models\position.py:51
+#: .\apps\org\templates\apps\org\positions\index.html:3
+#: .\apps\org\urls\positions.py:15 .\project\constants.py:55
+msgid "positions"
+msgstr "المناصب"
+
+#: .\apps\org\models\status.py:36
+#: .\apps\org\templates\components\org\statuses\table.html:140
+msgid "not payable"
+msgstr "غير قابل للدفع"
+
+#: .\apps\org\models\status.py:40
+#: .\apps\org\templates\components\org\statuses\table.html:147
+msgid "not separated"
+msgstr "غير مفصول"
+
+#: .\apps\org\models\status.py:58
+#: .\apps\org\templates\apps\org\statuses\index.html:3
+#: .\apps\org\urls\statuses.py:15 .\project\constants.py:59
+msgid "statuses"
+msgstr "الحالات"
+
+#: .\apps\org\templates\apps\org\cost_centers\create.html:3
+msgid "create new cost center"
+msgstr "اضافة مركز كلفة جديد"
+
+#: .\apps\org\templates\apps\org\groups\create.html:3
+msgid "create new group"
+msgstr "اضافة مجموعة جديدة"
+
+#: .\apps\org\templates\apps\org\job_subtypes\create.html:3
+msgid "create new job subtype"
+msgstr "اضافة نوع عمل فرعي جديد"
+
+#: .\apps\org\templates\apps\org\job_types\create.html:3
+msgid "create new job type"
+msgstr "اضافة نوع عمل جديد"
+
+#: .\apps\org\templates\apps\org\positions\create.html:3
+msgid "create new position"
+msgstr "اضافة منصب جديد"
+
+#: .\apps\org\templates\apps\org\statuses\create.html:3
+msgid "create new status"
+msgstr "اضافة حالة جديدة"
+
+#: .\apps\org\templates\components\org\cost_centers\create.html:4
+#: .\apps\org\templates\components\org\cost_centers\modal-create.html:4
+msgid "add new cost center"
+msgstr "اضافة مركز كلفة جديد"
+
+#: .\apps\org\templates\components\org\groups\create.html:4
+#: .\apps\org\templates\components\org\groups\modal-create.html:4
+msgid "add new group"
+msgstr "اضافة مجموعة جديدة"
+
+#: .\apps\org\templates\components\org\job_subtypes\create.html:4
+#: .\apps\org\templates\components\org\job_subtypes\modal-create.html:4
+msgid "add new job subtype"
+msgstr "اضافة نوع عمل فرعي جديد"
+
+#: .\apps\org\templates\components\org\job_types\create.html:4
+#: .\apps\org\templates\components\org\job_types\modal-create.html:4
+msgid "add new job type"
+msgstr "اضافة نوع عمل جديد"
+
+#: .\apps\org\templates\components\org\positions\create.html:4
+#: .\apps\org\templates\components\org\positions\modal-create.html:4
+msgid "add new position"
+msgstr "اضافة منصب جديد"
+
+#: .\apps\org\templates\components\org\statuses\create.html:4
+#: .\apps\org\templates\components\org\statuses\modal-create.html:4
+msgid "add new status"
+msgstr "اضافة حالة جديدة"
+
+#: .\apps\org\urls\__init__.py:7 .\apps\org\views\__init__.py:9
+#: .\templates\components\layout\sidebar\index.html:88
+msgid "organization"
+msgstr "قسم المنظمة"
+
+#: .\apps\reports\filters\compensations.py:23
+#: .\apps\trans\constants\voucher_transactions.py:10
+msgid "compensation name"
+msgstr "اسم التعويض"
+
+#: .\apps\reports\filters\cost_centers.py:23
+#: .\apps\reports\filters\periods.py:23
+msgid "cost center name"
+msgstr "اسم مركز الكلفة"
+
+#: .\apps\reports\filters\employees.py:23
+#: .\apps\reports\filters\trial_balance.py:24
+#: .\apps\trans\constants\voucher_transactions.py:9
+msgid "employee fullname"
+msgstr "الاسم الكامل للموظف"
+
+#: .\apps\reports\filters\ledger.py:35 .\apps\reports\filters\mixins.py:150
+#: .\apps\trans\filters\journal_entry.py:70
+#: .\apps\trans\filters\journal_entry.py:180
+#: .\apps\trans\filters\voucher_transaction.py:23
+#: .\apps\trans\filters\voucher_transaction.py:137
+#: .\apps\trans\models\journal_entry.py:106 .\apps\trans\models\voucher.py:290
+#: .\apps\trans\models\voucher_transaction.py:35
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:42
+msgid "voucher"
+msgstr "أمر صرف"
+
+#: .\apps\reports\filters\mixins.py:40
+msgid "exclude"
+msgstr "استبعاد"
+
+#: .\apps\reports\filters\mixins.py:41
+msgid "include"
+msgstr "تضمين"
+
+#: .\apps\reports\filters\mixins.py:126
+msgid "exclude zero net"
+msgstr "استبعاد الرصيد الصفري"
+
+#: .\apps\reports\filters\mixins.py:181
+msgid "compensation kind"
+msgstr "نوع التعويض"
+
+#: .\apps\reports\forms.py:12 .\apps\trans\forms\voucher_transaction.py:16
+msgid "search employees"
+msgstr "البحث ضمن الموظفين"
+
+#: .\apps\reports\resources\compensations.py:19
+#: .\apps\reports\resources\cost_centers.py:19
+#: .\apps\reports\resources\employees.py:23
+#: .\apps\reports\resources\periods.py:19
+#: .\apps\reports\resources\trial_balance.py:23
+#: .\apps\reports\templates\components\reports\compensations\filter-form.html:7
+#: .\apps\reports\templates\components\reports\compensations\table.html:43
+#: .\apps\reports\templates\components\reports\compensations\table.html:57
+#: .\apps\reports\templates\components\reports\compensations\table.html:76
+#: .\apps\reports\templates\components\reports\cost_centers\filter-form.html:7
+#: .\apps\reports\templates\components\reports\cost_centers\table.html:43
+#: .\apps\reports\templates\components\reports\cost_centers\table.html:55
+#: .\apps\reports\templates\components\reports\cost_centers\table.html:70
+#: .\apps\reports\templates\components\reports\employees\filter-form.html:7
+#: .\apps\reports\templates\components\reports\employees\table.html:44
+#: .\apps\reports\templates\components\reports\employees\table.html:74
+#: .\apps\reports\templates\components\reports\employees\table.html:93
+#: .\apps\reports\templates\components\reports\ledger\table.html:129
+#: .\apps\reports\templates\components\reports\periods\filter-form.html:7
+#: .\apps\reports\templates\components\reports\periods\table.html:43
+#: .\apps\reports\templates\components\reports\periods\table.html:57
+#: .\apps\reports\templates\components\reports\periods\table.html:76
+#: .\apps\reports\templates\components\reports\trial_balance\filter-form.html:7
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:44
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:74
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:93
+#: .\apps\reports\views\compensations.py:21
+#: .\apps\reports\views\cost_centers.py:21 .\apps\reports\views\employees.py:21
+#: .\apps\reports\views\trial_balance.py:21
+msgid "total debit"
+msgstr "اجمالي المدين"
+
+#: .\apps\reports\resources\compensations.py:24
+#: .\apps\reports\resources\cost_centers.py:24
+#: .\apps\reports\resources\employees.py:28
+#: .\apps\reports\resources\periods.py:24
+#: .\apps\reports\resources\trial_balance.py:28
+#: .\apps\reports\templates\components\reports\compensations\filter-form.html:11
+#: .\apps\reports\templates\components\reports\compensations\table.html:44
+#: .\apps\reports\templates\components\reports\compensations\table.html:63
+#: .\apps\reports\templates\components\reports\compensations\table.html:77
+#: .\apps\reports\templates\components\reports\cost_centers\filter-form.html:11
+#: .\apps\reports\templates\components\reports\cost_centers\table.html:44
+#: .\apps\reports\templates\components\reports\cost_centers\table.html:58
+#: .\apps\reports\templates\components\reports\cost_centers\table.html:71
+#: .\apps\reports\templates\components\reports\employees\filter-form.html:11
+#: .\apps\reports\templates\components\reports\employees\table.html:45
+#: .\apps\reports\templates\components\reports\employees\table.html:80
+#: .\apps\reports\templates\components\reports\employees\table.html:94
+#: .\apps\reports\templates\components\reports\ledger\table.html:130
+#: .\apps\reports\templates\components\reports\periods\filter-form.html:11
+#: .\apps\reports\templates\components\reports\periods\table.html:44
+#: .\apps\reports\templates\components\reports\periods\table.html:63
+#: .\apps\reports\templates\components\reports\periods\table.html:77
+#: .\apps\reports\templates\components\reports\trial_balance\filter-form.html:11
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:45
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:80
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:94
+#: .\apps\reports\views\compensations.py:22
+#: .\apps\reports\views\cost_centers.py:22 .\apps\reports\views\employees.py:22
+#: .\apps\reports\views\trial_balance.py:22
+msgid "total credit"
+msgstr "اجمالي الدائن"
+
+#: .\apps\reports\resources\compensations.py:29
+#: .\apps\reports\resources\cost_centers.py:29
+#: .\apps\reports\resources\employees.py:33
+#: .\apps\reports\resources\ledger.py:74 .\apps\reports\resources\periods.py:29
+#: .\apps\reports\resources\trial_balance.py:33
+#: .\apps\reports\templates\components\reports\compensations\table.html:45
+#: .\apps\reports\templates\components\reports\compensations\table.html:67
+#: .\apps\reports\templates\components\reports\compensations\table.html:78
+#: .\apps\reports\templates\components\reports\cost_centers\table.html:45
+#: .\apps\reports\templates\components\reports\cost_centers\table.html:61
+#: .\apps\reports\templates\components\reports\cost_centers\table.html:72
+#: .\apps\reports\templates\components\reports\employees\table.html:46
+#: .\apps\reports\templates\components\reports\employees\table.html:84
+#: .\apps\reports\templates\components\reports\employees\table.html:95
+#: .\apps\reports\templates\components\reports\ledger\table.html:59
+#: .\apps\reports\templates\components\reports\ledger\table.html:79
+#: .\apps\reports\templates\components\reports\periods\table.html:45
+#: .\apps\reports\templates\components\reports\periods\table.html:67
+#: .\apps\reports\templates\components\reports\periods\table.html:78
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:46
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:84
+#: .\apps\reports\templates\components\reports\trial_balance\table.html:95
+#: .\apps\trans\models\voucher_transaction.py:76
+#: .\apps\trans\resources\journal_entry.py:83
+#: .\apps\trans\resources\voucher.py:100
+#: .\apps\trans\resources\voucher_transaction.py:109
+#: .\apps\trans\templates\components\trans\journal_entries\table.html:40
+#: .\apps\trans\templates\components\trans\journal_entries\table.html:60
+#: .\apps\trans\templates\components\trans\voucher_transactions\filter-form.html:66
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:50
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:88
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:132
+#: .\apps\trans\templates\components\trans\vouchers\details.html:239
+#: .\apps\trans\templates\components\trans\vouchers\details.html:240
+#: .\apps\trans\templates\components\trans\vouchers\details.html:270
+#: .\apps\trans\templates\components\trans\vouchers\details.html:292
+#: .\apps\trans\templates\components\trans\vouchers\details.html:295
+#: .\apps\trans\templates\components\trans\vouchers\filter-form.html:56
+#: .\apps\trans\templates\components\trans\vouchers\transactions\inline.html:46
+#: .\apps\trans\templates\components\trans\vouchers\update.html:43
+msgid "net"
+msgstr "الصافي"
+
+#: .\apps\reports\resources\ledger.py:24
+#: .\apps\reports\templates\components\reports\ledger\filter-form.html:34
+#: .\apps\trans\resources\journal_entry.py:25
+#: .\apps\trans\resources\voucher.py:27
+#: .\apps\trans\resources\voucher_transaction.py:25
+#: .\apps\trans\templates\components\trans\journal_entries\filter-form.html:35
+#: .\apps\trans\templates\components\trans\voucher_transactions\filter-form.html:8
+#: .\apps\trans\templates\components\trans\vouchers\filter-form.html:6
+msgid "created at"
+msgstr "تم الانشاء بتاريخ"
+
+#: .\apps\reports\resources\ledger.py:28
+#: .\apps\reports\templates\components\reports\ledger\filter-form.html:48
+#: .\apps\trans\resources\journal_entry.py:29
+#: .\apps\trans\resources\voucher.py:35
+#: .\apps\trans\resources\voucher_transaction.py:33
+#: .\apps\trans\templates\components\trans\journal_entries\filter-form.html:49
+#: .\apps\trans\templates\components\trans\voucher_transactions\filter-form.html:22
+#: .\apps\trans\templates\components\trans\vouchers\filter-form.html:20
+msgid "updated at"
+msgstr "تم التحديث بتاريخ"
+
+#: .\apps\reports\resources\ledger.py:44 .\apps\trans\constants\vouchers.py:11
+#: .\apps\trans\filters\journal_entry.py:37 .\apps\trans\filters\voucher.py:34
+#: .\apps\trans\filters\voucher.py:111
+#: .\apps\trans\filters\voucher_transaction.py:46
+#: .\apps\trans\filters\voucher_transaction.py:168
+#: .\apps\trans\models\journal_entry.py:51 .\apps\trans\models\voucher.py:93
+#: .\apps\trans\resources\journal_entry.py:45
+#: .\apps\trans\resources\voucher.py:67
+#: .\apps\trans\resources\voucher_transaction.py:65
+msgid "quarter"
+msgstr "الربع"
+
+#: .\apps\reports\resources\ledger.py:59
+#: .\apps\trans\filters\journal_entry.py:57
+#: .\apps\trans\resources\journal_entry.py:68
+msgid "fiscal object"
+msgstr "العنصر المالي"
+
+#: .\apps\reports\resources\ledger.py:64
+#: .\apps\reports\templates\components\reports\ledger\filter-form.html:12
+#: .\apps\trans\models\journal_entry.py:62
+#: .\apps\trans\resources\journal_entry.py:73
+#: .\apps\trans\templates\components\trans\journal_entries\filter-form.html:13
+#: .\apps\trans\templates\components\trans\journal_entries\table.html:114
+msgid "debit"
+msgstr "مدين"
+
+#: .\apps\reports\resources\ledger.py:69
+#: .\apps\reports\templates\components\reports\ledger\filter-form.html:16
+#: .\apps\trans\models\journal_entry.py:68
+#: .\apps\trans\resources\journal_entry.py:78
+#: .\apps\trans\templates\components\trans\journal_entries\filter-form.html:17
+#: .\apps\trans\templates\components\trans\journal_entries\table.html:115
+msgid "credit"
+msgstr "دائن"
+
+#: .\apps\reports\resources\ledger.py:79
+#: .\apps\trans\filters\journal_entry.py:73
+#: .\apps\trans\models\journal_entry.py:111
+#: .\apps\trans\resources\journal_entry.py:88
+msgid "explanation"
+msgstr "البيان"
+
+#: .\apps\reports\resources\ledger.py:86
+#: .\apps\trans\constants\voucher_transactions.py:6
+#: .\apps\trans\constants\vouchers.py:6 .\apps\trans\models\voucher.py:42
+#: .\apps\trans\resources\journal_entry.py:95
+#: .\apps\trans\resources\voucher.py:47
+#: .\apps\trans\resources\voucher_transaction.py:45
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:57
+msgid "voucher serial"
+msgstr "رقم امر الصرف التسلسلي"
+
+#: .\apps\reports\resources\ledger.py:90
+#: .\apps\trans\resources\journal_entry.py:99
+msgid "voucher title"
+msgstr "عنوان امر الصرف"
+
+#: .\apps\reports\templates\apps\reports\trial_balance\index.html:3
+#: .\apps\reports\urls\trial_balance.py:15 .\project\constants.py:129
+msgid "trial balance"
+msgstr "ميزان المراجعة"
+
+#: .\apps\reports\templates\components\reports\compensations\filter-form.html:15
+#: .\apps\reports\templates\components\reports\cost_centers\filter-form.html:15
+#: .\apps\reports\templates\components\reports\employees\filter-form.html:15
+#: .\apps\reports\templates\components\reports\periods\filter-form.html:15
+#: .\apps\reports\templates\components\reports\trial_balance\filter-form.html:15
+#: .\apps\reports\views\compensations.py:23
+#: .\apps\reports\views\cost_centers.py:23 .\apps\reports\views\employees.py:23
+#: .\apps\reports\views\trial_balance.py:23
+msgid "total amount"
+msgstr "اجمالي المبلغ"
+
+#: .\apps\reports\urls\__init__.py:7 .\apps\reports\views\__init__.py:9
+#: .\templates\components\layout\sidebar\index.html:277
+msgid "reports"
+msgstr "التقارير"
+
+#: .\apps\trans\admin\_actions.py:14
+msgid "vouchers undeleted successfully"
+msgstr "تم الغاء الحذف بنجاح"
+
+#: .\apps\trans\admin\_actions.py:36
+msgid "cannot migrate vouchers that are not audited"
+msgstr "لا يمكن ترحيل أوامر الصرف غير المدققة"
+
+#: .\apps\trans\admin\_actions.py:45 .\apps\trans\utils.py:81
+#: .\apps\trans\utils.py:121
+msgid "vouchers migrated successfully"
+msgstr "تم الترحيل بنجاح"
+
+#: .\apps\trans\admin\_actions.py:53
+msgid "migrate selected vouchers"
+msgstr "ترحيل أوامر الصرف المختارة"
+
+#: .\apps\trans\admin\_actions.py:66
+msgid "vouchers unmigrated successfully"
+msgstr "تم الغاء الترحيل بنجاح"
+
+#: .\apps\trans\admin\_actions.py:90
+msgid "vouchers unaudited successfully"
+msgstr "تم الغاء التدقيق بنجاح"
+
+#: .\apps\trans\constants\voucher_transactions.py:7
+msgid "voucher date"
+msgstr "تاريخ أمر الصرف"
+
+#: .\apps\trans\constants\voucher_transactions.py:11
+msgid "ordering"
+msgstr "الترتيب"
+
+#: .\apps\trans\constants\vouchers.py:7
+#: .\apps\trans\filters\voucher_transaction.py:74
+#: .\apps\trans\models\voucher.py:71 .\apps\trans\resources\voucher.py:51
+#: .\apps\trans\resources\voucher_transaction.py:49
+msgid "title"
+msgstr "العنوان"
+
+#: .\apps\trans\constants\vouchers.py:14
+#: .\apps\trans\filters\voucher_transaction.py:79
+#: .\apps\trans\models\voucher.py:109 .\apps\trans\resources\voucher.py:109
+#: .\apps\trans\resources\voucher_transaction.py:118
+msgid "serial id"
+msgstr "رقم الديوان"
+
+#: .\apps\trans\constants\vouchers.py:15 .\apps\trans\models\voucher.py:115
+#: .\apps\trans\resources\voucher.py:113
+#: .\apps\trans\resources\voucher_transaction.py:122
+#: .\apps\trans\templates\components\trans\vouchers\filter-form.html:67
+msgid "serial date"
+msgstr "تاريخ الديوان"
+
+#: .\apps\trans\constants\vouchers.py:16 .\apps\trans\models\voucher.py:121
+#: .\apps\trans\resources\voucher.py:117
+#: .\apps\trans\resources\voucher_transaction.py:126
+#: .\apps\trans\templates\components\trans\vouchers\filter-form.html:81
+msgid "approve date"
+msgstr "تاريخ الموافقة"
+
+#: .\apps\trans\constants\vouchers.py:17 .\apps\trans\models\voucher.py:127
+#: .\apps\trans\resources\voucher.py:121
+#: .\apps\trans\resources\voucher_transaction.py:130
+#: .\apps\trans\templates\components\trans\vouchers\filter-form.html:95
+msgid "due date"
+msgstr "تاريخ الاستحقاق"
+
+#: .\apps\trans\constants\vouchers.py:18
+#: .\apps\trans\filters\voucher_transaction.py:84
+#: .\apps\trans\models\voucher.py:143 .\apps\trans\resources\voucher.py:125
+#: .\apps\trans\resources\voucher_transaction.py:134
+msgid "accounting journal sequence"
+msgstr "التسلسل الخاص بالمحاسبة العامة"
+
+#: .\apps\trans\constants\vouchers.py:19
+#: .\apps\trans\filters\voucher_transaction.py:89
+#: .\apps\trans\models\voucher.py:153 .\apps\trans\resources\voucher.py:129
+#: .\apps\trans\resources\voucher_transaction.py:138
+msgid "is audited"
+msgstr "هل هو مدقق"
+
+#: .\apps\trans\constants\vouchers.py:20
+#: .\apps\trans\filters\voucher_transaction.py:94
+#: .\apps\trans\models\voucher.py:165 .\apps\trans\resources\voucher.py:137
+#: .\apps\trans\resources\voucher_transaction.py:146
+msgid "is migrated"
+msgstr "هل هو مرحل"
+
+#: .\apps\trans\filters\journal_entry.py:53
+#: .\apps\trans\filters\journal_entry.py:162
+msgid "content type"
+msgstr "نوع المحتوى"
+
+#: .\apps\trans\filters\journal_entry.py:58
+msgid "e.g. fixed salary"
+msgstr "مثال: الراتب المقطوع"
+
+#: .\apps\trans\filters\journal_entry.py:75
+#: .\apps\trans\filters\journal_entry.py:80
+#: .\apps\trans\filters\voucher_transaction.py:76
+msgid "e.g. June 2025 Salaries"
+msgstr "مثال: رواتب حزيران 2025"
+
+#: .\apps\trans\filters\voucher.py:44
+msgid "is closed period"
+msgstr "هل هي فترة مغلقة"
+
+#: .\apps\trans\filters\voucher_transaction.py:70
+msgid "voucher notes"
+msgstr "ملاحظات أمر الصرف"
+
+#: .\apps\trans\filters\voucher_transaction.py:81
+msgid "e.g. VOC 0001"
+msgstr "مثال: 0001"
+
+#: .\apps\trans\forms\voucher.py:68
+msgid "type accounting journal sequence to confirm migration"
+msgstr "ادخل التسلسل الخاص بالمحاسبة العامة لتأكيد عملية الترحيل"
+
+#: .\apps\trans\forms\voucher.py:75
+msgid "e.g. JOV000001 2025"
+msgstr "مثال: 0005 لعام 2025"
+
+#: .\apps\trans\forms\voucher.py:112
+msgid "search periods"
+msgstr "البحث ضمن الفترات"
+
+#: .\apps\trans\forms\voucher.py:121
+msgid "search voucher kinds"
+msgstr "البحث ضمن أنواع أوامر الصرف"
+
+#: .\apps\trans\forms\voucher.py:145
+msgid "e.g. January 2022 Salaries"
+msgstr "مثال: رواتب شهر كانون الاول لعام 2022"
+
+#: .\apps\trans\forms\voucher.py:146
+msgid "e.g. 2022-01-05"
+msgstr "مثال: 2022-10-12"
+
+#: .\apps\trans\forms\voucher.py:147
+msgid "e.g. w/1234"
+msgstr "مثال: 55\\و"
+
+#: .\apps\trans\forms\voucher.py:149
+msgid "e.g. 2022-01-04"
+msgstr "مثال: 2022-10-12"
+
+#: .\apps\trans\forms\voucher.py:153
+msgid "e.g. 2022-01-03"
+msgstr "مثال: 2022-10-12"
+
+#: .\apps\trans\forms\voucher.py:157
+msgid "e.g. 2022-01-10"
+msgstr "مثال: 2022-10-12"
+
+#: .\apps\trans\forms\voucher.py:161
+msgid "voucher document"
+msgstr "مستند أمر الصرف"
+
+#: .\apps\trans\forms\voucher_transaction.py:25
+msgid "search compensations"
+msgstr "البحث ضمن التعويضات"
+
+#: .\apps\trans\models\journal_entry.py:29
+msgid "general serial"
+msgstr "التسلسل العام"
+
+#: .\apps\trans\models\journal_entry.py:95
+msgid "fiscal object id"
+msgstr "المعرف الخاص بالعنصر المالي"
+
+#: .\apps\trans\models\journal_entry.py:143
+#: .\apps\trans\models\journal_entry.py:146
+msgid "debit and credit cannot be both filled"
+msgstr "لا يمكنك ملئ المدين والدائن بنفس الوقت"
+
+#: .\apps\trans\models\journal_entry.py:159
+msgid "journal entry"
+msgstr "قيد اليومية"
+
+#: .\apps\trans\models\journal_entry.py:160
+#: .\apps\trans\urls\journal_entries.py:14
+msgid "journal entries"
+msgstr "قيود اليومية"
+
+#: .\apps\trans\models\voucher.py:29
+#: .\apps\trans\templates\apps\trans\vouchers\update.html:4
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:95
+#: .\apps\trans\templates\components\trans\vouchers\table.html:286
+#: .\apps\trans\templates\components\trans\vouchers\update.html:4
+msgid "audited"
+msgstr "مدقق"
+
+#: .\apps\trans\models\voucher.py:30
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:95
+#: .\apps\trans\templates\components\trans\vouchers\table.html:286
+msgid "not audited"
+msgstr "غير مدقق"
+
+#: .\apps\trans\models\voucher.py:33
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:108
+#: .\apps\trans\templates\components\trans\vouchers\table.html:299
+msgid "migrated"
+msgstr "مرحل"
+
+#: .\apps\trans\models\voucher.py:34
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:108
+#: .\apps\trans\templates\components\trans\vouchers\table.html:299
+msgid "not migrated"
+msgstr "غير مرحل"
+
+#: .\apps\trans\models\voucher.py:58 .\apps\trans\resources\voucher.py:39
+#: .\apps\trans\resources\voucher_transaction.py:37
+msgid "updated by"
+msgstr "تم التعديل بواسطة"
+
+#: .\apps\trans\models\voucher.py:112
+msgid "dewan id if exists"
+msgstr "رقم الديوان في حال وجوده"
+
+#: .\apps\trans\models\voucher.py:118
+msgid "dewan date if exists"
+msgstr "تاريخ الديوان في حال وجوده"
+
+#: .\apps\trans\models\voucher.py:124
+msgid "date of approve by vouchers orderer (signature)"
+msgstr "تاريخ موافقة آمر الصرف (التوقيع)"
+
+#: .\apps\trans\models\voucher.py:147
+msgid ""
+"the sequence of the accounting journal in accounting system e.g. JOV0001"
+msgstr "التسلسل الخاص بنظام المحاسبة العامة. مثال: 0001"
+
+#: .\apps\trans\models\voucher.py:159 .\apps\trans\resources\voucher.py:133
+#: .\apps\trans\resources\voucher_transaction.py:142
+msgid "audited by"
+msgstr "تم التدقيق بواسطة"
+
+#: .\apps\trans\models\voucher.py:176
+msgid "you can't edit a voucher that is already migrated"
+msgstr "لا يمكنك التعديل على أمر صرف مرحل"
+
+#: .\apps\trans\models\voucher.py:181
+msgid "due date cannot be earlier than date"
+msgstr "تاريخ الاستحقاق لا يمكن ان يكون قبل تاريخ امر الصرف"
+
+#: .\apps\trans\models\voucher.py:186
+msgid "approve date cannot be later than date"
+msgstr "تاريخ موافقة آمر الصرف لا يمكن ان تكون بعد تاريخ امر الصرف"
+
+#: .\apps\trans\models\voucher.py:291
+#: .\apps\trans\templates\admin\migration-confirmation.html:28
+#: .\apps\trans\templates\apps\trans\vouchers\index.html:3
+#: .\apps\trans\urls\vouchers.py:14 .\project\constants.py:115
+msgid "vouchers"
+msgstr "أوامر الصرف"
+
+#: .\apps\trans\models\voucher.py:307
+msgid "voucher proxy"
+msgstr "أمر الصرف"
+
+#: .\apps\trans\models\voucher.py:308
+msgid "all vouchers"
+msgstr "جميع اوامر الصرف"
+
+#: .\apps\trans\models\voucher_transaction.py:52
+#: .\apps\trans\resources\voucher_transaction.py:89
+#: .\apps\trans\templates\components\trans\voucher_transactions\filter-form.html:54
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:128
+#: .\apps\trans\templates\components\trans\vouchers\details.html:227
+#: .\apps\trans\templates\components\trans\vouchers\details.html:228
+#: .\apps\trans\templates\components\trans\vouchers\transactions\inline.html:16
+#: .\apps\trans\templates\components\trans\vouchers\update.html:39
+msgid "quantity"
+msgstr "الكمية"
+
+#: .\apps\trans\models\voucher_transaction.py:64
+#: .\apps\trans\resources\voucher.py:75
+#: .\apps\trans\resources\voucher_transaction.py:99
+#: .\apps\trans\templates\components\trans\voucher_transactions\filter-form.html:58
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:48
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:84
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:130
+#: .\apps\trans\templates\components\trans\vouchers\details.html:233
+#: .\apps\trans\templates\components\trans\vouchers\details.html:234
+#: .\apps\trans\templates\components\trans\vouchers\details.html:264
+#: .\apps\trans\templates\components\trans\vouchers\details.html:286
+#: .\apps\trans\templates\components\trans\vouchers\filter-form.html:52
+#: .\apps\trans\templates\components\trans\vouchers\table.html:119
+#: .\apps\trans\templates\components\trans\vouchers\table.html:256
+#: .\apps\trans\templates\components\trans\vouchers\table.html:319
+#: .\apps\trans\templates\components\trans\vouchers\transactions\inline.html:32
+#: .\apps\trans\templates\components\trans\vouchers\update.html:41
+msgid "total"
+msgstr "الاجمالي"
+
+#: .\apps\trans\models\voucher_transaction.py:253
+msgid "the employee ({}) is {}"
+msgstr "الموظف ({}) {}"
+
+#: .\apps\trans\models\voucher_transaction.py:261
+msgid "the compensation ({}) is not active"
+msgstr "التعويض ({}) غير مفعل"
+
+#: .\apps\trans\models\voucher_transaction.py:272
+msgid "value must be greater than or equal to compensation min value ({:,.2f})"
+msgstr "القيمة يجب ان تكون اكبر من او تساوي الحد الأدنى  ({:,.2f})"
+
+#: .\apps\trans\models\voucher_transaction.py:279
+msgid "value must be less than or equal to compensation max value ({:,.2f})"
+msgstr "القيمة يجب ان تكون اقل من او تساوي الحد الأقصى  ({:,.2f})"
+
+#: .\apps\trans\models\voucher_transaction.py:294
+msgid ""
+"this compensation has max total and its must be greater than or equal to "
+"compensation min total ({:,.2f})"
+msgstr ""
+"هذا التعويض لديه حد أدنى، يجب أن يكون أكبر من او يساوي الحد الأقصى  ({:,.2f})"
+
+#: .\apps\trans\models\voucher_transaction.py:309
+msgid ""
+"this compensation has max total and its must be less than or equal to "
+"compensation max total ({:,.2f})"
+msgstr ""
+"هذا التعويض لديه حد أقصى، يجب أن يكون أقل من او يساوي الحد الأقصى  ({:,.2f})"
+
+#: .\apps\trans\models\voucher_transaction.py:401
+msgid ""
+"\n"
+"({min:,.2f} ~ {max:,.2f})"
+msgstr ""
+"\n"
+"({min:,.2f} ~ {max:,.2f})"
+
+#: .\apps\trans\models\voucher_transaction.py:428
+msgid "voucher transaction"
+msgstr "بند أمر الصرف"
+
+#: .\apps\trans\models\voucher_transaction.py:429
+#: .\apps\trans\urls\voucher_transactions.py:14
+msgid "voucher transactions"
+msgstr "بنود أمر الصرف"
+
+#: .\apps\trans\resources\journal_entry.py:57
+#: .\apps\trans\resources\voucher_transaction.py:77
+msgid "employee uuid"
+msgstr "المعرف الفريد للموظف"
+
+#: .\apps\trans\resources\voucher.py:31
+#: .\apps\trans\resources\voucher_transaction.py:29
+msgid "created by"
+msgstr "تم الانشاء بواسطة"
+
+#: .\apps\trans\resources\voucher.py:80
+#: .\apps\trans\templates\components\trans\vouchers\filter-form.html:48
+#: .\apps\trans\templates\components\trans\vouchers\table.html:120
+#: .\apps\trans\templates\components\trans\vouchers\table.html:261
+#: .\apps\trans\templates\components\trans\vouchers\table.html:320
+msgid "transactions count"
+msgstr "عدد الحركات"
+
+#: .\apps\trans\resources\voucher.py:85
+msgid "quantity total"
+msgstr "اجمالي الكمية"
+
+#: .\apps\trans\resources\voucher.py:90
+msgid "value total"
+msgstr "اجمالي القيمة"
+
+#: .\apps\trans\resources\voucher.py:95
+msgid "tax total"
+msgstr "اجمالي الضريبة"
+
+#: .\apps\trans\templates\admin\migration-confirmation.html:25
+#, python-format
+msgid "You're about to migrate these %(objects|length)s vouchers:"
+msgstr "You're about to migrate these %(objects|length)s vouchers:"
+
+#: .\apps\trans\templates\admin\migration-confirmation.html:42
+msgid ""
+"please enter the accounting journal sequence for each voucher.\n"
+"        (optional)"
+msgstr ""
+"رجاءً ادخل رقم أمر الصرف (في نظام المحاسبة العامة) لكل أمر صرف\n"
+"(احتياري)"
+
+#: .\apps\trans\templates\admin\migration-confirmation.html:51
+msgid "No, take me back"
+msgstr "لا خذني الى الصفحة السابقة"
+
+#: .\apps\trans\templates\apps\trans\journal_entries\index.html:3
+msgid "journals"
+msgstr "قيود اليومية"
+
+#: .\apps\trans\templates\apps\trans\voucher_transactions\index.html:3
+#: .\apps\trans\templates\components\trans\vouchers\details.html:213
+#: .\apps\trans\urls\__init__.py:7 .\apps\trans\views\__init__.py:9
+#: .\project\constants.py:119
+#: .\templates\components\layout\sidebar\index.html:246
+msgid "transactions"
+msgstr "الحركات"
+
+#: .\apps\trans\templates\apps\trans\vouchers\create.html:3
+msgid "create new voucher"
+msgstr "انشاء امر صرف جديد"
+
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:52
+#: .\apps\trans\templates\components\trans\voucher_transactions\table.html:92
+#: .\apps\trans\templates\components\trans\vouchers\table.html:125
+#: .\apps\trans\templates\components\trans\vouchers\table.html:283
+msgid "information"
+msgstr "معلومات"
+
+#: .\apps\trans\templates\components\trans\vouchers\create.html:4
+#: .\apps\trans\templates\components\trans\vouchers\modal-create.html:4
+msgid "add new voucher"
+msgstr "اضافة امر صرف جديد"
+
+#: .\apps\trans\templates\components\trans\vouchers\details.html:309
+msgid "export to MS Word"
+msgstr "التصدير الى نموذج وورد"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\audit.html:6
+#: .\apps\trans\templates\components\trans\vouchers\modals\audit.html:15
+#: .\apps\trans\templates\components\trans\vouchers\modals\audit.html:16
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-audit.html:20
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-audit.html:21
+#: .\apps\trans\templates\components\trans\vouchers\table.html:69
+#: .\apps\trans\templates\components\trans\vouchers\table.html:167
+#: .\apps\trans\urls\vouchers.py:44
+msgid "audit"
+msgstr "تدقيق"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\audit.html:11
+msgid "you are about to audit the voucher, do you want to continue?"
+msgstr "انت على وشك تدقيق أمر الصرف، هل تريد الاستمرار؟"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-audit.html:8
+msgid "are you sure you want to audit all"
+msgstr "هل انت متأكد من تدقيق جميع"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-audit.html:8
+msgid ""
+"selected\n"
+"        objects ?"
+msgstr "العناصر المختارة?"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-migrate.html:9
+msgid "are you sure you want to migrate all"
+msgstr "هل انت متأكد من ترحيل جميع العناصر"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-migrate.html:9
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-unmigrate.html:8
+#: .\templates\components\blocks\modals\bulk-delete.html:9
+msgid "selected objects ?"
+msgstr "العناصر المختارة؟"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-migrate.html:23
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-migrate.html:24
+#: .\apps\trans\templates\components\trans\vouchers\modals\migrate.html:6
+#: .\apps\trans\templates\components\trans\vouchers\modals\migrate.html:19
+#: .\apps\trans\templates\components\trans\vouchers\modals\migrate.html:20
+#: .\apps\trans\templates\components\trans\vouchers\table.html:82
+#: .\apps\trans\templates\components\trans\vouchers\table.html:180
+#: .\apps\trans\urls\vouchers.py:50
+msgid "migrate"
+msgstr "ترحيل"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-unmigrate.html:8
+msgid "are you sure you want to unmigrate all"
+msgstr "هل انت متأكد من الغاء الترحيل لجميع العناصر"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-unmigrate.html:22
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-unmigrate.html:27
+#: .\apps\trans\templates\components\trans\vouchers\modals\bulk-unmigrate.html:31
+#: .\apps\trans\templates\components\trans\vouchers\modals\unmigrate.html:6
+#: .\apps\trans\templates\components\trans\vouchers\modals\unmigrate.html:16
+#: .\apps\trans\templates\components\trans\vouchers\modals\unmigrate.html:21
+#: .\apps\trans\templates\components\trans\vouchers\modals\unmigrate.html:25
+#: .\apps\trans\templates\components\trans\vouchers\table.html:95
+#: .\apps\trans\templates\components\trans\vouchers\table.html:193
+#: .\apps\trans\urls\vouchers.py:56
+msgid "unmigrate"
+msgstr "الغاء الترحيل"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\import.html:6
+msgid "import transactions"
+msgstr "استيراد الحركات"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\import.html:11
+msgid "download template"
+msgstr "تحميل القالب"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\import.html:12
+msgid "here"
+msgstr "هنا"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\import.html:18
+#: .\apps\trans\templates\components\trans\vouchers\modals\import.html:19
+#: .\apps\trans\urls\vouchers.py:68
+msgid "import"
+msgstr "استيراد"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\migrate.html:11
+msgid "you are about to migrate"
+msgstr "انت على وشك الترحيل"
+
+#: .\apps\trans\templates\components\trans\vouchers\modals\unmigrate.html:11
+msgid "you are about to unmigrate the voucher, do you want to continue?"
+msgstr "انت على وشك الغاء ترحيل أمر الصرف، هل تديد الاستمرار؟"
+
+#: .\apps\trans\templates\components\trans\vouchers\update.html:10
+msgid ""
+"you are about to update audited voucher, you need to re-audit it again, are "
+"you sure?"
+msgstr ""
+"انت على وشك التعديل على امر صرف مدقق، سيكون بحاجة تدقيق مرة أخرى في حال "
+"الاستمرار، هل أنت متأكد؟"
+
+#: .\apps\trans\utils.py:10
+msgid "voucher deleted successfully"
+msgstr "تم الحذف بنجاح"
+
+#: .\apps\trans\utils.py:11
+msgid "you can't delete this voucher because it is migrated."
+msgstr "لا يمكنك حذف أمر صرف مرحل."
+
+#: .\apps\trans\utils.py:12
+msgid "vouchers deleted successfully"
+msgstr "تم الحذف بنجاح"
+
+#: .\apps\trans\utils.py:13
+msgid "you can't delete vouchers because they are migrated."
+msgstr "لا يمكنك حذف أوامر صرف مرحلة."
+
+#: .\apps\trans\utils.py:40
+msgid "voucher audited successfully"
+msgstr "تم التدقيق بنجاح"
+
+#: .\apps\trans\utils.py:42
+msgid ""
+"you can't audit a voucher that you have created or updated or already has "
+"been audited or migrated"
+msgstr ""
+"لا يمكنك تدقيق أمر صرف قمت أنت بإنشاءا او في حال كان مرحل او مدقق مسبقاً"
+
+#: .\apps\trans\utils.py:44
+msgid "vouchers audited successfully"
+msgstr "تم التدقيق بنجاح"
+
+#: .\apps\trans\utils.py:46
+msgid ""
+"you can't audit vouchers that you have created or updated or already have "
+"been audited or migrated"
+msgstr ""
+"لا يمكنك تدقيق أوامر الصرف التي قمت أنت بإنشاءها او في حال كانت مرحلة او "
+"مدققة مسبقاً"
+
+#: .\apps\trans\utils.py:79
+msgid "voucher migrated successfully"
+msgstr "تم الترحيل بنجاح"
+
+#: .\apps\trans\utils.py:80
+msgid "you can't migrate unaudited or migrated voucher"
+msgstr "لا يمكنك ترحيل أمر صرف غير مدقق او مرحل مسبقاً"
+
+#: .\apps\trans\utils.py:82
+msgid "you can't migrate unaudited or migrated vouchers"
+msgstr "لا يمكنك ترحيل أوامر الصرف غير المدققة او المرحلة مسبقاً"
+
+#: .\apps\trans\utils.py:119
+msgid "voucher unmigrated successfully"
+msgstr "تم الغاء الترحيل بنجاح"
+
+#: .\apps\trans\utils.py:120
+msgid "you can't unmigrate unmigrated voucher"
+msgstr "لا يمكنك الغاء ترحيل امر صرف غير مرحل"
+
+#: .\apps\trans\utils.py:122
+msgid "you can't unmigrate unmigrated vouchers"
+msgstr "لا يمكنك الغاء ترحيل أوامر الصرف غير المرحلة"
+
+#: .\apps\trans\views\vouchers.py:204
+msgid "you cannot edit migrated voucher"
+msgstr "لا يمكنك التعديل على أمر صرف مرحل"
+
+#: .\apps\trans\views\vouchers.py:235
+msgid "you cannot delete migrated voucher"
+msgstr "لا يمكنك حذف أمر صرف مرحل"
+
+#: .\project\constants.py:123
+msgid "journals entries"
+msgstr "قيود اليومية"
+
+#: .\templates\403.html:3
+msgid "Forbidden"
+msgstr "غير مصرح لك"
+
+#: .\templates\403.html:8
+msgid "403 error"
+msgstr "غير مصرح لك"
+
+#: .\templates\403.html:13
+msgid "you can’t access this page"
+msgstr "لا يمكنك الوصول الى هذه الصفحة"
+
+#: .\templates\403.html:16
+msgid ""
+"sorry, the page you are looking for you don't have permission to access."
+msgstr "للأسف، ليس لديك صلاحيات الوصول الى هذه الصفحة."
+
+#: .\templates\components\blocks\modals\bulk-delete.html:9
+msgid "are you sure you want to delete all"
+msgstr "هل متأكد من حذف جميع"
+
+#: .\templates\components\blocks\modals\delete.html:11
+msgid "are you sure you want to delete"
+msgstr "هل متأكد من حذف"
+
+#: .\templates\components\blocks\modals\delete.html:11
+msgid "?"
+msgstr "؟"
+
+#: .\templates\components\blocks\table-filters.html:14
+msgid "apply"
+msgstr "تطبيق"
+
+#: .\templates\components\blocks\table-filters.html:25
+#: .\templates\components\blocks\table-filters.html:27
+#: .\templates\components\blocks\table.html:68
+#: .\templates\components\forms\create.html:79
+#: .\templates\components\forms\create.html:81
+#: .\templates\components\forms\update.html:66
+#: .\templates\components\forms\update.html:68
+msgid "reset"
+msgstr "اعادة التعيين"
+
+#: .\templates\components\blocks\table.html:16
+msgid "actions"
+msgstr "العمليات"
+
+#: .\templates\components\blocks\table.html:47
+msgid "export to Excel"
+msgstr "التصدير الى اكسل"
+
+#: .\templates\components\blocks\table.html:56
+msgid "export to CSV"
+msgstr "التصدير الى CSV"
+
+#: .\templates\components\forms\create.html:47
+#: .\templates\components\forms\create.html:48
+#: .\templates\components\forms\modal-create.html:36
+#: .\templates\components\forms\modal-create.html:37
+#: .\templates\components\forms\modal-create.html:39
+msgid "save"
+msgstr "حفظ"
+
+#: .\templates\components\forms\create.html:57
+#: .\templates\components\forms\create.html:58
+msgid "save and add another"
+msgstr "حفظ واضف عنصر جديد"
+
+#: .\templates\components\forms\create.html:67
+#: .\templates\components\forms\create.html:68
+msgid "save and continue editing"
+msgstr "حفظ واستمر بالتعديل"
+
+#: .\templates\components\forms\create.html:76
+#: .\templates\components\forms\update.html:63
+msgid "changes you made may not be saved?"
+msgstr "التغييرات التي قمت بها قد لا يتم حفظها؟"
+
+#: .\templates\components\forms\update.html:54
+#: .\templates\components\forms\update.html:55
+msgid "update and continue editing"
+msgstr "عدل واستمر بالتعديل"
+
+#: .\templates\components\inputs\avatar.html:10
+msgid "user profile"
+msgstr "صورة المستخدم"
+
+#: .\templates\components\inputs\file.html:20
+#: .\templates\components\inputs\number.html:38
+#: .\templates\components\inputs\text.html:36
+msgid "optional"
+msgstr "اختياري"
+
+#: .\templates\components\layout\header.html:34
+msgid "close sidebar"
+msgstr "اغلق الشريط الجانبي"
+
+#: .\templates\components\layout\header.html:37
+msgid "open sidebar"
+msgstr "افتح الشريط الجانبي"
+
+#: .\templates\components\layout\header.html:46
+msgid "light mode"
+msgstr "الوضع النهاري"
+
+#: .\templates\components\layout\header.html:49
+msgid "dark mode"
+msgstr "الوضع الليلي"
+
+#: .\templates\components\layout\header.html:67
+msgid "employee ledger"
+msgstr "كشف حساب الموظف"
+
+#: .\templates\components\layout\header.html:76
+msgid "full width"
+msgstr "العرض الكامل"
+
+#: .\templates\components\layout\header.html:79
+msgid "contained"
+msgstr "مغلف"
+
+#: .\templates\components\layout\header.html:88
+msgid "hide sidebar"
+msgstr "اخفاء الشريط الجانبي"
+
+#: .\templates\components\layout\header.html:94
+msgid "freeze sidebar"
+msgstr "تثبيت الشريط الجانبي"
+
+#: .\templates\components\layout\header.html:111
+msgid "english"
+msgstr "الانكليزية"
+
+#: .\templates\components\layout\header.html:111
+msgid "arabic"
+msgstr "العربية"
+
+#: .\templates\components\layout\header.html:124
+msgid "user menu"
+msgstr "قائمة المستخدم"
+
+#: .\templates\components\layout\header.html:140
+msgid "admin"
+msgstr "مدير النظام"
+
+#: .\templates\components\layout\header.html:157
+#: .\templates\components\layout\header.html:163
+msgid "logout"
+msgstr "تسجيل الخروج"
+
+#: .\templates\components\layout\sidebar\index.html:140
+msgid "educational"
+msgstr "القسم التعليمي"
+
+#: .\templates\components\table\pagination.html:13
+msgid "show rows per page"
+msgstr "اظهار عدد الاسطر"
+
+#: .\templates\components\table\pagination.html:46
+msgid "of"
+msgstr "من"
+
+#: .\templates\components\table\pagination.html:57
+msgid "first page"
+msgstr "الصفحة الاولى"
+
+#: .\templates\components\table\pagination.html:67
+msgid "previous page"
+msgstr "الصفحة السابقة"
+
+#: .\templates\components\table\pagination.html:78
+msgid "next page"
+msgstr "الصفحة التالية"
+
+#: .\templates\components\table\pagination.html:88
+msgid "last page"
+msgstr "الصفحة الاخيرة"
+
+#: .\templates\registration\login.html:11
+#: .\templates\registration\login.html:47
+msgid "login"
+msgstr "تسجيل الدخول"
+
+#: .\templates\registration\login.html:33
+msgid "username"
+msgstr "اسم المستخدم"
+
+#: .\templates\registration\login.html:41
+msgid "password"
+msgstr "كلمة المرور"
