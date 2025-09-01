@@ -133,7 +133,7 @@
           </c-modal-a>
         </c-table.td>
         <c-table.td data-header="{{ model|verbose_name:'kind' }}">
-          <c-badge>{{ obj.kind }}</c-badge>
+          <c-badge>{{ obj.get_kind_display }}</c-badge>
         </c-table.td>
         <c-table.td data-header="{% translate 'employees count' %}">
           {{ obj.employees_count }}
