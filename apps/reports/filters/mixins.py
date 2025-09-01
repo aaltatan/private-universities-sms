@@ -2,7 +2,7 @@ from typing import Any, Protocol
 
 import django_filters as filters
 from django.db import models
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.choices import MonthChoices
 from apps.core.filters import (
@@ -37,8 +37,8 @@ class Queryset(Protocol):
 
 
 class ExcludeZeroNet(models.TextChoices):
-    EXCLUDE = "exclude", _("exclude").title()
-    INCLUDE = "include", _("include").title()
+    EXCLUDE = "exclude", _("exclude")
+    INCLUDE = "include", _("include")
 
 
 class JournalsEmployeeFilter(filters.FilterSet):

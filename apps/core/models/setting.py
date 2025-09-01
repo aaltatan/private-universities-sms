@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from solo.models import SingletonModel
 
 
@@ -38,5 +38,5 @@ class GlobalSetting(SingletonModel):
         return "Global Settings"
 
     class Meta:
-        verbose_name = _("global settings").title()
+        verbose_name = _("global settings")
         ordering = ("id",)

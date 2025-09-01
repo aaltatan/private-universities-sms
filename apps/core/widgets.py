@@ -12,7 +12,7 @@ from django.forms.widgets import (
     TextInput,
 )
 from django.template.loader import render_to_string
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 
 class RenderMixin:
@@ -112,10 +112,10 @@ def get_textarea_widget(
     if "placeholder" not in attributes:
         attributes.setdefault(
             "placeholder",
-            _("some description").title(),
+            _("some description"),
         )
     else:
-        attributes["placeholder"] = attributes["placeholder"].title()
+        attributes["placeholder"] = attributes["placeholder"]
 
     return Textarea(
         attrs={"rows": rows, "x-autosize": "", **attributes},
@@ -128,7 +128,7 @@ def get_numeric_widget(
 ) -> TextInput:
     """Get numeric field with x-mask attribute."""
     if "placeholder" in attributes:
-        attributes["placeholder"] = attributes["placeholder"].title()
+        attributes["placeholder"] = attributes["placeholder"]
     return TextInput(
         attrs={
             "x-mask": x_mask,
@@ -145,7 +145,7 @@ def get_money_widget(
 ) -> TextInput:
     """Get numeric field with x-mask attribute."""
     if "placeholder" in attributes:
-        attributes["placeholder"] = attributes["placeholder"].title()
+        attributes["placeholder"] = attributes["placeholder"]
     else:
         attributes["placeholder"] = "0." + "0" * decimal_places
 

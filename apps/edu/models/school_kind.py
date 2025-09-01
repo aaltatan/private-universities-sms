@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -39,12 +39,12 @@ class SchoolKindManager(models.Manager):
 
 class SchoolKind(AddCreateActivityMixin, AbstractUniqueNameModel):
     class OwnershipChoices(models.TextChoices):
-        GOVERNMENTAL = True, _("governmental").title()
-        PRIVATE = False, _("private").title()
+        GOVERNMENTAL = True, _("governmental")
+        PRIVATE = False, _("private")
 
     class VirtualChoices(models.TextChoices):
-        VIRTUAL = True, _("virtual").title()
-        ORDINARY = False, _("ordinary").title()
+        VIRTUAL = True, _("virtual")
+        ORDINARY = False, _("ordinary")
 
     is_governmental = models.BooleanField(
         verbose_name=_("is governmental"),
@@ -61,8 +61,8 @@ class SchoolKind(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "academic-cap"
         ordering = ("name",)
         codename_plural = "school_kinds"
-        verbose_name = _("school kind").title()
-        verbose_name_plural = _("school kinds").title()
+        verbose_name = _("school kind")
+        verbose_name_plural = _("school kinds")
         permissions = (
             ("export_schoolkind", "Can export school kind"),
             ("view_activity_schoolkind", "Can view school kind activity"),

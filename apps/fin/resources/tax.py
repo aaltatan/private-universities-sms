@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, widgets
 
 from apps.core.resources import BaseResource
@@ -9,47 +9,47 @@ from .. import models
 class TaxResource(BaseResource):
     shortname = fields.Field(
         attribute="shortname",
-        column_name=_("short name").title(),
+        column_name=_("short name"),
     )
     calculation_method = fields.Field(
         attribute="calculation_method",
-        column_name=_("calculation method").title(),
+        column_name=_("calculation method"),
         dehydrate_method="dehydrate_calculation_method",
     )
     amount = fields.Field(
         attribute="amount",
-        column_name=_("amount").title(),
+        column_name=_("amount"),
         widget=widgets.DecimalWidget(coerce_to_string=False),
     )
     percentage = fields.Field(
         attribute="percentage",
-        column_name=_("percentage").title(),
+        column_name=_("percentage"),
         widget=widgets.DecimalWidget(coerce_to_string=False),
     )
     formula = fields.Field(
         attribute="formula",
-        column_name=_("formula").title(),
+        column_name=_("formula"),
     )
     rounded_to = fields.Field(
         attribute="rounded_to",
-        column_name=_("rounded to").title(),
+        column_name=_("rounded to"),
         widget=widgets.DecimalWidget(coerce_to_string=False),
     )
     round_method = fields.Field(
         attribute="round_method",
-        column_name=_("round method").title(),
+        column_name=_("round method"),
     )
     affected_by_working_days = fields.Field(
         attribute="affected_by_working_days",
-        column_name=_("affected by working days").title(),
+        column_name=_("affected by working days"),
     )
     accounting_id = fields.Field(
         attribute="accounting_id",
-        column_name=_("accounting id").title(),
+        column_name=_("accounting id"),
     )
     description = fields.Field(
         attribute="description",
-        column_name=_("description").title(),
+        column_name=_("description"),
     )
 
     def dehydrate_affected_by_working_days(self, obj: models.Compensation):

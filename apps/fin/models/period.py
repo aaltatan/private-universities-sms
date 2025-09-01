@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -27,8 +27,8 @@ class PeriodManager(JournalsTotalsManagerMixin[PeriodQuerySet], models.Manager):
 
 class Period(AddCreateActivityMixin, AbstractUniqueNameModel):
     class ClosedChoices(models.TextChoices):
-        CLOSED = True, _("closed").title()
-        OPEN = False, _("open").title()
+        CLOSED = True, _("closed")
+        OPEN = False, _("open")
 
     year = models.ForeignKey(
         Year,
@@ -50,8 +50,8 @@ class Period(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "calendar-date-range"
         ordering = ("start_date",)
         codename_plural = "periods"
-        verbose_name = _("period").title()
-        verbose_name_plural = _("periods").title()
+        verbose_name = _("period")
+        verbose_name_plural = _("periods")
         permissions = (
             ("export_period", "Can export period"),
             ("view_activity_period", "Can view period activity"),

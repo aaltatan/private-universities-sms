@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, resources
 
 from apps.core.resources import SerialResourceMixin
@@ -11,17 +11,17 @@ class BaseInfoResource(SerialResourceMixin, resources.ModelResource):
     )
     employee_name = fields.Field(
         attribute="employee__fullname",
-        column_name=_("employee name").title(),
+        column_name=_("employee name"),
     )
     employee_national_id = fields.Field(
         attribute="employee__national_id",
-        column_name=_("employee national id").title(),
+        column_name=_("employee national id"),
     )
     kind = fields.Field(
         attribute="kind",
-        column_name=_("kind").title(),
+        column_name=_("kind"),
     )
     notes = fields.Field(
         attribute="notes",
-        column_name=_("notes").title(),
+        column_name=_("notes"),
     )

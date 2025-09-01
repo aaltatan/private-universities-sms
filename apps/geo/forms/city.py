@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.fields import get_autocomplete_field
 from apps.core.forms import CustomModelForm
@@ -12,6 +12,7 @@ class BaseCityForm(CustomModelForm):
         models.Governorate.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search governorates")},
+        field_attributes={"label": _("governorate")},
         app_label="geo",
         model_name="Governorate",
         object_name="governorate",
@@ -23,7 +24,7 @@ class BaseCityForm(CustomModelForm):
         fields = ("name", "governorate", "kind", "description")
         widgets = {
             "name": get_text_widget(placeholder=_("e.g. Hamah")),
-            "description": get_textarea_widget(),
+            "description": get_textarea_widget(placeholder=_("some description")),
         }
 
 

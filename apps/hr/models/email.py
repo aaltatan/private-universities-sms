@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -16,9 +16,9 @@ class EmailManager(models.Manager):
 
 class Email(AddCreateActivityMixin, models.Model):
     class KindChoices(models.TextChoices):
-        PERSONAL = "personal", _("personal").title()
-        WORK = "work", _("work").title()
-        OTHER = "other", _("other").title()
+        PERSONAL = "personal", _("personal")
+        WORK = "work", _("work")
+        OTHER = "other", _("other")
 
     email = models.EmailField(
         max_length=255,

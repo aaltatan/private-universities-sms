@@ -1,7 +1,7 @@
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from .user import User
 from ..managers import ActivityManager
@@ -9,11 +9,11 @@ from ..managers import ActivityManager
 
 class Activity(models.Model):
     class KindChoices(models.TextChoices):
-        CREATE = "create", _("create").title()
-        UPDATE = "update", _("update").title()
-        DELETE = "delete", _("delete").title()
-        EXPORT = "export", _("export").title()
-        OTHER = "other", _("other").title()
+        CREATE = "create", _("create")
+        UPDATE = "update", _("update")
+        DELETE = "delete", _("delete")
+        EXPORT = "export", _("export")
+        OTHER = "other", _("other")
 
     created_at = models.DateTimeField(
         auto_now=True,

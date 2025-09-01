@@ -1,5 +1,5 @@
 from django import forms
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.fields import get_autocomplete_field
 from apps.core.forms import CustomModelForm
@@ -26,6 +26,7 @@ class EmployeeForm(CustomModelForm):
         City.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search cities")},
+        field_attributes={"label": _("city")},
         app_label="geo",
         model_name="City",
         object_name="city",
@@ -35,6 +36,7 @@ class EmployeeForm(CustomModelForm):
         Nationality.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search nationalities")},
+        field_attributes={"label": _("nationality")},
         app_label="geo",
         model_name="Nationality",
         object_name="nationality",
@@ -44,6 +46,7 @@ class EmployeeForm(CustomModelForm):
         Position.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search positions")},
+        field_attributes={"label": _("position")},
         app_label="org",
         model_name="Position",
         object_name="position",
@@ -53,6 +56,7 @@ class EmployeeForm(CustomModelForm):
         CostCenter.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search cost centers")},
+        field_attributes={"label": _("cost center")},
         app_label="org",
         model_name="CostCenter",
         object_name="cost_center",
@@ -62,6 +66,7 @@ class EmployeeForm(CustomModelForm):
         JobSubtype.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search job subtypes")},
+        field_attributes={"label": _("job subtype")},
         app_label="org",
         model_name="JobSubtype",
         object_name="job_subtype",
@@ -71,6 +76,7 @@ class EmployeeForm(CustomModelForm):
         Status.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search statuses")},
+        field_attributes={"label": _("status")},
         app_label="org",
         model_name="Status",
         object_name="status",
@@ -80,6 +86,7 @@ class EmployeeForm(CustomModelForm):
         Degree.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search degrees")},
+        field_attributes={"label": _("degree")},
         app_label="edu",
         model_name="Degree",
         object_name="degree",
@@ -89,6 +96,7 @@ class EmployeeForm(CustomModelForm):
         School.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search schools")},
+        field_attributes={"label": _("school")},
         app_label="edu",
         model_name="School",
         object_name="school",
@@ -98,6 +106,7 @@ class EmployeeForm(CustomModelForm):
         Specialization.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search specializations")},
+        field_attributes={"label": _("specialization")},
         app_label="edu",
         model_name="Specialization",
         object_name="specialization",
@@ -112,12 +121,13 @@ class EmployeeForm(CustomModelForm):
         model_name="User",
         object_name="user",
         field_name="username",
-        field_attributes={"required": False},
+        field_attributes={"required": False, "label": _("user")},
     )
     groups = forms.ModelMultipleChoiceField(
         queryset=Group.objects.all(),
         widget=SelectMultipleWidget,
         required=False,
+        label=_("groups"),
     )
     profile = forms.ImageField(
         required=False,

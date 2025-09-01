@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core import widgets
 from apps.core.fields import get_autocomplete_field
@@ -14,6 +14,7 @@ class BaseTaxBracketForm(CustomModelForm):
         ),
         to_field_name="name",
         widget_attributes={"placeholder": _("search taxes")},
+        field_attributes={"label": _("tax")},
         queryset_filters={
             "calculation_method": models.Tax.CalculationMethodChoices.BRACKETS,
         },
@@ -36,7 +37,7 @@ class BaseTaxBracketForm(CustomModelForm):
             "amount_from": widgets.get_number_widget(placeholder=_("e.g. 1000")),
             "amount_to": widgets.get_number_widget(placeholder=_("e.g. 50000")),
             "rate": widgets.get_number_widget(placeholder=_("e.g. 0.1")),
-            "notes": widgets.get_textarea_widget(),
+            "notes": widgets.get_textarea_widget(placeholder=_("some description")),
         }
 
 

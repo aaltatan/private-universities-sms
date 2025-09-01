@@ -7,7 +7,7 @@ from django.db.models import Model
 from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from ..forms import BehaviorForm
 from ..utils import ActionBehavior

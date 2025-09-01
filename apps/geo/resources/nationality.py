@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields
 
 from apps.core.resources import BaseResource
@@ -9,7 +9,7 @@ from .. import models
 class NationalityResource(BaseResource):
     is_local = fields.Field(
         attribute="is_local",
-        column_name=_("is local").title(),
+        column_name=_("is local"),
     )
 
     def dehydrate_is_local(self, obj: models.Nationality):

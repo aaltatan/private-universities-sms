@@ -8,11 +8,11 @@ from .. import models
 
 class BaseSchoolKindFilter(BaseNameDescriptionFilter):
     is_governmental = filters.ChoiceFilter(
-        label=_("is governmental").title(),
+        label=_("is governmental"),
         choices=models.SchoolKind.OwnershipChoices,
     )
     is_virtual = filters.ChoiceFilter(
-        label=_("is virtual").title(),
+        label=_("is virtual"),
         choices=models.SchoolKind.VirtualChoices,
     )
     schools_count_from, schools_count_to = get_number_from_to_filters("schools_count")

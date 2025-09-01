@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -47,8 +47,8 @@ class Position(AddCreateActivityMixin, AbstractUniqueNameModel):
     class Meta:
         icon = "chevron-double-up"
         codename_plural = "positions"
-        verbose_name = _("position").title()
-        verbose_name_plural = _("positions").title()
+        verbose_name = _("position")
+        verbose_name_plural = _("positions")
         ordering = ("order", "name")
         permissions = (
             ("export_position", "Can export position"),

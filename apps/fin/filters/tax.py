@@ -12,13 +12,13 @@ from .. import models
 
 
 class BaseTaxFilter(BaseNameDescriptionFilter):
-    shortname = get_text_filter(label=_("short name").title())
+    shortname = get_text_filter(label=_("short name"))
     calculation_method = filters.ChoiceFilter(
-        label=_("calculation method").title(),
+        label=_("calculation method"),
         choices=models.Tax.CalculationMethodChoices,
     )
     affected_by_working_days = filters.ChoiceFilter(
-        label=_("affected by working days").title(),
+        label=_("affected by working days"),
         choices=models.Tax.AffectedByWorkingDaysChoices,
     )
     amount_from, amount_to = get_number_from_to_filters("amount")

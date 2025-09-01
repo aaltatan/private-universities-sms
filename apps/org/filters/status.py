@@ -8,11 +8,11 @@ from .. import models
 
 class BaseStatusFilter(BaseNameDescriptionFilter):
     is_payable = filters.ChoiceFilter(
-        label=_("payable").title(),
+        label=_("payable"),
         choices=models.Status.PayableChoices,
     )
     is_separated = filters.ChoiceFilter(
-        label=_("separated").title(),
+        label=_("separated"),
         choices=models.Status.SeparatedChoices,
     )
     employees_count_from, employees_count_to = get_number_from_to_filters(

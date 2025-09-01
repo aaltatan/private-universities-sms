@@ -2,7 +2,7 @@ from typing import Literal, Generic, TypeVar
 
 from django.http import HttpRequest
 from django.db.models import ProtectedError, QuerySet, Model
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 KIND = Literal["obj", "qs"]
 STATUS = Literal["success", "error"]

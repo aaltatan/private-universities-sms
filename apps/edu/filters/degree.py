@@ -8,7 +8,7 @@ from .. import models
 
 class BaseDegreeFilter(BaseNameDescriptionFilter):
     is_academic = filters.ChoiceFilter(
-        label=_("is academic").title(),
+        label=_("is academic"),
         choices=models.Degree.AcademicChoices,
     )
     order_from, order_to = get_number_from_to_filters(field_name="order")

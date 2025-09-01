@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, resources, widgets
 
 from apps.core.resources import (
@@ -22,128 +22,128 @@ class VoucherTransactionResource(
     )
     created_at = fields.Field(
         attribute="voucher__created_at",
-        column_name=_("created at").title(),
+        column_name=_("created at"),
     )
     created_by = fields.Field(
         attribute="voucher__created_by__username",
-        column_name=_("created by").title(),
+        column_name=_("created by"),
     )
     updated_at = fields.Field(
         attribute="voucher__updated_at",
-        column_name=_("updated at").title(),
+        column_name=_("updated at"),
     )
     updated_by = fields.Field(
         attribute="voucher__updated_by__username",
-        column_name=_("updated by").title(),
+        column_name=_("updated by"),
     )
     uuid = fields.Field(
         attribute="voucher__uuid",
-        column_name=_("uuid").title(),
+        column_name=_("uuid"),
     )
     voucher_serial = fields.Field(
         attribute="voucher__voucher_serial",
-        column_name=_("voucher serial").title(),
+        column_name=_("voucher serial"),
     )
     title = fields.Field(
         attribute="voucher__title",
-        column_name=_("title").title(),
+        column_name=_("title"),
     )
     date = fields.Field(
         attribute="voucher__date",
-        column_name=_("date").title(),
+        column_name=_("date"),
     )
     kind = fields.Field(
         attribute="voucher__kind",
-        column_name=_("kind").title(),
+        column_name=_("kind"),
     )
     month = fields.Field(
         attribute="voucher__month",
-        column_name=_("month").title(),
+        column_name=_("month"),
     )
     quarter = fields.Field(
         attribute="voucher__quarter",
-        column_name=_("quarter").title(),
+        column_name=_("quarter"),
     )
     period = fields.Field(
         attribute="voucher__period",
-        column_name=_("period").title(),
+        column_name=_("period"),
     )
     voucher_notes = fields.Field(
         attribute="voucher__notes",
-        column_name=_("notes").title(),
+        column_name=_("notes"),
     )
     employee_uuid = fields.Field(
         attribute="employee__uuid",
-        column_name=_("employee uuid").title(),
+        column_name=_("employee uuid"),
     )
     employee = fields.Field(
         attribute="employee__fullname",
-        column_name=_("employee").title(),
+        column_name=_("employee"),
     )
     compensation = fields.Field(
         attribute="compensation__name",
-        column_name=_("compensation").title(),
+        column_name=_("compensation"),
     )
     quantity = fields.Field(
         attribute="quantity",
-        column_name=_("quantity").title(),
+        column_name=_("quantity"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     value = fields.Field(
         attribute="value",
-        column_name=_("value").title(),
+        column_name=_("value"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     total = fields.Field(
         attribute="total",
-        column_name=_("total").title(),
+        column_name=_("total"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     tax = fields.Field(
         attribute="tax",
-        column_name=_("tax").title(),
+        column_name=_("tax"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     net = fields.Field(
         attribute="net",
-        column_name=_("net").title(),
+        column_name=_("net"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     notes = fields.Field(
         attribute="notes",
-        column_name=_("notes").title(),
+        column_name=_("notes"),
     )
     serial_id = fields.Field(
         attribute="voucher__serial_id",
-        column_name=_("serial id").title(),
+        column_name=_("serial id"),
     )
     serial_date = fields.Field(
         attribute="voucher__serial_date",
-        column_name=_("serial date").title(),
+        column_name=_("serial date"),
     )
     approve_date = fields.Field(
         attribute="voucher__approve_date",
-        column_name=_("approve date").title(),
+        column_name=_("approve date"),
     )
     due_date = fields.Field(
         attribute="voucher__due_date",
-        column_name=_("due date").title(),
+        column_name=_("due date"),
     )
     accounting_journal_sequence = fields.Field(
         attribute="voucher__accounting_journal_sequence",
-        column_name=_("accounting journal sequence").title(),
+        column_name=_("accounting journal sequence"),
     )
     is_audited = fields.Field(
         attribute="voucher__is_audited",
-        column_name=_("is audited").title(),
+        column_name=_("is audited"),
     )
     audited_by = fields.Field(
         attribute="voucher__audited_by__username",
-        column_name=_("audited by").title(),
+        column_name=_("audited by"),
     )
     is_migrated = fields.Field(
         attribute="voucher__is_migrated",
-        column_name=_("is migrated").title(),
+        column_name=_("is migrated"),
     )
 
     def dehydrate_is_audited(self, obj) -> bool:

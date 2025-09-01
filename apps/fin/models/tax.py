@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -46,14 +46,14 @@ class TaxManager(models.Manager):
 
 class Tax(AddCreateActivityMixin, AbstractUniqueNameModel):
     class AffectedByWorkingDaysChoices(models.TextChoices):
-        YES = True, _("yes").title()
-        NO = False, _("no").title()
+        YES = True, _("yes")
+        NO = False, _("no")
 
     class CalculationMethodChoices(models.TextChoices):
-        FIXED_AMOUNT = "fixed_amount", _("fixed amount").title()
-        FIXED_PERCENTAGE = "fixed_percentage", _("fixed percentage").title()
-        BRACKETS = "brackets", _("brackets").title()
-        FORMULA = "formula", _("formula").title()
+        FIXED_AMOUNT = "fixed_amount", _("fixed amount")
+        FIXED_PERCENTAGE = "fixed_percentage", _("fixed percentage")
+        BRACKETS = "brackets", _("brackets")
+        FORMULA = "formula", _("formula")
 
     shortname = models.CharField(
         max_length=255,
@@ -215,8 +215,8 @@ class Tax(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "receipt-percent"
         ordering = ("calculation_method", "name")
         codename_plural = "taxes"
-        verbose_name = _("tax").title()
-        verbose_name_plural = _("taxes").title()
+        verbose_name = _("tax")
+        verbose_name_plural = _("taxes")
         permissions = (
             ("export_tax", "Can export tax"),
             ("view_activity_tax", "Can view tax activity"),

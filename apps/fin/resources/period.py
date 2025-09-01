@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, widgets
 
 from apps.core.resources import BaseResource
@@ -9,16 +9,16 @@ from .. import models
 class PeriodResource(BaseResource):
     year = fields.Field(
         attribute="year__name",
-        column_name=_("year").title(),
+        column_name=_("year"),
     )
     start_date = fields.Field(
         attribute="start_date",
-        column_name=_("birth date").title(),
+        column_name=_("birth date"),
         widget=widgets.DateWidget(coerce_to_string=False),
     )
     is_closed = fields.Field(
         attribute="is_closed",
-        column_name=_("is closed").title(),
+        column_name=_("is closed"),
     )
 
     def dehydrate_is_closed(self, obj: models.Period):

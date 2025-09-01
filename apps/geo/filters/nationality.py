@@ -8,7 +8,7 @@ from .. import models
 
 class BaseNationalityFilter(BaseNameDescriptionFilter):
     is_local = filters.ChoiceFilter(
-        label=_("locality").title(),
+        label=_("locality"),
         choices=models.Nationality.LocalityChoices,
     )
     employees_count_from, employees_count_to = get_number_from_to_filters(

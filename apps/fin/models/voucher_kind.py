@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -40,8 +40,8 @@ class VoucherKind(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "rectangle-group"
         ordering = ("name",)
         codename_plural = "voucher_kinds"
-        verbose_name = _("voucher kind").title()
-        verbose_name_plural = _("voucher kinds").title()
+        verbose_name = _("voucher kind")
+        verbose_name_plural = _("voucher kinds")
         permissions = (
             ("export_voucherkind", "Can export voucher kind"),
             ("view_activity_voucherkind", "Can view voucher kind activity"),

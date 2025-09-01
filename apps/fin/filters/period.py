@@ -12,7 +12,7 @@ from .. import models
 
 class BasePeriodFilter(BaseNameDescriptionFilter):
     is_closed = filters.ChoiceFilter(
-        label=_("closed").title(),
+        label=_("closed"),
         choices=models.Period.ClosedChoices,
     )
     start_date_from, start_date_to = get_date_from_to_filters("start_date")

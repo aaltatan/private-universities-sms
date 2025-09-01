@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -44,8 +44,8 @@ class Governorate(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "home-modern"
         ordering = ("name",)
         codename_plural = "governorates"
-        verbose_name = _("governorate").title()
-        verbose_name_plural = _("governorates").title()
+        verbose_name = _("governorate")
+        verbose_name_plural = _("governorates")
         permissions = (
             ("export_governorate", "Can export governorate"),
             ("view_activity_governorate", "Can view governorate activity"),

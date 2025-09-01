@@ -15,7 +15,7 @@ class BaseTaxBracketFilter(BaseNameDescriptionFilter):
     amount_from_from, amount_from_to = get_number_from_to_filters("amount_from")
     amount_to_from, amount_to_to = get_number_from_to_filters("amount_to")
     rate_from, rate_to = get_number_from_to_filters("rate")
-    notes = get_text_filter(label=_("notes").title())
+    notes = get_text_filter(label=_("notes"))
 
     class Meta:
         model = models.TaxBracket

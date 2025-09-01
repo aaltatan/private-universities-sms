@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, resources
 
 from apps.core.resources import DehydrateBooleanMixin
@@ -14,14 +14,14 @@ class MobileResource(
 ):
     number = fields.Field(
         attribute="number",
-        column_name=_("number").title(),
+        column_name=_("number"),
     )
     has_whatsapp = fields.Field(
         attribute="has_whatsapp",
-        column_name=_("has whatsapp").title(),
+        column_name=_("has whatsapp"),
     )
     whatsapp_url = fields.Field(
-        column_name=_("whatsapp url").title(),
+        column_name=_("whatsapp url"),
     )
 
     def dehydrate_has_whatsapp(self, obj: models.Mobile):

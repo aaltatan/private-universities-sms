@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -32,12 +32,12 @@ class StatusManager(EmployeesCountManagerMixin[StatusQuerySet], models.Manager):
 
 class Status(AddCreateActivityMixin, AbstractUniqueNameModel):
     class PayableChoices(models.TextChoices):
-        PAYABLE = True, _("payable").title()
-        NOT_PAYABLE = False, _("not payable").title()
+        PAYABLE = True, _("payable")
+        NOT_PAYABLE = False, _("not payable")
 
     class SeparatedChoices(models.TextChoices):
-        SEPARATED = True, _("separated").title()
-        NOT_SEPARATED = False, _("not separated").title()
+        SEPARATED = True, _("separated")
+        NOT_SEPARATED = False, _("not separated")
 
     is_payable = models.BooleanField(
         verbose_name=_("is payable"),
@@ -54,8 +54,8 @@ class Status(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "check-circle"
         ordering = ("is_payable", "name")
         codename_plural = "statuses"
-        verbose_name = _("status").title()
-        verbose_name_plural = _("statuses").title()
+        verbose_name = _("status")
+        verbose_name_plural = _("statuses")
         permissions = (
             ("export_status", "Can export status"),
             ("view_activity_status", "Can view status activity"),

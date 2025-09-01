@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, resources, widgets
 
 from apps.core.resources import SerialResourceMixin
@@ -12,21 +12,21 @@ class CostCenterResource(SerialResourceMixin, resources.ModelResource):
     )
     cost_center = fields.Field(
         attribute="name",
-        column_name=_("cost center").title(),
+        column_name=_("cost center"),
     )
     total_debit = fields.Field(
         attribute="total_debit",
-        column_name=_("total debit").title(),
+        column_name=_("total debit"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     total_credit = fields.Field(
         attribute="total_credit",
-        column_name=_("total credit").title(),
+        column_name=_("total credit"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     total_amount = fields.Field(
         attribute="total_amount",
-        column_name=_("net").title(),
+        column_name=_("net"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
 

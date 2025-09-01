@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.widgets import get_numeric_widget
 from apps.core.forms import CustomModelForm

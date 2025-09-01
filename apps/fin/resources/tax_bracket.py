@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, resources, widgets
 
 from apps.core.resources import SerialResourceMixin
@@ -13,26 +13,26 @@ class TaxBracketResource(SerialResourceMixin, resources.ModelResource):
     )
     tax = fields.Field(
         attribute="tax__name",
-        column_name=_("tax").title(),
+        column_name=_("tax"),
     )
     amount_from = fields.Field(
         attribute="amount_from",
-        column_name=_("amount from").title(),
+        column_name=_("amount from"),
         widget=widgets.DecimalWidget(coerce_to_string=False),
     )
     amount_to = fields.Field(
         attribute="amount_to",
-        column_name=_("amount to").title(),
+        column_name=_("amount to"),
         widget=widgets.DecimalWidget(coerce_to_string=False),
     )
     rate = fields.Field(
         attribute="rate",
-        column_name=_("rate").title(),
+        column_name=_("rate"),
         widget=widgets.DecimalWidget(coerce_to_string=False),
     )
     notes = fields.Field(
         attribute="notes",
-        column_name=_("notes").title(),
+        column_name=_("notes"),
     )
 
     class Meta:

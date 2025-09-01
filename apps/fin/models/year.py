@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_save, pre_delete
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -30,8 +30,8 @@ class Year(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "calendar"
         ordering = ("name",)
         codename_plural = "years"
-        verbose_name = _("year").title()
-        verbose_name_plural = _("years").title()
+        verbose_name = _("year")
+        verbose_name_plural = _("years")
         permissions = (
             ("export_year", "Can export year"),
             ("view_activity_year", "Can view year activity"),

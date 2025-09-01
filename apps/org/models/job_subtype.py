@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -46,8 +46,8 @@ class JobSubtype(AddCreateActivityMixin, AbstractUniqueNameModel):
     class Meta:
         icon = "briefcase"
         codename_plural = "job_subtypes"
-        verbose_name = _("job subtype").title()
-        verbose_name_plural = _("job subtypes").title()
+        verbose_name = _("job subtype")
+        verbose_name_plural = _("job subtypes")
         ordering = (
             "job_type__name",
             "name",

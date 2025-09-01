@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -33,11 +33,11 @@ class CityManager(EmployeesCountManagerMixin[CityQuerySet], models.Manager):
 
 class City(AddCreateActivityMixin, AbstractUniqueNameModel):
     class KindChoices(models.TextChoices):
-        CITY = "city", _("city").title()
-        AREA = "area", _("area").title()
-        TOWN = "town", _("town").title()
-        VILLAGE = "village", _("village").title()
-        OTHER = "other", _("other").title()
+        CITY = "city", _("city")
+        AREA = "area", _("area")
+        TOWN = "town", _("town")
+        VILLAGE = "village", _("village")
+        OTHER = "other", _("other")
 
     governorate = models.ForeignKey(
         Governorate,
@@ -58,8 +58,8 @@ class City(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "home-modern"
         ordering = ("kind", "name")
         codename_plural = "cities"
-        verbose_name = _("city").title()
-        verbose_name_plural = _("cities").title()
+        verbose_name = _("city")
+        verbose_name_plural = _("cities")
         permissions = (
             ("export_city", "Can export city"),
             ("view_activity_city", "Can view city activity"),

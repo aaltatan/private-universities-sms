@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models.signals import post_delete, pre_delete, pre_save
 from django.urls import reverse
 from django.utils.text import slugify
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals, validators
@@ -26,12 +26,12 @@ class Voucher(
     TimeStampAbstractModel,
 ):
     class AuditedChoices(models.TextChoices):
-        YES = True, _("audited").title()
-        NO = False, _("not audited").title()
+        YES = True, _("audited")
+        NO = False, _("not audited")
 
     class MigratedChoices(models.TextChoices):
-        YES = True, _("migrated").title()
-        NO = False, _("not migrated").title()
+        YES = True, _("migrated")
+        NO = False, _("not migrated")
 
     uuid = models.UUIDField(
         default=uuid.uuid4,
@@ -287,8 +287,8 @@ class Voucher(
         icon = "document-check"
         ordering = ("is_migrated", "date", "-created_at", "voucher_serial")
         codename_plural = "vouchers"
-        verbose_name = _("voucher").title()
-        verbose_name_plural = _("vouchers").title()
+        verbose_name = _("voucher")
+        verbose_name_plural = _("vouchers")
         permissions = (
             ("export_voucher", "Can export voucher"),
             ("migrate_voucher", "Can migrate voucher"),

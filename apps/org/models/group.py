@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -32,8 +32,8 @@ class GroupManager(EmployeesCountManagerMixin[GroupQuerySet], models.Manager):
 
 class Group(AddCreateActivityMixin, AbstractUniqueNameModel):
     class KindChoices(models.TextChoices):
-        ACADEMIC = "academic", _("academic").title()
-        ADMINISTRATIVE = "administrative", _("administrative").title()
+        ACADEMIC = "academic", _("academic")
+        ADMINISTRATIVE = "administrative", _("administrative")
 
     kind = models.CharField(
         max_length=50,
@@ -46,8 +46,8 @@ class Group(AddCreateActivityMixin, AbstractUniqueNameModel):
     class Meta:
         icon = "user-group"
         codename_plural = "groups"
-        verbose_name = _("group").title()
-        verbose_name_plural = _("groups").title()
+        verbose_name = _("group")
+        verbose_name_plural = _("groups")
         ordering = ("kind", "name")
         permissions = (
             ("export_group", "Can export group"),

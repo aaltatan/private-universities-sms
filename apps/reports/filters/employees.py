@@ -1,6 +1,6 @@
 import django_filters as filters
 from django.db import models
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.filters import FilterTextMixin, get_text_filter
 from apps.hr.models import Employee

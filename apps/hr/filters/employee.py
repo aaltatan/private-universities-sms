@@ -21,7 +21,7 @@ from ..models import Employee, HRSetting
 
 class GroupedByCountFilter(filters.FilterSet):
     group_by = filters.TypedChoiceFilter(
-        label=_("group by").title(),
+        label=_("group by"),
         choices=choices.CountsGroupedByChoices,
         method="filter_counts_grouped_by",
     )
@@ -36,7 +36,7 @@ class GroupedByCountFilter(filters.FilterSet):
 
 class UpcomingBirthdayFilter(filters.FilterSet):
     this = filters.TypedChoiceFilter(
-        label=_("this").title(),
+        label=_("this"),
         choices=choices.DateUnitsChoices,
         method="filter_upcoming_birthday_this",
     )
@@ -56,7 +56,7 @@ class UpcomingBirthdayFilter(filters.FilterSet):
 
 class UpcomingJobAnniversaryFilter(filters.FilterSet):
     this = filters.TypedChoiceFilter(
-        label=_("this").title(),
+        label=_("this"),
         choices=choices.DateUnitsChoices,
         method="filter_upcoming_job_anniversary_this",
     )
@@ -81,11 +81,11 @@ class BaseEmployeeFilter(
     FilterTextMixin,
     filters.FilterSet,
 ):
-    firstname = get_text_filter(label=_("first name").title())
-    lastname = get_text_filter(label=_("last name").title())
-    father_name = get_text_filter(label=_("father name").title())
-    mother_name = get_text_filter(label=_("mother name").title())
-    birth_place = get_text_filter(label=_("birth place").title())
+    firstname = get_text_filter(label=_("first name"))
+    lastname = get_text_filter(label=_("last name"))
+    father_name = get_text_filter(label=_("father name"))
+    mother_name = get_text_filter(label=_("mother name"))
+    birth_place = get_text_filter(label=_("birth place"))
     birth_date_from, birth_date_to = get_date_from_to_filters(
         field_name="birth_date",
     )
@@ -95,26 +95,26 @@ class BaseEmployeeFilter(
     )
     age_group = filters.ChoiceFilter(
         field_name="age_group",
-        label=_("age group").title(),
+        label=_("age group"),
         choices=choices.AgeGroupChoices,
         method="filter_age_group",
     )
-    national_id = get_text_filter(label=_("national id").title())
-    card_id = get_text_filter(label=_("card id").title())
-    passport_id = get_text_filter(label=_("passport id").title())
+    national_id = get_text_filter(label=_("national id"))
+    card_id = get_text_filter(label=_("card id"))
+    passport_id = get_text_filter(label=_("passport id"))
     civil_registry_office = get_text_filter(
-        label=_("civil registry office").title(),
+        label=_("civil registry office"),
     )
     registry_office_name = get_text_filter(
-        label=_("registry office name").title(),
+        label=_("registry office name"),
     )
-    registry_office_id = get_text_filter(label=_("registry office id").title())
-    address = get_text_filter(label=_("address").title())
-    special_signs = get_text_filter(label=_("special signs").title())
+    registry_office_id = get_text_filter(label=_("registry office id"))
+    address = get_text_filter(label=_("address"))
+    special_signs = get_text_filter(label=_("special signs"))
     card_date_from, card_date_to = get_date_from_to_filters(
         field_name="card_date",
     )
-    current_address = get_text_filter(label=_("current address").title())
+    current_address = get_text_filter(label=_("current address"))
     hire_date_from, hire_date_to = get_date_from_to_filters(
         field_name="hire_date",
     )
@@ -125,34 +125,34 @@ class BaseEmployeeFilter(
         field_name="job_age",
         method_name="filter_job_age",
     )
-    notes = get_text_filter(label=_("notes").title())
+    notes = get_text_filter(label=_("notes"))
     is_specialist = filters.ChoiceFilter(
         field_name="specialization__is_specialist",
-        label=_("specialty").title(),
+        label=_("specialty"),
         choices=Specialization.SpecialistChoices,
     )
     is_academic = filters.ChoiceFilter(
         field_name="degree__is_academic",
-        label=_("academic").title(),
+        label=_("academic"),
         choices=Degree.AcademicChoices,
     )
     is_payable = filters.ChoiceFilter(
         field_name="status__is_payable",
-        label=_("payability").title(),
+        label=_("payability"),
         choices=Status.PayableChoices,
     )
     is_local = filters.ChoiceFilter(
         field_name="nationality__is_local",
-        label=_("locality").title(),
+        label=_("locality"),
         choices=Nationality.LocalityChoices,
     )
     upcoming_birthday_this = filters.ChoiceFilter(
-        label=_("upcoming birthday this").title(),
+        label=_("upcoming birthday this"),
         choices=choices.DateUnitsChoices,
         method="filter_upcoming_birthday_this",
     )
     upcoming_job_anniversary_this = filters.ChoiceFilter(
-        label=_("upcoming job anniversary this").title(),
+        label=_("upcoming job anniversary this"),
         choices=choices.DateUnitsChoices,
         method="filter_upcoming_job_anniversary_this",
     )

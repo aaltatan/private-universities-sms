@@ -1,6 +1,6 @@
 from typing import Literal
 
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 ORDERING_FIELDS: dict[str, str] = {
     "id": _("id"),

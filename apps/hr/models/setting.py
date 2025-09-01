@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from solo.models import SingletonModel
 
 
@@ -24,5 +24,5 @@ class HRSetting(SingletonModel):
         return "Human Resources Settings"
 
     class Meta:
-        verbose_name = _("hr settings").title()
+        verbose_name = _("hr settings")
         ordering = ("id",)

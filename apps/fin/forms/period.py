@@ -1,5 +1,5 @@
 from django import forms
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.fields import get_autocomplete_field
 from apps.core.forms import CustomModelForm
@@ -17,6 +17,7 @@ class BasePeriodForm(CustomModelForm):
         models.Year.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search years")},
+        field_attributes={"label": _("year")},
         app_label="fin",
         model_name="Year",
         object_name="year",
@@ -29,7 +30,7 @@ class BasePeriodForm(CustomModelForm):
         widgets = {
             "name": get_text_widget(placeholder=_("e.g. 20221 - First Chapter")),
             "start_date": get_date_widget(placeholder=_("e.g. 2022-01-01")),
-            "description": get_textarea_widget(),
+            "description": get_textarea_widget(placeholder=_("some description")),
         }
 
 

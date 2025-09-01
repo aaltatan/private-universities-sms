@@ -13,7 +13,7 @@ from django.http import (
 )
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from ..inline import InlineFormsetFactory
 from ..schemas import RequestParser

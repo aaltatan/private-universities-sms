@@ -8,7 +8,7 @@ from .. import models
 
 class BaseSpecializationFilter(BaseNameDescriptionFilter):
     is_specialist = filters.ChoiceFilter(
-        label=_("is specialist").title(),
+        label=_("is specialist"),
         choices=models.Specialization.SpecialistChoices,
     )
     employees_count_from, employees_count_to = get_number_from_to_filters(

@@ -11,7 +11,7 @@ from .. import models
 
 class BaseCostCenterFilter(BaseNameDescriptionFilter):
     accounting_id = get_text_filter(
-        label=_("accounting id").title(),
+        label=_("accounting id"),
         exact=True,
     )
     employees_count_from, employees_count_to = get_number_from_to_filters(

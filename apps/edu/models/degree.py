@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -32,8 +32,8 @@ class DegreeManager(EmployeesCountManagerMixin[DegreeQuerySet], models.Manager):
 
 class Degree(AddCreateActivityMixin, AbstractUniqueNameModel):
     class AcademicChoices(models.TextChoices):
-        ACADEMIC = True, _("academic").title()
-        APPLIED = False, _("applied").title()
+        ACADEMIC = True, _("academic")
+        APPLIED = False, _("applied")
 
     order = models.IntegerField(
         verbose_name=_("order"),
@@ -52,8 +52,8 @@ class Degree(AddCreateActivityMixin, AbstractUniqueNameModel):
     class Meta:
         icon = "square-3-stack-3d"
         codename_plural = "degrees"
-        verbose_name = _("degree").title()
-        verbose_name_plural = _("degrees").title()
+        verbose_name = _("degree")
+        verbose_name_plural = _("degrees")
         ordering = ("-is_academic", "order", "name")
         permissions = (
             ("export_degree", "Can export degree"),

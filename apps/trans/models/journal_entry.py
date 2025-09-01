@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils import timezone
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.choices import MonthChoices, QuarterChoices
 from apps.core.models import TimeStampAbstractModel
@@ -156,8 +156,8 @@ class JournalEntry(UrlsMixin, TimeStampAbstractModel):
         icon = "circle-stack"
         ordering = ("general_serial", "ordering", "-debit")
         codename_plural = "journal_entries"
-        verbose_name = _("journal entry").title()
-        verbose_name_plural = _("journal entries").title()
+        verbose_name = _("journal entry")
+        verbose_name_plural = _("journal entries")
         permissions = (
             ("export_journalentry", "Can export journal entry"),
             ("view_activity_journalentry", "Can view journal entry activity"),

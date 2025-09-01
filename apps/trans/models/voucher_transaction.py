@@ -7,7 +7,7 @@ from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -425,8 +425,8 @@ class VoucherTransaction(UrlsMixin, TimeStampAbstractModel, models.Model):
             "ordering",
         )
         codename_plural = "voucher_transactions"
-        verbose_name = _("voucher transaction").title()
-        verbose_name_plural = _("voucher transactions").title()
+        verbose_name = _("voucher transaction")
+        verbose_name_plural = _("voucher transactions")
         permissions = (
             ("export_vouchertransaction", "Can export voucher transaction"),
             (

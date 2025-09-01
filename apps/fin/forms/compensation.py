@@ -1,5 +1,5 @@
 from django import forms
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core import widgets, fields
 from apps.core.forms import CustomModelForm
@@ -28,11 +28,11 @@ class BaseCompensationForm(CustomModelForm):
         models.Tax.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search taxes")},
+        field_attributes={"required": False, "label": _("tax")},
         app_label="fin",
         model_name="Tax",
         object_name="tax",
         field_name="search",
-        field_attributes={"required": False},
     )
 
     class Meta:
@@ -72,7 +72,7 @@ class BaseCompensationForm(CustomModelForm):
             "max_total": widgets.get_number_widget(placeholder=_("e.g. 50000")),
             "rounded_to": widgets.get_number_widget(placeholder=_("e.g. 100")),
             "accounting_id": widgets.get_text_widget(placeholder=_("e.g. 3111")),
-            "description": widgets.get_textarea_widget(),
+            "description": widgets.get_textarea_widget(placeholder=_("some description")),
             "document": widgets.get_file_widget(),
             "formula": widgets.get_textarea_widget(
                 rows=4,

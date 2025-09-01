@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals, validators
@@ -17,13 +17,13 @@ class MobileManager(models.Manager):
 class Mobile(AddCreateActivityMixin, models.Model):
     class HasWhatsappChoices(models.TextChoices):
         NONE = "", "------"
-        YES = True, _("yes").title()
-        NO = False, _("no").title()
+        YES = True, _("yes")
+        NO = False, _("no")
 
     class KindChoices(models.TextChoices):
-        PERSONAL = "personal", _("personal").title()
-        WORK = "work", _("work").title()
-        OTHER = "other", _("other").title()
+        PERSONAL = "personal", _("personal")
+        WORK = "work", _("work")
+        OTHER = "other", _("other")
 
     number = models.CharField(
         max_length=255,
@@ -58,10 +58,10 @@ class Mobile(AddCreateActivityMixin, models.Model):
     objects: MobileManager = MobileManager()
 
     def __str__(self) -> str:
-        return f"+963 {self.number[1:4]} {self.number[4:7]} {self.number[7:]}"
+        return f"00963-{self.number[1:4]}-{self.number[4:]}"
 
     def get_absolute_url(self) -> str:
-        return f"tel:+963{self.number[1:]}"
+        return f"tel:00963-{self.number[1:]}"
 
     def get_whatsapp_url(self) -> str:
         return f"https://web.whatsapp.com/send?phone=+963{self.number[1:]}&text=Hello!"

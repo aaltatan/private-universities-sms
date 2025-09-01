@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields
 
 from apps.core.resources import BaseResource
@@ -9,15 +9,15 @@ from .. import models
 class CityResource(BaseResource):
     governorate = fields.Field(
         attribute="governorate__name",
-        column_name=_("governorate").title(),
+        column_name=_("governorate"),
     )
     employees_count = fields.Field(
         attribute="employees_count",
-        column_name=_("employees count").title(),
+        column_name=_("employees count"),
     )
     kind = fields.Field(
         attribute="kind",
-        column_name=_("kind").title(),
+        column_name=_("kind"),
     )
 
     def dehydrate_kind(self, obj: models.City):

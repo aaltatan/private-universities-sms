@@ -23,22 +23,22 @@ class BaseSchoolFilter(BaseNameDescriptionFilter):
         label=_("nationality"),
     )
     website = get_text_filter(
-        label=_("website").title(),
+        label=_("website"),
         widget_type="url",
         placeholder=_("https://example.com"),
     )
     email = get_text_filter(
-        label=_("email").title(),
+        label=_("email"),
         widget_type="email",
         placeholder=_("some-email@example.com"),
     )
     phone = get_text_filter(
-        label=_("phone").title(),
-        placeholder=_("phone number").title(),
+        label=_("phone"),
+        placeholder=_("phone number"),
     )
     address = get_text_filter(
-        label=_("address").title(),
-        placeholder=_("address").title(),
+        label=_("address"),
+        placeholder=_("address"),
     )
     employees_count_from, employees_count_to = get_number_from_to_filters(
         "employees_count",

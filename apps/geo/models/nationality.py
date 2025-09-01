@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -34,8 +34,8 @@ class NationalityManager(
 
 class Nationality(AddCreateActivityMixin, AbstractUniqueNameModel):
     class LocalityChoices(models.TextChoices):
-        LOCAL = True, _("local").title()
-        FOREIGN = False, _("foreign").title()
+        LOCAL = True, _("local")
+        FOREIGN = False, _("foreign")
 
     is_local = models.BooleanField(
         verbose_name=_("is local"),
@@ -62,8 +62,8 @@ class Nationality(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "globe-europe-africa"
         ordering = ("name",)
         codename_plural = "nationalities"
-        verbose_name = _("nationality").title()
-        verbose_name_plural = _("nationalities").title()
+        verbose_name = _("nationality")
+        verbose_name_plural = _("nationalities")
         permissions = (
             ("export_nationality", "Can export nationality"),
             ("view_activity_nationality", "Can view nationality activity"),

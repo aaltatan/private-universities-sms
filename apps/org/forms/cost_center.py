@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.forms import CustomModelForm
 from apps.core.widgets import (
@@ -19,5 +19,5 @@ class CostCenterForm(CustomModelForm):
             "accounting_id": get_numeric_widget(
                 placeholder=_("cost center id"),
             ),
-            "description": get_textarea_widget(),
+            "description": get_textarea_widget(placeholder=_("some description")),
         }

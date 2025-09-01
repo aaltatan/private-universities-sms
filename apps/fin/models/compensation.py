@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models.signals import post_delete, pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals, validators
@@ -40,37 +40,37 @@ class CompensationManager(
 
 class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
     class CalculationUserChoices(models.TextChoices):
-        FIXED = "fixed", _("fixed").title()
-        BY_INPUT = "by_input", _("by input").title()
+        FIXED = "fixed", _("fixed")
+        BY_INPUT = "by_input", _("by input")
 
     class CompensationKindChoices(models.TextChoices):
-        BENEFIT = "benefit", _("benefit").title()
-        CUT = "cut", _("cut").title()
+        BENEFIT = "benefit", _("benefit")
+        CUT = "cut", _("cut")
 
     class CalculationChoices(models.TextChoices):
-        FIXED = "fixed", _("fixed").title()
-        BY_INPUT = "by_input", _("by input").title()
-        FORMULA = "formula", _("formula").title()
+        FIXED = "fixed", _("fixed")
+        BY_INPUT = "by_input", _("by input")
+        FORMULA = "formula", _("formula")
 
     class AffectedByWorkingDaysChoices(models.TextChoices):
-        YES = True, _("yes").title()
-        NO = False, _("no").title()
+        YES = True, _("yes")
+        NO = False, _("no")
 
     class TaxClassificationChoices(models.TextChoices):
-        SALARY = "salary", _("salary").title()
+        SALARY = "salary", _("salary")
         WITHHOLDING_TAX_APPLICABLE = (
             "withholding_tax_applicable",
-            _("withholding tax applicable").title(),
+            _("withholding tax applicable"),
         )
         WITHHOLDING_TAX_NOT_APPLICABLE = (
             "withholding_tax_not_applicable",
-            _("withholding tax not applicable").title(),
+            _("withholding tax not applicable"),
         )
-        OTHERS = "others", _("others").title()
+        OTHERS = "others", _("others")
 
     class RestrictionChoices(models.TextChoices):
-        REPLACE = "replace", _("replace").title()
-        RAISE_ERROR = "raise_error", _("raise error").title()
+        REPLACE = "replace", _("replace")
+        RAISE_ERROR = "raise_error", _("raise error")
 
     shortname = models.CharField(
         max_length=255,
@@ -354,8 +354,8 @@ class Compensation(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "banknotes"
         ordering = ("-is_active", "tax__name", "calculation_method", "name")
         codename_plural = "compensations"
-        verbose_name = _("compensation").title()
-        verbose_name_plural = _("compensations").title()
+        verbose_name = _("compensation")
+        verbose_name_plural = _("compensations")
         permissions = (
             ("export_compensation", "Can export compensation"),
             ("view_activity_compensation", "Can view compensation activity"),

@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -103,8 +103,8 @@ class TaxBracket(AddCreateActivityMixin, UrlsMixin, models.Model):
         icon = "receipt-percent"
         ordering = ("tax", "amount_from", "amount_to")
         codename_plural = "tax_brackets"
-        verbose_name = _("tax bracket").title()
-        verbose_name_plural = _("tax brackets").title()
+        verbose_name = _("tax bracket")
+        verbose_name_plural = _("tax brackets")
         permissions = (
             ("export_taxbracket", "Can export tax bracket"),
             ("view_activity_taxbracket", "Can view tax bracket activity"),

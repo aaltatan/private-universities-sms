@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from .. import validators
 from .abstracts import SingletonModelMixin
@@ -27,8 +27,8 @@ class TemplateItem(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _("template item").title()
-        verbose_name_plural = _("template items").title()
+        verbose_name = _("template item")
+        verbose_name_plural = _("template items")
         ordering = ("name",)
 
 
@@ -68,6 +68,6 @@ class Template(SingletonModelMixin, models.Model):
         return f"VoucherSetting(voucher={self.voucher}, employee={self.employee}, ledger={self.ledger})"
 
     class Meta:
-        verbose_name = _("template").title()
-        verbose_name_plural = _("templates").title()
+        verbose_name = _("template")
+        verbose_name_plural = _("templates")
         ordering = ("voucher__name",)

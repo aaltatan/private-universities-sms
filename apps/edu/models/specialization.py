@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -34,8 +34,8 @@ class SpecializationManager(
 
 class Specialization(AddCreateActivityMixin, AbstractUniqueNameModel):
     class SpecialistChoices(models.TextChoices):
-        SPECIALIST = True, _("specialist").title()
-        SUPPORTER = False, _("supporter").title()
+        SPECIALIST = True, _("specialist")
+        SUPPORTER = False, _("supporter")
 
     is_specialist = models.BooleanField(
         verbose_name=_("is specialist"),
@@ -47,8 +47,8 @@ class Specialization(AddCreateActivityMixin, AbstractUniqueNameModel):
     class Meta:
         icon = "rectangle-group"
         codename_plural = "specializations"
-        verbose_name = _("specialization").title()
-        verbose_name_plural = _("specializations").title()
+        verbose_name = _("specialization")
+        verbose_name_plural = _("specializations")
         ordering = ("-is_specialist", "name")
         permissions = (
             ("export_specialization", "Can export specialization"),

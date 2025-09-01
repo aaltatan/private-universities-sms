@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -53,8 +53,8 @@ class CostCenter(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "building-office-2"
         ordering = ("accounting_id", "name")
         codename_plural = "cost_centers"
-        verbose_name = _("cost center").title()
-        verbose_name_plural = _("cost centers").title()
+        verbose_name = _("cost center")
+        verbose_name_plural = _("cost centers")
         permissions = (
             ("export_costcenter", "Can export cost center"),
             ("view_activity_costcenter", "Can view cost center activity"),

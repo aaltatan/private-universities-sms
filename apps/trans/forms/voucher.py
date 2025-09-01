@@ -3,7 +3,7 @@ from django import forms
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.fields import get_autocomplete_field
 from apps.core.forms import BehaviorForm, CustomModelForm
@@ -110,6 +110,7 @@ class BaseVoucherForm(CustomModelForm):
         Period.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search periods")},
+        field_attributes={"label": _("period")},
         app_label="fin",
         model_name="Period",
         object_name="period",
@@ -119,6 +120,7 @@ class BaseVoucherForm(CustomModelForm):
         VoucherKind.objects.all(),
         to_field_name="name",
         widget_attributes={"placeholder": _("search voucher kinds")},
+        field_attributes={"label": _("kind")},
         app_label="fin",
         model_name="VoucherKind",
         object_name="voucher_kind",

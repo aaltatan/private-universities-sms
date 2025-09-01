@@ -1,5 +1,5 @@
 from django import forms
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core import widgets
 from apps.core.forms import CustomModelForm
@@ -20,5 +20,5 @@ class DegreeForm(CustomModelForm):
         widgets = {
             "name": widgets.get_text_widget(placeholder=_("e.g. Bachelor")),
             "order": widgets.get_number_widget(placeholder=_("e.g. 1")),
-            "description": widgets.get_textarea_widget(),
+            "description": widgets.get_textarea_widget(placeholder=_("some description")),
         }

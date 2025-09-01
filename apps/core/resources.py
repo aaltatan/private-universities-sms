@@ -1,5 +1,5 @@
 from typing import Any
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, resources
 
 
@@ -18,7 +18,7 @@ class SerialResourceMixin:
 
 class DehydrateBooleanMixin:
     def _dehydrate_boolean(self, is_true: bool = True):
-        return _("yes").title() if is_true else _("no").title()
+        return _("yes").title() if is_true else _("no")
 
 
 class DehydrateChoicesMixin:
@@ -42,13 +42,13 @@ class BaseResource(
     )
     name = fields.Field(
         attribute="name",
-        column_name=_("name").title(),
+        column_name=_("name"),
     )
     description = fields.Field(
         attribute="description",
-        column_name=_("description").title(),
+        column_name=_("description"),
     )
     slug = fields.Field(
         attribute="slug",
-        column_name=_("slug").title(),
+        column_name=_("slug"),
     )

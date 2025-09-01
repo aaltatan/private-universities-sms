@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_save, pre_delete
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.core import signals
@@ -82,8 +82,8 @@ class School(AddCreateActivityMixin, AbstractUniqueNameModel):
         icon = "academic-cap"
         ordering = ("name",)
         codename_plural = "schools"
-        verbose_name = _("school").title()
-        verbose_name_plural = _("schools").title()
+        verbose_name = _("school")
+        verbose_name_plural = _("schools")
         permissions = (
             ("export_school", "Can export school"),
             ("view_activity_school", "Can view school activity"),

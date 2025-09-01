@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, resources, widgets
 
 from apps.core.resources import (
@@ -24,121 +24,121 @@ class VoucherResource(
     )
     created_at = fields.Field(
         attribute="created_at",
-        column_name=_("created at").title(),
+        column_name=_("created at"),
     )
     created_by = fields.Field(
         attribute="created_by__username",
-        column_name=_("created by").title(),
+        column_name=_("created by"),
     )
     updated_at = fields.Field(
         attribute="updated_at",
-        column_name=_("updated at").title(),
+        column_name=_("updated at"),
     )
     updated_by = fields.Field(
         attribute="updated_by__username",
-        column_name=_("updated by").title(),
+        column_name=_("updated by"),
     )
     uuid = fields.Field(
         attribute="uuid",
-        column_name=_("uuid").title(),
+        column_name=_("uuid"),
     )
     voucher_serial = fields.Field(
         attribute="voucher_serial",
-        column_name=_("voucher serial").title(),
+        column_name=_("voucher serial"),
     )
     title = fields.Field(
         attribute="title",
-        column_name=_("title").title(),
+        column_name=_("title"),
     )
     date = fields.Field(
         attribute="date",
-        column_name=_("date").title(),
+        column_name=_("date"),
     )
     kind = fields.Field(
         attribute="kind",
-        column_name=_("kind").title(),
+        column_name=_("kind"),
     )
     month = fields.Field(
         attribute="month",
-        column_name=_("month").title(),
+        column_name=_("month"),
     )
     quarter = fields.Field(
         attribute="quarter",
-        column_name=_("quarter").title(),
+        column_name=_("quarter"),
     )
     period = fields.Field(
         attribute="period",
-        column_name=_("period").title(),
+        column_name=_("period"),
     )
     total = fields.Field(
         attribute="total",
-        column_name=_("total").title(),
+        column_name=_("total"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     transactions_count = fields.Field(
         attribute="total",
-        column_name=_("transactions count").title(),
+        column_name=_("transactions count"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     quantity_total = fields.Field(
         attribute="quantity_total",
-        column_name=_("quantity total").title(),
+        column_name=_("quantity total"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     value_total = fields.Field(
         attribute="value_total",
-        column_name=_("value total").title(),
+        column_name=_("value total"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     tax_total = fields.Field(
         attribute="tax_total",
-        column_name=_("tax total").title(),
+        column_name=_("tax total"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     net = fields.Field(
         attribute="net",
-        column_name=_("net").title(),
+        column_name=_("net"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     notes = fields.Field(
         attribute="notes",
-        column_name=_("notes").title(),
+        column_name=_("notes"),
     )
     serial_id = fields.Field(
         attribute="serial_id",
-        column_name=_("serial id").title(),
+        column_name=_("serial id"),
     )
     serial_date = fields.Field(
         attribute="serial_date",
-        column_name=_("serial date").title(),
+        column_name=_("serial date"),
     )
     approve_date = fields.Field(
         attribute="approve_date",
-        column_name=_("approve date").title(),
+        column_name=_("approve date"),
     )
     due_date = fields.Field(
         attribute="due_date",
-        column_name=_("due date").title(),
+        column_name=_("due date"),
     )
     accounting_journal_sequence = fields.Field(
         attribute="accounting_journal_sequence",
-        column_name=_("accounting journal sequence").title(),
+        column_name=_("accounting journal sequence"),
     )
     is_audited = fields.Field(
         attribute="is_audited",
-        column_name=_("is audited").title(),
+        column_name=_("is audited"),
     )
     audited_by = fields.Field(
         attribute="audited_by__username",
-        column_name=_("audited by").title(),
+        column_name=_("audited by"),
     )
     is_migrated = fields.Field(
         attribute="is_migrated",
-        column_name=_("is migrated").title(),
+        column_name=_("is migrated"),
     )
     slug = fields.Field(
         attribute="slug",
-        column_name=_("slug").title(),
+        column_name=_("slug"),
     )
 
     def dehydrate_is_audited(self, obj) -> bool:

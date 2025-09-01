@@ -11,7 +11,7 @@ from ..utils import VoucherAuditor, VoucherDeleter
 @admin.action(description="Undo delete selected vouchers")
 def undo_delete(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
     qs.update(is_deleted=False)
-    message = _("vouchers undeleted successfully").title()
+    message = _("vouchers undeleted successfully")
     modeladmin.message_user(request, message, level=messages.SUCCESS)
 
 
@@ -33,7 +33,7 @@ def soft_delete(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
 def migrate(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
     if request.POST.get("post"):
         if qs.filter(is_audited=False).exists():
-            message = _("cannot migrate vouchers that are not audited").title()
+            message = _("cannot migrate vouchers that are not audited")
             modeladmin.message_user(request, message, level=messages.ERROR)
             return
 
@@ -42,7 +42,7 @@ def migrate(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
             is_migrated=True,
             accounting_journal_sequence=journal_sequence,
         )
-        message = _("vouchers migrated successfully").title()
+        message = _("vouchers migrated successfully")
         modeladmin.message_user(request, message, level=messages.SUCCESS)
         return
 
@@ -63,7 +63,7 @@ def migrate(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
 )
 def unmigrate(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
     qs.update(is_migrated=False, accounting_journal_sequence="")
-    message = _("vouchers unmigrated successfully").title()
+    message = _("vouchers unmigrated successfully")
     modeladmin.message_user(request, message, level=messages.SUCCESS)
 
 
@@ -87,5 +87,5 @@ def audit(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
 )
 def unaudit(modeladmin: ModelAdmin, request: HttpRequest, qs: QuerySet):
     qs.update(is_audited=False)
-    message = _("vouchers unaudited successfully").title()
+    message = _("vouchers unaudited successfully")
     modeladmin.message_user(request, message, level=messages.SUCCESS)

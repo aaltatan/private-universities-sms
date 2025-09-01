@@ -2,7 +2,7 @@ from typing import Any
 
 from django.http import HttpRequest
 from django.urls import reverse
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import GlobalSetting
 

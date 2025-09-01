@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, resources, widgets
 
 from apps.core.resources import (
@@ -22,229 +22,229 @@ class EmployeeResource(
     )
     uuid = fields.Field(
         attribute="uuid",
-        column_name=_("uuid").title(),
+        column_name=_("uuid"),
     )
     fullname = fields.Field(
         attribute="fullname",
-        column_name=_("fullname").title(),
+        column_name=_("fullname"),
     )
     shortname = fields.Field(
         attribute="shortname",
-        column_name=_("shortname").title(),
+        column_name=_("shortname"),
     )
     firstname = fields.Field(
         attribute="firstname",
-        column_name=_("first name").title(),
+        column_name=_("first name"),
     )
     lastname = fields.Field(
         attribute="lastname",
-        column_name=_("last name").title(),
+        column_name=_("last name"),
     )
     father_name = fields.Field(
         attribute="father_name",
-        column_name=_("father name").title(),
+        column_name=_("father name"),
     )
     father_fullname = fields.Field(
         attribute="father_fullname",
-        column_name=_("father fullname").title(),
+        column_name=_("father fullname"),
     )
     mother_name = fields.Field(
         attribute="mother_name",
-        column_name=_("mother name").title(),
+        column_name=_("mother name"),
     )
     birth_place = fields.Field(
         attribute="birth_place",
-        column_name=_("birth place").title(),
+        column_name=_("birth place"),
     )
     birth_date = fields.Field(
         attribute="birth_date",
-        column_name=_("birth date").title(),
+        column_name=_("birth date"),
         widget=widgets.DateWidget(coerce_to_string=False),
     )
     age = fields.Field(
         attribute="age",
-        column_name=_("age").title(),
+        column_name=_("age"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     age_group = fields.Field(
         attribute="age_group",
-        column_name=_("age group").title(),
+        column_name=_("age group"),
     )
     next_birthday = fields.Field(
-        column_name=_("next birthday").title(),
+        column_name=_("next birthday"),
         widget=widgets.DateWidget(coerce_to_string=False),
     )
     national_id = fields.Field(
         attribute="national_id",
-        column_name=_("national id").title(),
+        column_name=_("national id"),
     )
     card_id = fields.Field(
         attribute="card_id",
-        column_name=_("card id").title(),
+        column_name=_("card id"),
     )
     passport_id = fields.Field(
         attribute="passport_id",
-        column_name=_("passport id").title(),
+        column_name=_("passport id"),
     )
     civil_registry_office = fields.Field(
         attribute="civil_registry_office",
-        column_name=_("civil registry office").title(),
+        column_name=_("civil registry office"),
     )
     registry_office_name = fields.Field(
         attribute="registry_office_name",
-        column_name=_("registry office name").title(),
+        column_name=_("registry office name"),
     )
     registry_office_id = fields.Field(
         attribute="registry_office_id",
-        column_name=_("registry office id").title(),
+        column_name=_("registry office id"),
     )
     gender = fields.Field(
         attribute="gender",
-        column_name=_("gender").title(),
+        column_name=_("gender"),
     )
     face_color = fields.Field(
         attribute="face_color",
-        column_name=_("face color").title(),
+        column_name=_("face color"),
     )
     eyes_color = fields.Field(
         attribute="eyes_color",
-        column_name=_("eyes color").title(),
+        column_name=_("eyes color"),
     )
     address = fields.Field(
         attribute="address",
-        column_name=_("address").title(),
+        column_name=_("address"),
     )
     special_signs = fields.Field(
         attribute="special_signs",
-        column_name=_("special signs").title(),
+        column_name=_("special signs"),
     )
     card_date = fields.Field(
         attribute="card_date",
-        column_name=_("card date").title(),
+        column_name=_("card date"),
         widget=widgets.DateWidget(coerce_to_string=False),
     )
     martial_status = fields.Field(
         attribute="martial_status",
-        column_name=_("martial status").title(),
+        column_name=_("martial status"),
     )
     military_status = fields.Field(
         attribute="military_status",
-        column_name=_("military status").title(),
+        column_name=_("military status"),
     )
     religion = fields.Field(
         attribute="religion",
-        column_name=_("religion").title(),
+        column_name=_("religion"),
     )
     current_address = fields.Field(
         attribute="current_address",
-        column_name=_("current address").title(),
+        column_name=_("current address"),
     )
     nationality = fields.Field(
         attribute="nationality",
-        column_name=_("nationality").title(),
+        column_name=_("nationality"),
     )
     governorate = fields.Field(
         attribute="city__governorate",
-        column_name=_("governorate").title(),
+        column_name=_("governorate"),
     )
     city = fields.Field(
         attribute="city",
-        column_name=_("city").title(),
+        column_name=_("city"),
     )
     hire_date = fields.Field(
         attribute="hire_date",
-        column_name=_("hire date").title(),
+        column_name=_("hire date"),
         widget=widgets.DateWidget(coerce_to_string=False),
     )
     separation_date = fields.Field(
         attribute="separation_date",
-        column_name=_("separation date").title(),
+        column_name=_("separation date"),
         widget=widgets.DateWidget(coerce_to_string=False),
     )
     next_job_anniversary = fields.Field(
         attribute="next_nth_job_anniversary",
-        column_name=_("next job anniversary").title(),
+        column_name=_("next job anniversary"),
         widget=widgets.DateWidget(coerce_to_string=False),
     )
     job_age = fields.Field(
         attribute="job_age",
-        column_name=_("job age").title(),
+        column_name=_("job age"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     job_age_group = fields.Field(
         attribute="job_age_group",
-        column_name=_("job age group").title(),
+        column_name=_("job age group"),
     )
     notes = fields.Field(
         attribute="notes",
-        column_name=_("notes").title(),
+        column_name=_("notes"),
     )
     cost_center = fields.Field(
         attribute="cost_center",
-        column_name=_("cost center").title(),
+        column_name=_("cost center"),
     )
     position = fields.Field(
         attribute="position",
-        column_name=_("position").title(),
+        column_name=_("position"),
     )
     position_order = fields.Field(
         attribute="position__order",
-        column_name=_("position order").title(),
+        column_name=_("position order"),
         widget=widgets.NumberWidget(coerce_to_string=False),
     )
     status = fields.Field(
         attribute="status",
-        column_name=_("status").title(),
+        column_name=_("status"),
     )
     is_payable = fields.Field(
         attribute="status__is_payable",
-        column_name=_("payable?").title(),
+        column_name=_("payable?"),
     )
     job_type = fields.Field(
         attribute="job_subtype__job_type",
-        column_name=_("job type").title(),
+        column_name=_("job type"),
     )
     job_subtype = fields.Field(
         attribute="job_subtype",
-        column_name=_("job subtype").title(),
+        column_name=_("job subtype"),
     )
     groups = fields.Field(
-        column_name=_("groups").title(),
+        column_name=_("groups"),
     )
     groups_with_types = fields.Field(
-        column_name=_("groups with types").title(),
+        column_name=_("groups with types"),
     )
     degree = fields.Field(
         attribute="degree",
-        column_name=_("degree").title(),
+        column_name=_("degree"),
     )
     is_academic = fields.Field(
         attribute="degree__is_academic",
-        column_name=_("academic?").title(),
+        column_name=_("academic?"),
     )
     school = fields.Field(
         attribute="school",
-        column_name=_("school").title(),
+        column_name=_("school"),
     )
     school_kind = fields.Field(
         attribute="school__kind",
-        column_name=_("school kind").title(),
+        column_name=_("school kind"),
     )
     school_is_governmental = fields.Field(
         attribute="school__is_governmental",
-        column_name=_("governmental school?").title(),
+        column_name=_("governmental school?"),
     )
     school_is_virtual = fields.Field(
         attribute="school__is_virtual",
-        column_name=_("virtual school?").title(),
+        column_name=_("virtual school?"),
     )
     specialization = fields.Field(
         attribute="specialization",
-        column_name=_("specialization").title(),
+        column_name=_("specialization"),
     )
     is_specialist = fields.Field(
         attribute="specialization__is_specialist",
-        column_name=_("specialist?").title(),
+        column_name=_("specialist?"),
     )
 
     def dehydrate_is_payable(self, obj: models.Employee):

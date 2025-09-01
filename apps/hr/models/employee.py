@@ -29,27 +29,27 @@ from .setting import HRSetting
 
 class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
     class ReligionChoices(models.TextChoices):
-        MUSLIM = "muslim", _("muslim").title()
-        CHRISTIAN = "christian", _("christian").title()
-        JEWISH = "jewish", _("jewish").title()
-        OTHER = "other", _("other").title()
+        MUSLIM = "muslim", _("muslim")
+        CHRISTIAN = "christian", _("christian")
+        JEWISH = "jewish", _("jewish")
+        OTHER = "other", _("other")
 
     class GenderChoices(models.TextChoices):
-        MALE = "male", _("male").title()
-        FEMALE = "female", _("female").title()
+        MALE = "male", _("male")
+        FEMALE = "female", _("female")
 
     class MartialStatusChoices(models.TextChoices):
-        MARRIED = "married", _("married").title()
-        SINGLE = "single", _("single").title()
-        DIVORCED = "divorced", _("divorced").title()
-        OTHER = "other", _("other").title()
+        MARRIED = "married", _("married")
+        SINGLE = "single", _("single")
+        DIVORCED = "divorced", _("divorced")
+        OTHER = "other", _("other")
 
     class MilitaryStatus(models.TextChoices):
-        DEFREMENTED = "defremented", _("defremented").title()
-        IN_PROGRESS = "in progress", _("in progress").title()
-        FINISHED = "finished", _("finished").title()
-        EXCUSED = "excused", _("excused").title()
-        OTHER = "other", _("other").title()
+        DEFREMENTED = "defremented", _("defremented")
+        IN_PROGRESS = "in progress", _("in progress")
+        FINISHED = "finished", _("finished")
+        EXCUSED = "excused", _("excused")
+        OTHER = "other", _("other")
 
     uuid = models.UUIDField(
         default=uuid.uuid4,
@@ -247,7 +247,9 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         related_name="employees",
         verbose_name=_("city"),
     )
-    hire_date = models.DateField()
+    hire_date = models.DateField(
+        verbose_name=_("hire date"),
+    )
     separation_date = models.DateField(
         null=True,
         blank=True,
@@ -363,8 +365,8 @@ class Employee(UrlsMixin, AddCreateActivityMixin, models.Model):
         )
         icon = "user"
         codename_plural = "employees"
-        verbose_name = _("employee").title()
-        verbose_name_plural = _("employees").title()
+        verbose_name = _("employee")
+        verbose_name_plural = _("employees")
         permissions = (
             ("export_employee", "Can export employee"),
             ("view_activity_employee", "Can view employee activity"),

@@ -1,4 +1,4 @@
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, resources
 
 from .. import models
@@ -8,7 +8,7 @@ from ._base import BaseInfoResource
 class PhoneResource(BaseInfoResource, resources.ModelResource):
     number = fields.Field(
         attribute="number",
-        column_name=_("number").title(),
+        column_name=_("number"),
     )
 
     class Meta:

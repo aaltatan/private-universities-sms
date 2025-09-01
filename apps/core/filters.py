@@ -4,7 +4,7 @@ import django_filters as filters
 from django import forms
 from django.db.models import Q, QuerySet
 from django.forms import TextInput
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from .utils import get_djangoql_query, get_keywords_query
 from .widgets import (
@@ -184,8 +184,8 @@ def get_number_from_to_filters(
         to_attributes (dict[str, str], optional): The attributes for the to field. Defaults to {}.
     """
 
-    from_attributes.setdefault("placeholder", _("from").title())
-    to_attributes.setdefault("placeholder", _("to").title())
+    from_attributes.setdefault("placeholder", _("from"))
+    to_attributes.setdefault("placeholder", _("to"))
 
     from_kwargs = {
         "field_name": field_name,
@@ -219,9 +219,9 @@ def get_date_from_to_filters(
 ) -> tuple[filters.DateFilter, filters.DateFilter]:
     """Get number range fields."""
 
-    from_attributes.setdefault("placeholder", _("from").title())
+    from_attributes.setdefault("placeholder", _("from"))
     from_attributes.setdefault("x-mask", "9999-99-99")
-    to_attributes.setdefault("placeholder", _("to").title())
+    to_attributes.setdefault("placeholder", _("to"))
     to_attributes.setdefault("x-mask", "9999-99-99")
 
     from_kwargs = {
@@ -253,8 +253,8 @@ class BaseNameDescriptionFilter(FilterTextMixin, filters.FilterSet):
     a base class for filters that have **(name)** and **(description)** fields.
     """
 
-    name = get_text_filter(label=_("name").title())
-    description = get_text_filter(label=_("description").title())
+    name = get_text_filter(label=_("name"))
+    description = get_text_filter(label=_("description"))
 
 
 class BaseQSearchFilter(FilterSearchMixin, filters.FilterSet):
@@ -266,7 +266,7 @@ class BaseQSearchFilter(FilterSearchMixin, filters.FilterSet):
         method="search",
         widget=forms.TextInput(
             attrs={
-                "placeholder": _("search").title(),
+                "placeholder": _("search"),
             },
         ),
     )
