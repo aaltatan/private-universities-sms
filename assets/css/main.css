@@ -1,16 +1,6 @@
-@import "tailwindcss";
-
-@plugin "@tailwindcss/container-queries";
-@plugin 'tailwind-scrollbar';
-
-@custom-variant has-checked (&:has(input:checked));
-@custom-variant hx-request (&.htmx-request);
-@custom-variant hx-swap (&.htmx-swapping);
-@custom-variant hx-settle (&.htmx-settling);
-@custom-variant active (&.active);
-@custom-variant dark (&:where(.dark, .dark *));
-@custom-variant tb-td (& table td);
-@custom-variant tb-th (& table th);
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   .checkbox-input::before {
@@ -18,84 +8,86 @@
   }
 }
 
-/* inputs */
-.text-input {
-  @apply block w-full bg-white dark:bg-black rounded-md border border-neutral-300 p-2 text-xs focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:dark:bg-neutral-900 dark:border-neutral-800 dark:focus-visible:outline-white aria-[invalid]:!border-red-500 resize-none;
-}
-
-.select-input {
-  @apply w-full bg-white dark:bg-black rounded-md border border-neutral-300 p-2 text-xs focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:dark:bg-neutral-900 dark:border-neutral-800 dark:focus-visible:outline-white aria-[invalid]:!border-red-500;
-}
-
-.checkbox-input {
-  @apply relative size-4 cursor-pointer appearance-none overflow-hidden rounded border border-neutral-400 bg-white before:absolute before:inset-0 checked:border-black checked:before:bg-black focus:outline  focus:outline-offset-2 focus:outline-neutral-800 checked:focus:outline-black active:outline-offset-0 dark:border-neutral-700 dark:bg-neutral-900 dark:checked:border-white dark:checked:before:bg-white dark:focus:outline-neutral-300 dark:checked:focus:outline-white;
-}
-
-.checkbox-icon {
-  @apply pointer-events-none invisible absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 text-neutral-100 peer-checked:visible dark:text-black;
-}
-
-/* scrollbar */
-
-.scroll {
-  @apply scrollbar-thin scrollbar-thumb-neutral-600 dark:scrollbar-track-neutral-800;
-}
-
-/* breadcrumbs */
-
-ol[itemprop="breadcrumb"] {
-  @apply flex items-center max-md:justify-center text-sm;
-}
-.breadcrumb-item span[itemprop="name"] {
-  @apply capitalize;
-}
-.breadcrumb-item:not(.active) span[itemprop="name"] {
-  @apply after:content-['/'] after:mx-1 hover:dark:text-neutral-300 dark:text-neutral-400 text-neutral-500 hover:text-neutral-600;
-}
-.breadcrumb-item.active {
-  @apply text-neutral-800 dark:text-neutral-200 font-semibold;
-}
-
-/* messages */
-
-svg.success {
-  @apply text-green-500;
-}
-svg.error {
-  @apply text-red-500;
-}
-svg.warning {
-  @apply text-orange-500;
-}
-svg.info {
-  @apply text-sky-500;
-}
-
-/* indicator */
-
-@keyframes fade-in-animation {
-  0% {
-    opacity: 0.6;
+@layer utilities {
+  /* inputs */
+  .text-input {
+    @apply block w-full bg-white dark:bg-black rounded-md border border-neutral-300 p-2 text-xs focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:dark:bg-neutral-900 dark:border-neutral-800 dark:focus-visible:outline-white aria-[invalid]:!border-red-500 resize-none;
   }
-  50% {
-    opacity: 0.9;
-  }
-  100% {
-    opacity: 0.6;
-  }
-}
 
-.spinner {
-  display: block;
-  width: 1rem; /* size-4 = 16px = 1rem */
-  height: 1rem; /* size-4 = 16px = 1rem */
-  border: 2px solid; /* border-2 */
-  border-color: #d4d4d4; /* border-neutral-300 */
-  border-top-color: orangered; /* border-t-green-400 */
-  border-radius: 9999px; /* rounded-full */
-  animation: spin 500ms linear infinite; /* animate-spin with duration */
-}
+  .select-input {
+    @apply w-full bg-white dark:bg-black rounded-md border border-neutral-300 p-2 text-xs focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:dark:bg-neutral-900 dark:border-neutral-800 dark:focus-visible:outline-white aria-[invalid]:!border-red-500;
+  }
 
-.htmx-request.htmx-pulse-animation {
-  animation: fade-in-animation 1200ms ease-in-out infinite; /* animate-spin with duration */
+  .checkbox-input {
+    @apply relative size-4 cursor-pointer appearance-none overflow-hidden rounded border border-neutral-400 bg-white before:absolute before:inset-0 checked:border-black checked:before:bg-black focus:outline  focus:outline-offset-2 focus:outline-neutral-800 checked:focus:outline-black active:outline-offset-0 dark:border-neutral-700 dark:bg-neutral-900 dark:checked:border-white dark:checked:before:bg-white dark:focus:outline-neutral-300 dark:checked:focus:outline-white;
+  }
+
+  .checkbox-icon {
+    @apply pointer-events-none invisible absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 text-neutral-100 peer-checked:visible dark:text-black;
+  }
+
+  /* scrollbar */
+
+  .scroll {
+    @apply scrollbar-thin scrollbar-thumb-neutral-600 dark:scrollbar-track-neutral-800;
+  }
+
+  /* breadcrumbs */
+
+  ol[itemprop="breadcrumb"] {
+    @apply flex items-center max-md:justify-center text-sm;
+  }
+  .breadcrumb-item span[itemprop="name"] {
+    @apply capitalize;
+  }
+  .breadcrumb-item:not(.active) span[itemprop="name"] {
+    @apply after:content-['/'] after:mx-1 hover:dark:text-neutral-300 dark:text-neutral-400 text-neutral-500 hover:text-neutral-600;
+  }
+  .breadcrumb-item.active {
+    @apply text-neutral-800 dark:text-neutral-200 font-semibold;
+  }
+
+  /* messages */
+
+  svg.success {
+    @apply text-green-500;
+  }
+  svg.error {
+    @apply text-red-500;
+  }
+  svg.warning {
+    @apply text-orange-500;
+  }
+  svg.info {
+    @apply text-sky-500;
+  }
+
+  /* indicator */
+
+  @keyframes fade-in-animation {
+    0% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0.6;
+    }
+  }
+
+  .spinner {
+    display: block;
+    width: 1rem; /* size-4 = 16px = 1rem */
+    height: 1rem; /* size-4 = 16px = 1rem */
+    border: 2px solid; /* border-2 */
+    border-color: #d4d4d4; /* border-neutral-300 */
+    border-top-color: orangered; /* border-t-green-400 */
+    border-radius: 9999px; /* rounded-full */
+    animation: spin 500ms linear infinite; /* animate-spin with duration */
+  }
+
+  .htmx-request.htmx-pulse-animation {
+    animation: fade-in-animation 1200ms ease-in-out infinite; /* animate-spin with duration */
+  }
 }

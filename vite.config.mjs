@@ -1,4 +1,4 @@
-import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from "tailwindcss";
 import { resolve } from "path";
 import { defineConfig } from "vite";
 
@@ -18,5 +18,10 @@ export default defineConfig({
       },
     },
   },
-  plugins: [tailwindcss()],
+  plugins: [],
+  css: {
+    postcss: {
+      plugins: [tailwindcss()],
+    },
+  },
 });
