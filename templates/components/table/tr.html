@@ -1,7 +1,9 @@
 <c-vars :header="False" :hovered="True" :striped="True" :hide="False" :bolded="False" />
 
+
 <tr
-  class="{% if not header %}
+  class="{% spaceless %}
+  {% if not header %}
   {% if hovered %}hover:ring-1{% endif %}
   ring-neutral-400
   dark:ring-neutral-600
@@ -17,7 +19,8 @@
   {% endif %}
   {% endif %}
   {% if hide %}hidden{% endif %}
-  {% if bolded %}[&_td]:border-t-4 [&_td]:border-double [&_td]:border-neutral-400 [&_td]:dark:border-neutral-700{% endif %}"
+  {% if bolded %}[&_td]:border-t-4 [&_td]:border-double [&_td]:border-neutral-400 [&_td]:dark:border-neutral-700{% endif %}
+  {% endspaceless %}"
   {{ attrs }}
 >
   {{ slot }}
